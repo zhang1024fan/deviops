@@ -1,0 +1,13 @@
+  [Unit]
+  Description=DevOps API Service
+  After=network.target mysql.service redis.service
+
+  [Service]
+  Type=simple
+  WorkingDirectory=/home/devops
+  ExecStart=/home/devops/devops -c /home/devops/config.yaml
+  Restart=always
+  RestartSec=5
+
+  [Install]
+  WantedBy=multi-user.target

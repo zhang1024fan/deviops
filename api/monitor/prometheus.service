@@ -1,0 +1,20 @@
+[Unit]
+Description=Prometheus Monitoring System
+Documentation=https://prometheus.io/docs/introduction/overview/
+After=network-online.target
+
+[Service]
+Type=simple
+ExecStart=/opt/prometheus/prometheus \
+    --config.file=/opt/prometheus/prometheus.yml \
+    --storage.tsdb.path=/opt/prometheus/data \
+    --web.listen-address=0.0.0.0:9090 \
+Restart=always
+RestartSec=5
+StandardOutput=journal
+StandardError=journal
+ExecReload=/bin/kill -HUP $MAINPID
+LimitNOFILE=65536
+
+[Install]
+WantedBy=multi-user.target

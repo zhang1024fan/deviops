@@ -1,0 +1,11 @@
+[Unit]
+Description=DevOps Monitoring Agent
+After=network.target
+
+[Service]
+ExecStart=/opt/prometheus/pushgateway
+Restart=always
+User=root
+
+[Install]
+WantedBy=multi-user.target
