@@ -236,7 +236,7 @@ admin/admin@2025
 
 ## 技术交流+社区
 - 作者wx：zf5391621
-- QQ群：925037324
+- QQ群：545118130
 - 邮箱：zfwh1024@163.com
 - 项目地址：https://github.com/zhang1024fan/deviops.git
 ![alt text](image-3.png)
