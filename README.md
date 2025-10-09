@@ -87,7 +87,7 @@ http://180.76.231.65/login
 
 ## 技术栈
 ![alt text](k8s.png)
-![alt text](k8s2.png)
+![alt text](ecs.png)
 ### 后端框架
 - **Gin** - Web框架
 - **GORM** - ORM框架
