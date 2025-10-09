@@ -1,0 +1,134 @@
+version: '3.8'
+
+services:
+  # MySQL数据库
+  mysql:
+    image: mysql:8.0.33
+    container_name: devops-mysql
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: devops@2025
+      MYSQL_DATABASE: devops
+      MYSQL_ROOT_HOST: '%'
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql-data:/var/lib/mysql
+      - ../api/devops.sql:/docker-entrypoint-initdb.d/devops.sql
+    command:
+      - --default-authentication-plugin=caching_sha2_password
+      - --character-set-server=utf8mb4
+      - --collation-server=utf8mb4_unicode_ci
+    networks:
+      - devops-network
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-uroot", "-pdevops@2025"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # Redis缓存
+  redis:
+    image: redis:7.0-alpine
+    container_name: devops-redis
+    restart: always
+    ports:
+      - "6379:6379"
+    command: redis-server --requirepass zhangfan@123
+    volumes:
+      - redis-data:/data
+    networks:
+      - devops-network
+    healthcheck:
+      test: ["CMD", "redis-cli", "-a", "zhangfan@123", "ping"]
+      interval: 10s
+      timeout: 3s
+      retries: 5
+
+  # Prometheus监控
+  prometheus:
+    image: prom/prometheus:v2.47.0
+    container_name: devops-prometheus
+    restart: always
+    ports:
+      - "9090:9090"
+    volumes:
+      - ../api/monitor/prometheus.yml:/etc/prometheus/prometheus.yml
+      - prometheus-data:/prometheus
+    command:
+      - '--config.file=/etc/prometheus/prometheus.yml'
+      - '--storage.tsdb.path=/prometheus'
+      - '--web.listen-address=0.0.0.0:9090'
+    networks:
+      - devops-network
+    depends_on:
+      - pushgateway
+
+  # Pushgateway指标推送
+  pushgateway:
+    image: prom/pushgateway:v1.6.1
+    container_name: devops-pushgateway
+    restart: always
+    ports:
+      - "9091:9091"
+    networks:
+      - devops-network
+
+  # DevOps后端服务（使用私有镜像）
+  devops-api:
+    image: ${DEVOPS_API_IMAGE:-your-registry.com/devops/devops-api:latest}
+    container_name: devops-api
+    restart: always
+    ports:
+      - "8000:8000"
+    volumes:
+      # 挂载配置文件
+      - ../api/config.yaml:/app/config.yaml:ro
+      # 持久化数据
+      - devops-logs:/app/log
+      - devops-upload:/app/upload
+    environment:
+      - GIN_MODE=release
+      - TZ=Asia/Shanghai
+    networks:
+      - devops-network
+    depends_on:
+      mysql:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+      prometheus:
+        condition: service_started
+      pushgateway:
+        condition: service_started
+
+  # Nginx前端服务（使用私有镜像）
+  nginx:
+    image: ${DEVOPS_WEB_IMAGE:-your-registry.com/devops/devops-web:latest}
+    container_name: devops-nginx
+    restart: always
+    ports:
+      - "80:80"
+      - "8080:8080"
+    volumes:
+      # 挂载nginx配置文件
+      - ../web/devops.conf:/etc/nginx/conf.d/devops.conf:ro
+      # 挂载上传文件目录（与API共享）
+      - devops-upload:/home/devops/upload:ro
+    environment:
+      - TZ=Asia/Shanghai
+    networks:
+      - devops-network
+    depends_on:
+      - devops-api
+
+networks:
+  devops-network:
+    driver: bridge
+
+volumes:
+  mysql-data:
+  redis-data:
+  prometheus-data:
+  devops-logs:
+  devops-upload:

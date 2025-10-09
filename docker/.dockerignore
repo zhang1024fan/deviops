@@ -1,0 +1,57 @@
+# Git
+.git
+.gitignore
+.gitattributes
+
+# 文档
+*.md
+README.md
+LICENSE
+
+# IDE
+.vscode
+.idea
+*.swp
+*.swo
+*~
+
+# 操作系统
+.DS_Store
+Thumbs.db
+
+# 日志
+*.log
+logs/
+log/
+
+# 临时文件
+tmp/
+temp/
+*.tmp
+
+# 依赖
+vendor/
+
+# 构建产物
+*.exe
+*.exe~
+*.dll
+*.so
+*.dylib
+dist/
+build/
+
+# 配置文件（使用挂载）
+config*.yaml
+*.conf
+
+# 镜像文件
+*.png
+*.jpg
+*.jpeg
+*.gif
+
+# Docker
+docker-compose*.yml
+Dockerfile*
+.dockerignore
