@@ -198,30 +198,30 @@ SELECT user, host, plugin FROM mysql.user WHERE user = 'root';
 * 启动nginx服务
 nginx -s reload
 ## 2. 配置后端
-git clone https://github.com/zhang1024fan/deviops.git
-mkdir -p /home/devops/{logs,upload}
-cp -r deviops/devops          /home/devops/   #后端项目
-cp -r deviops/config.yaml     /home/devops/   #配置文件
-cp -r deviops/devops.sql      /home/devops/   #sql文件
-cp -r deviops/devops.service  /etc/systemd/system/  #服务启动脚本
+git clone https://github.com/zhang1024fan/deviops.git  
+mkdir -p /home/devops/{logs,upload}  
+cp -r deviops/devops          /home/devops/   #后端项目  
+cp -r deviops/config.yaml     /home/devops/   #配置文件  
+cp -r deviops/devops.sql      /home/devops/   #sql文件  
+cp -r deviops/devops.service  /etc/systemd/system/  #服务启动脚本  
 ### 导入sql 
 mysql -u root -p'xxxxxx'   < /home/devops/devops.sql
 ### 安装监控工具
 prometheus+pushgateway 
 ![alt text](image-4.png)
-mkdir -p /opt/prometheus/
-cd /opt/prometheus/
-wget https://github.com/prometheus/prometheus/releases/download/v2.47.0/prometheus-2.47.0.linux-amd64.tar.gz
-tar -zxvf prometheus-2.47.0.linux-amd64.tar.gz
-wget https://github.com/prometheus/pushgateway/releases/download/v1.6.1/pushgateway-1.6.1.linux-amd64.tar.gz
-修改 prometheus.yml 配置
+mkdir -p /opt/prometheus/  
+cd /opt/prometheus/  
+wget https://github.com/prometheus/prometheus/releases/download/v2.47.0/prometheus-2.47.0.linux-amd64.tar.gz  
+tar -zxvf prometheus-2.47.0.linux-amd64.tar.gz  
+wget https://github.com/prometheus/pushgateway/releases/download/v1.6.1/pushgateway-1.6.1.linux-amd64.tar.gz  
+修改 prometheus.yml 配置  
 ![alt text](image-5.png)
-tar -xvf prometheus-2.47.0.linux-amd64.tar.gz
-cp prometheus.service  /etc/systemd/system/
-cp pushgateway.service  /etc/systemd/system/
-systemctl daemon-reload
-systemctl start prometheus.service
-systemctl start pushgateway.service
+tar -xvf prometheus-2.47.0.linux-amd64.tar.gz  
+cp prometheus.service  /etc/systemd/system/  
+cp pushgateway.service  /etc/systemd/system/  
+systemctl daemon-reload  
+systemctl start prometheus.service  
+systemctl start pushgateway.service  
 ### 修改配置文件  /home/devops/config.yaml
 ![alt text](image-1.png)
 ![alt text](image-2.png)
