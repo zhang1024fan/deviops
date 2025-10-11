@@ -43,36 +43,50 @@ docker/
 | devops-web | devops-web | 8080:80 | DevOps Web 前端服务 |
 
 ## 部署前准备
+
+### 1. 拉取镜像(可选,首次部署会自动拉取)
+
 ```bash
-docker pull crpi-aj3vgoxp9kzh2jx4.cn-hangzhou.personal.cr.aliyuncs.com/zhangfan_k8s/deviops-api:v1.0         
-docker pull crpi-aj3vgoxp9kzh2jx4.cn-hangzhou.personal.cr.aliyuncs.com/zhangfan_k8s/deviops-web:v1.0         
-docker pull crpi-aj3vgoxp9kzh2jx4.cn-hangzhou.personal.cr.aliyuncs.com/zhangfan_k8s/pushgateway:v1.9.0       
-docker pull crpi-aj3vgoxp9kzh2jx4.cn-hangzhou.personal.cr.aliyuncs.com/zhangfan_k8s/redis:7.0-alpine  
-docker pull crpi-aj3vgoxp9kzh2jx4.cn-hangzhou.personal.cr.aliyuncs.com/zhangfan_k8s/prometheus:v2.47.0      
+docker pull crpi-aj3vgoxp9kzh2jx4.cn-hangzhou.personal.cr.aliyuncs.com/zhangfan_k8s/deviops-api:v1.0
+docker pull crpi-aj3vgoxp9kzh2jx4.cn-hangzhou.personal.cr.aliyuncs.com/zhangfan_k8s/deviops-web:v1.0
+docker pull crpi-aj3vgoxp9kzh2jx4.cn-hangzhou.personal.cr.aliyuncs.com/zhangfan_k8s/pushgateway:v1.9.0
+docker pull crpi-aj3vgoxp9kzh2jx4.cn-hangzhou.personal.cr.aliyuncs.com/zhangfan_k8s/redis:7.0-alpine
+docker pull crpi-aj3vgoxp9kzh2jx4.cn-hangzhou.personal.cr.aliyuncs.com/zhangfan_k8s/prometheus:v2.47.0
 docker pull crpi-aj3vgoxp9kzh2jx4.cn-hangzhou.personal.cr.aliyuncs.com/zhangfan_k8s/mysql:8.0.33
 ```
-### 1. 修改环境变量
 
-编辑 `.env` 文件,修改以下配置:
+### 2. 修改 `.env` 环境变量配置
+
+编辑 `.env` 文件,根据实际情况修改配置:
 
 ```bash
-# 修改外网访问地址(必改)
-IMAGE_HOST=http://your-domain.com  # 或 http://192.168.1.100:8080
+# ----------------
+# 服务端口配置 (如果端口冲突,修改这里)
+# ----------------
+WEB_PORT=8080          # 前端访问端口
+API_PORT=8000          # API后端端口
+MYSQL_PORT=3306        # MySQL端口
+REDIS_PORT=6379        # Redis端口
+PROMETHEUS_PORT=9090   # Prometheus端口
+PUSHGATEWAY_PORT=9091  # Pushgateway端口
 
-# 如果需要,可以修改数据库密码
-MYSQL_ROOT_PASSWORD=your-password
-REDIS_PASSWORD=your-password
+# ----------------
+# 外网访问地址配置 (必改)
+# ----------------
+# 修改为实际的服务器IP或域名
+IMAGE_HOST=http://192.168.1.100:8080  # 或 http://your-domain.com
+
+# ----------------
+# 数据库密码 (建议修改)
+# ----------------
+MYSQL_ROOT_PASSWORD=devops@2025
+REDIS_PASSWORD=zhangfan@123
 ```
 
-### 2. 修改 API 配置
-
-编辑 `api/config.yaml`,确保 `imageHost` 与 `.env` 中的 `IMAGE_HOST` 一致:
-
-```yaml
-imageSettings:
-  uploadDir: ./upload/
-  imageHost: http://your-domain.com  # 修改为实际地址
-```
+**说明:**
+- **修改端口**: 只需修改 `.env` 中的端口变量,无需改其他文件
+- **修改后重启**: `docker-compose down && docker-compose up -d`
+- **IMAGE_HOST**: 必须修改为实际的外网访问地址,否则图片无法正常显示
 
 ## 快速启动
 

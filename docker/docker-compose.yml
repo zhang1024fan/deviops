@@ -7,11 +7,11 @@ services:
     container_name: devops-mysql
     restart: always
     ports:
-      - "3306:3306"
+      - "${MYSQL_PORT:-3306}:3306"
     environment:
-      MYSQL_ROOT_PASSWORD: devops@2025
-      MYSQL_DATABASE: devops
-      TZ: Asia/Shanghai
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD:-devops@2025}
+      MYSQL_DATABASE: ${MYSQL_DATABASE:-devops}
+      TZ: ${TZ:-Asia/Shanghai}
     volumes:
       # Persistent data directory
       - ./mysql/data:/var/lib/mysql
@@ -38,10 +38,10 @@ services:
     container_name: devops-redis
     restart: always
     ports:
-      - "6379:6379"
-    command: redis-server --requirepass zhangfan@123 --appendonly yes
+      - "${REDIS_PORT:-6379}:6379"
+    command: redis-server --requirepass ${REDIS_PASSWORD:-zhangfan@123} --appendonly yes
     environment:
-      TZ: Asia/Shanghai
+      TZ: ${TZ:-Asia/Shanghai}
     volumes:
       # Persistent data directory
       - ./redis/data:/data
@@ -61,9 +61,9 @@ services:
     container_name: devops-pushgateway
     restart: always
     ports:
-      - "9091:9091"
+      - "${PUSHGATEWAY_PORT:-9091}:9091"
     environment:
-      TZ: Asia/Shanghai
+      TZ: ${TZ:-Asia/Shanghai}
     volumes:
       # Persistent data
       - ./pushgateway/data:/pushgateway
@@ -81,9 +81,9 @@ services:
     container_name: devops-prometheus
     restart: always
     ports:
-      - "9090:9090"
+      - "${PROMETHEUS_PORT:-9090}:9090"
     environment:
-      TZ: Asia/Shanghai
+      TZ: ${TZ:-Asia/Shanghai}
     volumes:
       # Prometheus configuration
       - ./prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
@@ -113,9 +113,18 @@ services:
     container_name: devops-api
     restart: always
     ports:
-      - "8000:8000"
+      - "${API_PORT:-8000}:8000"
     environment:
-      TZ: Asia/Shanghai
+      TZ: ${TZ:-Asia/Shanghai}
+      # 传递环境变量到容器(供应用读取)
+      IMAGE_HOST: ${IMAGE_HOST:-http://localhost:8080}
+      DB_HOST: ${DB_HOST:-mysql}
+      DB_PORT: ${DB_PORT:-3306}
+      DB_NAME: ${MYSQL_DATABASE:-devops}
+      DB_USER: ${DB_USER:-root}
+      DB_PASSWORD: ${MYSQL_ROOT_PASSWORD:-devops@2025}
+      REDIS_ADDR: ${REDIS_ADDR:-redis:6379}
+      REDIS_PASSWORD: ${REDIS_PASSWORD:-zhangfan@123}
     volumes:
       # Configuration file
       - ./api/config.yaml:/app/config.yaml
@@ -145,9 +154,9 @@ services:
     container_name: devops-web
     restart: always
     ports:
-      - "8080:80"
+      - "${WEB_PORT:-8080}:80"
     environment:
-      TZ: Asia/Shanghai
+      TZ: ${TZ:-Asia/Shanghai}
     volumes:
       # Nginx configuration
       - ./web/devops.conf:/etc/nginx/conf.d/default.conf
