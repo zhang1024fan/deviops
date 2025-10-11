@@ -1,20 +1,25 @@
 version: '3.8'
 
 services:
-  # MySQL数据库
+  # MySQL database service
   mysql:
-    image: mysql:8.0.33
+    image: crpi-aj3vgoxp9kzh2jx4.cn-hangzhou.personal.cr.aliyuncs.com/zhangfan_k8s/mysql:8.0.33
     container_name: devops-mysql
     restart: always
+    ports:
+      - "3306:3306"
     environment:
       MYSQL_ROOT_PASSWORD: devops@2025
       MYSQL_DATABASE: devops
-      MYSQL_ROOT_HOST: '%'
-    ports:
-      - "3306:3306"
+      TZ: Asia/Shanghai
     volumes:
-      - mysql-data:/var/lib/mysql
-      - ../api/devops.sql:/docker-entrypoint-initdb.d/devops.sql
+      # Persistent data directory
+      - ./mysql/data:/var/lib/mysql
+      # Initialization SQL scripts (executed in alphabetical order)
+      - ./mysql/devops.sql:/docker-entrypoint-initdb.d/01-devops.sql
+      - ./mysql/init.sql:/docker-entrypoint-initdb.d/02-init.sql
+      # MySQL configuration
+      - ./mysql/conf.d:/etc/mysql/conf.d
     command:
       - --default-authentication-plugin=caching_sha2_password
       - --character-set-server=utf8mb4
@@ -27,16 +32,21 @@ services:
       timeout: 5s
       retries: 5
 
-  # Redis缓存
+  # Redis cache service
   redis:
-    image: redis:7.0-alpine
+    image: crpi-aj3vgoxp9kzh2jx4.cn-hangzhou.personal.cr.aliyuncs.com/zhangfan_k8s/redis:7.0-alpine
     container_name: devops-redis
     restart: always
     ports:
       - "6379:6379"
-    command: redis-server --requirepass zhangfan@123
+    command: redis-server --requirepass zhangfan@123 --appendonly yes
+    environment:
+      TZ: Asia/Shanghai
     volumes:
-      - redis-data:/data
+      # Persistent data directory
+      - ./redis/data:/data
+      # Redis configuration
+      - ./redis/redis.conf:/usr/local/etc/redis/redis.conf
     networks:
       - devops-network
     healthcheck:
@@ -45,51 +55,74 @@ services:
       timeout: 3s
       retries: 5
 
-  # Prometheus监控
-  prometheus:
-    image: prom/prometheus:v2.47.0
-    container_name: devops-prometheus
-    restart: always
-    ports:
-      - "9090:9090"
-    volumes:
-      - ../api/monitor/prometheus.yml:/etc/prometheus/prometheus.yml
-      - prometheus-data:/prometheus
-    command:
-      - '--config.file=/etc/prometheus/prometheus.yml'
-      - '--storage.tsdb.path=/prometheus'
-      - '--web.listen-address=0.0.0.0:9090'
-    networks:
-      - devops-network
-    depends_on:
-      - pushgateway
-
-  # Pushgateway指标推送
+  # Pushgateway metrics push service
   pushgateway:
-    image: prom/pushgateway:v1.6.1
+    image: crpi-aj3vgoxp9kzh2jx4.cn-hangzhou.personal.cr.aliyuncs.com/zhangfan_k8s/pushgateway:v1.9.0
     container_name: devops-pushgateway
     restart: always
     ports:
       - "9091:9091"
+    environment:
+      TZ: Asia/Shanghai
+    volumes:
+      # Persistent data
+      - ./pushgateway/data:/pushgateway
     networks:
       - devops-network
+    healthcheck:
+      test: ["CMD", "wget", "--quiet", "--tries=1", "--spider", "http://localhost:9091/-/healthy"]
+      interval: 10s
+      timeout: 3s
+      retries: 5
 
-  # DevOps后端服务（使用私有镜像）
+  # Prometheus monitoring service
+  prometheus:
+    image: crpi-aj3vgoxp9kzh2jx4.cn-hangzhou.personal.cr.aliyuncs.com/zhangfan_k8s/prometheus:v2.47.0
+    container_name: devops-prometheus
+    restart: always
+    ports:
+      - "9090:9090"
+    environment:
+      TZ: Asia/Shanghai
+    volumes:
+      # Prometheus configuration
+      - ./prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
+      # Persistent data directory
+      - ./prometheus/data:/prometheus
+    command:
+      - '--config.file=/etc/prometheus/prometheus.yml'
+      - '--storage.tsdb.path=/prometheus'
+      - '--web.console.libraries=/usr/share/prometheus/console_libraries'
+      - '--web.console.templates=/usr/share/prometheus/consoles'
+      - '--storage.tsdb.retention.time=15d'
+      - '--web.enable-lifecycle'
+    networks:
+      - devops-network
+    depends_on:
+      pushgateway:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "wget", "--quiet", "--tries=1", "--spider", "http://localhost:9090/-/healthy"]
+      interval: 10s
+      timeout: 3s
+      retries: 5
+
+  # DevOps API backend service
   devops-api:
-    image: ${DEVOPS_API_IMAGE:-your-registry.com/devops/devops-api:latest}
+    image: crpi-aj3vgoxp9kzh2jx4.cn-hangzhou.personal.cr.aliyuncs.com/zhangfan_k8s/deviops-api:v1.0
     container_name: devops-api
     restart: always
     ports:
       - "8000:8000"
-    volumes:
-      # 挂载配置文件
-      - ../api/config.yaml:/app/config.yaml:ro
-      # 持久化数据
-      - devops-logs:/app/log
-      - devops-upload:/app/upload
     environment:
-      - GIN_MODE=release
-      - TZ=Asia/Shanghai
+      TZ: Asia/Shanghai
+    volumes:
+      # Configuration file
+      - ./api/config.yaml:/app/config.yaml
+      # Logs directory
+      - ./api/logs:/app/log
+      # Upload files directory
+      - ./api/upload:/app/upload
     networks:
       - devops-network
     depends_on:
@@ -98,37 +131,48 @@ services:
       redis:
         condition: service_healthy
       prometheus:
-        condition: service_started
-      pushgateway:
-        condition: service_started
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "wget", "--quiet", "--tries=1", "--spider", "http://localhost:8000/api/v1/health"]
+      interval: 15s
+      timeout: 5s
+      retries: 10
+      start_period: 30s
 
-  # Nginx前端服务（使用私有镜像）
-  nginx:
-    image: ${DEVOPS_WEB_IMAGE:-your-registry.com/devops/devops-web:latest}
-    container_name: devops-nginx
+  # DevOps Web frontend service
+  devops-web:
+    image: crpi-aj3vgoxp9kzh2jx4.cn-hangzhou.personal.cr.aliyuncs.com/zhangfan_k8s/deviops-web:v1.0
+    container_name: devops-web
     restart: always
     ports:
-      - "80:80"
-      - "8080:8080"
-    volumes:
-      # 挂载nginx配置文件
-      - ../web/devops.conf:/etc/nginx/conf.d/devops.conf:ro
-      # 挂载上传文件目录（与API共享）
-      - devops-upload:/home/devops/upload:ro
+      - "8080:80"
     environment:
-      - TZ=Asia/Shanghai
+      TZ: Asia/Shanghai
+    volumes:
+      # Nginx configuration
+      - ./web/devops.conf:/etc/nginx/conf.d/default.conf
+      # Upload files static service (shared with API)
+      - ./api/upload:/home/devops/upload
     networks:
       - devops-network
     depends_on:
-      - devops-api
+      devops-api:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "wget", "--quiet", "--tries=1", "--spider", "http://localhost:80"]
+      interval: 10s
+      timeout: 3s
+      retries: 5
 
 networks:
   devops-network:
     driver: bridge
+    ipam:
+      config:
+        - subnet: 172.20.0.0/16
 
 volumes:
   mysql-data:
   redis-data:
   prometheus-data:
-  devops-logs:
-  devops-upload:
+  pushgateway-data:

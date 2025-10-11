@@ -1,0 +1,53 @@
+# 项目启动端口
+server:
+  address: 0.0.0.0:8000
+  # debug模式
+  model: debug
+  # release模式
+  #model:release
+
+# 数据库配置
+db:
+  dialects: mysql
+  host: mysql
+  port: 3306
+  db: devops
+  username: root
+  password: devops@2025
+  charset: utf8
+  # 最大空闲数
+  maxIdle: 50
+  # 最大连接数
+  maxOpen: 150
+
+# redis配置
+redis:
+  address: redis:6379
+  password: "zhangfan@123"
+
+# 图片地址和ip
+imageSettings:
+  # 本地磁盘地址
+  uploadDir: ./upload/
+  # 本地ip地址(替换为实际的外网IP或域名)
+  imageHost: http://localhost:8080
+
+# log日志配置
+log:
+  path: ./log
+  name: sys
+  # 输出到控制台
+  model: console
+  # 输出到文件
+  # model: file
+
+# 监控配置
+monitor:
+  prometheus:
+    url: "http://prometheus:9090"
+  pushgateway:
+    url: "http://pushgateway:9091"
+  agent:
+    heartbeat_server_url: "http://devops-api:8000/api/v1/monitor/agent/heartbeat"
+    heartbeat_token: "agent-heartbeat-token-2024"
+
