@@ -290,6 +290,6 @@ docker-compose exec -T mysql mysql -uroot -pdevops@2025 devops < backup.sql
 ## 技术支持
 
 - 项目地址: https://github.com/zhang1024fan/deviops.git
-- 微信: zf5391621
-- QQ: 545118130
-- 邮箱: zfwh1024@163.com
+- 微信技术交流: zf5391621
+- QQ技术交流: 545118130
+- 建议邮箱: zfwh1024@163.com
