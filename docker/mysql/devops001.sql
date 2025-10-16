@@ -1,0 +1,3605 @@
+/*
+ Navicat Premium Dump SQL
+
+ Source Server         : 8.130.14.34
+ Source Server Type    : MySQL
+ Source Server Version : 80043 (8.0.43-0ubuntu0.24.04.1)
+ Source Host           : 8.130.14.34:3306
+ Source Schema         : devops
+
+ Target Server Type    : MySQL
+ Target Server Version : 80043 (8.0.43-0ubuntu0.24.04.1)
+ File Encoding         : 65001
+
+ Date: 16/10/2025 10:34:20
+*/
+
+SET NAMES utf8mb4;
+SET FOREIGN_KEY_CHECKS = 0;
+
+-- ----------------------------
+-- Table structure for app_application
+-- ----------------------------
+DROP TABLE IF EXISTS `app_application`;
+CREATE TABLE `app_application` (
+  `id` bigint unsigned NOT NULL AUTO_INCREMENT,
+  `name` varchar(255) NOT NULL,
+  `code` varchar(255) NOT NULL,
+  `business_group_id` bigint unsigned NOT NULL,
+  `business_dept_id` bigint unsigned NOT NULL,
+  `description` text,
+  `repo_url` varchar(500) DEFAULT NULL,
+  `dev_owners` json DEFAULT NULL,
+  `test_owners` json DEFAULT NULL,
+  `ops_owners` json DEFAULT NULL,
+  `programming_lang` varchar(100) DEFAULT NULL,
+  `start_command` text,
+  `stop_command` text,
+  `health_api` varchar(500) DEFAULT NULL,
+  `domains` json DEFAULT NULL,
+  `hosts` json DEFAULT NULL,
+  `databases` json DEFAULT NULL,
+  `other_res` json DEFAULT NULL,
+  `status` tinyint DEFAULT '1',
+  `created_at` datetime(3) DEFAULT NULL,
+  `updated_at` datetime(3) DEFAULT NULL,
+  `deleted_at` datetime(3) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `idx_app_application_code` (`code`),
+  KEY `idx_app_application_deleted_at` (`deleted_at`)
+) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+-- ----------------------------
+-- Records of app_application
+-- ----------------------------
+BEGIN;
+INSERT INTO `app_application` (`id`, `name`, `code`, `business_group_id`, `business_dept_id`, `description`, `repo_url`, `dev_owners`, `test_owners`, `ops_owners`, `programming_lang`, `start_command`, `stop_command`, `health_api`, `domains`, `hosts`, `databases`, `other_res`, `status`, `created_at`, `updated_at`, `deleted_at`) VALUES (4, 's3-api', 's3-api', 12, 2, 's3-api', 'git@gitee.com:zhang_fan1024/ansible-playbook.git', '[101, 99]', '[99, 101]', '[89]', 'Java', 'systemctl start api', 'systemctl stop api', '/api/status', NULL, NULL, NULL, '{}', 2, '2025-09-16 13:35:12.995', '2025-09-16 18:09:09.739', NULL);
+INSERT INTO `app_application` (`id`, `name`, `code`, `business_group_id`, `business_dept_id`, `description`, `repo_url`, `dev_owners`, `test_owners`, `ops_owners`, `programming_lang`, `start_command`, `stop_command`, `health_api`, `domains`, `hosts`, `databases`, `other_res`, `status`, `created_at`, `updated_at`, `deleted_at`) VALUES (5, 's3-web', 's3-web', 18, 2, 's3-web', 'git@gitee.com:zhang_fan1024/ansible-playbook.git', '[101]', '[99]', '[89]', 'Node.js', 'systemctl start nginx', 'systemctl stop nginx', '/api/status', NULL, NULL, NULL, '{}', 2, '2025-09-16 15:02:40.356', '2025-09-16 18:08:57.912', NULL);
+INSERT INTO `app_application` (`id`, `name`, `code`, `business_group_id`, `business_dept_id`, `description`, `repo_url`, `dev_owners`, `test_owners`, `ops_owners`, `programming_lang`, `start_command`, `stop_command`, `health_api`, `domains`, `hosts`, `databases`, `other_res`, `status`, `created_at`, `updated_at`, `deleted_at`) VALUES (6, 's4-api', 's4-api', 14, 13, 's4-api', '', '[101]', '[99]', '[89]', 'Go', '', '', '', NULL, NULL, NULL, '{}', 2, '2025-09-16 16:11:24.562', '2025-09-16 18:08:09.769', NULL);
+INSERT INTO `app_application` (`id`, `name`, `code`, `business_group_id`, `business_dept_id`, `description`, `repo_url`, `dev_owners`, `test_owners`, `ops_owners`, `programming_lang`, `start_command`, `stop_command`, `health_api`, `domains`, `hosts`, `databases`, `other_res`, `status`, `created_at`, `updated_at`, `deleted_at`) VALUES (7, 's4-web', 's4-web', 14, 13, 's4-web', '', '[101]', '[99]', '[89]', 'Node.js', '', '', '', NULL, NULL, NULL, '{}', 2, '2025-09-16 16:11:50.838', '2025-09-16 18:07:54.723', NULL);
+INSERT INTO `app_application` (`id`, `name`, `code`, `business_group_id`, `business_dept_id`, `description`, `repo_url`, `dev_owners`, `test_owners`, `ops_owners`, `programming_lang`, `start_command`, `stop_command`, `health_api`, `domains`, `hosts`, `databases`, `other_res`, `status`, `created_at`, `updated_at`, `deleted_at`) VALUES (8, 's5-web', 's5-web', 4, 12, 's5-web', '', '[101]', '[99]', '[98]', 'Python', '', '', '', NULL, NULL, NULL, '{}', 2, '2025-09-16 16:12:42.467', '2025-09-22 11:48:39.215', NULL);
+INSERT INTO `app_application` (`id`, `name`, `code`, `business_group_id`, `business_dept_id`, `description`, `repo_url`, `dev_owners`, `test_owners`, `ops_owners`, `programming_lang`, `start_command`, `stop_command`, `health_api`, `domains`, `hosts`, `databases`, `other_res`, `status`, `created_at`, `updated_at`, `deleted_at`) VALUES (9, 's5-api', 's5-api', 9, 12, '', '', '[99]', '[89]', '[98]', 'PHP', '', '', '', NULL, NULL, NULL, '{}', 2, '2025-09-16 16:13:34.939', '2025-09-18 10:30:14.069', NULL);
+INSERT INTO `app_application` (`id`, `name`, `code`, `business_group_id`, `business_dept_id`, `description`, `repo_url`, `dev_owners`, `test_owners`, `ops_owners`, `programming_lang`, `start_command`, `stop_command`, `health_api`, `domains`, `hosts`, `databases`, `other_res`, `status`, `created_at`, `updated_at`, `deleted_at`) VALUES (10, 's4-web', 's4-web-001', 14, 13, 's4-web', '', '[101]', '[99]', '[89]', 'Node.js', '', '', '', NULL, NULL, NULL, '{}', 2, '2025-09-16 18:07:55.683', '2025-09-18 10:29:40.786', NULL);
+COMMIT;
+
+-- ----------------------------
+-- Table structure for app_jenkins_env
+-- ----------------------------
+DROP TABLE IF EXISTS `app_jenkins_env`;
+CREATE TABLE `app_jenkins_env` (
+  `id` bigint unsigned NOT NULL AUTO_INCREMENT,
+  `app_id` bigint unsigned NOT NULL,
+  `env_name` varchar(50) NOT NULL,
+  `jenkins_server_id` bigint unsigned DEFAULT NULL,
+  `job_name` varchar(255) DEFAULT '',
+  `job_url` varchar(500) DEFAULT NULL,
+  `build_params` json DEFAULT NULL,
+  `deploy_config` json DEFAULT NULL,
+  `notification` json DEFAULT NULL,
+  `is_active` tinyint DEFAULT '1',
+  `created_at` datetime(3) DEFAULT NULL,
+  `updated_at` datetime(3) DEFAULT NULL,
+  `deleted_at` datetime(3) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `idx_app_jenkins_env_app_id` (`app_id`),
+  KEY `idx_app_jenkins_env_deleted_at` (`deleted_at`),
+  CONSTRAINT `fk_app_application_jenkins_envs` FOREIGN KEY (`app_id`) REFERENCES `app_application` (`id`) ON DELETE CASCADE
+) ENGINE=InnoDB AUTO_INCREMENT=26 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+-- ----------------------------
+-- Records of app_jenkins_env
+-- ----------------------------
+BEGIN;
+INSERT INTO `app_jenkins_env` (`id`, `app_id`, `env_name`, `jenkins_server_id`, `job_name`, `job_url`, `build_params`, `deploy_config`, `notification`, `is_active`, `created_at`, `updated_at`, `deleted_at`) VALUES (4, 4, 'prod', 10, 's3-api', NULL, NULL, NULL, NULL, 1, '2025-09-16 13:35:13.203', '2025-09-16 14:56:29.213', NULL);
+INSERT INTO `app_jenkins_env` (`id`, `app_id`, `env_name`, `jenkins_server_id`, `job_name`, `job_url`, `build_params`, `deploy_config`, `notification`, `is_active`, `created_at`, `updated_at`, `deleted_at`) VALUES (5, 4, 'test', 11, 's3-api', NULL, NULL, NULL, NULL, 1, '2025-09-16 13:35:13.401', '2025-09-16 14:58:16.597', NULL);
+INSERT INTO `app_jenkins_env` (`id`, `app_id`, `env_name`, `jenkins_server_id`, `job_name`, `job_url`, `build_params`, `deploy_config`, `notification`, `is_active`, `created_at`, `updated_at`, `deleted_at`) VALUES (6, 4, 'dev', 9, 's3-api', NULL, NULL, NULL, NULL, 1, '2025-09-16 13:35:13.601', '2025-09-16 14:54:49.866', NULL);
+INSERT INTO `app_jenkins_env` (`id`, `app_id`, `env_name`, `jenkins_server_id`, `job_name`, `job_url`, `build_params`, `deploy_config`, `notification`, `is_active`, `created_at`, `updated_at`, `deleted_at`) VALUES (7, 5, 'prod', 10, 's3-web', NULL, NULL, NULL, NULL, 1, '2025-09-16 15:02:40.586', '2025-09-16 15:27:02.176', NULL);
+INSERT INTO `app_jenkins_env` (`id`, `app_id`, `env_name`, `jenkins_server_id`, `job_name`, `job_url`, `build_params`, `deploy_config`, `notification`, `is_active`, `created_at`, `updated_at`, `deleted_at`) VALUES (8, 5, 'test', 9, 's3-web', NULL, NULL, NULL, NULL, 1, '2025-09-16 15:02:40.810', '2025-09-16 15:27:12.567', NULL);
+INSERT INTO `app_jenkins_env` (`id`, `app_id`, `env_name`, `jenkins_server_id`, `job_name`, `job_url`, `build_params`, `deploy_config`, `notification`, `is_active`, `created_at`, `updated_at`, `deleted_at`) VALUES (9, 5, 'dev', 9, 's3-web', NULL, NULL, NULL, NULL, 1, '2025-09-16 15:02:41.025', '2025-09-16 15:26:43.689', NULL);
+INSERT INTO `app_jenkins_env` (`id`, `app_id`, `env_name`, `jenkins_server_id`, `job_name`, `job_url`, `build_params`, `deploy_config`, `notification`, `is_active`, `created_at`, `updated_at`, `deleted_at`) VALUES (10, 5, 'test1', 9, 's3-web1', NULL, NULL, NULL, NULL, 1, '2025-09-16 15:36:43.585', '2025-09-16 15:36:43.585', NULL);
+INSERT INTO `app_jenkins_env` (`id`, `app_id`, `env_name`, `jenkins_server_id`, `job_name`, `job_url`, `build_params`, `deploy_config`, `notification`, `is_active`, `created_at`, `updated_at`, `deleted_at`) VALUES (11, 6, 'prod', 9, 's4-api', NULL, NULL, NULL, NULL, 1, '2025-09-16 16:11:24.773', '2025-09-16 16:14:44.414', NULL);
+INSERT INTO `app_jenkins_env` (`id`, `app_id`, `env_name`, `jenkins_server_id`, `job_name`, `job_url`, `build_params`, `deploy_config`, `notification`, `is_active`, `created_at`, `updated_at`, `deleted_at`) VALUES (12, 6, 'test', 10, 's4-api', NULL, NULL, NULL, NULL, 1, '2025-09-16 16:11:24.994', '2025-09-16 16:14:21.179', NULL);
+INSERT INTO `app_jenkins_env` (`id`, `app_id`, `env_name`, `jenkins_server_id`, `job_name`, `job_url`, `build_params`, `deploy_config`, `notification`, `is_active`, `created_at`, `updated_at`, `deleted_at`) VALUES (13, 6, 'dev', 9, 's4-api', NULL, NULL, NULL, NULL, 1, '2025-09-16 16:11:25.216', '2025-09-16 16:14:06.669', NULL);
+INSERT INTO `app_jenkins_env` (`id`, `app_id`, `env_name`, `jenkins_server_id`, `job_name`, `job_url`, `build_params`, `deploy_config`, `notification`, `is_active`, `created_at`, `updated_at`, `deleted_at`) VALUES (14, 7, 'prod', NULL, '', NULL, NULL, NULL, NULL, 1, '2025-09-16 16:11:51.051', '2025-09-16 16:11:51.051', NULL);
+INSERT INTO `app_jenkins_env` (`id`, `app_id`, `env_name`, `jenkins_server_id`, `job_name`, `job_url`, `build_params`, `deploy_config`, `notification`, `is_active`, `created_at`, `updated_at`, `deleted_at`) VALUES (15, 7, 'test', 10, 's4-web', NULL, NULL, NULL, NULL, 1, '2025-09-16 16:11:51.263', '2025-09-16 16:15:19.182', NULL);
+INSERT INTO `app_jenkins_env` (`id`, `app_id`, `env_name`, `jenkins_server_id`, `job_name`, `job_url`, `build_params`, `deploy_config`, `notification`, `is_active`, `created_at`, `updated_at`, `deleted_at`) VALUES (16, 7, 'dev', 9, 's4-web', NULL, NULL, NULL, NULL, 1, '2025-09-16 16:11:51.476', '2025-09-16 16:15:07.702', NULL);
+INSERT INTO `app_jenkins_env` (`id`, `app_id`, `env_name`, `jenkins_server_id`, `job_name`, `job_url`, `build_params`, `deploy_config`, `notification`, `is_active`, `created_at`, `updated_at`, `deleted_at`) VALUES (17, 8, 'prod', NULL, '', NULL, NULL, NULL, NULL, 1, '2025-09-16 16:12:42.683', '2025-09-16 16:12:42.683', NULL);
+INSERT INTO `app_jenkins_env` (`id`, `app_id`, `env_name`, `jenkins_server_id`, `job_name`, `job_url`, `build_params`, `deploy_config`, `notification`, `is_active`, `created_at`, `updated_at`, `deleted_at`) VALUES (18, 8, 'test', NULL, '', NULL, NULL, NULL, NULL, 1, '2025-09-16 16:12:42.902', '2025-09-16 16:12:42.902', NULL);
+INSERT INTO `app_jenkins_env` (`id`, `app_id`, `env_name`, `jenkins_server_id`, `job_name`, `job_url`, `build_params`, `deploy_config`, `notification`, `is_active`, `created_at`, `updated_at`, `deleted_at`) VALUES (19, 8, 'dev', 11, 's5-web', NULL, NULL, NULL, NULL, 1, '2025-09-16 16:12:43.120', '2025-09-22 11:48:38.869', NULL);
+INSERT INTO `app_jenkins_env` (`id`, `app_id`, `env_name`, `jenkins_server_id`, `job_name`, `job_url`, `build_params`, `deploy_config`, `notification`, `is_active`, `created_at`, `updated_at`, `deleted_at`) VALUES (20, 9, 'prod', NULL, '', NULL, NULL, NULL, NULL, 1, '2025-09-16 16:13:35.146', '2025-09-16 16:13:35.146', NULL);
+INSERT INTO `app_jenkins_env` (`id`, `app_id`, `env_name`, `jenkins_server_id`, `job_name`, `job_url`, `build_params`, `deploy_config`, `notification`, `is_active`, `created_at`, `updated_at`, `deleted_at`) VALUES (21, 9, 'test', NULL, '', NULL, NULL, NULL, NULL, 1, '2025-09-16 16:13:35.361', '2025-09-16 16:13:35.361', NULL);
+INSERT INTO `app_jenkins_env` (`id`, `app_id`, `env_name`, `jenkins_server_id`, `job_name`, `job_url`, `build_params`, `deploy_config`, `notification`, `is_active`, `created_at`, `updated_at`, `deleted_at`) VALUES (22, 9, 'dev', 10, 's4-api', NULL, NULL, NULL, NULL, 1, '2025-09-16 16:13:35.575', '2025-09-18 10:30:13.709', NULL);
+INSERT INTO `app_jenkins_env` (`id`, `app_id`, `env_name`, `jenkins_server_id`, `job_name`, `job_url`, `build_params`, `deploy_config`, `notification`, `is_active`, `created_at`, `updated_at`, `deleted_at`) VALUES (23, 10, 'prod', NULL, '', NULL, NULL, NULL, NULL, 1, '2025-09-16 18:07:55.904', '2025-09-16 18:07:55.904', NULL);
+INSERT INTO `app_jenkins_env` (`id`, `app_id`, `env_name`, `jenkins_server_id`, `job_name`, `job_url`, `build_params`, `deploy_config`, `notification`, `is_active`, `created_at`, `updated_at`, `deleted_at`) VALUES (24, 10, 'test', NULL, '', NULL, NULL, NULL, NULL, 1, '2025-09-16 18:07:56.121', '2025-09-16 18:07:56.121', NULL);
+INSERT INTO `app_jenkins_env` (`id`, `app_id`, `env_name`, `jenkins_server_id`, `job_name`, `job_url`, `build_params`, `deploy_config`, `notification`, `is_active`, `created_at`, `updated_at`, `deleted_at`) VALUES (25, 10, 'dev', 9, 's4-web', NULL, NULL, NULL, NULL, 1, '2025-09-16 18:07:56.342', '2025-09-18 10:29:40.413', NULL);
+COMMIT;
+
+-- ----------------------------
+-- Table structure for cmdb_group
+-- ----------------------------
+DROP TABLE IF EXISTS `cmdb_group`;
+CREATE TABLE `cmdb_group` (
+  `id` bigint unsigned NOT NULL AUTO_INCREMENT COMMENT '''主键''',
+  `parent_id` bigint unsigned NOT NULL DEFAULT '0' COMMENT '''父级分组ID''',
+  `name` longtext NOT NULL COMMENT '''分组名称''',
+  `create_time` datetime(3) NOT NULL COMMENT '''创建时间''',
+  `remark` longtext COMMENT '''备注''',
+  `update_time` datetime(3) DEFAULT NULL COMMENT '''更新时间''',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=29 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+-- ----------------------------
+-- Records of cmdb_group
+-- ----------------------------
+BEGIN;
+INSERT INTO `cmdb_group` (`id`, `parent_id`, `name`, `create_time`, `remark`, `update_time`) VALUES (1, 0, '默认业务组', '2025-07-10 11:02:07.226', NULL, NULL);
+INSERT INTO `cmdb_group` (`id`, `parent_id`, `name`, `create_time`, `remark`, `update_time`) VALUES (2, 0, 'saas3业务线', '2025-07-10 11:03:36.622', NULL, NULL);
+INSERT INTO `cmdb_group` (`id`, `parent_id`, `name`, `create_time`, `remark`, `update_time`) VALUES (3, 0, 'saas4业务线', '2025-07-10 11:03:56.083', NULL, NULL);
+INSERT INTO `cmdb_group` (`id`, `parent_id`, `name`, `create_time`, `remark`, `update_time`) VALUES (4, 11, '公寓业务', '2025-07-10 11:05:45.431', NULL, NULL);
+INSERT INTO `cmdb_group` (`id`, `parent_id`, `name`, `create_time`, `remark`, `update_time`) VALUES (9, 11, '智能窗帘业务', '2025-07-17 10:17:52.017', NULL, NULL);
+INSERT INTO `cmdb_group` (`id`, `parent_id`, `name`, `create_time`, `remark`, `update_time`) VALUES (11, 0, 'saas5业务线', '2025-07-17 10:21:44.700', NULL, NULL);
+INSERT INTO `cmdb_group` (`id`, `parent_id`, `name`, `create_time`, `remark`, `update_time`) VALUES (12, 2, '智能安防业务', '2025-07-17 11:07:19.279', NULL, NULL);
+INSERT INTO `cmdb_group` (`id`, `parent_id`, `name`, `create_time`, `remark`, `update_time`) VALUES (14, 3, '智慧门锁业务', '2025-07-17 11:19:14.090', NULL, NULL);
+INSERT INTO `cmdb_group` (`id`, `parent_id`, `name`, `create_time`, `remark`, `update_time`) VALUES (15, 0, 'saas6业务组', '2025-07-17 12:31:33.429', NULL, NULL);
+INSERT INTO `cmdb_group` (`id`, `parent_id`, `name`, `create_time`, `remark`, `update_time`) VALUES (16, 15, '智能家居业务', '2025-07-22 10:32:14.837', NULL, NULL);
+INSERT INTO `cmdb_group` (`id`, `parent_id`, `name`, `create_time`, `remark`, `update_time`) VALUES (17, 0, 'ops业务组', '2025-07-23 10:39:44.565', NULL, NULL);
+INSERT INTO `cmdb_group` (`id`, `parent_id`, `name`, `create_time`, `remark`, `update_time`) VALUES (18, 2, '智控照明业务', '2025-07-23 10:40:12.787', NULL, NULL);
+INSERT INTO `cmdb_group` (`id`, `parent_id`, `name`, `create_time`, `remark`, `update_time`) VALUES (19, 17, '运维组', '2025-07-23 20:21:08.618', NULL, NULL);
+INSERT INTO `cmdb_group` (`id`, `parent_id`, `name`, `create_time`, `remark`, `update_time`) VALUES (20, 17, '安全组', '2025-07-23 20:21:33.222', NULL, NULL);
+INSERT INTO `cmdb_group` (`id`, `parent_id`, `name`, `create_time`, `remark`, `update_time`) VALUES (24, 0, 'lockin鹿客云', '2025-09-07 17:49:17.318', NULL, NULL);
+INSERT INTO `cmdb_group` (`id`, `parent_id`, `name`, `create_time`, `remark`, `update_time`) VALUES (26, 24, '国内鹿客云', '2025-09-07 18:04:56.683', NULL, NULL);
+INSERT INTO `cmdb_group` (`id`, `parent_id`, `name`, `create_time`, `remark`, `update_time`) VALUES (27, 24, '新加坡鹿客云', '2025-09-07 18:05:13.713', NULL, NULL);
+INSERT INTO `cmdb_group` (`id`, `parent_id`, `name`, `create_time`, `remark`, `update_time`) VALUES (28, 24, '北美鹿客云', '2025-09-07 18:05:31.846', NULL, NULL);
+COMMIT;
+
+-- ----------------------------
+-- Table structure for cmdb_host
+-- ----------------------------
+DROP TABLE IF EXISTS `cmdb_host`;
+CREATE TABLE `cmdb_host` (
+  `id` bigint unsigned NOT NULL AUTO_INCREMENT COMMENT '''主键''',
+  `host_name` longtext NOT NULL COMMENT '''名称''',
+  `group_id` bigint unsigned NOT NULL COMMENT '''分组ID''',
+  `private_ip` longtext COMMENT '''私网IP''',
+  `public_ip` longtext COMMENT '''公网IP''',
+  `ssh_name` longtext COMMENT '''SSH用户名''',
+  `ssh_key_id` bigint unsigned DEFAULT NULL COMMENT '''SSH凭据ID''',
+  `ssh_port` bigint DEFAULT '22' COMMENT '''SSH端口''',
+  `remark` longtext COMMENT '''备注''',
+  `vendor` bigint DEFAULT NULL COMMENT '''1->自建,2->阿里云,3->腾讯云''',
+  `region` longtext COMMENT '''区域''',
+  `instance_id` longtext COMMENT '''实例ID''',
+  `os` longtext COMMENT '''操作系统''',
+  `status` bigint DEFAULT NULL COMMENT '''状态:1->认证成功,2->未认证,3->认证失败''',
+  `cpu` longtext COMMENT '''CPU信息''',
+  `memory` longtext COMMENT '''内存信息''',
+  `disk` longtext COMMENT '''磁盘信息''',
+  `billing_type` longtext COMMENT '''计费方式''',
+  `create_time` datetime(3) NOT NULL COMMENT '''创建时间''',
+  `expire_time` datetime(3) DEFAULT NULL COMMENT '''到期时间''',
+  `update_time` datetime(3) DEFAULT NULL COMMENT '''更新时间''',
+  `ssh_ip` longtext NOT NULL COMMENT '''SSH连接IP''',
+  `name` longtext NOT NULL COMMENT '''ecs主机名称''',
+  `ssh_gateway_id` bigint unsigned DEFAULT NULL COMMENT '''中转网关凭据ID''',
+  PRIMARY KEY (`id`),
+  KEY `fk_cmdb_group_hosts` (`group_id`),
+  CONSTRAINT `fk_cmdb_group_hosts` FOREIGN KEY (`group_id`) REFERENCES `cmdb_group` (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=470 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+-- ----------------------------
+-- Records of cmdb_host
+-- ----------------------------
+BEGIN;
+INSERT INTO `cmdb_host` (`id`, `host_name`, `group_id`, `private_ip`, `public_ip`, `ssh_name`, `ssh_key_id`, `ssh_port`, `remark`, `vendor`, `region`, `instance_id`, `os`, `status`, `cpu`, `memory`, `disk`, `billing_type`, `create_time`, `expire_time`, `update_time`, `ssh_ip`, `name`, `ssh_gateway_id`) VALUES (468, 'bd-ops', 12, '192.168.16.2', '180.76.231.65', 'root', 18, 22, '', 1, '', '', 'Ubuntu22.04.1', 1, '2', '2', '40', '', '2025-10-04 15:55:37.967', NULL, '2025-10-04 15:55:39.732', '180.76.231.65', 'bd-git-cicd', NULL);
+INSERT INTO `cmdb_host` (`id`, `host_name`, `group_id`, `private_ip`, `public_ip`, `ssh_name`, `ssh_key_id`, `ssh_port`, `remark`, `vendor`, `region`, `instance_id`, `os`, `status`, `cpu`, `memory`, `disk`, `billing_type`, `create_time`, `expire_time`, `update_time`, `ssh_ip`, `name`, `ssh_gateway_id`) VALUES (469, 'al-ops', 18, '172.20.236.121', '8.130.14.34', 'root', 18, 22, '', 1, '', '', 'Ubuntu24.04.2', 1, '2', '2', '40', '', '2025-10-04 15:56:16.580', NULL, '2025-10-04 15:56:18.672', '8.130.14.34', 'go-ops', NULL);
+COMMIT;
+
+-- ----------------------------
+-- Table structure for cmdb_sql
+-- ----------------------------
+DROP TABLE IF EXISTS `cmdb_sql`;
+CREATE TABLE `cmdb_sql` (
+  `id` bigint unsigned NOT NULL AUTO_INCREMENT,
+  `name` varchar(100) NOT NULL,
+  `type` int NOT NULL,
+  `account_id` bigint unsigned NOT NULL,
+  `group_id` bigint unsigned NOT NULL,
+  `tags` varchar(255) DEFAULT NULL,
+  `description` varchar(500) DEFAULT NULL,
+  `created_at` datetime(3) DEFAULT NULL,
+  `updated_at` datetime(3) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+-- ----------------------------
+-- Records of cmdb_sql
+-- ----------------------------
+BEGIN;
+INSERT INTO `cmdb_sql` (`id`, `name`, `type`, `account_id`, `group_id`, `tags`, `description`, `created_at`, `updated_at`) VALUES (1, 'saas3-mysql', 1, 1, 1, 'prod', '1111', '2025-07-29 21:23:17.309', '2025-07-29 21:23:17.309');
+INSERT INTO `cmdb_sql` (`id`, `name`, `type`, `account_id`, `group_id`, `tags`, `description`, `created_at`, `updated_at`) VALUES (2, 'saas3-redis-1', 3, 3, 1, 'prod', '1111', '2025-07-29 21:24:57.985', '2025-09-06 15:12:22.605');
+INSERT INTO `cmdb_sql` (`id`, `name`, `type`, `account_id`, `group_id`, `tags`, `description`, `created_at`, `updated_at`) VALUES (4, 'saas3-pgsql', 2, 1, 1, 'prod', '1111', '2025-07-29 21:36:11.147', '2025-09-06 15:12:44.586');
+INSERT INTO `cmdb_sql` (`id`, `name`, `type`, `account_id`, `group_id`, `tags`, `description`, `created_at`, `updated_at`) VALUES (5, 's3-mongo', 4, 1, 18, 'test', '123', '2025-07-30 11:16:27.710', '2025-09-06 15:40:34.686');
+INSERT INTO `cmdb_sql` (`id`, `name`, `type`, `account_id`, `group_id`, `tags`, `description`, `created_at`, `updated_at`) VALUES (6, 's3-es', 5, 5, 14, 'adadas', 'adasd', '2025-07-30 11:27:01.158', '2025-09-06 15:41:08.897');
+INSERT INTO `cmdb_sql` (`id`, `name`, `type`, `account_id`, `group_id`, `tags`, `description`, `created_at`, `updated_at`) VALUES (7, 'my-redis', 2, 4, 12, 'test', '123', '2025-07-30 11:30:24.713', '2025-07-30 11:30:24.713');
+COMMIT;
+
+-- ----------------------------
+-- Table structure for cmdb_sql_log
+-- ----------------------------
+DROP TABLE IF EXISTS `cmdb_sql_log`;
+CREATE TABLE `cmdb_sql_log` (
+  `id` bigint unsigned NOT NULL AUTO_INCREMENT,
+  `instance_id` varchar(64) NOT NULL,
+  `database` varchar(128) NOT NULL,
+  `operation_type` varchar(32) NOT NULL,
+  `sql_content` text NOT NULL,
+  `exec_user` varchar(64) NOT NULL,
+  `ip` varchar(64) NOT NULL,
+  `scanned_rows` bigint DEFAULT '0',
+  `affected_rows` bigint DEFAULT '0',
+  `execution_time` bigint DEFAULT '0',
+  `returned_rows` bigint DEFAULT '0',
+  `result` varchar(32) NOT NULL,
+  `query_time` datetime(3) NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `idx_cmdb_sql_log_query_time` (`query_time`)
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+-- ----------------------------
+-- Records of cmdb_sql_log
+-- ----------------------------
+BEGIN;
+INSERT INTO `cmdb_sql_log` (`id`, `instance_id`, `database`, `operation_type`, `sql_content`, `exec_user`, `ip`, `scanned_rows`, `affected_rows`, `execution_time`, `returned_rows`, `result`, `query_time`) VALUES (7, '8.130.14.34', 'gin-api', 'SELECT', 'select * from  cmdb_host;', 'admin', '127.0.0.1', 0, 0, 59, 3, 'SUCCESS', '2025-08-25 10:17:24.672');
+COMMIT;
+
+-- ----------------------------
+-- Table structure for cmdb_sql_records
+-- ----------------------------
+DROP TABLE IF EXISTS `cmdb_sql_records`;
+CREATE TABLE `cmdb_sql_records` (
+  `id` bigint unsigned NOT NULL AUTO_INCREMENT,
+  `instance_id` varchar(64) NOT NULL,
+  `database` varchar(128) NOT NULL,
+  `operation_type` varchar(32) NOT NULL,
+  `sql_content` text NOT NULL,
+  `exec_user` varchar(64) NOT NULL,
+  `scanned_rows` bigint DEFAULT '0',
+  `affected_rows` bigint DEFAULT '0',
+  `execution_time` bigint DEFAULT '0',
+  `returned_rows` bigint DEFAULT '0',
+  `result` varchar(32) NOT NULL,
+  `query_time` datetime(3) NOT NULL,
+  `name` varchar(64) NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `idx_cmdb_sql_records_query_time` (`query_time`)
+) ENGINE=InnoDB AUTO_INCREMENT=19 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+-- ----------------------------
+-- Records of cmdb_sql_records
+-- ----------------------------
+BEGIN;
+INSERT INTO `cmdb_sql_records` (`id`, `instance_id`, `database`, `operation_type`, `sql_content`, `exec_user`, `scanned_rows`, `affected_rows`, `execution_time`, `returned_rows`, `result`, `query_time`, `name`) VALUES (1, '8.130.14.34:3306', 'gin-api', 'SELECT', 'select * from cmdb_group;', 'anonymous', 14, 0, 403, 14, 'SUCCESS', '2025-07-29 11:14:13.686', '');
+INSERT INTO `cmdb_sql_records` (`id`, `instance_id`, `database`, `operation_type`, `sql_content`, `exec_user`, `scanned_rows`, `affected_rows`, `execution_time`, `returned_rows`, `result`, `query_time`, `name`) VALUES (2, '8.130.14.30', 'saas3-mysql', 'SELECT', 'select * from cmdb_group;', '', 0, 0, 50, 10, 'SUCCESS', '2025-07-30 13:29:24.409', '');
+INSERT INTO `cmdb_sql_records` (`id`, `instance_id`, `database`, `operation_type`, `sql_content`, `exec_user`, `scanned_rows`, `affected_rows`, `execution_time`, `returned_rows`, `result`, `query_time`, `name`) VALUES (3, '8.130.14.34', 'gin-api', 'SELECT', 'select * from cmdb_group;', '', 0, 0, 54, 14, 'SUCCESS', '2025-07-30 13:58:13.386', '');
+INSERT INTO `cmdb_sql_records` (`id`, `instance_id`, `database`, `operation_type`, `sql_content`, `exec_user`, `scanned_rows`, `affected_rows`, `execution_time`, `returned_rows`, `result`, `query_time`, `name`) VALUES (4, '8.130.14.34', 'saas3-mysql', 'INSERT', 'UPDATE `cmdb_group`SET `name` = \'sql测试组0000\' WHERE `parent_id` = 17AND `name` = \'sql测试组\';', '', 0, 1, 80, 0, 'SUCCESS', '2025-07-30 14:00:44.370', '');
+INSERT INTO `cmdb_sql_records` (`id`, `instance_id`, `database`, `operation_type`, `sql_content`, `exec_user`, `scanned_rows`, `affected_rows`, `execution_time`, `returned_rows`, `result`, `query_time`, `name`) VALUES (5, '8.130.14.34', 'saas3-mysql', 'INSERT', 'UPDATE `cmdb_group` SET `name` = \'test123\' WHERE `id` = 22;', '', 0, 1, 80, 0, 'SUCCESS', '2025-07-30 14:04:30.684', '');
+INSERT INTO `cmdb_sql_records` (`id`, `instance_id`, `database`, `operation_type`, `sql_content`, `exec_user`, `scanned_rows`, `affected_rows`, `execution_time`, `returned_rows`, `result`, `query_time`, `name`) VALUES (6, '8.130.14.34', 'saas3-mysql', 'INSERT', 'UPDATE `cmdb_group` SET `name` = \'test123111\' WHERE `id` = 22;', '', 0, 1, 80, 0, 'SUCCESS', '2025-07-30 14:06:34.692', '');
+INSERT INTO `cmdb_sql_records` (`id`, `instance_id`, `database`, `operation_type`, `sql_content`, `exec_user`, `scanned_rows`, `affected_rows`, `execution_time`, `returned_rows`, `result`, `query_time`, `name`) VALUES (7, '8.130.14.34', 'gin-api', 'SELECT', 'UPDATE `cmdb_group` SET `name` = \'test123111\' WHERE `id` = 22;', '', 0, 0, 122, 0, 'SUCCESS', '2025-07-30 14:07:44.151', '');
+INSERT INTO `cmdb_sql_records` (`id`, `instance_id`, `database`, `operation_type`, `sql_content`, `exec_user`, `scanned_rows`, `affected_rows`, `execution_time`, `returned_rows`, `result`, `query_time`, `name`) VALUES (8, '8.130.14.34', 'gin-api', 'SELECT', 'UPDATE `cmdb_group` SET `name` = \'test001\' WHERE `id` = 22;', '', 0, 0, 55, 0, 'SUCCESS', '2025-07-30 14:11:42.626', '');
+INSERT INTO `cmdb_sql_records` (`id`, `instance_id`, `database`, `operation_type`, `sql_content`, `exec_user`, `scanned_rows`, `affected_rows`, `execution_time`, `returned_rows`, `result`, `query_time`, `name`) VALUES (9, '8.130.14.34', 'gin-api', 'SELECT', 'select * from cmdb_group;', '', 0, 0, 67, 15, 'SUCCESS', '2025-07-30 15:24:57.109', '');
+INSERT INTO `cmdb_sql_records` (`id`, `instance_id`, `database`, `operation_type`, `sql_content`, `exec_user`, `scanned_rows`, `affected_rows`, `execution_time`, `returned_rows`, `result`, `query_time`, `name`) VALUES (10, '8.130.14.34', 'gin-api', 'SELECT', 'select * from cmdb_host;', '', 0, 0, 114, 75, 'SUCCESS', '2025-07-30 15:25:19.542', '');
+INSERT INTO `cmdb_sql_records` (`id`, `instance_id`, `database`, `operation_type`, `sql_content`, `exec_user`, `scanned_rows`, `affected_rows`, `execution_time`, `returned_rows`, `result`, `query_time`, `name`) VALUES (11, '8.130.14.34', 'gin-api', 'SELECT', 'select * from cmdb_group;', '', 0, 0, 56, 15, 'SUCCESS', '2025-07-30 15:29:16.507', '');
+INSERT INTO `cmdb_sql_records` (`id`, `instance_id`, `database`, `operation_type`, `sql_content`, `exec_user`, `scanned_rows`, `affected_rows`, `execution_time`, `returned_rows`, `result`, `query_time`, `name`) VALUES (12, '8.130.14.34', 'saas3-mysql', 'EXECUTE', 'create databases  db;', '', 0, 1, 100, 0, 'SUCCESS', '2025-07-30 15:34:31.246', '');
+INSERT INTO `cmdb_sql_records` (`id`, `instance_id`, `database`, `operation_type`, `sql_content`, `exec_user`, `scanned_rows`, `affected_rows`, `execution_time`, `returned_rows`, `result`, `query_time`, `name`) VALUES (13, '8.130.14.34', 'gin-api', 'SELECT', 'select id,name from cmdb_group;', '', 0, 0, 51, 15, 'SUCCESS', '2025-07-30 17:18:52.168', '');
+INSERT INTO `cmdb_sql_records` (`id`, `instance_id`, `database`, `operation_type`, `sql_content`, `exec_user`, `scanned_rows`, `affected_rows`, `execution_time`, `returned_rows`, `result`, `query_time`, `name`) VALUES (14, '8.130.14.34', 'gin-api', 'SELECT', 'select id,name from cmdb_group;', '', 0, 0, 53, 15, 'SUCCESS', '2025-07-30 17:29:36.465', '');
+INSERT INTO `cmdb_sql_records` (`id`, `instance_id`, `database`, `operation_type`, `sql_content`, `exec_user`, `scanned_rows`, `affected_rows`, `execution_time`, `returned_rows`, `result`, `query_time`, `name`) VALUES (15, '8.130.14.34', 'gin-api', 'SELECT', 'select id,name from  cmdb_group;', '', 0, 0, 56, 15, 'SUCCESS', '2025-07-30 21:06:07.136', '');
+INSERT INTO `cmdb_sql_records` (`id`, `instance_id`, `database`, `operation_type`, `sql_content`, `exec_user`, `scanned_rows`, `affected_rows`, `execution_time`, `returned_rows`, `result`, `query_time`, `name`) VALUES (16, '8.130.14.34', 'gin-api', 'SELECT', 'select id,name from  cmdb_group;', '', 0, 0, 64, 15, 'SUCCESS', '2025-07-30 21:12:04.886', '');
+INSERT INTO `cmdb_sql_records` (`id`, `instance_id`, `database`, `operation_type`, `sql_content`, `exec_user`, `scanned_rows`, `affected_rows`, `execution_time`, `returned_rows`, `result`, `query_time`, `name`) VALUES (17, '8.130.14.34', 'gin-api', 'SELECT', 'select id,name from  cmdb_group;', 'admin', 0, 0, 51, 15, 'SUCCESS', '2025-07-30 21:23:55.532', '');
+INSERT INTO `cmdb_sql_records` (`id`, `instance_id`, `database`, `operation_type`, `sql_content`, `exec_user`, `scanned_rows`, `affected_rows`, `execution_time`, `returned_rows`, `result`, `query_time`, `name`) VALUES (18, '8.130.14.34', 'gin-api', 'SELECT', 'select id,name from  cmdb_group;', 'zhangsan', 0, 0, 54, 15, 'SUCCESS', '2025-07-30 21:26:51.642', '');
+COMMIT;
+
+-- ----------------------------
+-- Table structure for config_account
+-- ----------------------------
+DROP TABLE IF EXISTS `config_account`;
+CREATE TABLE `config_account` (
+  `id` bigint unsigned NOT NULL AUTO_INCREMENT,
+  `alias` varchar(128) NOT NULL,
+  `host` varchar(128) NOT NULL,
+  `port` bigint NOT NULL,
+  `name` varchar(128) NOT NULL,
+  `password` text NOT NULL,
+  `type` bigint NOT NULL,
+  `remark` text,
+  `created_at` datetime(3) DEFAULT NULL,
+  `updated_at` datetime(3) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+-- ----------------------------
+-- Records of config_account
+-- ----------------------------
+BEGIN;
+INSERT INTO `config_account` (`id`, `alias`, `host`, `port`, `name`, `password`, `type`, `remark`, `created_at`, `updated_at`) VALUES (1, 'zf-mysql', '8.130.14.34', 3306, 'root', 'tdYUmzsT+UNPWmRqvn93euVrlLMLz3eLsj+DT79xyXs=', 1, '自建阿里云mysql', NULL, '2025-07-29 14:36:13.095');
+INSERT INTO `config_account` (`id`, `alias`, `host`, `port`, `name`, `password`, `type`, `remark`, `created_at`, `updated_at`) VALUES (2, 'zf-pgsql\n', '127.0.0.1', 3306, 'root', 'e10adc3949ba59abbe56e057f20f883e', 2, '1111', '2025-07-29 12:35:08.895', '2025-07-29 12:35:08.895');
+INSERT INTO `config_account` (`id`, `alias`, `host`, `port`, `name`, `password`, `type`, `remark`, `created_at`, `updated_at`) VALUES (3, 'zf-redis', '127.0.0.1', 3306, 'root', 'vi0iOisDQUAYIcim0g9By3QP2HsxQrQA8jVuAeQXSzw=', 3, '1111', '2025-07-29 12:56:18.425', '2025-07-29 12:56:18.425');
+INSERT INTO `config_account` (`id`, `alias`, `host`, `port`, `name`, `password`, `type`, `remark`, `created_at`, `updated_at`) VALUES (9, '百度云jenkins', '180.76.231.65', 8080, 'root', 'jhHa8gbGnsytqfEUoQwVDnRae+hh44ElkRao7e0h4EU=', 4, '123', '2025-09-15 19:59:15.793', '2025-09-15 19:59:15.793');
+INSERT INTO `config_account` (`id`, `alias`, `host`, `port`, `name`, `password`, `type`, `remark`, `created_at`, `updated_at`) VALUES (10, '京东jenkins', '180.76.231.65', 8080, 'root', 'krHNE/dAQmB+Sv6I/Fl2KmcvcIeVcrSRQyBwIvr+Bms=', 4, '京东机器15天', '2025-09-16 14:31:39.305', '2025-09-16 14:31:39.305');
+INSERT INTO `config_account` (`id`, `alias`, `host`, `port`, `name`, `password`, `type`, `remark`, `created_at`, `updated_at`) VALUES (11, '阿里云jenkins', '180.76.231.65', 8080, 'root', 'KioCHW/kEA093zr+cBHECf+1xxfxTGgwy6KJXCKcHjo=', 4, '阿里云jenkins', '2025-09-16 14:57:22.089', '2025-09-16 14:57:22.089');
+COMMIT;
+
+-- ----------------------------
+-- Table structure for config_ecsauth
+-- ----------------------------
+DROP TABLE IF EXISTS `config_ecsauth`;
+CREATE TABLE `config_ecsauth` (
+  `id` bigint unsigned NOT NULL AUTO_INCREMENT COMMENT '''主键''',
+  `name` longtext NOT NULL COMMENT '''凭证名称''',
+  `type` bigint NOT NULL COMMENT '''认证类型:1->密码,2->私钥,3->公钥(免认证)''',
+  `username` longtext COMMENT '''用户名''',
+  `password` longtext COMMENT '''密码(type=1时使用)''',
+  `public_key` text COMMENT '''私钥内容(type=2时使用，字段名历史原因)''',
+  `create_time` datetime(3) NOT NULL COMMENT '''创建时间''',
+  `remark` longtext COMMENT '''备注''',
+  `port` bigint DEFAULT '22' COMMENT '''端口号''',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=19 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+-- ----------------------------
+-- Records of config_ecsauth
+-- ----------------------------
+BEGIN;
+INSERT INTO `config_ecsauth` (`id`, `name`, `type`, `username`, `password`, `public_key`, `create_time`, `remark`, `port`) VALUES (18, 'devops', 3, 'root', '', '', '2025-10-04 15:51:52.287', '123', 22);
+COMMIT;
+
+-- ----------------------------
+-- Table structure for config_keymanage
+-- ----------------------------
+DROP TABLE IF EXISTS `config_keymanage`;
+CREATE TABLE `config_keymanage` (
+  `id` bigint unsigned NOT NULL AUTO_INCREMENT,
+  `key_type` bigint NOT NULL,
+  `key_id` text NOT NULL,
+  `key_secret` text NOT NULL,
+  `remark` text,
+  `created_at` datetime(3) DEFAULT NULL,
+  `updated_at` datetime(3) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+-- ----------------------------
+-- Records of config_keymanage
+-- ----------------------------
+BEGIN;
+INSERT INTO `config_keymanage` (`id`, `key_type`, `key_id`, `key_secret`, `remark`, `created_at`, `updated_at`) VALUES (1, 1, 'q0DpZ3Xsey6x3YK2Hyy6BL0zMELFDRHhKf0BvNnws0urGKcvX3ljlnX2p19HVAJ/', 'k8XfyikUJw5EuICQbKAkSwXPN0UelcAsD6inroNTwOa2QzrpiXQHcjC6r+v7H4rB', '私有阿里云', '2025-09-08 14:59:19.212', '2025-09-08 14:59:19.212');
+INSERT INTO `config_keymanage` (`id`, `key_type`, `key_id`, `key_secret`, `remark`, `created_at`, `updated_at`) VALUES (2, 2, 'Vzuuv8DCjsp0RlnlElFepRdMTeK2l5ML1EKI9MxlO5Hmam5nN1lk7ISAOzfZVM4Tv10xAhAIM+8zDvRfJMIgOw==', 'LVuhKbgfGVz6XdJGdsJfq5ILivjOuHUVbPVEQcomnZ2GTZ68W9SMyWwAMCWxJLnH+7QNRwuuOb7X2ToilotDSA==', '腾讯云', '2025-09-08 15:09:49.440', '2025-09-08 16:10:16.375');
+INSERT INTO `config_keymanage` (`id`, `key_type`, `key_id`, `key_secret`, `remark`, `created_at`, `updated_at`) VALUES (3, 3, 'GNB+1l2heX4Hcouh2czD67iFux7+u2rwDa/2/BgCVyLgCll7D+nFtP5c2pKruEHUH3KhVuR5LWEwMIbVT6kKCQ==', 'eIsnVYPDFbH1U4WCkVnwa3av1HRU7LGH8GC2oGRrTN0DB2DY0lsOJP9ym59H/eYs4OUZaUQqwKrMKcSO8LOBZA==', '123', '2025-09-08 15:10:12.482', '2025-09-08 15:10:12.482');
+INSERT INTO `config_keymanage` (`id`, `key_type`, `key_id`, `key_secret`, `remark`, `created_at`, `updated_at`) VALUES (4, 4, 'ISUGEhE48jlLVe6xgQ78CppJ0W+yHJQ5nZ2LE+7//UUemHutmvodpCfgg4aBn618Sx5E23CKs1xJ7/0BuMA3MQ==', 'mizY0sTVcITMiROl2qw1t/xmzKj9mE09Xu1RLSuS98AwwNLNwGpX5lXVg8LEsl8CHnlLIUqr+4d68j2YV7176g==', '123', '2025-09-08 15:10:24.273', '2025-09-08 15:10:24.273');
+INSERT INTO `config_keymanage` (`id`, `key_type`, `key_id`, `key_secret`, `remark`, `created_at`, `updated_at`) VALUES (5, 5, 'spRQAL5t5T1GSqQ6qQ245MnK2EBcnj5hg+vuzdFI76o+f5V/zLjcDccKGrgjYMHUXLHiIpTxHfPhtoR7o18LvA==', 'hYfX8Flb2vyIKeYQ+fhffxX8sXiqN5k4Zy5Y4DBzfkxTJuYXHlXGzI/tlKpoS7PzhYh3fyBPFwdX4kra8jUjKQ==', '12334', '2025-09-08 15:10:33.716', '2025-09-08 15:10:33.716');
+COMMIT;
+
+-- ----------------------------
+-- Table structure for config_sync_schedule
+-- ----------------------------
+DROP TABLE IF EXISTS `config_sync_schedule`;
+CREATE TABLE `config_sync_schedule` (
+  `id` bigint unsigned NOT NULL AUTO_INCREMENT,
+  `name` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `cron_expr` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `key_types` text COLLATE utf8mb4_unicode_ci NOT NULL,
+  `status` bigint NOT NULL DEFAULT '1',
+  `last_run_time` datetime(3) DEFAULT NULL,
+  `next_run_time` datetime(3) DEFAULT NULL,
+  `sync_log` text COLLATE utf8mb4_unicode_ci,
+  `remark` text COLLATE utf8mb4_unicode_ci,
+  `created_at` datetime(3) DEFAULT NULL,
+  `updated_at` datetime(3) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- ----------------------------
+-- Records of config_sync_schedule
+-- ----------------------------
+BEGIN;
+COMMIT;
+
+-- ----------------------------
+-- Table structure for k8s_cluster
+-- ----------------------------
+DROP TABLE IF EXISTS `k8s_cluster`;
+CREATE TABLE `k8s_cluster` (
+  `id` bigint unsigned NOT NULL AUTO_INCREMENT COMMENT '''主键ID''',
+  `name` varchar(100) NOT NULL COMMENT '''集群名称''',
+  `version` varchar(50) NOT NULL COMMENT '''集群版本''',
+  `status` bigint NOT NULL DEFAULT '1' COMMENT '''集群状态:1-创建中,2-运行中,3-离线''',
+  `credential` text COMMENT '''集群凭证(kubeconfig)''',
+  `description` text COMMENT '''集群描述''',
+  `cluster_type` bigint NOT NULL DEFAULT '1' COMMENT '''集群类型:1-自建,2-导入''',
+  `created_at` datetime(3) DEFAULT NULL,
+  `updated_at` datetime(3) DEFAULT NULL,
+  `node_count` bigint DEFAULT '0' COMMENT '''节点数量''',
+  `ready_nodes` bigint DEFAULT '0' COMMENT '''就绪节点数''',
+  `master_nodes` bigint DEFAULT '0' COMMENT '''Master节点数''',
+  `worker_nodes` bigint DEFAULT '0' COMMENT '''Worker节点数''',
+  `last_sync_at` datetime(3) DEFAULT NULL COMMENT '''最后同步时间''',
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `idx_k8s_cluster_name` (`name`)
+) ENGINE=InnoDB AUTO_INCREMENT=31 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+-- ----------------------------
+-- Records of k8s_cluster
+-- ----------------------------
+BEGIN;
+INSERT INTO `k8s_cluster` (`id`, `name`, `version`, `status`, `credential`, `description`, `cluster_type`, `created_at`, `updated_at`, `node_count`, `ready_nodes`, `master_nodes`, `worker_nodes`, `last_sync_at`) VALUES (30, '测试8s集群-1', 'v1.30.0-tke.14', 3, 'apiVersion: v1\nclusters:\n- cluster:\n    certificate-authority-data: LS0tLS1CRUdJTiBDRVJUSUZJQ0FURS0tLS0tCk1JSUN5akNDQWJLZ0F3SUJBZ0lCQURBTkJna3Foa2lHOXcwQkFRc0ZBREFWTVJNd0VRWURWUVFERXdwcmRXSmwKY201bGRHVnpNQ0FYRFRJMU1Ea3lNREEzTVRFek4xb1lEekl3TlRVd09URXpNRGN4TVRNM1dqQVZNUk13RVFZRApWUVFERXdwcmRXSmxjbTVsZEdWek1JSUJJakFOQmdrcWhraUc5dzBCQVFFRkFBT0NBUThBTUlJQkNnS0NBUUVBCjhzbXhCbDMwY2lyaHdGd3ZHUk4wYXkwRGVGczVuRVgwVkVxMnhLRUUxOFU3YVZVNTVQdUw3Y2RBNVhMLzlIZDcKam8yTkhSRmhxMmVHT2tES3VRY0lyWjdEbmFCbVFzTGhiTDlSbzYxL2ZuQmJadzQxTitDOHAzdEQvbENDV0ZzTgpoSXNhTGRHeGs2Sno2ZXZxdG5TRSt2WlRuaDNsWXhsdVhNNFBuSTZUSnRWdHhhSGRGYU9Ta2hodXFya1hZU2tPCm02eWRPcU5OOVdJbTE0OFprNTd2bEl6aS9aYWI3SEhEMkt3VU9SWExVL0JuamdXZHJSUHdBeHBOMUFsZC93U2QKZS9xUVpFN0FES2hQWElubzIyUitEV0p3WWlhd0xmanlBeTBIQXhnYTFXOXVjR0tNVUF0SkVHUWY1V1Nrd1lhUQpLVEgvSnNYZEtkazhGTDREZGxSQjBRSURBUUFCb3lNd0lUQU9CZ05WSFE4QkFmOEVCQU1DQXBRd0R3WURWUjBUCkFRSC9CQVV3QXdFQi96QU5CZ2txaGtpRzl3MEJBUXNGQUFPQ0FRRUF2NkJZbmY4dHBkVHBiK244WjRMblRsL3YKK0xtajFMYTdicjl0dmtmNXcweDBDbUsxaHBTNDI3dHZKdWpPZHk0cWI4NDhaYTcyNm9NeVJ5d3hRdzlnNitFegpRU2VRakxqQzhZZk1YeDAvMFJEUDNpYzJObXp2WStNQmhTdTdJcUQrNkJBRUg5Y2Rwd29QRFlNK1AyWTNCTzQvCnhFY0JmUk9MOW5jeVNId1AwUFBQbzBXUldLQ1M0L3Q2MENPbVdqMk1WTDEzMERnVTJpc2lVWG4vQm1mVEVXOVoKVzN6L2RZYUs1Z1RWYnhtbFc5eldxU1U5NFdFdTAzZUFySVFJU3RNWlFXTFl3MFlLbHdEdHBlcEdFSDA1SXJYaApwcXVTUDhObnNGampmMmZnN1Npd0gxNnp2UnhvWldoWXRXWC9MMVhlZG9BRjNOUTM1Q0Mxd2piUmIwVHhidz09Ci0tLS0tRU5EIENFUlRJRklDQVRFLS0tLS0K\n    server: https://119.45.2.245:443\n  name: cls-mem8mdki\ncontexts:\n- context:\n    cluster: cls-mem8mdki\n    user: \"100006622051\"\n  name: cls-mem8mdki-100006622051-context-default\ncurrent-context: cls-mem8mdki-100006622051-context-default\nkind: Config\npreferences: {}\nusers:\n- name: \"100006622051\"\n  user:\n    client-certificate-data: LS0tLS1CRUdJTiBDRVJUSUZJQ0FURS0tLS0tCk1JSUREakNDQWZhZ0F3SUJBZ0lJTjNtam5kWjFNblF3RFFZSktvWklodmNOQVFFTEJRQXdGVEVUTUJFR0ExVUUKQXhNS2EzVmlaWEp1WlhSbGN6QWdGdzB5TlRBNU1qQXdOekV6TkRoYUdBOHlNRFUxTURreU1EQTNNVE0wT0ZvdwpOakVTTUJBR0ExVUVDaE1KZEd0bE9uVnpaWEp6TVNBd0hnWURWUVFERXhjeE1EQXdNRFkyTWpJd05URXRNVGMxCk9ETTFNalF5T0RDQ0FTSXdEUVlKS29aSWh2Y05BUUVCQlFBRGdnRVBBRENDQVFvQ2dnRUJBTmlqcEFqbDZsK2UKeEpydmNsV0dUb3FsRVd6NzJFMzFkWHB2OTF1SjZKSHU3L29YWlQ2OG9WbG51Vmh5UjBiOVdNU3I4V201eWVlaQpjTDgzQWc4Q2o5T1Q4RlRHdm5CTENMTTM3dUVYOGRmdnZqRHVnV21RaytLRmU5TDc0Z3ZqM05Kb1RKN3cyT0o2CllhQks3Nm14NEE4ZHVhNzBPbmpneThLQmRGSTFPY3NSRGM5WkM5dlNOQVQvL3RBeUprRXF1SVlKejlrNUordmEKcE9XOXAxdktYa0NnV0J5dVFUSzZ6T2VmcU4vbFJzNHMvTjZpNE90czZMVGFNaDl5aHNGdUUvUVZFZThBVjZscgpUMUxkNFZSSjBXWWh6QmUyWGJVU1EzbUx0VVp0MmhwNG9rYXpOdWxsWkg1NkY2WXFBcXBsSkVqMHZHL1lmeGl4Cmt5QmNlRjJONUZFQ0F3RUFBYU0vTUQwd0RnWURWUjBQQVFIL0JBUURBZ0tFTUIwR0ExVWRKUVFXTUJRR0NDc0cKQVFVRkJ3TUNCZ2dyQmdFRkJRY0RBVEFNQmdOVkhSTUJBZjhFQWpBQU1BMEdDU3FHU0liM0RRRUJDd1VBQTRJQgpBUUMyU1QwL0ZkSHE2RFgwZGNUYzlNSmZCL2djKzBUZ2ZISllWZ2tFdGJyb1BPUW1kYnFkK1QrKzRrdUMxZVBWCk91MGk0VGRXVXlzZ2liMjVtZDh5RVFtMFlGMk5LTExmWmxKTnV5TnFUTmdKeThDRnlZYXdWNmF2OHpFMnlla0kKL2N3RGVDZXl6WFFQT0FKK2s2Q3U5UG0vdHZsWEt0T0dNWEdlNGNiUDhreWltK1hOQ1FMVlNvditxQUlISUVCYgorL2VteFVWVERLOVRpT2FsRFR1ODJKUm5pQUJ0ZXRkUEtkeml1Q1RvUlAwdzhENDBlKzR5T1VWaXoralVEMGlDCk1TNVBpZG1ZOGkveE1VTjk5QStTcHA4eWtEMUJRN1ZZT3BWYVhEa3RkSU5uRTdpb2crUUFTd3JxQVRUUSttcEkKTU85R2Q1b2g5d3FZVFQ0eTBINWJwR0d2Ci0tLS0tRU5EIENFUlRJRklDQVRFLS0tLS0K\n    client-key-data: LS0tLS1CRUdJTiBSU0EgUFJJVkFURSBLRVktLS0tLQpNSUlFcEFJQkFBS0NBUUVBMktPa0NPWHFYNTdFbXU5eVZZWk9pcVVSYlB2WVRmVjFlbS8zVzRub2tlN3YraGRsClByeWhXV2U1V0hKSFJ2MVl4S3Z4YWJuSjU2Snd2emNDRHdLUDA1UHdWTWErY0VzSXN6ZnU0UmZ4MSsrK01PNkIKYVpDVDRvVjcwdnZpQytQYzBtaE1udkRZNG5waG9FcnZxYkhnRHgyNXJ2UTZlT0RMd29GMFVqVTV5eEVOejFrTAoyOUkwQlAvKzBESW1RU3E0aGduUDJUa242OXFrNWIyblc4cGVRS0JZSEs1Qk1yck01NStvMytWR3ppejgzcUxnCjYyem90Tm95SDNLR3dXNFQ5QlVSN3dCWHFXdFBVdDNoVkVuUlppSE1GN1pkdFJKRGVZdTFSbTNhR25paVJyTTIKNldWa2Zub1hwaW9DcW1Va1NQUzhiOWgvR0xHVElGeDRYWTNrVVFJREFRQUJBb0lCQVFDMXJRWHpNRnpNczZqTgpCZUVzTitYRi80Z05qV1pvZW1CNnZVc0RTVFB3cmlBeDYwek13QVBQcGx5WS83MG1tMi9GL3l3RkxmbFVkN1YxCnBmdmorcElETFIxdSt2elp6eE1NdU90cmVWa25iYlpoOHFJMGxUcHZ6T0Y2bmlHRE55UUlqODh4dTJrbkJOcTYKUWgyYWdjRVU3Q2k3djdVSmlmdFdzcG1LRjNqUUFZSU52TGlHalNOMFZYVDc4NUZRTmJhcUZ2dmFPK3JyUEVpNApxTlRoaCt6VnRwMUVuUmVYOHdvK0pLSHNyTVJ1SmdrOTdreGY2S0dwTXRZdHU4dHJXaExUMVo4Y3N0S2I0elVDCkJjMGo0eWhpekxUaytVYmpaaTkzQzNZdkhBd1pmaTd5WnRGK1Z0YXp3cFBXd2RydFY0WnVVZXhQaTJTa3FyT2MKdTdreWtDQUJBb0dCQVBOOXVINEUzS0s4bEVldFVPUU5WNmNyQzBUcW9yL3lxY3lWTlQyV05XRzNrVTEwK1REWApyNWQ1Y0N5OEdvRUJOa3lMa2Z5Zkp3ZVdtM2llZHZxdEVXQStWSUFWNStzcUZNS2Z6emc4NSs3bDNEQUhGV3ZKCjZ2V2lubm81MTI3enlZLzR6WVBTelRESDZwZFJpMUE0aGphc3poNTU4cjhUYTZabTV3ZzEwNzh4QW9HQkFPUEUKeHVnQWhOWVFlK3M1V09NV3B0ZGYyWG1pMVB3WmdIN3ZDMTVTSjVhckJ1ZUFLT1Y2cXc4TEpQbnZaOTdLZEpyWApuVUNsS1FlMjdnUE45YkVDK01VVm9RZjJZQjg0RURFbjhJNDNiWFFzWjhnYVFFMkhFOWJWUEhjM3VtLzROS2l5CmFFQ3FWN1oxWVh1WGhNRDdObWU3Zk42a29KSFFTWnpNQk4vMEhHOGhBb0dBS1ZKaXB2QklTVTNibERaemplQTkKeWQ3aU1MWHBITTRmeHRwamlLb2ZNUkFvRm84Tll4NlhiQXR0NEFta0xkUjQxSkN6Rzc0ZXI0ajlwWUN2REdlbQpsVUMrc21ZRlQ4RjZlSFVLZzY3Q1phYVlzWVhpT3NLdm56UVQxUVpQNjBKd0tJQyt6K3BNYkVUaEtRRHJ0WmVDCkgzRkFJYWZzYkVUdGRmWHNxMVlITTJFQ2dZQTBhTXI4QjJLSmZ6R0VacVcxV3pqNHhlMWN0OE1hWHlQYUVWY2sKVlBNWEVETitnVmJudHRvMWsvTG1MOWhPdzNjaFNndTlIRVBjcXBNSi9SSlRzTU5kVmlTL21FbDE1WWlVUndScgpOUVhTZllWRDNnWjkwRjhZUitpcDVnRFlVdHlMRk1JNFh2bmYyaEtjUmJrZVRxK3VIczRVelB6RmtJL2ZySEpTCnRmRDFBUUtCZ1FDc1ArdERhdlo4aG1LZVBtZ2pidEIxM29ZeGxZU3prSXkvQXFUckliRkNiTm1jYXVmOHhLbTgKTjY0a1ZodXpVdU9XL2hsOXhjTzlKL3JFZHowNnc3UDdOM3paR1d2K1dta0lURzQ1WVRzSTdvekM0VTFEZnJrVApFVEpjYWNHSWJ6eW1PejBNUENjbWVrUWZkdS9ibnN5MUw0YUtuT2YrQlJsc3BwOWU4b2N6RWc9PQotLS0tLUVORCBSU0EgUFJJVkFURSBLRVktLS0tLQo=', '测试8s集群-1', 2, '2025-09-24 16:33:14.305', '2025-10-03 14:23:07.629', 1, 1, 0, 1, '2025-10-03 14:23:07.629');
+COMMIT;
+
+-- ----------------------------
+-- Table structure for monitor_agent
+-- ----------------------------
+DROP TABLE IF EXISTS `monitor_agent`;
+CREATE TABLE `monitor_agent` (
+  `id` bigint unsigned NOT NULL AUTO_INCREMENT COMMENT '''主键''',
+  `host_id` bigint unsigned NOT NULL COMMENT '''主机ID''',
+  `host_name` longtext COMMENT '''主机名称''',
+  `version` varchar(191) DEFAULT '1.0.0' COMMENT '''Agent版本''',
+  `status` bigint DEFAULT NULL COMMENT '''状态:1->部署中,2->部署失败,3->运行中,4->已停止''',
+  `install_path` longtext COMMENT '''安装路径''',
+  `port` bigint DEFAULT '9100' COMMENT '''监听端口''',
+  `pid` bigint DEFAULT NULL COMMENT '''进程ID''',
+  `last_heartbeat` datetime(3) DEFAULT NULL COMMENT '''最后心跳时间''',
+  `update_time` datetime(3) DEFAULT NULL COMMENT '''更新时间''',
+  `create_time` datetime(3) NOT NULL COMMENT '''创建时间''',
+  `error_msg` text COMMENT '''错误信息''',
+  `install_progress` bigint DEFAULT '0' COMMENT '''安装进度(0-100)''',
+  PRIMARY KEY (`id`),
+  KEY `idx_monitor_agent_host_id` (`host_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=60 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+-- ----------------------------
+-- Records of monitor_agent
+-- ----------------------------
+BEGIN;
+INSERT INTO `monitor_agent` (`id`, `host_id`, `host_name`, `version`, `status`, `install_path`, `port`, `pid`, `last_heartbeat`, `update_time`, `create_time`, `error_msg`, `install_progress`) VALUES (58, 468, 'bd-git-cicd', '1.0.0', 1, '/opt/agent', 9100, 0, NULL, '2025-10-04 16:42:28.409', '2025-10-04 16:42:28.364', '', 10);
+INSERT INTO `monitor_agent` (`id`, `host_id`, `host_name`, `version`, `status`, `install_path`, `port`, `pid`, `last_heartbeat`, `update_time`, `create_time`, `error_msg`, `install_progress`) VALUES (59, 469, 'go-ops', '1.0.0', 1, '/opt/agent', 9100, 0, NULL, '2025-10-04 16:42:28.418', '2025-10-04 16:42:28.403', '', 10);
+COMMIT;
+
+-- ----------------------------
+-- Table structure for quick_deployment_tasks
+-- ----------------------------
+DROP TABLE IF EXISTS `quick_deployment_tasks`;
+CREATE TABLE `quick_deployment_tasks` (
+  `id` bigint unsigned NOT NULL AUTO_INCREMENT,
+  `deployment_id` bigint unsigned NOT NULL,
+  `app_id` bigint unsigned NOT NULL,
+  `app_name` varchar(255) DEFAULT NULL,
+  `app_code` varchar(255) DEFAULT NULL,
+  `environment` varchar(50) DEFAULT NULL,
+  `jenkins_env_id` bigint unsigned NOT NULL,
+  `jenkins_job_url` varchar(500) DEFAULT NULL,
+  `build_number` bigint DEFAULT NULL,
+  `status` tinyint DEFAULT '1',
+  `execute_order` bigint NOT NULL,
+  `start_time` datetime(3) DEFAULT NULL,
+  `end_time` datetime(3) DEFAULT NULL,
+  `duration` bigint DEFAULT NULL,
+  `error_message` text,
+  `log_url` varchar(500) DEFAULT NULL,
+  `created_at` datetime(3) DEFAULT NULL,
+  `updated_at` datetime(3) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `idx_quick_deployment_tasks_deployment_id` (`deployment_id`),
+  KEY `fk_quick_deployment_tasks_jenkins_env` (`jenkins_env_id`),
+  KEY `fk_quick_deployment_tasks_application` (`app_id`),
+  CONSTRAINT `fk_quick_deployment_tasks_application` FOREIGN KEY (`app_id`) REFERENCES `app_application` (`id`),
+  CONSTRAINT `fk_quick_deployment_tasks_jenkins_env` FOREIGN KEY (`jenkins_env_id`) REFERENCES `app_jenkins_env` (`id`),
+  CONSTRAINT `fk_quick_deployments_tasks` FOREIGN KEY (`deployment_id`) REFERENCES `quick_deployments` (`id`) ON DELETE CASCADE
+) ENGINE=InnoDB AUTO_INCREMENT=24 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+-- ----------------------------
+-- Records of quick_deployment_tasks
+-- ----------------------------
+BEGIN;
+INSERT INTO `quick_deployment_tasks` (`id`, `deployment_id`, `app_id`, `app_name`, `app_code`, `environment`, `jenkins_env_id`, `jenkins_job_url`, `build_number`, `status`, `execute_order`, `start_time`, `end_time`, `duration`, `error_message`, `log_url`, `created_at`, `updated_at`) VALUES (10, 6, 4, 's3-api', 's3-api', 'test', 5, '', 5, 4, 1, '2025-09-17 11:46:15.519', '2025-09-17 11:46:26.570', 11, 'Jenkins构建失败', 'http://180.76.231.65:8080/job/s3-api/5/console', '2025-09-17 11:46:00.369', '2025-09-17 11:46:26.621');
+INSERT INTO `quick_deployment_tasks` (`id`, `deployment_id`, `app_id`, `app_name`, `app_code`, `environment`, `jenkins_env_id`, `jenkins_job_url`, `build_number`, `status`, `execute_order`, `start_time`, `end_time`, `duration`, `error_message`, `log_url`, `created_at`, `updated_at`) VALUES (11, 7, 4, 's3-api', 's3-api', 'test', 5, '', 6, 4, 1, '2025-09-17 11:57:23.584', '2025-09-17 11:57:34.613', 11, 'Jenkins构建失败', 'http://180.76.231.65:8080/job/s3-api/6/console', '2025-09-17 11:57:04.011', '2025-09-17 11:57:34.665');
+INSERT INTO `quick_deployment_tasks` (`id`, `deployment_id`, `app_id`, `app_name`, `app_code`, `environment`, `jenkins_env_id`, `jenkins_job_url`, `build_number`, `status`, `execute_order`, `start_time`, `end_time`, `duration`, `error_message`, `log_url`, `created_at`, `updated_at`) VALUES (12, 8, 4, 's3-api', 's3-api', 'test', 5, '', 6, 3, 1, '2025-09-17 13:32:00.216', '2025-09-17 13:32:04.600', 4, '', 'http://180.76.231.65:8080/job/s3-api/6/console', '2025-09-17 13:31:45.833', '2025-09-17 13:32:04.652');
+INSERT INTO `quick_deployment_tasks` (`id`, `deployment_id`, `app_id`, `app_name`, `app_code`, `environment`, `jenkins_env_id`, `jenkins_job_url`, `build_number`, `status`, `execute_order`, `start_time`, `end_time`, `duration`, `error_message`, `log_url`, `created_at`, `updated_at`) VALUES (13, 9, 5, 's3-web', 's3-web', 'test', 8, '', 2, 3, 1, '2025-09-17 13:39:32.334', '2025-09-17 13:41:21.430', 109, '', 'http://180.76.231.65:8080/job/s3-web/2/console', '2025-09-17 13:39:12.959', '2025-09-17 13:41:21.479');
+INSERT INTO `quick_deployment_tasks` (`id`, `deployment_id`, `app_id`, `app_name`, `app_code`, `environment`, `jenkins_env_id`, `jenkins_job_url`, `build_number`, `status`, `execute_order`, `start_time`, `end_time`, `duration`, `error_message`, `log_url`, `created_at`, `updated_at`) VALUES (14, 10, 5, 's3-web', 's3-web', 'test', 8, '', 5, 3, 1, '2025-09-17 14:26:36.991', '2025-09-17 14:26:55.134', 18, '', 'http://180.76.231.65:8080/job/s3-web/5/console', '2025-09-17 14:26:06.943', '2025-09-17 14:26:55.185');
+INSERT INTO `quick_deployment_tasks` (`id`, `deployment_id`, `app_id`, `app_name`, `app_code`, `environment`, `jenkins_env_id`, `jenkins_job_url`, `build_number`, `status`, `execute_order`, `start_time`, `end_time`, `duration`, `error_message`, `log_url`, `created_at`, `updated_at`) VALUES (15, 10, 4, 's3-api', 's3-api', 'test', 5, '', 8, 3, 2, '2025-09-17 14:26:44.716', '2025-09-17 14:28:33.960', 109, '', 'http://180.76.231.65:8080/job/s3-api/8/console', '2025-09-17 14:26:07.352', '2025-09-17 14:28:34.008');
+INSERT INTO `quick_deployment_tasks` (`id`, `deployment_id`, `app_id`, `app_name`, `app_code`, `environment`, `jenkins_env_id`, `jenkins_job_url`, `build_number`, `status`, `execute_order`, `start_time`, `end_time`, `duration`, `error_message`, `log_url`, `created_at`, `updated_at`) VALUES (16, 11, 4, 's3-api', 's3-api', 'dev', 6, '', 9, 3, 1, '2025-09-17 15:21:26.032', '2025-09-17 15:23:17.544', 111, '', 'http://180.76.231.65:8080/job/s3-api/9/console', '2025-09-17 15:18:44.619', '2025-09-17 15:23:17.599');
+INSERT INTO `quick_deployment_tasks` (`id`, `deployment_id`, `app_id`, `app_name`, `app_code`, `environment`, `jenkins_env_id`, `jenkins_job_url`, `build_number`, `status`, `execute_order`, `start_time`, `end_time`, `duration`, `error_message`, `log_url`, `created_at`, `updated_at`) VALUES (17, 11, 5, 's3-web', 's3-web', 'dev', 9, '', 6, 3, 2, '2025-09-17 15:21:35.936', '2025-09-17 15:21:56.142', 20, '', 'http://180.76.231.65:8080/job/s3-web/6/console', '2025-09-17 15:18:45.079', '2025-09-17 15:21:56.190');
+INSERT INTO `quick_deployment_tasks` (`id`, `deployment_id`, `app_id`, `app_name`, `app_code`, `environment`, `jenkins_env_id`, `jenkins_job_url`, `build_number`, `status`, `execute_order`, `start_time`, `end_time`, `duration`, `error_message`, `log_url`, `created_at`, `updated_at`) VALUES (18, 12, 4, 's3-api', 's3-api', 'dev', 6, '', 10, 3, 1, '2025-09-17 15:43:37.641', '2025-09-17 15:45:26.874', 109, '', 'http://180.76.231.65:8080/job/s3-api/10/console', '2025-09-17 15:43:23.726', '2025-09-17 15:45:26.927');
+INSERT INTO `quick_deployment_tasks` (`id`, `deployment_id`, `app_id`, `app_name`, `app_code`, `environment`, `jenkins_env_id`, `jenkins_job_url`, `build_number`, `status`, `execute_order`, `start_time`, `end_time`, `duration`, `error_message`, `log_url`, `created_at`, `updated_at`) VALUES (19, 12, 5, 's3-web', 's3-web', 'dev', 9, '', 7, 3, 2, '2025-09-17 15:45:27.567', '2025-09-17 15:45:45.629', 18, '', 'http://180.76.231.65:8080/job/s3-web/7/console', '2025-09-17 15:43:24.121', '2025-09-17 15:45:45.681');
+INSERT INTO `quick_deployment_tasks` (`id`, `deployment_id`, `app_id`, `app_name`, `app_code`, `environment`, `jenkins_env_id`, `jenkins_job_url`, `build_number`, `status`, `execute_order`, `start_time`, `end_time`, `duration`, `error_message`, `log_url`, `created_at`, `updated_at`) VALUES (20, 13, 6, 's4-api', 's4-api', 'test', 12, '', 1, 3, 1, '2025-09-21 18:11:04.606', '2025-09-21 18:12:54.230', 109, '', 'http://180.76.231.65:8080/job/s4-api/1/console', '2025-09-21 18:10:45.631', '2025-09-21 18:12:54.287');
+INSERT INTO `quick_deployment_tasks` (`id`, `deployment_id`, `app_id`, `app_name`, `app_code`, `environment`, `jenkins_env_id`, `jenkins_job_url`, `build_number`, `status`, `execute_order`, `start_time`, `end_time`, `duration`, `error_message`, `log_url`, `created_at`, `updated_at`) VALUES (21, 13, 7, 's4-web', 's4-web', 'test', 15, '', 1, 3, 2, '2025-09-21 18:11:12.478', '2025-09-21 18:13:04.108', 111, '', 'http://180.76.231.65:8080/job/s4-web/1/console', '2025-09-21 18:10:46.164', '2025-09-21 18:13:04.175');
+INSERT INTO `quick_deployment_tasks` (`id`, `deployment_id`, `app_id`, `app_name`, `app_code`, `environment`, `jenkins_env_id`, `jenkins_job_url`, `build_number`, `status`, `execute_order`, `start_time`, `end_time`, `duration`, `error_message`, `log_url`, `created_at`, `updated_at`) VALUES (22, 14, 9, 's5-api', 's5-api', 'dev', 22, '', 2, 3, 1, '2025-09-22 11:49:53.750', '2025-09-22 11:51:45.360', 111, '', 'http://180.76.231.65:8080/job/s4-api/2/console', '2025-09-22 11:49:40.811', '2025-09-22 11:51:45.408');
+INSERT INTO `quick_deployment_tasks` (`id`, `deployment_id`, `app_id`, `app_name`, `app_code`, `environment`, `jenkins_env_id`, `jenkins_job_url`, `build_number`, `status`, `execute_order`, `start_time`, `end_time`, `duration`, `error_message`, `log_url`, `created_at`, `updated_at`) VALUES (23, 14, 8, 's5-web', 's5-web', 'dev', 19, '', 1, 3, 2, '2025-09-22 11:51:46.452', '2025-09-22 11:53:35.660', 109, '', 'http://180.76.231.65:8080/job/s5-web/1/console', '2025-09-22 11:49:41.228', '2025-09-22 11:53:35.714');
+COMMIT;
+
+-- ----------------------------
+-- Table structure for quick_deployments
+-- ----------------------------
+DROP TABLE IF EXISTS `quick_deployments`;
+CREATE TABLE `quick_deployments` (
+  `id` bigint unsigned NOT NULL AUTO_INCREMENT,
+  `title` varchar(255) NOT NULL,
+  `business_group_id` bigint unsigned NOT NULL,
+  `business_dept_id` bigint unsigned NOT NULL,
+  `description` text,
+  `status` tinyint DEFAULT '1',
+  `task_count` bigint NOT NULL DEFAULT '0',
+  `creator_id` bigint unsigned NOT NULL,
+  `creator_name` varchar(100) DEFAULT NULL,
+  `start_time` datetime(3) DEFAULT NULL,
+  `end_time` datetime(3) DEFAULT NULL,
+  `duration` bigint DEFAULT NULL,
+  `created_at` datetime(3) DEFAULT NULL,
+  `updated_at` datetime(3) DEFAULT NULL,
+  `execution_mode` tinyint DEFAULT '1',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+-- ----------------------------
+-- Records of quick_deployments
+-- ----------------------------
+BEGIN;
+INSERT INTO `quick_deployments` (`id`, `title`, `business_group_id`, `business_dept_id`, `description`, `status`, `task_count`, `creator_id`, `creator_name`, `start_time`, `end_time`, `duration`, `created_at`, `updated_at`, `execution_mode`) VALUES (6, '测试任务004', 12, 2, '123', 4, 1, 1, '管理员', '2025-09-17 11:46:14.976', '2025-09-17 11:46:26.783', 11, '2025-09-17 11:45:59.884', '2025-09-17 11:46:26.899', 1);
+INSERT INTO `quick_deployments` (`id`, `title`, `business_group_id`, `business_dept_id`, `description`, `status`, `task_count`, `creator_id`, `creator_name`, `start_time`, `end_time`, `duration`, `created_at`, `updated_at`, `execution_mode`) VALUES (7, '测试任务005', 18, 2, '测试任务005', 4, 1, 1, '管理员', '2025-09-17 11:57:23.071', '2025-09-17 11:57:34.819', 11, '2025-09-17 11:57:03.363', '2025-09-17 11:57:34.866', 1);
+INSERT INTO `quick_deployments` (`id`, `title`, `business_group_id`, `business_dept_id`, `description`, `status`, `task_count`, `creator_id`, `creator_name`, `start_time`, `end_time`, `duration`, `created_at`, `updated_at`, `execution_mode`) VALUES (8, '测试任务007', 12, 2, '测试任务007', 3, 1, 1, '管理员', '2025-09-17 13:31:59.690', '2025-09-17 13:32:04.330', 4, '2025-09-17 13:31:45.407', '2025-09-17 13:32:04.377', 1);
+INSERT INTO `quick_deployments` (`id`, `title`, `business_group_id`, `business_dept_id`, `description`, `status`, `task_count`, `creator_id`, `creator_name`, `start_time`, `end_time`, `duration`, `created_at`, `updated_at`, `execution_mode`) VALUES (9, '测试任务006', 18, 2, '测试任务006', 3, 1, 1, '管理员', '2025-09-17 13:39:31.848', '2025-09-17 13:39:39.887', 7, '2025-09-17 13:39:12.576', '2025-09-17 13:39:39.935', 1);
+INSERT INTO `quick_deployments` (`id`, `title`, `business_group_id`, `business_dept_id`, `description`, `status`, `task_count`, `creator_id`, `creator_name`, `start_time`, `end_time`, `duration`, `created_at`, `updated_at`, `execution_mode`) VALUES (10, '双任务测试', 18, 2, '双任务测试', 3, 2, 1, '管理员', '2025-09-17 14:26:36.482', '2025-09-17 14:26:52.382', 15, '2025-09-17 14:26:06.527', '2025-09-17 14:26:52.431', 1);
+INSERT INTO `quick_deployments` (`id`, `title`, `business_group_id`, `business_dept_id`, `description`, `status`, `task_count`, `creator_id`, `creator_name`, `start_time`, `end_time`, `duration`, `created_at`, `updated_at`, `execution_mode`) VALUES (11, '测试任务执行时间统计', 12, 2, '测试任务执行时间统计', 3, 2, 1, '管理员', '2025-09-17 15:21:25.500', '2025-09-17 15:21:45.684', 0, '2025-09-17 15:18:44.191', '2025-09-17 15:21:45.861', 1);
+INSERT INTO `quick_deployments` (`id`, `title`, `business_group_id`, `business_dept_id`, `description`, `status`, `task_count`, `creator_id`, `creator_name`, `start_time`, `end_time`, `duration`, `created_at`, `updated_at`, `execution_mode`) VALUES (12, '测试串行任务', 12, 2, '测试串行任务', 3, 2, 1, '管理员', '2025-09-17 15:43:37.100', '2025-09-17 15:45:46.056', 127, '2025-09-17 15:43:23.318', '2025-09-17 15:45:46.216', 2);
+INSERT INTO `quick_deployments` (`id`, `title`, `business_group_id`, `business_dept_id`, `description`, `status`, `task_count`, `creator_id`, `creator_name`, `start_time`, `end_time`, `duration`, `created_at`, `updated_at`, `execution_mode`) VALUES (13, 'saas4新版本迭代', 14, 2, 'saas4新版本迭代', 3, 2, 1, '管理员', '2025-09-21 18:11:04.046', '2025-09-21 18:13:04.593', 220, '2025-09-21 18:10:45.148', '2025-09-21 18:13:04.789', 1);
+INSERT INTO `quick_deployments` (`id`, `title`, `business_group_id`, `business_dept_id`, `description`, `status`, `task_count`, `creator_id`, `creator_name`, `start_time`, `end_time`, `duration`, `created_at`, `updated_at`, `execution_mode`) VALUES (14, 'saas5-新服务上线', 9, 5, 'saas5-新服务上线', 3, 2, 1, '管理员', '2025-09-22 11:49:53.183', '2025-09-22 11:53:36.090', 220, '2025-09-22 11:49:40.389', '2025-09-22 11:53:36.251', 2);
+COMMIT;
+
+-- ----------------------------
+-- Table structure for sys_admin
+-- ----------------------------
+DROP TABLE IF EXISTS `sys_admin`;
+CREATE TABLE `sys_admin` (
+  `id` int NOT NULL AUTO_INCREMENT COMMENT '主键',
+  `post_id` int DEFAULT NULL COMMENT '岗位id',
+  `dept_id` int DEFAULT NULL COMMENT '部门id',
+  `username` varchar(64) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NOT NULL COMMENT '账号',
+  `password` varchar(64) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NOT NULL COMMENT '密码',
+  `nickname` varchar(64) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci DEFAULT NULL COMMENT '昵称',
+  `icon` varchar(500) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci DEFAULT NULL COMMENT '头像',
+  `email` varchar(64) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci DEFAULT NULL COMMENT '邮箱',
+  `phone` varchar(64) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci DEFAULT NULL COMMENT '手机',
+  `note` varchar(500) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci DEFAULT NULL COMMENT '备注信息',
+  `create_time` datetime NOT NULL COMMENT '创建时间',
+  `status` int NOT NULL DEFAULT '1' COMMENT '帐号启用状态：1->启用,2->禁用',
+  PRIMARY KEY (`id`) USING BTREE,
+  UNIQUE KEY `username` (`username`) USING BTREE,
+  KEY `create_time` (`create_time`) USING BTREE
+) ENGINE=InnoDB AUTO_INCREMENT=103 DEFAULT CHARSET=utf8mb3 ROW_FORMAT=DYNAMIC COMMENT='后台管理员表';
+
+-- ----------------------------
+-- Records of sys_admin
+-- ----------------------------
+BEGIN;
+INSERT INTO `sys_admin` (`id`, `post_id`, `dept_id`, `username`, `password`, `nickname`, `icon`, `email`, `phone`, `note`, `create_time`, `status`) VALUES (89, 1, 15, 'admin', 'e10adc3949ba59abbe56e057f20f883e', 'admin', 'https://www.deviops.cn/api/v1/upload/20250924/516574646.png', '123456789@qq.com', '13754354536', '后端研发', '2023-05-23 22:15:50', 1);
+INSERT INTO `sys_admin` (`id`, `post_id`, `dept_id`, `username`, `password`, `nickname`, `icon`, `email`, `phone`, `note`, `create_time`, `status`) VALUES (102, 12, 14, 'test', 'e10adc3949ba59abbe56e057f20f883e', 'test', 'http://127.0.0.1:8000/upload/20250924/941698000.png', 'zfwh1024@163.com', '13826541511', '游客', '2025-09-24 12:49:06', 1);
+COMMIT;
+
+-- ----------------------------
+-- Table structure for sys_admin_role
+-- ----------------------------
+DROP TABLE IF EXISTS `sys_admin_role`;
+CREATE TABLE `sys_admin_role` (
+  `admin_id` int NOT NULL COMMENT '管理员id',
+  `role_id` int NOT NULL COMMENT '角色id'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 ROW_FORMAT=DYNAMIC COMMENT='管理员和角色关系表';
+
+-- ----------------------------
+-- Records of sys_admin_role
+-- ----------------------------
+BEGIN;
+INSERT INTO `sys_admin_role` (`admin_id`, `role_id`) VALUES (89, 1);
+INSERT INTO `sys_admin_role` (`admin_id`, `role_id`) VALUES (102, 13);
+COMMIT;
+
+-- ----------------------------
+-- Table structure for sys_dept
+-- ----------------------------
+DROP TABLE IF EXISTS `sys_dept`;
+CREATE TABLE `sys_dept` (
+  `id` int NOT NULL AUTO_INCREMENT COMMENT '主键',
+  `parent_id` int NOT NULL COMMENT '父id',
+  `dept_type` int NOT NULL COMMENT '部门类型（1->公司, 2->中心，3->部门）',
+  `dept_name` varchar(30) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NOT NULL COMMENT '部门名称',
+  `dept_status` int NOT NULL DEFAULT '1' COMMENT '部门状态（1->正常 2->停用）',
+  `create_time` datetime NOT NULL COMMENT '创建时间',
+  PRIMARY KEY (`id`) USING BTREE,
+  UNIQUE KEY `dept_name` (`dept_name`) USING BTREE
+) ENGINE=InnoDB AUTO_INCREMENT=17 DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_bin ROW_FORMAT=DYNAMIC COMMENT='部门表';
+
+-- ----------------------------
+-- Records of sys_dept
+-- ----------------------------
+BEGIN;
+INSERT INTO `sys_dept` (`id`, `parent_id`, `dept_type`, `dept_name`, `dept_status`, `create_time`) VALUES (1, 0, 1, '神舟科技有限公司', 1, '2023-06-14 17:53:23');
+INSERT INTO `sys_dept` (`id`, `parent_id`, `dept_type`, `dept_name`, `dept_status`, `create_time`) VALUES (2, 1, 2, '深圳研发中心', 1, '2023-06-14 17:53:55');
+INSERT INTO `sys_dept` (`id`, `parent_id`, `dept_type`, `dept_name`, `dept_status`, `create_time`) VALUES (3, 2, 3, '架构设计部门', 1, '2023-06-14 17:54:15');
+INSERT INTO `sys_dept` (`id`, `parent_id`, `dept_type`, `dept_name`, `dept_status`, `create_time`) VALUES (5, 2, 3, '后端研发部门', 1, '2023-06-14 17:55:25');
+INSERT INTO `sys_dept` (`id`, `parent_id`, `dept_type`, `dept_name`, `dept_status`, `create_time`) VALUES (6, 2, 3, '系统测试部门', 1, '2023-06-14 17:55:31');
+INSERT INTO `sys_dept` (`id`, `parent_id`, `dept_type`, `dept_name`, `dept_status`, `create_time`) VALUES (12, 1, 2, '北京研发中心', 1, '2025-06-28 23:42:46');
+INSERT INTO `sys_dept` (`id`, `parent_id`, `dept_type`, `dept_name`, `dept_status`, `create_time`) VALUES (13, 1, 2, '重庆研发中心', 1, '2025-06-28 23:43:15');
+INSERT INTO `sys_dept` (`id`, `parent_id`, `dept_type`, `dept_name`, `dept_status`, `create_time`) VALUES (14, 12, 3, '运维1部', 1, '2025-06-28 23:43:34');
+INSERT INTO `sys_dept` (`id`, `parent_id`, `dept_type`, `dept_name`, `dept_status`, `create_time`) VALUES (15, 13, 3, '运维2部', 1, '2025-06-28 23:44:15');
+INSERT INTO `sys_dept` (`id`, `parent_id`, `dept_type`, `dept_name`, `dept_status`, `create_time`) VALUES (16, 13, 3, '重庆研发部-001', 1, '2025-07-04 13:10:58');
+COMMIT;
+
+-- ----------------------------
+-- Table structure for sys_login_info
+-- ----------------------------
+DROP TABLE IF EXISTS `sys_login_info`;
+CREATE TABLE `sys_login_info` (
+  `id` int NOT NULL AUTO_INCREMENT COMMENT 'ID',
+  `username` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT '' COMMENT '用户账号',
+  `ip_address` varchar(128) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT '' COMMENT '登录IP地址',
+  `login_location` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT '' COMMENT '登录地点',
+  `browser` varchar(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT '' COMMENT '浏览器类型',
+  `os` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT '' COMMENT '操作系统',
+  `login_status` int DEFAULT NULL COMMENT '登录状态（1-成功 2-失败）',
+  `message` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT '' COMMENT '提示消息',
+  `login_time` datetime DEFAULT NULL COMMENT '访问时间',
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE=InnoDB AUTO_INCREMENT=300 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin ROW_FORMAT=DYNAMIC COMMENT='登录日志记录';
+
+-- ----------------------------
+-- Records of sys_login_info
+-- ----------------------------
+BEGIN;
+INSERT INTO `sys_login_info` (`id`, `username`, `ip_address`, `login_location`, `browser`, `os`, `login_status`, `message`, `login_time`) VALUES (1, 'admin', '10.7.16.22', '局域网', 'Chrome/137.0.0.0', 'Mac OS X 10_15_7', 1, '登录成功', '2025-06-26 15:10:07');
+INSERT INTO `sys_login_info` (`id`, `username`, `ip_address`, `login_location`, `browser`, `os`, `login_status`, `message`, `login_time`) VALUES (2, 'admin', '10.7.16.22', '局域网', 'Chrome/137.0.0.0', 'Mac OS X 10_15_7', 2, '验证码不正确', '2025-06-27 10:11:15');
+INSERT INTO `sys_login_info` (`id`, `username`, `ip_address`, `login_location`, `browser`, `os`, `login_status`, `message`, `login_time`) VALUES (3, 'admin', '10.7.16.22', '局域网', 'Chrome/137.0.0.0', 'Mac OS X 10_15_7', 1, '登录成功', '2025-06-27 10:11:22');
+INSERT INTO `sys_login_info` (`id`, `username`, `ip_address`, `login_location`, `browser`, `os`, `login_status`, `message`, `login_time`) VALUES (4, 'admin', '10.7.16.22', '局域网', 'Chrome/137.0.0.0', 'Mac OS X 10_15_7', 1, '登录成功', '2025-06-27 10:35:36');
+INSERT INTO `sys_login_info` (`id`, `username`, `ip_address`, `login_location`, `browser`, `os`, `login_status`, `message`, `login_time`) VALUES (5, 'admin', '10.7.16.22', '局域网', 'Chrome/137.0.0.0', 'Mac OS X 10_15_7', 1, '登录成功', '2025-06-27 10:39:36');
+INSERT INTO `sys_login_info` (`id`, `username`, `ip_address`, `login_location`, `browser`, `os`, `login_status`, `message`, `login_time`) VALUES (6, 'admin', '10.7.16.22', '局域网', 'Chrome/137.0.0.0', 'Mac OS X 10_15_7', 2, '验证码已过期', '2025-06-27 10:51:17');
+INSERT INTO `sys_login_info` (`id`, `username`, `ip_address`, `login_location`, `browser`, `os`, `login_status`, `message`, `login_time`) VALUES (7, 'admin', '10.7.16.22', '局域网', 'Chrome/137.0.0.0', 'Mac OS X 10_15_7', 1, '登录成功', '2025-06-27 10:51:22');
+INSERT INTO `sys_login_info` (`id`, `username`, `ip_address`, `login_location`, `browser`, `os`, `login_status`, `message`, `login_time`) VALUES (8, 'admin', '10.7.16.22', '局域网', 'Chrome/137.0.0.0', 'Mac OS X 10_15_7', 1, '登录成功', '2025-06-27 11:06:40');
+INSERT INTO `sys_login_info` (`id`, `username`, `ip_address`, `login_location`, `browser`, `os`, `login_status`, `message`, `login_time`) VALUES (9, 'admin', '10.7.16.22', '局域网', 'Chrome/137.0.0.0', 'Mac OS X 10_15_7', 1, '登录成功', '2025-06-27 13:56:34');
+INSERT INTO `sys_login_info` (`id`, `username`, `ip_address`, `login_location`, `browser`, `os`, `login_status`, `message`, `login_time`) VALUES (10, 'admin', '10.7.16.22', '局域网', 'Chrome/137.0.0.0', 'Mac OS X 10_15_7', 1, '登录成功', '2025-06-27 14:56:28');
+INSERT INTO `sys_login_info` (`id`, `username`, `ip_address`, `login_location`, `browser`, `os`, `login_status`, `message`, `login_time`) VALUES (11, 'admin', '10.7.16.22', '局域网', 'Chrome/137.0.0.0', 'Mac OS X 10_15_7', 1, '登录成功', '2025-06-27 19:19:50');
+INSERT INTO `sys_login_info` (`id`, `username`, `ip_address`, `login_location`, `browser`, `os`, `login_status`, `message`, `login_time`) VALUES (12, 'admin', '192.168.3.40', '局域网', 'Chrome/137.0.0.0', 'Windows 10', 2, '密码不正确', '2025-06-28 14:29:35');
+INSERT INTO `sys_login_info` (`id`, `username`, `ip_address`, `login_location`, `browser`, `os`, `login_status`, `message`, `login_time`) VALUES (13, 'admin', '192.168.3.40', '局域网', 'Chrome/137.0.0.0', 'Windows 10', 1, '登录成功', '2025-06-28 14:29:40');
+INSERT INTO `sys_login_info` (`id`, `username`, `ip_address`, `login_location`, `browser`, `os`, `login_status`, `message`, `login_time`) VALUES (14, 'admin', '192.168.3.40', '局域网', 'Chrome/137.0.0.0', 'Windows 10', 1, '登录成功', '2025-06-28 15:57:37');
+INSERT INTO `sys_login_info` (`id`, `username`, `ip_address`, `login_location`, `browser`, `os`, `login_status`, `message`, `login_time`) VALUES (15, 'admin', '192.168.3.40', '局域网', 'Chrome/137.0.0.0', 'Windows 10', 1, '登录成功', '2025-06-28 15:58:50');
+INSERT INTO `sys_login_info` (`id`, `username`, `ip_address`, `login_location`, `browser`, `os`, `login_status`, `message`, `login_time`) VALUES (16, 'admin', '192.168.3.40', '局域网', 'Chrome/137.0.0.0', 'Windows 10', 1, '登录成功', '2025-06-28 16:01:59');
+INSERT INTO `sys_login_info` (`id`, `username`, `ip_address`, `login_location`, `browser`, `os`, `login_status`, `message`, `login_time`) VALUES (17, 'admin', '192.168.3.40', '局域网', 'Chrome/137.0.0.0', 'Windows 10', 1, '登录成功', '2025-06-28 19:06:18');
+INSERT INTO `sys_login_info` (`id`, `username`, `ip_address`, `login_location`, `browser`, `os`, `login_status`, `message`, `login_time`) VALUES (18, 'admin', '192.168.3.40', '局域网', 'Chrome/137.0.0.0', 'Windows 10', 1, '登录成功', '2025-06-28 23:36:22');
+INSERT INTO `sys_login_info` (`id`, `username`, `ip_address`, `login_location`, `browser`, `os`, `login_status`, `message`, `login_time`) VALUES (23, 'lisi', '192.168.3.40', '局域网', 'Chrome/137.0.0.0', 'Windows 10', 1, '登录成功', '2025-06-29 15:23:15');
+INSERT INTO `sys_login_info` (`id`, `username`, `ip_address`, `login_location`, `browser`, `os`, `login_status`, `message`, `login_time`) VALUES (24, 'test', '192.168.3.40', '局域网', 'Chrome/137.0.0.0', 'Windows 10', 2, '密码不正确', '2025-06-29 15:23:55');
+INSERT INTO `sys_login_info` (`id`, `username`, `ip_address`, `login_location`, `browser`, `os`, `login_status`, `message`, `login_time`) VALUES (25, 'test', '192.168.3.40', '局域网', 'Chrome/137.0.0.0', 'Windows 10', 1, '登录成功', '2025-06-29 15:24:00');
+INSERT INTO `sys_login_info` (`id`, `username`, `ip_address`, `login_location`, `browser`, `os`, `login_status`, `message`, `login_time`) VALUES (26, 'admin', '192.168.3.40', '局域网', 'Chrome/137.0.0.0', 'Windows 10', 1, '登录成功', '2025-06-29 15:24:42');
+INSERT INTO `sys_login_info` (`id`, `username`, `ip_address`, `login_location`, `browser`, `os`, `login_status`, `message`, `login_time`) VALUES (27, 'lisi', '192.168.3.40', '局域网', 'Chrome/137.0.0.0', 'Windows 10', 1, '登录成功', '2025-06-29 15:25:26');
+INSERT INTO `sys_login_info` (`id`, `username`, `ip_address`, `login_location`, `browser`, `os`, `login_status`, `message`, `login_time`) VALUES (28, 'admin', '192.168.3.40', '局域网', 'Chrome/137.0.0.0', 'Windows 10', 2, '密码不正确', '2025-06-29 15:26:54');
+INSERT INTO `sys_login_info` (`id`, `username`, `ip_address`, `login_location`, `browser`, `os`, `login_status`, `message`, `login_time`) VALUES (31, 'zhangfan', '192.168.3.40', '局域网', 'Chrome/137.0.0.0', 'Windows 10', 1, '登录成功', '2025-06-29 16:16:15');
+INSERT INTO `sys_login_info` (`id`, `username`, `ip_address`, `login_location`, `browser`, `os`, `login_status`, `message`, `login_time`) VALUES (32, 'admin', '192.168.3.40', '局域网', 'Chrome/137.0.0.0', 'Windows 10', 1, '登录成功', '2025-06-30 00:06:13');
+INSERT INTO `sys_login_info` (`id`, `username`, `ip_address`, `login_location`, `browser`, `os`, `login_status`, `message`, `login_time`) VALUES (33, 'admin', '192.168.3.40', '局域网', 'Chrome/137.0.0.0', 'Windows 10', 1, '登录成功', '2025-06-30 00:53:23');
+INSERT INTO `sys_login_info` (`id`, `username`, `ip_address`, `login_location`, `browser`, `os`, `login_status`, `message`, `login_time`) VALUES (34, 'lisi', '192.168.3.40', '局域网', 'Chrome/137.0.0.0', 'Windows 10', 1, '登录成功', '2025-06-30 00:53:59');
+INSERT INTO `sys_login_info` (`id`, `username`, `ip_address`, `login_location`, `browser`, `os`, `login_status`, `message`, `login_time`) VALUES (35, 'admin', '10.7.16.22', '局域网', 'Chrome/137.0.0.0', 'Mac OS X 10_15_7', 1, '登录成功', '2025-06-30 10:28:30');
+INSERT INTO `sys_login_info` (`id`, `username`, `ip_address`, `login_location`, `browser`, `os`, `login_status`, `message`, `login_time`) VALUES (36, 'admin', '10.7.16.22', '局域网', 'Chrome/137.0.0.0', 'Mac OS X 10_15_7', 1, '登录成功', '2025-07-01 10:30:54');
+INSERT INTO `sys_login_info` (`id`, `username`, `ip_address`, `login_location`, `browser`, `os`, `login_status`, `message`, `login_time`) VALUES (37, 'admin', '10.7.16.22', '局域网', 'Chrome/137.0.0.0', 'Mac OS X 10_15_7', 1, '登录成功', '2025-07-02 11:58:08');
+INSERT INTO `sys_login_info` (`id`, `username`, `ip_address`, `login_location`, `browser`, `os`, `login_status`, `message`, `login_time`) VALUES (38, 'admin', '10.7.16.22', '局域网', 'Chrome/137.0.0.0', 'Mac OS X 10_15_7', 1, '登录成功', '2025-07-03 11:59:20');
+INSERT INTO `sys_login_info` (`id`, `username`, `ip_address`, `login_location`, `browser`, `os`, `login_status`, `message`, `login_time`) VALUES (39, 'admin', '10.7.16.22', '局域网', 'Chrome/137.0.0.0', 'Mac OS X 10_15_7', 1, '登录成功', '2025-07-03 14:12:11');
+INSERT INTO `sys_login_info` (`id`, `username`, `ip_address`, `login_location`, `browser`, `os`, `login_status`, `message`, `login_time`) VALUES (40, 'admin', '10.7.16.22', '局域网', 'Chrome/137.0.0.0', 'Mac OS X 10_15_7', 1, '登录成功', '2025-07-03 14:27:21');
+INSERT INTO `sys_login_info` (`id`, `username`, `ip_address`, `login_location`, `browser`, `os`, `login_status`, `message`, `login_time`) VALUES (41, 'admin', '10.7.16.22', '局域网', 'Chrome/137.0.0.0', 'Mac OS X 10_15_7', 1, '登录成功', '2025-07-03 16:53:19');
+INSERT INTO `sys_login_info` (`id`, `username`, `ip_address`, `login_location`, `browser`, `os`, `login_status`, `message`, `login_time`) VALUES (42, 'zhangfan', '10.7.16.22', '局域网', 'Chrome/137.0.0.0', 'Mac OS X 10_15_7', 2, '密码不正确', '2025-07-03 17:26:51');
+INSERT INTO `sys_login_info` (`id`, `username`, `ip_address`, `login_location`, `browser`, `os`, `login_status`, `message`, `login_time`) VALUES (43, 'zhangfan', '10.7.16.22', '局域网', 'Chrome/137.0.0.0', 'Mac OS X 10_15_7', 2, '密码不正确', '2025-07-03 17:26:57');
+INSERT INTO `sys_login_info` (`id`, `username`, `ip_address`, `login_location`, `browser`, `os`, `login_status`, `message`, `login_time`) VALUES (44, 'zhangfan', '10.7.16.22', '局域网', 'Chrome/137.0.0.0', 'Mac OS X 10_15_7', 2, '密码不正确', '2025-07-03 17:27:02');
+INSERT INTO `sys_login_info` (`id`, `username`, `ip_address`, `login_location`, `browser`, `os`, `login_status`, `message`, `login_time`) VALUES (45, 'zhangfan', '10.7.16.22', '局域网', 'Chrome/137.0.0.0', 'Mac OS X 10_15_7', 2, '密码不正确', '2025-07-03 17:27:11');
+INSERT INTO `sys_login_info` (`id`, `username`, `ip_address`, `login_location`, `browser`, `os`, `login_status`, `message`, `login_time`) VALUES (46, 'zhangsan', '10.7.16.22', '局域网', 'Chrome/137.0.0.0', 'Mac OS X 10_15_7', 2, '密码不正确', '2025-07-03 17:27:18');
+INSERT INTO `sys_login_info` (`id`, `username`, `ip_address`, `login_location`, `browser`, `os`, `login_status`, `message`, `login_time`) VALUES (47, 'admin', '10.7.16.22', '局域网', 'Chrome/137.0.0.0', 'Mac OS X 10_15_7', 1, '登录成功', '2025-07-03 17:27:29');
+INSERT INTO `sys_login_info` (`id`, `username`, `ip_address`, `login_location`, `browser`, `os`, `login_status`, `message`, `login_time`) VALUES (48, 'zhangfan', '10.7.16.22', '局域网', 'Chrome/137.0.0.0', 'Mac OS X 10_15_7', 1, '登录成功', '2025-07-03 17:28:28');
+INSERT INTO `sys_login_info` (`id`, `username`, `ip_address`, `login_location`, `browser`, `os`, `login_status`, `message`, `login_time`) VALUES (49, 'admin', '10.7.16.22', '局域网', 'Chrome/137.0.0.0', 'Mac OS X 10_15_7', 1, '登录成功', '2025-07-03 17:29:34');
+INSERT INTO `sys_login_info` (`id`, `username`, `ip_address`, `login_location`, `browser`, `os`, `login_status`, `message`, `login_time`) VALUES (50, 'admin', '10.7.16.22', '局域网', 'Chrome/137.0.0.0', 'Mac OS X 10_15_7', 1, '登录成功', '2025-07-03 17:47:19');
+INSERT INTO `sys_login_info` (`id`, `username`, `ip_address`, `login_location`, `browser`, `os`, `login_status`, `message`, `login_time`) VALUES (51, 'zhangfan', '10.7.16.22', '局域网', 'Chrome/137.0.0.0', 'Mac OS X 10_15_7', 1, '登录成功', '2025-07-03 17:52:11');
+INSERT INTO `sys_login_info` (`id`, `username`, `ip_address`, `login_location`, `browser`, `os`, `login_status`, `message`, `login_time`) VALUES (52, 'admin', '10.7.16.22', '局域网', 'Chrome/137.0.0.0', 'Mac OS X 10_15_7', 1, '登录成功', '2025-07-03 17:54:00');
+INSERT INTO `sys_login_info` (`id`, `username`, `ip_address`, `login_location`, `browser`, `os`, `login_status`, `message`, `login_time`) VALUES (53, 'lisi', '10.7.16.22', '局域网', 'Chrome/137.0.0.0', 'Mac OS X 10_15_7', 1, '登录成功', '2025-07-03 18:54:26');
+INSERT INTO `sys_login_info` (`id`, `username`, `ip_address`, `login_location`, `browser`, `os`, `login_status`, `message`, `login_time`) VALUES (54, 'admin', '10.7.16.22', '局域网', 'Chrome/137.0.0.0', 'Mac OS X 10_15_7', 1, '登录成功', '2025-07-03 18:55:35');
+INSERT INTO `sys_login_info` (`id`, `username`, `ip_address`, `login_location`, `browser`, `os`, `login_status`, `message`, `login_time`) VALUES (55, 'admin', '10.7.16.22', '局域网', 'Chrome/137.0.0.0', 'Mac OS X 10_15_7', 1, '登录成功', '2025-07-04 13:01:03');
+INSERT INTO `sys_login_info` (`id`, `username`, `ip_address`, `login_location`, `browser`, `os`, `login_status`, `message`, `login_time`) VALUES (56, 'admin', '10.7.16.22', '局域网', 'Chrome/137.0.0.0', 'Mac OS X 10_15_7', 1, '登录成功', '2025-07-04 13:08:12');
+INSERT INTO `sys_login_info` (`id`, `username`, `ip_address`, `login_location`, `browser`, `os`, `login_status`, `message`, `login_time`) VALUES (57, 'admin', '10.7.16.22', '局域网', 'Chrome/137.0.0.0', 'Mac OS X 10_15_7', 1, '登录成功', '2025-07-04 16:46:54');
+INSERT INTO `sys_login_info` (`id`, `username`, `ip_address`, `login_location`, `browser`, `os`, `login_status`, `message`, `login_time`) VALUES (58, 'admin', '10.7.16.22', '局域网', 'Chrome/137.0.0.0', 'Mac OS X 10_15_7', 1, '登录成功', '2025-07-04 17:14:45');
+INSERT INTO `sys_login_info` (`id`, `username`, `ip_address`, `login_location`, `browser`, `os`, `login_status`, `message`, `login_time`) VALUES (59, 'zhangfan', '10.7.16.22', '局域网', 'Chrome/137.0.0.0', 'Mac OS X 10_15_7', 1, '登录成功', '2025-07-04 17:54:44');
+INSERT INTO `sys_login_info` (`id`, `username`, `ip_address`, `login_location`, `browser`, `os`, `login_status`, `message`, `login_time`) VALUES (60, 'admin', '10.7.16.22', '局域网', 'Chrome/137.0.0.0', 'Mac OS X 10_15_7', 1, '登录成功', '2025-07-04 17:55:09');
+INSERT INTO `sys_login_info` (`id`, `username`, `ip_address`, `login_location`, `browser`, `os`, `login_status`, `message`, `login_time`) VALUES (61, 'zhangfan', '10.7.16.22', '局域网', 'Chrome/137.0.0.0', 'Mac OS X 10_15_7', 1, '登录成功', '2025-07-04 17:55:39');
+INSERT INTO `sys_login_info` (`id`, `username`, `ip_address`, `login_location`, `browser`, `os`, `login_status`, `message`, `login_time`) VALUES (62, 'admin', '10.7.16.22', '局域网', 'Chrome/137.0.0.0', 'Mac OS X 10_15_7', 1, '登录成功', '2025-07-07 15:30:48');
+INSERT INTO `sys_login_info` (`id`, `username`, `ip_address`, `login_location`, `browser`, `os`, `login_status`, `message`, `login_time`) VALUES (63, 'admin', '10.7.16.22', '局域网', 'Chrome/137.0.0.0', 'Mac OS X 10_15_7', 1, '登录成功', '2025-07-08 17:57:42');
+INSERT INTO `sys_login_info` (`id`, `username`, `ip_address`, `login_location`, `browser`, `os`, `login_status`, `message`, `login_time`) VALUES (64, 'admin', '10.7.16.22', '局域网', 'Chrome/137.0.0.0', 'Mac OS X 10_15_7', 1, '登录成功', '2025-07-09 11:38:15');
+INSERT INTO `sys_login_info` (`id`, `username`, `ip_address`, `login_location`, `browser`, `os`, `login_status`, `message`, `login_time`) VALUES (65, 'admin', '10.7.16.22', '局域网', 'Chrome/137.0.0.0', 'Mac OS X 10_15_7', 1, '登录成功', '2025-07-10 10:39:06');
+INSERT INTO `sys_login_info` (`id`, `username`, `ip_address`, `login_location`, `browser`, `os`, `login_status`, `message`, `login_time`) VALUES (66, 'admin', '10.7.16.22', '局域网', 'Chrome/137.0.0.0', 'Mac OS X 10_15_7', 1, '登录成功', '2025-07-10 13:07:58');
+INSERT INTO `sys_login_info` (`id`, `username`, `ip_address`, `login_location`, `browser`, `os`, `login_status`, `message`, `login_time`) VALUES (67, 'admin', '10.7.16.22', '局域网', 'Chrome/137.0.0.0', 'Mac OS X 10_15_7', 1, '登录成功', '2025-07-10 14:22:56');
+INSERT INTO `sys_login_info` (`id`, `username`, `ip_address`, `login_location`, `browser`, `os`, `login_status`, `message`, `login_time`) VALUES (68, 'admin', '10.7.16.22', '局域网', 'Chrome/137.0.0.0', 'Mac OS X 10_15_7', 2, '验证码已过期', '2025-07-10 14:52:40');
+INSERT INTO `sys_login_info` (`id`, `username`, `ip_address`, `login_location`, `browser`, `os`, `login_status`, `message`, `login_time`) VALUES (69, 'admin', '10.7.16.22', '局域网', 'Chrome/137.0.0.0', 'Mac OS X 10_15_7', 2, '验证码已过期', '2025-07-10 14:52:46');
+INSERT INTO `sys_login_info` (`id`, `username`, `ip_address`, `login_location`, `browser`, `os`, `login_status`, `message`, `login_time`) VALUES (70, 'admin', '10.7.16.22', '局域网', 'Chrome/137.0.0.0', 'Mac OS X 10_15_7', 1, '登录成功', '2025-07-10 14:52:52');
+INSERT INTO `sys_login_info` (`id`, `username`, `ip_address`, `login_location`, `browser`, `os`, `login_status`, `message`, `login_time`) VALUES (71, 'admin', '10.7.16.22', '局域网', 'Chrome/137.0.0.0', 'Mac OS X 10_15_7', 1, '登录成功', '2025-07-14 11:40:24');
+INSERT INTO `sys_login_info` (`id`, `username`, `ip_address`, `login_location`, `browser`, `os`, `login_status`, `message`, `login_time`) VALUES (72, 'admin', '127.0.0.1', '服务器登录', 'Chrome/137.0.0.0', 'Mac OS X 10_15_7', 1, '登录成功', '2025-07-15 11:47:28');
+INSERT INTO `sys_login_info` (`id`, `username`, `ip_address`, `login_location`, `browser`, `os`, `login_status`, `message`, `login_time`) VALUES (73, 'admin', '127.0.0.1', '服务器登录', 'Chrome/137.0.0.0', 'Mac OS X 10_15_7', 1, '登录成功', '2025-07-15 14:24:52');
+INSERT INTO `sys_login_info` (`id`, `username`, `ip_address`, `login_location`, `browser`, `os`, `login_status`, `message`, `login_time`) VALUES (74, 'admin', '10.7.16.22', '局域网', 'Chrome/137.0.0.0', 'Mac OS X 10_15_7', 1, '登录成功', '2025-07-16 14:36:29');
+INSERT INTO `sys_login_info` (`id`, `username`, `ip_address`, `login_location`, `browser`, `os`, `login_status`, `message`, `login_time`) VALUES (75, 'admin', '10.7.16.22', '局域网', 'Chrome/137.0.0.0', 'Mac OS X 10_15_7', 1, '登录成功', '2025-07-16 15:51:44');
+INSERT INTO `sys_login_info` (`id`, `username`, `ip_address`, `login_location`, `browser`, `os`, `login_status`, `message`, `login_time`) VALUES (76, 'admin', '10.7.16.22', '局域网', 'Chrome/137.0.0.0', 'Mac OS X 10_15_7', 1, '登录成功', '2025-07-17 10:55:44');
+INSERT INTO `sys_login_info` (`id`, `username`, `ip_address`, `login_location`, `browser`, `os`, `login_status`, `message`, `login_time`) VALUES (78, 'admin', '10.7.16.22', '局域网', 'Chrome/137.0.0.0', 'Mac OS X 10_15_7', 1, '登录成功', '2025-07-17 20:45:35');
+INSERT INTO `sys_login_info` (`id`, `username`, `ip_address`, `login_location`, `browser`, `os`, `login_status`, `message`, `login_time`) VALUES (79, 'admin', '127.0.0.1', '服务器登录', 'Chrome/138.0.0.0', 'Mac OS X 10_15_7', 1, '登录成功', '2025-07-18 14:46:12');
+INSERT INTO `sys_login_info` (`id`, `username`, `ip_address`, `login_location`, `browser`, `os`, `login_status`, `message`, `login_time`) VALUES (80, 'admin', '127.0.0.1', '服务器登录', 'Chrome/138.0.0.0', 'Mac OS X 10_15_7', 1, '登录成功', '2025-07-18 14:49:31');
+INSERT INTO `sys_login_info` (`id`, `username`, `ip_address`, `login_location`, `browser`, `os`, `login_status`, `message`, `login_time`) VALUES (81, 'admin', '127.0.0.1', '服务器登录', 'Chrome/138.0.0.0', 'Mac OS X 10_15_7', 1, '登录成功', '2025-07-18 15:07:07');
+INSERT INTO `sys_login_info` (`id`, `username`, `ip_address`, `login_location`, `browser`, `os`, `login_status`, `message`, `login_time`) VALUES (82, 'zhangsan', '127.0.0.1', '服务器登录', 'Chrome/138.0.0.0', 'Mac OS X 10_15_7', 1, '登录成功', '2025-07-18 15:32:43');
+INSERT INTO `sys_login_info` (`id`, `username`, `ip_address`, `login_location`, `browser`, `os`, `login_status`, `message`, `login_time`) VALUES (83, 'admin', '127.0.0.1', '服务器登录', 'Chrome/138.0.0.0', 'Mac OS X 10_15_7', 1, '登录成功', '2025-07-18 15:33:28');
+INSERT INTO `sys_login_info` (`id`, `username`, `ip_address`, `login_location`, `browser`, `os`, `login_status`, `message`, `login_time`) VALUES (84, 'admin', '127.0.0.1', '服务器登录', 'Chrome/138.0.0.0', 'Mac OS X 10_15_7', 1, '登录成功', '2025-07-18 16:59:52');
+INSERT INTO `sys_login_info` (`id`, `username`, `ip_address`, `login_location`, `browser`, `os`, `login_status`, `message`, `login_time`) VALUES (85, 'admin', '127.0.0.1', '服务器登录', 'Chrome/138.0.0.0', 'Mac OS X 10_15_7', 1, '登录成功', '2025-07-22 10:20:45');
+INSERT INTO `sys_login_info` (`id`, `username`, `ip_address`, `login_location`, `browser`, `os`, `login_status`, `message`, `login_time`) VALUES (86, 'zhangfan', '127.0.0.1', '服务器登录', 'Chrome/138.0.0.0', 'Mac OS X 10_15_7', 2, '密码不正确', '2025-07-22 10:29:25');
+INSERT INTO `sys_login_info` (`id`, `username`, `ip_address`, `login_location`, `browser`, `os`, `login_status`, `message`, `login_time`) VALUES (87, 'zhangfan', '127.0.0.1', '服务器登录', 'Chrome/138.0.0.0', 'Mac OS X 10_15_7', 2, '密码不正确', '2025-07-22 10:29:36');
+INSERT INTO `sys_login_info` (`id`, `username`, `ip_address`, `login_location`, `browser`, `os`, `login_status`, `message`, `login_time`) VALUES (88, 'zhangsan', '127.0.0.1', '服务器登录', 'Chrome/138.0.0.0', 'Mac OS X 10_15_7', 1, '登录成功', '2025-07-22 10:29:45');
+INSERT INTO `sys_login_info` (`id`, `username`, `ip_address`, `login_location`, `browser`, `os`, `login_status`, `message`, `login_time`) VALUES (89, 'admin', '127.0.0.1', '服务器登录', 'Chrome/138.0.0.0', 'Mac OS X 10_15_7', 1, '登录成功', '2025-07-22 10:30:24');
+INSERT INTO `sys_login_info` (`id`, `username`, `ip_address`, `login_location`, `browser`, `os`, `login_status`, `message`, `login_time`) VALUES (90, 'admin', '127.0.0.1', '服务器登录', 'Chrome/138.0.0.0', 'Mac OS X 10_15_7', 1, '登录成功', '2025-07-22 14:22:55');
+INSERT INTO `sys_login_info` (`id`, `username`, `ip_address`, `login_location`, `browser`, `os`, `login_status`, `message`, `login_time`) VALUES (91, 'admin', '127.0.0.1', '服务器登录', 'Chrome/138.0.0.0', 'Mac OS X 10_15_7', 1, '登录成功', '2025-07-22 16:09:14');
+INSERT INTO `sys_login_info` (`id`, `username`, `ip_address`, `login_location`, `browser`, `os`, `login_status`, `message`, `login_time`) VALUES (92, 'admin', '127.0.0.1', '服务器登录', 'Chrome/138.0.0.0', 'Windows 10', 1, '登录成功', '2025-07-22 22:45:37');
+INSERT INTO `sys_login_info` (`id`, `username`, `ip_address`, `login_location`, `browser`, `os`, `login_status`, `message`, `login_time`) VALUES (93, 'admin', '127.0.0.1', '服务器登录', 'Chrome/138.0.0.0', 'Mac OS X 10_15_7', 1, '登录成功', '2025-07-23 10:26:42');
+INSERT INTO `sys_login_info` (`id`, `username`, `ip_address`, `login_location`, `browser`, `os`, `login_status`, `message`, `login_time`) VALUES (94, 'admin', '127.0.0.1', '服务器登录', 'Chrome/138.0.0.0', 'Mac OS X 10_15_7', 1, '登录成功', '2025-07-24 10:28:20');
+INSERT INTO `sys_login_info` (`id`, `username`, `ip_address`, `login_location`, `browser`, `os`, `login_status`, `message`, `login_time`) VALUES (95, 'admin', '127.0.0.1', '服务器登录', 'Chrome/138.0.0.0', 'Windows 10', 1, '登录成功', '2025-07-24 14:39:29');
+INSERT INTO `sys_login_info` (`id`, `username`, `ip_address`, `login_location`, `browser`, `os`, `login_status`, `message`, `login_time`) VALUES (96, 'admin', '127.0.0.1', '服务器登录', 'Chrome/138.0.0.0', 'Windows 10', 1, '登录成功', '2025-07-24 14:40:05');
+INSERT INTO `sys_login_info` (`id`, `username`, `ip_address`, `login_location`, `browser`, `os`, `login_status`, `message`, `login_time`) VALUES (97, 'admin', '127.0.0.1', '服务器登录', 'Chrome/138.0.0.0', 'Windows 10', 1, '登录成功', '2025-07-24 14:42:30');
+INSERT INTO `sys_login_info` (`id`, `username`, `ip_address`, `login_location`, `browser`, `os`, `login_status`, `message`, `login_time`) VALUES (98, 'admin', '127.0.0.1', '服务器登录', 'Chrome/138.0.0.0', 'Mac OS X 10_15_7', 1, '登录成功', '2025-07-24 15:21:36');
+INSERT INTO `sys_login_info` (`id`, `username`, `ip_address`, `login_location`, `browser`, `os`, `login_status`, `message`, `login_time`) VALUES (99, 'admin', '127.0.0.1', '服务器登录', 'Chrome/138.0.0.0', 'Mac OS X 10_15_7', 1, '登录成功', '2025-07-24 19:42:47');
+INSERT INTO `sys_login_info` (`id`, `username`, `ip_address`, `login_location`, `browser`, `os`, `login_status`, `message`, `login_time`) VALUES (130, 'admin', '127.0.0.1', '服务器登录', 'Chrome/138.0.0.0', 'Mac OS X 10_15_7', 1, '登录成功', '2025-07-31 12:41:48');
+INSERT INTO `sys_login_info` (`id`, `username`, `ip_address`, `login_location`, `browser`, `os`, `login_status`, `message`, `login_time`) VALUES (131, 'admin', '127.0.0.1', '服务器登录', 'Chrome/138.0.0.0', 'Mac OS X 10_15_7', 1, '登录成功', '2025-07-31 12:45:40');
+INSERT INTO `sys_login_info` (`id`, `username`, `ip_address`, `login_location`, `browser`, `os`, `login_status`, `message`, `login_time`) VALUES (132, 'admin', '127.0.0.1', '服务器登录', 'Chrome/138.0.0.0', 'Mac OS X 10_15_7', 1, '登录成功', '2025-07-31 12:46:34');
+INSERT INTO `sys_login_info` (`id`, `username`, `ip_address`, `login_location`, `browser`, `os`, `login_status`, `message`, `login_time`) VALUES (133, 'admin', '127.0.0.1', '服务器登录', 'Chrome/138.0.0.0', 'Mac OS X 10_15_7', 1, '登录成功', '2025-07-31 13:06:53');
+INSERT INTO `sys_login_info` (`id`, `username`, `ip_address`, `login_location`, `browser`, `os`, `login_status`, `message`, `login_time`) VALUES (134, 'admin', '127.0.0.1', '服务器登录', 'Chrome/138.0.0.0', 'Mac OS X 10_15_7', 1, '登录成功', '2025-07-31 13:20:24');
+INSERT INTO `sys_login_info` (`id`, `username`, `ip_address`, `login_location`, `browser`, `os`, `login_status`, `message`, `login_time`) VALUES (135, 'admin', '127.0.0.1', '服务器登录', 'Chrome/138.0.0.0', 'Mac OS X 10_15_7', 1, '登录成功', '2025-07-31 13:21:43');
+INSERT INTO `sys_login_info` (`id`, `username`, `ip_address`, `login_location`, `browser`, `os`, `login_status`, `message`, `login_time`) VALUES (136, 'admin', '127.0.0.1', '服务器登录', 'Chrome/138.0.0.0', 'Mac OS X 10_15_7', 2, '验证码不正确', '2025-07-31 19:45:11');
+INSERT INTO `sys_login_info` (`id`, `username`, `ip_address`, `login_location`, `browser`, `os`, `login_status`, `message`, `login_time`) VALUES (137, 'admin', '127.0.0.1', '服务器登录', 'Chrome/138.0.0.0', 'Mac OS X 10_15_7', 1, '登录成功', '2025-07-31 19:45:19');
+INSERT INTO `sys_login_info` (`id`, `username`, `ip_address`, `login_location`, `browser`, `os`, `login_status`, `message`, `login_time`) VALUES (138, 'admin', '127.0.0.1', '服务器登录', 'Chrome/138.0.0.0', 'Mac OS X 10_15_7', 1, '登录成功', '2025-07-31 21:19:11');
+INSERT INTO `sys_login_info` (`id`, `username`, `ip_address`, `login_location`, `browser`, `os`, `login_status`, `message`, `login_time`) VALUES (139, 'admin', '127.0.0.1', '服务器登录', 'Chrome/138.0.0.0', 'Mac OS X 10_15_7', 1, '登录成功', '2025-08-01 21:53:34');
+INSERT INTO `sys_login_info` (`id`, `username`, `ip_address`, `login_location`, `browser`, `os`, `login_status`, `message`, `login_time`) VALUES (140, 'admin', '127.0.0.1', '服务器登录', 'Chrome/138.0.0.0', 'Mac OS X 10_15_7', 1, '登录成功', '2025-08-02 00:16:46');
+INSERT INTO `sys_login_info` (`id`, `username`, `ip_address`, `login_location`, `browser`, `os`, `login_status`, `message`, `login_time`) VALUES (141, 'admin', '127.0.0.1', '服务器登录', 'Chrome/138.0.0.0', 'Mac OS X 10_15_7', 1, '登录成功', '2025-08-02 16:41:00');
+INSERT INTO `sys_login_info` (`id`, `username`, `ip_address`, `login_location`, `browser`, `os`, `login_status`, `message`, `login_time`) VALUES (142, 'admin', '127.0.0.1', '服务器登录', 'Chrome/138.0.0.0', 'Mac OS X 10_15_7', 1, '登录成功', '2025-08-03 16:51:00');
+INSERT INTO `sys_login_info` (`id`, `username`, `ip_address`, `login_location`, `browser`, `os`, `login_status`, `message`, `login_time`) VALUES (143, 'admin', '127.0.0.1', '服务器登录', 'Chrome/138.0.0.0', 'Mac OS X 10_15_7', 1, '登录成功', '2025-08-04 10:13:37');
+INSERT INTO `sys_login_info` (`id`, `username`, `ip_address`, `login_location`, `browser`, `os`, `login_status`, `message`, `login_time`) VALUES (144, 'admin', '127.0.0.1', '服务器登录', 'Chrome/138.0.0.0', 'Mac OS X 10_15_7', 1, '登录成功', '2025-08-04 19:35:28');
+INSERT INTO `sys_login_info` (`id`, `username`, `ip_address`, `login_location`, `browser`, `os`, `login_status`, `message`, `login_time`) VALUES (145, 'admin', '127.0.0.1', '服务器登录', 'Chrome/138.0.0.0', 'Windows 10', 1, '登录成功', '2025-08-04 22:34:40');
+INSERT INTO `sys_login_info` (`id`, `username`, `ip_address`, `login_location`, `browser`, `os`, `login_status`, `message`, `login_time`) VALUES (146, 'admin', '127.0.0.1', '服务器登录', 'Chrome/138.0.0.0', 'Mac OS X 10_15_7', 1, '登录成功', '2025-08-05 09:59:29');
+INSERT INTO `sys_login_info` (`id`, `username`, `ip_address`, `login_location`, `browser`, `os`, `login_status`, `message`, `login_time`) VALUES (147, 'admin', '127.0.0.1', '服务器登录', 'Chrome/138.0.0.0', 'Mac OS X 10_15_7', 1, '登录成功', '2025-08-05 14:40:59');
+INSERT INTO `sys_login_info` (`id`, `username`, `ip_address`, `login_location`, `browser`, `os`, `login_status`, `message`, `login_time`) VALUES (148, 'admin', '127.0.0.1', '服务器登录', 'Chrome/138.0.0.0', 'Mac OS X 10_15_7', 1, '登录成功', '2025-08-05 14:41:09');
+INSERT INTO `sys_login_info` (`id`, `username`, `ip_address`, `login_location`, `browser`, `os`, `login_status`, `message`, `login_time`) VALUES (149, 'admin', '127.0.0.1', '服务器登录', 'Chrome/138.0.0.0', 'Mac OS X 10_15_7', 1, '登录成功', '2025-08-05 14:41:28');
+INSERT INTO `sys_login_info` (`id`, `username`, `ip_address`, `login_location`, `browser`, `os`, `login_status`, `message`, `login_time`) VALUES (150, 'admin', '127.0.0.1', '服务器登录', 'Chrome/138.0.0.0', 'Windows 10', 1, '登录成功', '2025-08-05 23:29:26');
+INSERT INTO `sys_login_info` (`id`, `username`, `ip_address`, `login_location`, `browser`, `os`, `login_status`, `message`, `login_time`) VALUES (151, 'admin', '127.0.0.1', '服务器登录', 'Chrome/139.0.0.0', 'Mac OS X 10_15_7', 1, '登录成功', '2025-08-06 13:37:40');
+INSERT INTO `sys_login_info` (`id`, `username`, `ip_address`, `login_location`, `browser`, `os`, `login_status`, `message`, `login_time`) VALUES (152, 'admin', '127.0.0.1', '服务器登录', 'Chrome/139.0.0.0', 'Mac OS X 10_15_7', 1, '登录成功', '2025-08-06 13:39:02');
+INSERT INTO `sys_login_info` (`id`, `username`, `ip_address`, `login_location`, `browser`, `os`, `login_status`, `message`, `login_time`) VALUES (153, 'admin', '127.0.0.1', '服务器登录', 'Chrome/139.0.0.0', 'Mac OS X 10_15_7', 1, '登录成功', '2025-08-06 14:37:11');
+INSERT INTO `sys_login_info` (`id`, `username`, `ip_address`, `login_location`, `browser`, `os`, `login_status`, `message`, `login_time`) VALUES (154, 'admin', '127.0.0.1', '服务器登录', 'Chrome/139.0.0.0', 'Mac OS X 10_15_7', 1, '登录成功', '2025-08-06 16:59:05');
+INSERT INTO `sys_login_info` (`id`, `username`, `ip_address`, `login_location`, `browser`, `os`, `login_status`, `message`, `login_time`) VALUES (155, 'admin', '127.0.0.1', '服务器登录', 'Chrome/138.0.0.0', 'Windows 10', 1, '登录成功', '2025-08-06 22:34:58');
+INSERT INTO `sys_login_info` (`id`, `username`, `ip_address`, `login_location`, `browser`, `os`, `login_status`, `message`, `login_time`) VALUES (156, 'admin', '127.0.0.1', '服务器登录', 'Chrome/139.0.0.0', 'Mac OS X 10_15_7', 2, '验证码不正确', '2025-08-07 14:54:35');
+INSERT INTO `sys_login_info` (`id`, `username`, `ip_address`, `login_location`, `browser`, `os`, `login_status`, `message`, `login_time`) VALUES (157, 'admin', '127.0.0.1', '服务器登录', 'Chrome/139.0.0.0', 'Mac OS X 10_15_7', 1, '登录成功', '2025-08-07 14:54:40');
+INSERT INTO `sys_login_info` (`id`, `username`, `ip_address`, `login_location`, `browser`, `os`, `login_status`, `message`, `login_time`) VALUES (158, 'admin', '127.0.0.1', '服务器登录', 'Chrome/138.0.0.0', 'Windows 10', 1, '登录成功', '2025-08-07 22:48:24');
+INSERT INTO `sys_login_info` (`id`, `username`, `ip_address`, `login_location`, `browser`, `os`, `login_status`, `message`, `login_time`) VALUES (159, 'admin', '127.0.0.1', '服务器登录', 'Chrome/138.0.0.0', 'Windows 10', 1, '登录成功', '2025-08-07 23:13:30');
+INSERT INTO `sys_login_info` (`id`, `username`, `ip_address`, `login_location`, `browser`, `os`, `login_status`, `message`, `login_time`) VALUES (160, 'admin', '127.0.0.1', '服务器登录', 'Chrome/139.0.0.0', 'Mac OS X 10_15_7', 1, '登录成功', '2025-08-08 15:04:01');
+INSERT INTO `sys_login_info` (`id`, `username`, `ip_address`, `login_location`, `browser`, `os`, `login_status`, `message`, `login_time`) VALUES (161, 'admin', '127.0.0.1', '服务器登录', 'Chrome/139.0.0.0', 'Mac OS X 10_15_7', 1, '登录成功', '2025-08-08 23:48:29');
+INSERT INTO `sys_login_info` (`id`, `username`, `ip_address`, `login_location`, `browser`, `os`, `login_status`, `message`, `login_time`) VALUES (162, 'admin', '127.0.0.1', '服务器登录', 'Chrome/139.0.0.0', 'Mac OS X 10_15_7', 1, '登录成功', '2025-08-09 12:59:01');
+INSERT INTO `sys_login_info` (`id`, `username`, `ip_address`, `login_location`, `browser`, `os`, `login_status`, `message`, `login_time`) VALUES (163, 'admin', '127.0.0.1', '服务器登录', 'Chrome/139.0.0.0', 'Mac OS X 10_15_7', 1, '登录成功', '2025-08-10 13:13:50');
+INSERT INTO `sys_login_info` (`id`, `username`, `ip_address`, `login_location`, `browser`, `os`, `login_status`, `message`, `login_time`) VALUES (164, 'admin', '127.0.0.1', '服务器登录', 'Chrome/139.0.0.0', 'Mac OS X 10_15_7', 1, '登录成功', '2025-08-11 11:14:05');
+INSERT INTO `sys_login_info` (`id`, `username`, `ip_address`, `login_location`, `browser`, `os`, `login_status`, `message`, `login_time`) VALUES (165, 'admin', '127.0.0.1', '服务器登录', 'Chrome/139.0.0.0', 'Mac OS X 10_15_7', 1, '登录成功', '2025-08-12 11:16:21');
+INSERT INTO `sys_login_info` (`id`, `username`, `ip_address`, `login_location`, `browser`, `os`, `login_status`, `message`, `login_time`) VALUES (166, 'admin', '127.0.0.1', '服务器登录', 'Chrome/139.0.0.0', 'Mac OS X 10_15_7', 1, '登录成功', '2025-08-13 10:33:05');
+INSERT INTO `sys_login_info` (`id`, `username`, `ip_address`, `login_location`, `browser`, `os`, `login_status`, `message`, `login_time`) VALUES (167, 'admin', '127.0.0.1', '服务器登录', 'Chrome/139.0.0.0', 'Mac OS X 10_15_7', 1, '登录成功', '2025-08-14 10:36:39');
+INSERT INTO `sys_login_info` (`id`, `username`, `ip_address`, `login_location`, `browser`, `os`, `login_status`, `message`, `login_time`) VALUES (168, 'admin', '127.0.0.1', '服务器登录', 'Chrome/139.0.0.0', 'Mac OS X 10_15_7', 1, '登录成功', '2025-08-14 21:41:10');
+INSERT INTO `sys_login_info` (`id`, `username`, `ip_address`, `login_location`, `browser`, `os`, `login_status`, `message`, `login_time`) VALUES (169, 'admin', '127.0.0.1', '服务器登录', 'Chrome/139.0.0.0', 'Mac OS X 10_15_7', 1, '登录成功', '2025-08-15 10:57:16');
+INSERT INTO `sys_login_info` (`id`, `username`, `ip_address`, `login_location`, `browser`, `os`, `login_status`, `message`, `login_time`) VALUES (170, 'admin', '127.0.0.1', '服务器登录', 'Chrome/139.0.0.0', 'Mac OS X 10_15_7', 1, '登录成功', '2025-08-17 18:12:31');
+INSERT INTO `sys_login_info` (`id`, `username`, `ip_address`, `login_location`, `browser`, `os`, `login_status`, `message`, `login_time`) VALUES (171, 'admin', '127.0.0.1', '服务器登录', 'Chrome/139.0.0.0', 'Mac OS X 10_15_7', 1, '登录成功', '2025-08-21 11:33:26');
+INSERT INTO `sys_login_info` (`id`, `username`, `ip_address`, `login_location`, `browser`, `os`, `login_status`, `message`, `login_time`) VALUES (172, 'admin', '127.0.0.1', '服务器登录', 'Chrome/139.0.0.0', 'Mac OS X 10_15_7', 1, '登录成功', '2025-08-21 11:39:58');
+INSERT INTO `sys_login_info` (`id`, `username`, `ip_address`, `login_location`, `browser`, `os`, `login_status`, `message`, `login_time`) VALUES (173, 'admin', '127.0.0.1', '服务器登录', 'Chrome/139.0.0.0', 'Mac OS X 10_15_7', 1, '登录成功', '2025-08-22 10:41:13');
+INSERT INTO `sys_login_info` (`id`, `username`, `ip_address`, `login_location`, `browser`, `os`, `login_status`, `message`, `login_time`) VALUES (174, 'admin', '127.0.0.1', '服务器登录', 'Chrome/139.0.0.0', 'Mac OS X 10_15_7', 1, '登录成功', '2025-08-23 12:35:49');
+INSERT INTO `sys_login_info` (`id`, `username`, `ip_address`, `login_location`, `browser`, `os`, `login_status`, `message`, `login_time`) VALUES (175, 'admin', '127.0.0.1', '服务器登录', 'Chrome/139.0.0.0', 'Mac OS X 10_15_7', 1, '登录成功', '2025-08-23 13:47:27');
+INSERT INTO `sys_login_info` (`id`, `username`, `ip_address`, `login_location`, `browser`, `os`, `login_status`, `message`, `login_time`) VALUES (176, 'admin', '127.0.0.1', '服务器登录', 'Chrome/139.0.0.0', 'Mac OS X 10_15_7', 1, '登录成功', '2025-08-23 18:36:52');
+INSERT INTO `sys_login_info` (`id`, `username`, `ip_address`, `login_location`, `browser`, `os`, `login_status`, `message`, `login_time`) VALUES (177, 'admin', '127.0.0.1', '服务器登录', 'Chrome/139.0.0.0', 'Mac OS X 10_15_7', 1, '登录成功', '2025-08-23 22:43:09');
+INSERT INTO `sys_login_info` (`id`, `username`, `ip_address`, `login_location`, `browser`, `os`, `login_status`, `message`, `login_time`) VALUES (178, 'admin', '127.0.0.1', '服务器登录', 'Chrome/139.0.0.0', 'Mac OS X 10_15_7', 1, '登录成功', '2025-08-23 22:43:11');
+INSERT INTO `sys_login_info` (`id`, `username`, `ip_address`, `login_location`, `browser`, `os`, `login_status`, `message`, `login_time`) VALUES (179, 'admin', '127.0.0.1', '服务器登录', 'Chrome/139.0.0.0', 'Mac OS X 10_15_7', 1, '登录成功', '2025-08-24 15:27:16');
+INSERT INTO `sys_login_info` (`id`, `username`, `ip_address`, `login_location`, `browser`, `os`, `login_status`, `message`, `login_time`) VALUES (180, 'admin', '127.0.0.1', '服务器登录', 'Chrome/139.0.0.0', 'Mac OS X 10_15_7', 1, '登录成功', '2025-08-25 10:15:58');
+INSERT INTO `sys_login_info` (`id`, `username`, `ip_address`, `login_location`, `browser`, `os`, `login_status`, `message`, `login_time`) VALUES (182, 'admin', '127.0.0.1', '服务器登录', 'Chrome/139.0.0.0', 'Mac OS X 10_15_7', 2, '验证码已过期', '2025-08-25 15:19:48');
+INSERT INTO `sys_login_info` (`id`, `username`, `ip_address`, `login_location`, `browser`, `os`, `login_status`, `message`, `login_time`) VALUES (183, 'admin', '127.0.0.1', '服务器登录', 'Chrome/139.0.0.0', 'Mac OS X 10_15_7', 1, '登录成功', '2025-08-25 15:19:54');
+INSERT INTO `sys_login_info` (`id`, `username`, `ip_address`, `login_location`, `browser`, `os`, `login_status`, `message`, `login_time`) VALUES (184, 'admin', '127.0.0.1', '服务器登录', 'Chrome/139.0.0.0', 'Mac OS X 10_15_7', 1, '登录成功', '2025-08-26 19:59:49');
+INSERT INTO `sys_login_info` (`id`, `username`, `ip_address`, `login_location`, `browser`, `os`, `login_status`, `message`, `login_time`) VALUES (185, 'admin', '127.0.0.1', '服务器登录', 'Chrome/139.0.0.0', 'Mac OS X 10_15_7', 1, '登录成功', '2025-08-28 10:17:30');
+INSERT INTO `sys_login_info` (`id`, `username`, `ip_address`, `login_location`, `browser`, `os`, `login_status`, `message`, `login_time`) VALUES (186, 'admin', '127.0.0.1', '服务器登录', 'Chrome/139.0.0.0', 'Mac OS X 10_15_7', 1, '登录成功', '2025-08-29 10:28:08');
+INSERT INTO `sys_login_info` (`id`, `username`, `ip_address`, `login_location`, `browser`, `os`, `login_status`, `message`, `login_time`) VALUES (187, 'admin', '127.0.0.1', '服务器登录', 'Chrome/139.0.0.0', 'Mac OS X 10_15_7', 1, '登录成功', '2025-08-29 11:11:20');
+INSERT INTO `sys_login_info` (`id`, `username`, `ip_address`, `login_location`, `browser`, `os`, `login_status`, `message`, `login_time`) VALUES (188, 'admin', '127.0.0.1', '服务器登录', 'Chrome/139.0.0.0', 'Mac OS X 10_15_7', 1, '登录成功', '2025-08-29 11:30:08');
+INSERT INTO `sys_login_info` (`id`, `username`, `ip_address`, `login_location`, `browser`, `os`, `login_status`, `message`, `login_time`) VALUES (189, 'admin', '127.0.0.1', '服务器登录', 'Chrome/139.0.0.0', 'Mac OS X 10_15_7', 2, '验证码不正确', '2025-09-04 20:10:00');
+INSERT INTO `sys_login_info` (`id`, `username`, `ip_address`, `login_location`, `browser`, `os`, `login_status`, `message`, `login_time`) VALUES (190, 'admin', '127.0.0.1', '服务器登录', 'Chrome/139.0.0.0', 'Mac OS X 10_15_7', 1, '登录成功', '2025-09-04 20:10:06');
+INSERT INTO `sys_login_info` (`id`, `username`, `ip_address`, `login_location`, `browser`, `os`, `login_status`, `message`, `login_time`) VALUES (191, 'admin', '127.0.0.1', '服务器登录', 'Chrome/138.0.0.0', 'Windows 10', 2, '密码不正确', '2025-09-04 23:21:57');
+INSERT INTO `sys_login_info` (`id`, `username`, `ip_address`, `login_location`, `browser`, `os`, `login_status`, `message`, `login_time`) VALUES (192, 'admin', '127.0.0.1', '服务器登录', 'Chrome/138.0.0.0', 'Windows 10', 1, '登录成功', '2025-09-04 23:22:56');
+INSERT INTO `sys_login_info` (`id`, `username`, `ip_address`, `login_location`, `browser`, `os`, `login_status`, `message`, `login_time`) VALUES (193, 'admin', '127.0.0.1', '服务器登录', 'Chrome/139.0.0.0', 'Mac OS X 10_15_7', 1, '登录成功', '2025-09-05 20:11:51');
+INSERT INTO `sys_login_info` (`id`, `username`, `ip_address`, `login_location`, `browser`, `os`, `login_status`, `message`, `login_time`) VALUES (194, 'admin', '127.0.0.1', '服务器登录', 'Chrome/140.0.0.0', 'Mac OS X 10_15_7', 1, '登录成功', '2025-09-06 14:59:37');
+INSERT INTO `sys_login_info` (`id`, `username`, `ip_address`, `login_location`, `browser`, `os`, `login_status`, `message`, `login_time`) VALUES (195, 'admin', '127.0.0.1', '服务器登录', 'Chrome/140.0.0.0', 'Mac OS X 10_15_7', 1, '登录成功', '2025-09-06 15:30:20');
+INSERT INTO `sys_login_info` (`id`, `username`, `ip_address`, `login_location`, `browser`, `os`, `login_status`, `message`, `login_time`) VALUES (196, 'admin', '127.0.0.1', '服务器登录', 'Chrome/140.0.0.0', 'Mac OS X 10_15_7', 1, '登录成功', '2025-09-07 16:02:46');
+INSERT INTO `sys_login_info` (`id`, `username`, `ip_address`, `login_location`, `browser`, `os`, `login_status`, `message`, `login_time`) VALUES (197, 'admin', '127.0.0.1', '服务器登录', 'Chrome/140.0.0.0', 'Mac OS X 10_15_7', 1, '登录成功', '2025-09-08 10:26:00');
+INSERT INTO `sys_login_info` (`id`, `username`, `ip_address`, `login_location`, `browser`, `os`, `login_status`, `message`, `login_time`) VALUES (198, 'admin', '127.0.0.1', '服务器登录', 'Chrome/140.0.0.0', 'Mac OS X 10_15_7', 1, '登录成功', '2025-09-08 13:28:00');
+INSERT INTO `sys_login_info` (`id`, `username`, `ip_address`, `login_location`, `browser`, `os`, `login_status`, `message`, `login_time`) VALUES (199, 'admin', '127.0.0.1', '服务器登录', 'Chrome/140.0.0.0', 'Mac OS X 10_15_7', 1, '登录成功', '2025-09-09 15:05:23');
+INSERT INTO `sys_login_info` (`id`, `username`, `ip_address`, `login_location`, `browser`, `os`, `login_status`, `message`, `login_time`) VALUES (200, 'admin', '127.0.0.1', '服务器登录', 'Chrome/140.0.0.0', 'Mac OS X 10_15_7', 1, '登录成功', '2025-09-10 11:10:32');
+INSERT INTO `sys_login_info` (`id`, `username`, `ip_address`, `login_location`, `browser`, `os`, `login_status`, `message`, `login_time`) VALUES (201, 'admin', '127.0.0.1', '服务器登录', 'Chrome/138.0.0.0', 'Windows 10', 1, '登录成功', '2025-09-10 22:47:46');
+INSERT INTO `sys_login_info` (`id`, `username`, `ip_address`, `login_location`, `browser`, `os`, `login_status`, `message`, `login_time`) VALUES (202, 'zhangfan', '127.0.0.1', '服务器登录', 'Chrome/140.0.0.0', 'Mac OS X 10_15_7', 2, '密码不正确', '2025-09-11 10:43:54');
+INSERT INTO `sys_login_info` (`id`, `username`, `ip_address`, `login_location`, `browser`, `os`, `login_status`, `message`, `login_time`) VALUES (203, 'admin', '127.0.0.1', '服务器登录', 'Chrome/140.0.0.0', 'Mac OS X 10_15_7', 1, '登录成功', '2025-09-11 10:44:08');
+INSERT INTO `sys_login_info` (`id`, `username`, `ip_address`, `login_location`, `browser`, `os`, `login_status`, `message`, `login_time`) VALUES (204, 'admin', '127.0.0.1', '服务器登录', 'Chrome/140.0.0.0', 'Mac OS X 10_15_7', 1, '登录成功', '2025-09-11 12:29:57');
+INSERT INTO `sys_login_info` (`id`, `username`, `ip_address`, `login_location`, `browser`, `os`, `login_status`, `message`, `login_time`) VALUES (205, 'admin', '127.0.0.1', '服务器登录', 'Chrome/140.0.0.0', 'Mac OS X 10_15_7', 1, '登录成功', '2025-09-11 15:06:41');
+INSERT INTO `sys_login_info` (`id`, `username`, `ip_address`, `login_location`, `browser`, `os`, `login_status`, `message`, `login_time`) VALUES (206, 'admin', '127.0.0.1', '服务器登录', 'Chrome/140.0.0.0', 'Mac OS X 10_15_7', 1, '登录成功', '2025-09-11 15:09:15');
+INSERT INTO `sys_login_info` (`id`, `username`, `ip_address`, `login_location`, `browser`, `os`, `login_status`, `message`, `login_time`) VALUES (207, 'admin', '127.0.0.1', '服务器登录', 'Chrome/140.0.0.0', 'Mac OS X 10_15_7', 1, '登录成功', '2025-09-11 20:11:48');
+INSERT INTO `sys_login_info` (`id`, `username`, `ip_address`, `login_location`, `browser`, `os`, `login_status`, `message`, `login_time`) VALUES (208, 'admin', '127.0.0.1', '服务器登录', 'Chrome/140.0.0.0', 'Mac OS X 10_15_7', 1, '登录成功', '2025-09-11 20:49:30');
+INSERT INTO `sys_login_info` (`id`, `username`, `ip_address`, `login_location`, `browser`, `os`, `login_status`, `message`, `login_time`) VALUES (209, 'admin', '127.0.0.1', '服务器登录', 'Chrome/140.0.0.0', 'Mac OS X 10_15_7', 1, '登录成功', '2025-09-11 21:03:03');
+INSERT INTO `sys_login_info` (`id`, `username`, `ip_address`, `login_location`, `browser`, `os`, `login_status`, `message`, `login_time`) VALUES (210, 'admin', '127.0.0.1', '服务器登录', 'Chrome/140.0.0.0', 'Mac OS X 10_15_7', 1, '登录成功', '2025-09-12 10:23:06');
+INSERT INTO `sys_login_info` (`id`, `username`, `ip_address`, `login_location`, `browser`, `os`, `login_status`, `message`, `login_time`) VALUES (211, 'admin', '127.0.0.1', '服务器登录', 'Chrome/140.0.0.0', 'Mac OS X 10_15_7', 1, '登录成功', '2025-09-12 10:33:02');
+INSERT INTO `sys_login_info` (`id`, `username`, `ip_address`, `login_location`, `browser`, `os`, `login_status`, `message`, `login_time`) VALUES (212, 'admin', '127.0.0.1', '服务器登录', 'Chrome/140.0.0.0', 'Mac OS X 10_15_7', 1, '登录成功', '2025-09-12 11:20:47');
+INSERT INTO `sys_login_info` (`id`, `username`, `ip_address`, `login_location`, `browser`, `os`, `login_status`, `message`, `login_time`) VALUES (213, 'admin', '127.0.0.1', '服务器登录', 'Chrome/140.0.0.0', 'Mac OS X 10_15_7', 2, '验证码已过期', '2025-09-12 17:52:39');
+INSERT INTO `sys_login_info` (`id`, `username`, `ip_address`, `login_location`, `browser`, `os`, `login_status`, `message`, `login_time`) VALUES (214, 'admin', '127.0.0.1', '服务器登录', 'Chrome/140.0.0.0', 'Mac OS X 10_15_7', 1, '登录成功', '2025-09-12 17:52:46');
+INSERT INTO `sys_login_info` (`id`, `username`, `ip_address`, `login_location`, `browser`, `os`, `login_status`, `message`, `login_time`) VALUES (215, 'admin', '127.0.0.1', '服务器登录', 'Chrome/140.0.0.0', 'Mac OS X 10_15_7', 1, '登录成功', '2025-09-12 23:13:28');
+INSERT INTO `sys_login_info` (`id`, `username`, `ip_address`, `login_location`, `browser`, `os`, `login_status`, `message`, `login_time`) VALUES (216, 'admin', '127.0.0.1', '服务器登录', 'Chrome/140.0.0.0', 'Mac OS X 10_15_7', 1, '登录成功', '2025-09-13 15:21:53');
+INSERT INTO `sys_login_info` (`id`, `username`, `ip_address`, `login_location`, `browser`, `os`, `login_status`, `message`, `login_time`) VALUES (217, 'admin', '127.0.0.1', '服务器登录', 'Chrome/140.0.0.0', 'Mac OS X 10_15_7', 1, '登录成功', '2025-09-14 15:26:35');
+INSERT INTO `sys_login_info` (`id`, `username`, `ip_address`, `login_location`, `browser`, `os`, `login_status`, `message`, `login_time`) VALUES (218, 'admin', '127.0.0.1', '服务器登录', 'Chrome/140.0.0.0', 'Mac OS X 10_15_7', 1, '登录成功', '2025-09-14 23:19:13');
+INSERT INTO `sys_login_info` (`id`, `username`, `ip_address`, `login_location`, `browser`, `os`, `login_status`, `message`, `login_time`) VALUES (219, 'admin', '127.0.0.1', '服务器登录', 'Chrome/140.0.0.0', 'Mac OS X 10_15_7', 1, '登录成功', '2025-09-15 10:47:58');
+INSERT INTO `sys_login_info` (`id`, `username`, `ip_address`, `login_location`, `browser`, `os`, `login_status`, `message`, `login_time`) VALUES (220, 'admin', '127.0.0.1', '服务器登录', 'Chrome/140.0.0.0', 'Mac OS X 10_15_7', 1, '登录成功', '2025-09-15 15:19:15');
+INSERT INTO `sys_login_info` (`id`, `username`, `ip_address`, `login_location`, `browser`, `os`, `login_status`, `message`, `login_time`) VALUES (221, 'root', '127.0.0.1', '服务器登录', 'Chrome/140.0.0.0', 'Mac OS X 10_15_7', 2, '密码不正确', '2025-09-15 20:46:53');
+INSERT INTO `sys_login_info` (`id`, `username`, `ip_address`, `login_location`, `browser`, `os`, `login_status`, `message`, `login_time`) VALUES (222, 'root', '127.0.0.1', '服务器登录', 'Chrome/140.0.0.0', 'Mac OS X 10_15_7', 2, '密码不正确', '2025-09-15 20:47:00');
+INSERT INTO `sys_login_info` (`id`, `username`, `ip_address`, `login_location`, `browser`, `os`, `login_status`, `message`, `login_time`) VALUES (223, 'root', '127.0.0.1', '服务器登录', 'Chrome/140.0.0.0', 'Mac OS X 10_15_7', 2, '密码不正确', '2025-09-15 20:47:01');
+INSERT INTO `sys_login_info` (`id`, `username`, `ip_address`, `login_location`, `browser`, `os`, `login_status`, `message`, `login_time`) VALUES (224, 'admin', '127.0.0.1', '服务器登录', 'Chrome/140.0.0.0', 'Mac OS X 10_15_7', 1, '登录成功', '2025-09-15 20:47:10');
+INSERT INTO `sys_login_info` (`id`, `username`, `ip_address`, `login_location`, `browser`, `os`, `login_status`, `message`, `login_time`) VALUES (225, 'admin', '127.0.0.1', '服务器登录', 'Chrome/140.0.0.0', 'Mac OS X 10_15_7', 1, '登录成功', '2025-09-16 09:54:18');
+INSERT INTO `sys_login_info` (`id`, `username`, `ip_address`, `login_location`, `browser`, `os`, `login_status`, `message`, `login_time`) VALUES (226, 'admin', '127.0.0.1', '服务器登录', 'Chrome/140.0.0.0', 'Mac OS X 10_15_7', 1, '登录成功', '2025-09-16 09:55:10');
+INSERT INTO `sys_login_info` (`id`, `username`, `ip_address`, `login_location`, `browser`, `os`, `login_status`, `message`, `login_time`) VALUES (227, 'root', '127.0.0.1', '服务器登录', 'Chrome/140.0.0.0', 'Mac OS X 10_15_7', 2, '密码不正确', '2025-09-16 17:13:49');
+INSERT INTO `sys_login_info` (`id`, `username`, `ip_address`, `login_location`, `browser`, `os`, `login_status`, `message`, `login_time`) VALUES (228, 'root', '127.0.0.1', '服务器登录', 'Chrome/140.0.0.0', 'Mac OS X 10_15_7', 2, '密码不正确', '2025-09-16 17:14:00');
+INSERT INTO `sys_login_info` (`id`, `username`, `ip_address`, `login_location`, `browser`, `os`, `login_status`, `message`, `login_time`) VALUES (229, 'admin', '127.0.0.1', '服务器登录', 'Chrome/140.0.0.0', 'Mac OS X 10_15_7', 1, '登录成功', '2025-09-16 17:14:06');
+INSERT INTO `sys_login_info` (`id`, `username`, `ip_address`, `login_location`, `browser`, `os`, `login_status`, `message`, `login_time`) VALUES (230, 'admin', '127.0.0.1', '服务器登录', 'Chrome/140.0.0.0', 'Mac OS X 10_15_7', 1, '登录成功', '2025-09-16 17:20:00');
+INSERT INTO `sys_login_info` (`id`, `username`, `ip_address`, `login_location`, `browser`, `os`, `login_status`, `message`, `login_time`) VALUES (231, 'admin', '127.0.0.1', '服务器登录', 'Chrome/140.0.0.0', 'Mac OS X 10_15_7', 1, '登录成功', '2025-09-16 17:20:58');
+INSERT INTO `sys_login_info` (`id`, `username`, `ip_address`, `login_location`, `browser`, `os`, `login_status`, `message`, `login_time`) VALUES (232, 'admin', '127.0.0.1', '服务器登录', 'Chrome/140.0.0.0', 'Mac OS X 10_15_7', 1, '登录成功', '2025-09-17 10:08:32');
+INSERT INTO `sys_login_info` (`id`, `username`, `ip_address`, `login_location`, `browser`, `os`, `login_status`, `message`, `login_time`) VALUES (233, 'zhangsan', '127.0.0.1', '服务器登录', 'Chrome/98.0.4758.139', 'Mac OS X 10_15_7', 1, '登录成功', '2025-09-17 19:13:09');
+INSERT INTO `sys_login_info` (`id`, `username`, `ip_address`, `login_location`, `browser`, `os`, `login_status`, `message`, `login_time`) VALUES (234, 'zhangsan', '127.0.0.1', '服务器登录', 'Safari/605.1.15', 'Mac OS X 10_15_7', 1, '登录成功', '2025-09-17 19:14:56');
+INSERT INTO `sys_login_info` (`id`, `username`, `ip_address`, `login_location`, `browser`, `os`, `login_status`, `message`, `login_time`) VALUES (235, 'zhangsan', '127.0.0.1', '服务器登录', 'Chrome/98.0.4758.139', 'Mac OS X 10_15_7', 1, '登录成功', '2025-09-17 19:23:53');
+INSERT INTO `sys_login_info` (`id`, `username`, `ip_address`, `login_location`, `browser`, `os`, `login_status`, `message`, `login_time`) VALUES (237, 'zhangsan', '127.0.0.1', '服务器登录', 'Chrome/98.0.4758.139', 'Mac OS X 10_15_7', 1, '登录成功', '2025-09-17 19:30:10');
+INSERT INTO `sys_login_info` (`id`, `username`, `ip_address`, `login_location`, `browser`, `os`, `login_status`, `message`, `login_time`) VALUES (238, 'zhangsan', '127.0.0.1', '服务器登录', 'Chrome/140.0.0.0', 'Mac OS X 10_15_7', 1, '登录成功', '2025-09-17 19:31:29');
+INSERT INTO `sys_login_info` (`id`, `username`, `ip_address`, `login_location`, `browser`, `os`, `login_status`, `message`, `login_time`) VALUES (241, 'zhangsan', '127.0.0.1', '服务器登录', 'Chrome/98.0.4758.139', 'Mac OS X 10_15_7', 1, '登录成功', '2025-09-17 19:33:58');
+INSERT INTO `sys_login_info` (`id`, `username`, `ip_address`, `login_location`, `browser`, `os`, `login_status`, `message`, `login_time`) VALUES (242, 'zhangsan', '127.0.0.1', '服务器登录', 'Chrome/98.0.4758.139', 'Mac OS X 10_15_7', 1, '登录成功', '2025-09-17 19:36:05');
+INSERT INTO `sys_login_info` (`id`, `username`, `ip_address`, `login_location`, `browser`, `os`, `login_status`, `message`, `login_time`) VALUES (243, 'zhangsan', '127.0.0.1', '服务器登录', 'Chrome/98.0.4758.139', 'Mac OS X 10_15_7', 1, '登录成功', '2025-09-17 19:56:06');
+INSERT INTO `sys_login_info` (`id`, `username`, `ip_address`, `login_location`, `browser`, `os`, `login_status`, `message`, `login_time`) VALUES (244, 'admin', '127.0.0.1', '服务器登录', 'Chrome/140.0.0.0', 'Mac OS X 10_15_7', 1, '登录成功', '2025-09-17 20:15:05');
+INSERT INTO `sys_login_info` (`id`, `username`, `ip_address`, `login_location`, `browser`, `os`, `login_status`, `message`, `login_time`) VALUES (246, 'zhangsan', '127.0.0.1', '服务器登录', 'Chrome/98.0.4758.139', 'Mac OS X 10_15_7', 1, '登录成功', '2025-09-17 20:24:43');
+INSERT INTO `sys_login_info` (`id`, `username`, `ip_address`, `login_location`, `browser`, `os`, `login_status`, `message`, `login_time`) VALUES (247, 'zhangsan', '127.0.0.1', '服务器登录', 'Chrome/98.0.4758.139', 'Mac OS X 10_15_7', 1, '登录成功', '2025-09-17 20:40:16');
+INSERT INTO `sys_login_info` (`id`, `username`, `ip_address`, `login_location`, `browser`, `os`, `login_status`, `message`, `login_time`) VALUES (248, 'zhangsan', '127.0.0.1', '服务器登录', 'Chrome/98.0.4758.139', 'Mac OS X 10_15_7', 1, '登录成功', '2025-09-17 20:41:45');
+INSERT INTO `sys_login_info` (`id`, `username`, `ip_address`, `login_location`, `browser`, `os`, `login_status`, `message`, `login_time`) VALUES (249, 'admin', '127.0.0.1', '服务器登录', 'Chrome/140.0.0.0', 'Mac OS X 10_15_7', 1, '登录成功', '2025-09-17 20:49:04');
+INSERT INTO `sys_login_info` (`id`, `username`, `ip_address`, `login_location`, `browser`, `os`, `login_status`, `message`, `login_time`) VALUES (250, 'admin', '127.0.0.1', '服务器登录', 'Chrome/140.0.0.0', 'Mac OS X 10_15_7', 1, '登录成功', '2025-09-17 20:52:15');
+INSERT INTO `sys_login_info` (`id`, `username`, `ip_address`, `login_location`, `browser`, `os`, `login_status`, `message`, `login_time`) VALUES (251, 'admin', '127.0.0.1', '服务器登录', 'Chrome/140.0.0.0', 'Mac OS X 10_15_7', 2, '验证码不正确', '2025-09-17 20:58:27');
+INSERT INTO `sys_login_info` (`id`, `username`, `ip_address`, `login_location`, `browser`, `os`, `login_status`, `message`, `login_time`) VALUES (252, 'admin', '127.0.0.1', '服务器登录', 'Chrome/140.0.0.0', 'Mac OS X 10_15_7', 1, '登录成功', '2025-09-17 20:58:35');
+INSERT INTO `sys_login_info` (`id`, `username`, `ip_address`, `login_location`, `browser`, `os`, `login_status`, `message`, `login_time`) VALUES (253, 'zhangsan', '127.0.0.1', '服务器登录', 'Chrome/98.0.4758.139', 'Mac OS X 10_15_7', 1, '登录成功', '2025-09-17 21:01:53');
+INSERT INTO `sys_login_info` (`id`, `username`, `ip_address`, `login_location`, `browser`, `os`, `login_status`, `message`, `login_time`) VALUES (254, 'zhangsan', '127.0.0.1', '服务器登录', 'Chrome/98.0.4758.139', 'Mac OS X 10_15_7', 1, '登录成功', '2025-09-17 21:11:34');
+INSERT INTO `sys_login_info` (`id`, `username`, `ip_address`, `login_location`, `browser`, `os`, `login_status`, `message`, `login_time`) VALUES (255, 'zhangsan', '127.0.0.1', '服务器登录', 'Chrome/98.0.4758.139', 'Mac OS X 10_15_7', 1, '登录成功', '2025-09-18 11:03:24');
+INSERT INTO `sys_login_info` (`id`, `username`, `ip_address`, `login_location`, `browser`, `os`, `login_status`, `message`, `login_time`) VALUES (256, 'admin', '127.0.0.1', '服务器登录', 'Chrome/140.0.0.0', 'Mac OS X 10_15_7', 1, '登录成功', '2025-09-18 11:40:50');
+INSERT INTO `sys_login_info` (`id`, `username`, `ip_address`, `login_location`, `browser`, `os`, `login_status`, `message`, `login_time`) VALUES (257, 'admin', '127.0.0.1', '服务器登录', 'Chrome/140.0.0.0', 'Mac OS X 10_15_7', 1, '登录成功', '2025-09-18 15:16:51');
+INSERT INTO `sys_login_info` (`id`, `username`, `ip_address`, `login_location`, `browser`, `os`, `login_status`, `message`, `login_time`) VALUES (258, 'admin', '127.0.0.1', '服务器登录', 'Chrome/140.0.0.0', 'Mac OS X 10_15_7', 1, '登录成功', '2025-09-18 16:03:35');
+INSERT INTO `sys_login_info` (`id`, `username`, `ip_address`, `login_location`, `browser`, `os`, `login_status`, `message`, `login_time`) VALUES (259, 'zhangsan', '127.0.0.1', '服务器登录', 'Chrome/98.0.4758.139', 'Mac OS X 10_15_7', 1, '登录成功', '2025-09-18 18:30:05');
+INSERT INTO `sys_login_info` (`id`, `username`, `ip_address`, `login_location`, `browser`, `os`, `login_status`, `message`, `login_time`) VALUES (260, 'admin', '127.0.0.1', '服务器登录', 'Chrome/140.0.0.0', 'Mac OS X 10_15_7', 1, '登录成功', '2025-09-19 21:29:30');
+INSERT INTO `sys_login_info` (`id`, `username`, `ip_address`, `login_location`, `browser`, `os`, `login_status`, `message`, `login_time`) VALUES (261, 'admin', '127.0.0.1', '服务器登录', 'Chrome/140.0.0.0', 'Mac OS X 10_15_7', 1, '登录成功', '2025-09-19 22:46:19');
+INSERT INTO `sys_login_info` (`id`, `username`, `ip_address`, `login_location`, `browser`, `os`, `login_status`, `message`, `login_time`) VALUES (262, 'admin', '127.0.0.1', '服务器登录', 'Chrome/140.0.0.0', 'Mac OS X 10_15_7', 1, '登录成功', '2025-09-19 22:50:23');
+INSERT INTO `sys_login_info` (`id`, `username`, `ip_address`, `login_location`, `browser`, `os`, `login_status`, `message`, `login_time`) VALUES (263, 'admin', '127.0.0.1', '服务器登录', 'Chrome/140.0.0.0', 'Mac OS X 10_15_7', 1, '登录成功', '2025-09-20 02:01:52');
+INSERT INTO `sys_login_info` (`id`, `username`, `ip_address`, `login_location`, `browser`, `os`, `login_status`, `message`, `login_time`) VALUES (264, 'admin', '127.0.0.1', '服务器登录', 'Chrome/140.0.0.0', 'Mac OS X 10_15_7', 1, '登录成功', '2025-09-21 02:16:14');
+INSERT INTO `sys_login_info` (`id`, `username`, `ip_address`, `login_location`, `browser`, `os`, `login_status`, `message`, `login_time`) VALUES (265, 'admin', '127.0.0.1', '服务器登录', 'Chrome/140.0.0.0', 'Mac OS X 10_15_7', 1, '登录成功', '2025-09-21 15:13:08');
+INSERT INTO `sys_login_info` (`id`, `username`, `ip_address`, `login_location`, `browser`, `os`, `login_status`, `message`, `login_time`) VALUES (266, 'admin', '127.0.0.1', '服务器登录', 'Chrome/140.0.0.0', 'Mac OS X 10_15_7', 1, '登录成功', '2025-09-21 15:59:20');
+INSERT INTO `sys_login_info` (`id`, `username`, `ip_address`, `login_location`, `browser`, `os`, `login_status`, `message`, `login_time`) VALUES (267, 'admin', '127.0.0.1', '服务器登录', 'Chrome/140.0.0.0', 'Mac OS X 10_15_7', 1, '登录成功', '2025-09-22 11:44:03');
+INSERT INTO `sys_login_info` (`id`, `username`, `ip_address`, `login_location`, `browser`, `os`, `login_status`, `message`, `login_time`) VALUES (268, 'admin', '127.0.0.1', '服务器登录', 'Chrome/140.0.0.0', 'Mac OS X 10_15_7', 1, '登录成功', '2025-09-23 11:59:48');
+INSERT INTO `sys_login_info` (`id`, `username`, `ip_address`, `login_location`, `browser`, `os`, `login_status`, `message`, `login_time`) VALUES (269, 'admin', '127.0.0.1', '服务器登录', 'Chrome/140.0.0.0', 'Mac OS X 10_15_7', 1, '登录成功', '2025-09-23 15:22:41');
+INSERT INTO `sys_login_info` (`id`, `username`, `ip_address`, `login_location`, `browser`, `os`, `login_status`, `message`, `login_time`) VALUES (270, 'admin', '127.0.0.1', '服务器登录', 'Chrome/98.0.4758.139', 'Mac OS X 10_15_7', 1, '登录成功', '2025-09-24 12:50:17');
+INSERT INTO `sys_login_info` (`id`, `username`, `ip_address`, `login_location`, `browser`, `os`, `login_status`, `message`, `login_time`) VALUES (271, 'test', '127.0.0.1', '服务器登录', 'Chrome/98.0.4758.139', 'Mac OS X 10_15_7', 1, '登录成功', '2025-09-24 12:50:34');
+INSERT INTO `sys_login_info` (`id`, `username`, `ip_address`, `login_location`, `browser`, `os`, `login_status`, `message`, `login_time`) VALUES (272, 'test', '127.0.0.1', '服务器登录', 'Chrome/98.0.4758.139', 'Mac OS X 10_15_7', 1, '登录成功', '2025-09-24 12:51:31');
+INSERT INTO `sys_login_info` (`id`, `username`, `ip_address`, `login_location`, `browser`, `os`, `login_status`, `message`, `login_time`) VALUES (273, 'test', '127.0.0.1', '服务器登录', 'Chrome/140.0.0.0', 'Mac OS X 10_15_7', 1, '登录成功', '2025-09-24 12:55:58');
+INSERT INTO `sys_login_info` (`id`, `username`, `ip_address`, `login_location`, `browser`, `os`, `login_status`, `message`, `login_time`) VALUES (274, 'test', '127.0.0.1', '服务器登录', 'Chrome/140.0.0.0', 'Mac OS X 10_15_7', 1, '登录成功', '2025-09-24 13:23:57');
+INSERT INTO `sys_login_info` (`id`, `username`, `ip_address`, `login_location`, `browser`, `os`, `login_status`, `message`, `login_time`) VALUES (275, 'admin', '223.73.6.160', '广东省深圳市 移通', 'Chrome/140.0.0.0', 'Mac OS X 10_15_7', 1, '登录成功', '2025-09-24 15:04:41');
+INSERT INTO `sys_login_info` (`id`, `username`, `ip_address`, `login_location`, `browser`, `os`, `login_status`, `message`, `login_time`) VALUES (276, 'admin', '155.117.84.176', ' 比利时', 'Chrome/140.0.0.0', 'Mac OS X 10_15_7', 1, '登录成功', '2025-09-24 16:13:15');
+INSERT INTO `sys_login_info` (`id`, `username`, `ip_address`, `login_location`, `browser`, `os`, `login_status`, `message`, `login_time`) VALUES (277, 'admin', '155.117.84.176', ' 比利时', 'Chrome/140.0.0.0', 'Mac OS X 10_15_7', 1, '登录成功', '2025-09-24 16:34:30');
+INSERT INTO `sys_login_info` (`id`, `username`, `ip_address`, `login_location`, `browser`, `os`, `login_status`, `message`, `login_time`) VALUES (278, 'admin', '58.34.49.138', '上海市长宁区 电信ADSL', 'Chrome/122.0.6261.95', 'Windows 10', 1, '登录成功', '2025-09-24 16:37:15');
+INSERT INTO `sys_login_info` (`id`, `username`, `ip_address`, `login_location`, `browser`, `os`, `login_status`, `message`, `login_time`) VALUES (279, 'test', '155.117.84.176', ' 比利时', 'Chrome/140.0.0.0', 'Mac OS X 10_15_7', 1, '登录成功', '2025-09-24 16:45:21');
+INSERT INTO `sys_login_info` (`id`, `username`, `ip_address`, `login_location`, `browser`, `os`, `login_status`, `message`, `login_time`) VALUES (280, 'test', '171.219.163.155', '四川省成都市 电信', 'Chrome/140.0.0.0', 'Windows 10', 1, '登录成功', '2025-09-24 16:47:10');
+INSERT INTO `sys_login_info` (`id`, `username`, `ip_address`, `login_location`, `browser`, `os`, `login_status`, `message`, `login_time`) VALUES (281, 'test', '171.219.163.155', '四川省成都市 电信', 'Chrome/140.0.0.0', 'Windows 10', 1, '登录成功', '2025-09-24 16:47:12');
+INSERT INTO `sys_login_info` (`id`, `username`, `ip_address`, `login_location`, `browser`, `os`, `login_status`, `message`, `login_time`) VALUES (282, 'test', '171.219.163.155', '四川省成都市 电信', 'Chrome/140.0.0.0', 'Windows 10', 1, '登录成功', '2025-09-24 16:47:13');
+INSERT INTO `sys_login_info` (`id`, `username`, `ip_address`, `login_location`, `browser`, `os`, `login_status`, `message`, `login_time`) VALUES (283, 'test', '171.219.163.155', '四川省成都市 电信', 'Chrome/140.0.0.0', 'Windows 10', 1, '登录成功', '2025-09-24 16:47:13');
+INSERT INTO `sys_login_info` (`id`, `username`, `ip_address`, `login_location`, `browser`, `os`, `login_status`, `message`, `login_time`) VALUES (284, 'admin', '155.117.84.176', ' 比利时', 'Chrome/140.0.0.0', 'Mac OS X 10_15_7', 1, '登录成功', '2025-09-24 17:16:47');
+INSERT INTO `sys_login_info` (`id`, `username`, `ip_address`, `login_location`, `browser`, `os`, `login_status`, `message`, `login_time`) VALUES (285, 'admin', '155.117.84.176', ' 比利时', 'Chrome/140.0.0.0', 'Mac OS X 10_15_7', 2, '验证码已过期', '2025-09-24 17:41:24');
+INSERT INTO `sys_login_info` (`id`, `username`, `ip_address`, `login_location`, `browser`, `os`, `login_status`, `message`, `login_time`) VALUES (286, 'admin', '155.117.84.176', ' 比利时', 'Chrome/140.0.0.0', 'Mac OS X 10_15_7', 2, '验证码已过期', '2025-09-24 17:41:25');
+INSERT INTO `sys_login_info` (`id`, `username`, `ip_address`, `login_location`, `browser`, `os`, `login_status`, `message`, `login_time`) VALUES (287, 'admin', '155.117.84.176', ' 比利时', 'Chrome/140.0.0.0', 'Mac OS X 10_15_7', 2, '密码不正确', '2025-09-24 17:41:31');
+INSERT INTO `sys_login_info` (`id`, `username`, `ip_address`, `login_location`, `browser`, `os`, `login_status`, `message`, `login_time`) VALUES (288, 'admin', '155.117.84.176', ' 比利时', 'Chrome/140.0.0.0', 'Mac OS X 10_15_7', 2, '密码不正确', '2025-09-24 17:41:46');
+INSERT INTO `sys_login_info` (`id`, `username`, `ip_address`, `login_location`, `browser`, `os`, `login_status`, `message`, `login_time`) VALUES (289, 'admin', '155.117.84.176', ' 比利时', 'Chrome/140.0.0.0', 'Mac OS X 10_15_7', 1, '登录成功', '2025-09-24 17:42:09');
+INSERT INTO `sys_login_info` (`id`, `username`, `ip_address`, `login_location`, `browser`, `os`, `login_status`, `message`, `login_time`) VALUES (290, 'admin', '223.73.6.160', '广东省深圳市 移通', 'Chrome/140.0.0.0', 'Mac OS X 10_15_7', 1, '登录成功', '2025-09-24 21:19:29');
+INSERT INTO `sys_login_info` (`id`, `username`, `ip_address`, `login_location`, `browser`, `os`, `login_status`, `message`, `login_time`) VALUES (291, 'admin', '223.73.6.160', '广东省深圳市 移通', 'Chrome/140.0.0.0', 'Mac OS X 10_15_7', 1, '登录成功', '2025-09-24 21:40:29');
+INSERT INTO `sys_login_info` (`id`, `username`, `ip_address`, `login_location`, `browser`, `os`, `login_status`, `message`, `login_time`) VALUES (292, 'admin', '58.61.148.66', '广东省深圳市 电信', 'Chrome/140.0.0.0', 'Mac OS X 10_15_7', 1, '登录成功', '2025-09-26 13:23:37');
+INSERT INTO `sys_login_info` (`id`, `username`, `ip_address`, `login_location`, `browser`, `os`, `login_status`, `message`, `login_time`) VALUES (293, 'admin', '58.61.148.66', '广东省深圳市 电信', 'Chrome/140.0.0.0', 'Mac OS X 10_15_7', 1, '登录成功', '2025-09-26 14:40:49');
+INSERT INTO `sys_login_info` (`id`, `username`, `ip_address`, `login_location`, `browser`, `os`, `login_status`, `message`, `login_time`) VALUES (294, 'admin', '58.251.35.38', '广东省深圳市 联通', 'Chrome/140.0.0.0', 'Mac OS X 10_15_7', 1, '登录成功', '2025-09-28 11:20:20');
+INSERT INTO `sys_login_info` (`id`, `username`, `ip_address`, `login_location`, `browser`, `os`, `login_status`, `message`, `login_time`) VALUES (295, 'admin', '58.251.35.38', '广东省深圳市 联通', 'Chrome/140.0.0.0', 'Mac OS X 10_15_7', 1, '登录成功', '2025-09-28 16:22:48');
+INSERT INTO `sys_login_info` (`id`, `username`, `ip_address`, `login_location`, `browser`, `os`, `login_status`, `message`, `login_time`) VALUES (296, 'admin', '120.231.244.207', '广东省 移通', 'Chrome/140.0.0.0', 'Mac OS X 10_15_7', 1, '登录成功', '2025-10-01 17:24:09');
+INSERT INTO `sys_login_info` (`id`, `username`, `ip_address`, `login_location`, `browser`, `os`, `login_status`, `message`, `login_time`) VALUES (297, 'admin', '120.231.244.207', '广东省 移通', 'Chrome/141.0.0.0', 'Mac OS X 10_15_7', 1, '登录成功', '2025-10-03 13:27:08');
+INSERT INTO `sys_login_info` (`id`, `username`, `ip_address`, `login_location`, `browser`, `os`, `login_status`, `message`, `login_time`) VALUES (298, 'admin', '120.231.244.207', '广东省 移通', 'Chrome/141.0.0.0', 'Mac OS X 10_15_7', 2, '验证码已过期', '2025-10-04 15:48:44');
+INSERT INTO `sys_login_info` (`id`, `username`, `ip_address`, `login_location`, `browser`, `os`, `login_status`, `message`, `login_time`) VALUES (299, 'admin', '120.231.244.207', '广东省 移通', 'Chrome/141.0.0.0', 'Mac OS X 10_15_7', 1, '登录成功', '2025-10-04 15:48:51');
+COMMIT;
+
+-- ----------------------------
+-- Table structure for sys_menu
+-- ----------------------------
+DROP TABLE IF EXISTS `sys_menu`;
+CREATE TABLE `sys_menu` (
+  `id` int NOT NULL AUTO_INCREMENT COMMENT '主键',
+  `parent_id` int DEFAULT NULL COMMENT '父级菜单id',
+  `menu_name` varchar(100) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci DEFAULT NULL COMMENT '菜单名称',
+  `icon` varchar(100) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci DEFAULT NULL COMMENT '图标',
+  `value` varchar(100) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci DEFAULT NULL COMMENT '接口权限值',
+  `menu_type` int DEFAULT NULL COMMENT '菜单类型：1->目录；2->菜单；3->按钮（接口绑定权限）',
+  `url` varchar(200) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci DEFAULT NULL COMMENT '菜单url',
+  `menu_status` int DEFAULT '2' COMMENT '启用状态；1->禁用；2->启用',
+  `sort` int DEFAULT NULL COMMENT '排序',
+  `create_time` datetime DEFAULT NULL COMMENT '创建时间',
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE=InnoDB AUTO_INCREMENT=207 DEFAULT CHARSET=utf8mb3 ROW_FORMAT=DYNAMIC COMMENT='菜单表';
+
+-- ----------------------------
+-- Records of sys_menu
+-- ----------------------------
+BEGIN;
+INSERT INTO `sys_menu` (`id`, `parent_id`, `menu_name`, `icon`, `value`, `menu_type`, `url`, `menu_status`, `sort`, `create_time`) VALUES (4, 0, '系统管理', 'StarFilled', '', 1, '', 2, 7, '2022-09-04 13:57:39');
+INSERT INTO `sys_menu` (`id`, `parent_id`, `menu_name`, `icon`, `value`, `menu_type`, `url`, `menu_status`, `sort`, `create_time`) VALUES (6, 4, '用户信息', 'Avatar', 'base:admin:list', 2, 'system/admin', 2, 1, '2022-09-04 13:59:39');
+INSERT INTO `sys_menu` (`id`, `parent_id`, `menu_name`, `icon`, `value`, `menu_type`, `url`, `menu_status`, `sort`, `create_time`) VALUES (7, 4, '角色信息', 'InfoFilled', 'base:role:list', 2, 'system/role', 2, 2, '2022-09-04 14:00:12');
+INSERT INTO `sys_menu` (`id`, `parent_id`, `menu_name`, `icon`, `value`, `menu_type`, `url`, `menu_status`, `sort`, `create_time`) VALUES (8, 4, '菜单信息', 'Histogram', 'base:menu:list', 2, 'system/menu', 2, 3, '2022-09-04 14:00:17');
+INSERT INTO `sys_menu` (`id`, `parent_id`, `menu_name`, `icon`, `value`, `menu_type`, `url`, `menu_status`, `sort`, `create_time`) VALUES (9, 4, '部门信息', 'Menu', 'base:dept:list', 2, 'system/dept', 2, 4, '2022-09-04 14:01:58');
+INSERT INTO `sys_menu` (`id`, `parent_id`, `menu_name`, `icon`, `value`, `menu_type`, `url`, `menu_status`, `sort`, `create_time`) VALUES (10, 4, '岗位信息', 'Promotion', 'base:post:list', 2, 'system/post', 2, 5, '2022-09-04 14:02:06');
+INSERT INTO `sys_menu` (`id`, `parent_id`, `menu_name`, `icon`, `value`, `menu_type`, `url`, `menu_status`, `sort`, `create_time`) VALUES (16, 6, '新增用户', '', 'base:admin:add', 3, '', 2, 1, '2022-09-04 18:32:55');
+INSERT INTO `sys_menu` (`id`, `parent_id`, `menu_name`, `icon`, `value`, `menu_type`, `url`, `menu_status`, `sort`, `create_time`) VALUES (17, 6, '修改用户', '', 'base:admin:edit', 3, '', 2, 2, '2022-09-04 18:33:29');
+INSERT INTO `sys_menu` (`id`, `parent_id`, `menu_name`, `icon`, `value`, `menu_type`, `url`, `menu_status`, `sort`, `create_time`) VALUES (18, 6, '删除用户', '', 'base:admin:delete', 3, '', 2, 3, '2022-09-04 18:33:51');
+INSERT INTO `sys_menu` (`id`, `parent_id`, `menu_name`, `icon`, `value`, `menu_type`, `url`, `menu_status`, `sort`, `create_time`) VALUES (21, 7, '新增角色', '', 'base:role:add', 3, '', 2, 1, '2022-09-04 18:44:47');
+INSERT INTO `sys_menu` (`id`, `parent_id`, `menu_name`, `icon`, `value`, `menu_type`, `url`, `menu_status`, `sort`, `create_time`) VALUES (22, 7, '修改角色', '', 'base:role:edit', 3, '', 2, 2, '2022-09-04 18:45:10');
+INSERT INTO `sys_menu` (`id`, `parent_id`, `menu_name`, `icon`, `value`, `menu_type`, `url`, `menu_status`, `sort`, `create_time`) VALUES (23, 7, '删除角色', '', 'base:role:delete', 3, '', 2, 3, '2022-09-04 18:45:46');
+INSERT INTO `sys_menu` (`id`, `parent_id`, `menu_name`, `icon`, `value`, `menu_type`, `url`, `menu_status`, `sort`, `create_time`) VALUES (24, 7, '分配权限', '', 'base:role:assign', 3, '', 2, 4, '2022-09-04 18:46:20');
+INSERT INTO `sys_menu` (`id`, `parent_id`, `menu_name`, `icon`, `value`, `menu_type`, `url`, `menu_status`, `sort`, `create_time`) VALUES (26, 8, '新增菜单', '', 'base:menu:add', 3, '', 2, 1, '2022-09-04 18:49:51');
+INSERT INTO `sys_menu` (`id`, `parent_id`, `menu_name`, `icon`, `value`, `menu_type`, `url`, `menu_status`, `sort`, `create_time`) VALUES (27, 8, '修改菜单', '', 'base:menu:edit', 3, '', 2, 2, '2022-09-04 18:50:24');
+INSERT INTO `sys_menu` (`id`, `parent_id`, `menu_name`, `icon`, `value`, `menu_type`, `url`, `menu_status`, `sort`, `create_time`) VALUES (28, 8, '删除菜单', '', 'base:menu:delete', 3, '', 2, 3, '2022-09-04 18:50:53');
+INSERT INTO `sys_menu` (`id`, `parent_id`, `menu_name`, `icon`, `value`, `menu_type`, `url`, `menu_status`, `sort`, `create_time`) VALUES (29, 9, '新增部门', '', 'base:dept:add', 3, '', 2, 1, '2022-09-04 18:52:16');
+INSERT INTO `sys_menu` (`id`, `parent_id`, `menu_name`, `icon`, `value`, `menu_type`, `url`, `menu_status`, `sort`, `create_time`) VALUES (30, 9, '修改部门', '', 'base:dept:edit', 3, '', 2, 2, '2022-09-04 18:52:37');
+INSERT INTO `sys_menu` (`id`, `parent_id`, `menu_name`, `icon`, `value`, `menu_type`, `url`, `menu_status`, `sort`, `create_time`) VALUES (31, 9, '删除部门', '', 'base:dept:delete', 3, '', 2, 3, '2022-09-04 18:52:50');
+INSERT INTO `sys_menu` (`id`, `parent_id`, `menu_name`, `icon`, `value`, `menu_type`, `url`, `menu_status`, `sort`, `create_time`) VALUES (32, 10, '新增岗位', '', 'base:post:add', 3, '', 2, 1, '2022-09-04 18:53:28');
+INSERT INTO `sys_menu` (`id`, `parent_id`, `menu_name`, `icon`, `value`, `menu_type`, `url`, `menu_status`, `sort`, `create_time`) VALUES (33, 10, '修改岗位', '', 'base:post:edit', 3, '', 2, 2, '2022-09-04 18:53:48');
+INSERT INTO `sys_menu` (`id`, `parent_id`, `menu_name`, `icon`, `value`, `menu_type`, `url`, `menu_status`, `sort`, `create_time`) VALUES (34, 10, '删除岗位', '', 'base:post:delete', 3, '', 2, 3, '2022-09-04 18:54:00');
+INSERT INTO `sys_menu` (`id`, `parent_id`, `menu_name`, `icon`, `value`, `menu_type`, `url`, `menu_status`, `sort`, `create_time`) VALUES (44, 0, '操作审计', 'BellFilled', '', 1, '', 2, 9, '2022-09-05 11:06:57');
+INSERT INTO `sys_menu` (`id`, `parent_id`, `menu_name`, `icon`, `value`, `menu_type`, `url`, `menu_status`, `sort`, `create_time`) VALUES (45, 44, '操作日志', 'User', 'monitor:operator:list', 2, 'monitor/operator', 2, 1, '2022-09-05 11:10:54');
+INSERT INTO `sys_menu` (`id`, `parent_id`, `menu_name`, `icon`, `value`, `menu_type`, `url`, `menu_status`, `sort`, `create_time`) VALUES (46, 44, '登录日志', 'DocumentRemove', 'monitor:loginLog:list', 2, 'monitor/loginlog', 2, 2, '2022-09-05 11:11:31');
+INSERT INTO `sys_menu` (`id`, `parent_id`, `menu_name`, `icon`, `value`, `menu_type`, `url`, `menu_status`, `sort`, `create_time`) VALUES (47, 45, '清空操作日志', '', 'monitor:operator:clean', 3, '', 2, 1, '2022-09-05 11:12:36');
+INSERT INTO `sys_menu` (`id`, `parent_id`, `menu_name`, `icon`, `value`, `menu_type`, `url`, `menu_status`, `sort`, `create_time`) VALUES (49, 46, '清空登录日志', '', 'monitor:loginLog:clean', 3, '', 2, 1, '2022-09-05 11:16:01');
+INSERT INTO `sys_menu` (`id`, `parent_id`, `menu_name`, `icon`, `value`, `menu_type`, `url`, `menu_status`, `sort`, `create_time`) VALUES (60, 6, '重置密码', NULL, 'base:admin:reset', 3, NULL, 2, 6, '2022-12-01 16:33:34');
+INSERT INTO `sys_menu` (`id`, `parent_id`, `menu_name`, `icon`, `value`, `menu_type`, `url`, `menu_status`, `sort`, `create_time`) VALUES (62, 46, '删除登录日志', '', 'monitor:loginLog:delete', 3, '', 2, 2, '2022-12-02 15:41:56');
+INSERT INTO `sys_menu` (`id`, `parent_id`, `menu_name`, `icon`, `value`, `menu_type`, `url`, `menu_status`, `sort`, `create_time`) VALUES (72, 0, '仪表盘', 'HomeFilled', '', 1, 'dashboard', 2, 1, '2023-05-24 22:11:13');
+INSERT INTO `sys_menu` (`id`, `parent_id`, `menu_name`, `icon`, `value`, `menu_type`, `url`, `menu_status`, `sort`, `create_time`) VALUES (73, 45, '删除操作日志', '', 'monitor:operator:delete', 3, '', 2, 3, '2023-06-02 10:09:38');
+INSERT INTO `sys_menu` (`id`, `parent_id`, `menu_name`, `icon`, `value`, `menu_type`, `url`, `menu_status`, `sort`, `create_time`) VALUES (78, 80, '主机管理', 'Platform', 'cmdb:ecs:list', 2, 'cmdb/ecs', 2, 1, '2025-06-29 00:30:35');
+INSERT INTO `sys_menu` (`id`, `parent_id`, `menu_name`, `icon`, `value`, `menu_type`, `url`, `menu_status`, `sort`, `create_time`) VALUES (80, 0, '资产管理', 'TrendCharts', '', 1, '', 2, 2, '2025-07-03 11:47:07');
+INSERT INTO `sys_menu` (`id`, `parent_id`, `menu_name`, `icon`, `value`, `menu_type`, `url`, `menu_status`, `sort`, `create_time`) VALUES (81, 0, '容器管理', 'UploadFilled', '', 1, '', 2, 3, '2025-07-03 11:50:47');
+INSERT INTO `sys_menu` (`id`, `parent_id`, `menu_name`, `icon`, `value`, `menu_type`, `url`, `menu_status`, `sort`, `create_time`) VALUES (82, 81, '集群管理', 'Menu', 'cloud:k8s:list', 2, 'k8s/list', 2, 1, '2025-07-03 11:56:44');
+INSERT INTO `sys_menu` (`id`, `parent_id`, `menu_name`, `icon`, `value`, `menu_type`, `url`, `menu_status`, `sort`, `create_time`) VALUES (83, 81, '节点管理', 'Help', 'cloud:k8s:node', 2, 'k8s/node', 2, 2, '2025-07-03 12:04:59');
+INSERT INTO `sys_menu` (`id`, `parent_id`, `menu_name`, `icon`, `value`, `menu_type`, `url`, `menu_status`, `sort`, `create_time`) VALUES (84, 0, '配置中心', 'Tools', '', 1, '', 2, 8, '2025-07-04 17:00:01');
+INSERT INTO `sys_menu` (`id`, `parent_id`, `menu_name`, `icon`, `value`, `menu_type`, `url`, `menu_status`, `sort`, `create_time`) VALUES (85, 84, '主机凭据', 'Setting', 'config:ecs:key', 2, 'config/ecskey', 2, 1, '2025-07-04 17:03:10');
+INSERT INTO `sys_menu` (`id`, `parent_id`, `menu_name`, `icon`, `value`, `menu_type`, `url`, `menu_status`, `sort`, `create_time`) VALUES (86, 84, '通用凭据', 'User', 'config:accountauth:key', 2, 'config/accountauth', 2, 2, '2025-07-04 17:08:20');
+INSERT INTO `sys_menu` (`id`, `parent_id`, `menu_name`, `icon`, `value`, `menu_type`, `url`, `menu_status`, `sort`, `create_time`) VALUES (88, 80, '业务分组', 'Shop', 'cmdb:group', 2, 'cmdb/group', 2, 3, '2025-07-16 15:17:14');
+INSERT INTO `sys_menu` (`id`, `parent_id`, `menu_name`, `icon`, `value`, `menu_type`, `url`, `menu_status`, `sort`, `create_time`) VALUES (89, 88, '创建分组', '', 'cmdb:group:add', 3, '', 2, 1, '2025-07-18 15:24:31');
+INSERT INTO `sys_menu` (`id`, `parent_id`, `menu_name`, `icon`, `value`, `menu_type`, `url`, `menu_status`, `sort`, `create_time`) VALUES (90, 88, '修改分组', '', 'cmdb:group:update', 3, '', 2, 2, '2025-07-18 15:25:49');
+INSERT INTO `sys_menu` (`id`, `parent_id`, `menu_name`, `icon`, `value`, `menu_type`, `url`, `menu_status`, `sort`, `create_time`) VALUES (91, 88, '删除分组', '', 'cmdb:group:delete', 3, '', 2, 3, '2025-07-18 15:26:21');
+INSERT INTO `sys_menu` (`id`, `parent_id`, `menu_name`, `icon`, `value`, `menu_type`, `url`, `menu_status`, `sort`, `create_time`) VALUES (93, 81, '工作负载', 'Star', 'cloud:k8s:workload', 2, 'k8s/workload', 2, 4, '2025-07-24 14:38:31');
+INSERT INTO `sys_menu` (`id`, `parent_id`, `menu_name`, `icon`, `value`, `menu_type`, `url`, `menu_status`, `sort`, `create_time`) VALUES (95, 80, '数据管理', 'Coin', 'cmdb:db', 2, 'cmdb/db', 2, 2, '2025-07-29 15:27:50');
+INSERT INTO `sys_menu` (`id`, `parent_id`, `menu_name`, `icon`, `value`, `menu_type`, `url`, `menu_status`, `sort`, `create_time`) VALUES (96, 44, '数据日志', 'Coin', 'monitor:dblog:list', 2, 'monitor/dblog', 2, 3, '2025-07-31 12:44:07');
+INSERT INTO `sys_menu` (`id`, `parent_id`, `menu_name`, `icon`, `value`, `menu_type`, `url`, `menu_status`, `sort`, `create_time`) VALUES (97, 0, '任务中心', 'User', '', 1, '', 2, 5, '2025-08-06 13:33:47');
+INSERT INTO `sys_menu` (`id`, `parent_id`, `menu_name`, `icon`, `value`, `menu_type`, `url`, `menu_status`, `sort`, `create_time`) VALUES (98, 97, '任务模版', 'connection', 'task:template', 2, 'task/template', 2, 2, '2025-08-06 13:35:19');
+INSERT INTO `sys_menu` (`id`, `parent_id`, `menu_name`, `icon`, `value`, `menu_type`, `url`, `menu_status`, `sort`, `create_time`) VALUES (99, 97, '任务作业', 'key', 'task:job', 2, 'task/job', 2, 1, '2025-08-06 13:36:06');
+INSERT INTO `sys_menu` (`id`, `parent_id`, `menu_name`, `icon`, `value`, `menu_type`, `url`, `menu_status`, `sort`, `create_time`) VALUES (100, 97, 'Ansible任务', 'Eleme', 'task:ansible', 2, 'task/ansible', 2, 3, '2025-08-23 18:35:24');
+INSERT INTO `sys_menu` (`id`, `parent_id`, `menu_name`, `icon`, `value`, `menu_type`, `url`, `menu_status`, `sort`, `create_time`) VALUES (101, 0, '运维工具', 'Search', '', 1, '', 2, 6, '2025-08-29 10:59:35');
+INSERT INTO `sys_menu` (`id`, `parent_id`, `menu_name`, `icon`, `value`, `menu_type`, `url`, `menu_status`, `sort`, `create_time`) VALUES (102, 101, 'agent列表', 'price-tag', 'ops:agent', 2, 'ops/agent', 2, 2, '2025-08-29 11:22:20');
+INSERT INTO `sys_menu` (`id`, `parent_id`, `menu_name`, `icon`, `value`, `menu_type`, `url`, `menu_status`, `sort`, `create_time`) VALUES (103, 101, '工具列表', 'present', 'ops:tools', 2, 'ops/tools', 2, 1, '2025-08-29 11:29:02');
+INSERT INTO `sys_menu` (`id`, `parent_id`, `menu_name`, `icon`, `value`, `menu_type`, `url`, `menu_status`, `sort`, `create_time`) VALUES (104, 84, '密钥管理', 'Phone', 'config:keymanage:key', 2, 'config/keymanage', 2, 3, '2025-09-08 13:24:40');
+INSERT INTO `sys_menu` (`id`, `parent_id`, `menu_name`, `icon`, `value`, `menu_type`, `url`, `menu_status`, `sort`, `create_time`) VALUES (105, 81, '命名空间', 'discount', 'k8s:namespace', 2, 'k8s/namespace', 2, 3, '2025-09-11 15:02:14');
+INSERT INTO `sys_menu` (`id`, `parent_id`, `menu_name`, `icon`, `value`, `menu_type`, `url`, `menu_status`, `sort`, `create_time`) VALUES (106, 81, '网络管理', 'guide', 'k8s:network', 2, 'k8s/network', 2, 5, '2025-09-11 15:04:14');
+INSERT INTO `sys_menu` (`id`, `parent_id`, `menu_name`, `icon`, `value`, `menu_type`, `url`, `menu_status`, `sort`, `create_time`) VALUES (107, 81, '配置管理', 'connection', 'k8s:config', 2, 'k8s/config', 2, 7, '2025-09-11 15:04:52');
+INSERT INTO `sys_menu` (`id`, `parent_id`, `menu_name`, `icon`, `value`, `menu_type`, `url`, `menu_status`, `sort`, `create_time`) VALUES (108, 81, '存储管理', 'Coin', 'k8s:storage', 2, 'k8s/storage', 2, 6, '2025-09-11 15:05:40');
+INSERT INTO `sys_menu` (`id`, `parent_id`, `menu_name`, `icon`, `value`, `menu_type`, `url`, `menu_status`, `sort`, `create_time`) VALUES (109, 0, '服务管理', 'UploadFilled', '', 1, '', 2, 4, '2025-09-16 09:49:55');
+INSERT INTO `sys_menu` (`id`, `parent_id`, `menu_name`, `icon`, `value`, `menu_type`, `url`, `menu_status`, `sort`, `create_time`) VALUES (110, 109, '应用列表', 'Menu', 'app:application', 2, 'app/application', 2, 1, '2025-09-16 09:52:58');
+INSERT INTO `sys_menu` (`id`, `parent_id`, `menu_name`, `icon`, `value`, `menu_type`, `url`, `menu_status`, `sort`, `create_time`) VALUES (111, 109, '快速发布', 'TrendCharts', 'app:quick-release', 2, 'app/quick-release', 2, 2, '2025-09-16 17:12:11');
+INSERT INTO `sys_menu` (`id`, `parent_id`, `menu_name`, `icon`, `value`, `menu_type`, `url`, `menu_status`, `sort`, `create_time`) VALUES (113, 45, '批量删除', '', 'monitor:operator:delete', 3, '', 2, 2, '2025-09-17 20:55:13');
+INSERT INTO `sys_menu` (`id`, `parent_id`, `menu_name`, `icon`, `value`, `menu_type`, `url`, `menu_status`, `sort`, `create_time`) VALUES (114, 104, '修改密钥', '', 'config:keymanage:edit', 3, '', 2, 1, '2025-09-18 10:45:57');
+INSERT INTO `sys_menu` (`id`, `parent_id`, `menu_name`, `icon`, `value`, `menu_type`, `url`, `menu_status`, `sort`, `create_time`) VALUES (115, 104, '删除密钥', '', 'config:keymanage:delete', 3, '', 2, 2, '2025-09-18 10:53:44');
+INSERT INTO `sys_menu` (`id`, `parent_id`, `menu_name`, `icon`, `value`, `menu_type`, `url`, `menu_status`, `sort`, `create_time`) VALUES (117, 104, '同步主机', '', 'config:keymanage:rsync', 3, '', 2, 3, '2025-09-18 10:57:25');
+INSERT INTO `sys_menu` (`id`, `parent_id`, `menu_name`, `icon`, `value`, `menu_type`, `url`, `menu_status`, `sort`, `create_time`) VALUES (118, 104, '创建密钥', '', 'config:keymanage:create', 3, '', 2, 4, '2025-09-18 11:01:12');
+INSERT INTO `sys_menu` (`id`, `parent_id`, `menu_name`, `icon`, `value`, `menu_type`, `url`, `menu_status`, `sort`, `create_time`) VALUES (119, 86, '修改账号', '', '	 config:accountauth:edit', 3, '', 2, 1, '2025-09-18 11:47:33');
+INSERT INTO `sys_menu` (`id`, `parent_id`, `menu_name`, `icon`, `value`, `menu_type`, `url`, `menu_status`, `sort`, `create_time`) VALUES (120, 86, '删除账号', '', '	 config:accountauth:delete', 3, '', 2, 2, '2025-09-18 11:48:17');
+INSERT INTO `sys_menu` (`id`, `parent_id`, `menu_name`, `icon`, `value`, `menu_type`, `url`, `menu_status`, `sort`, `create_time`) VALUES (121, 86, '解密账号', '', '	 config:accountauth:decrypt', 3, '', 2, 3, '2025-09-18 11:48:57');
+INSERT INTO `sys_menu` (`id`, `parent_id`, `menu_name`, `icon`, `value`, `menu_type`, `url`, `menu_status`, `sort`, `create_time`) VALUES (122, 86, '创建账号', '', '	 config:accountauth:create', 3, '', 2, 4, '2025-09-18 11:49:30');
+INSERT INTO `sys_menu` (`id`, `parent_id`, `menu_name`, `icon`, `value`, `menu_type`, `url`, `menu_status`, `sort`, `create_time`) VALUES (123, 85, '修改凭据', '', 'config:ecs:edit', 3, '', 2, 1, '2025-09-18 11:54:16');
+INSERT INTO `sys_menu` (`id`, `parent_id`, `menu_name`, `icon`, `value`, `menu_type`, `url`, `menu_status`, `sort`, `create_time`) VALUES (124, 85, '删除凭据', '', 'config:ecs:delete', 3, '', 2, 2, '2025-09-18 11:54:51');
+INSERT INTO `sys_menu` (`id`, `parent_id`, `menu_name`, `icon`, `value`, `menu_type`, `url`, `menu_status`, `sort`, `create_time`) VALUES (125, 85, '创建凭据', '', 'config:ecs:create', 3, '', 2, 3, '2025-09-18 11:55:21');
+INSERT INTO `sys_menu` (`id`, `parent_id`, `menu_name`, `icon`, `value`, `menu_type`, `url`, `menu_status`, `sort`, `create_time`) VALUES (126, 102, '卸载agent', '', 'ops:agent:delete', 3, '', 2, 1, '2025-09-18 12:47:48');
+INSERT INTO `sys_menu` (`id`, `parent_id`, `menu_name`, `icon`, `value`, `menu_type`, `url`, `menu_status`, `sort`, `create_time`) VALUES (127, 102, '查看agent', '', 'ops:agent:get', 3, '', 2, 2, '2025-09-18 12:49:02');
+INSERT INTO `sys_menu` (`id`, `parent_id`, `menu_name`, `icon`, `value`, `menu_type`, `url`, `menu_status`, `sort`, `create_time`) VALUES (128, 102, '部署agent', '', 'ops:agent:create', 3, '', 2, 3, '2025-09-18 12:49:56');
+INSERT INTO `sys_menu` (`id`, `parent_id`, `menu_name`, `icon`, `value`, `menu_type`, `url`, `menu_status`, `sort`, `create_time`) VALUES (129, 102, '批量卸载agent', '', 'ops:agent:deleteall', 3, '', 2, 4, '2025-09-18 12:50:52');
+INSERT INTO `sys_menu` (`id`, `parent_id`, `menu_name`, `icon`, `value`, `menu_type`, `url`, `menu_status`, `sort`, `create_time`) VALUES (130, 100, '启动ansible任务流程', '', 'task:ansible:start', 3, '', 2, 1, '2025-09-18 12:59:30');
+INSERT INTO `sys_menu` (`id`, `parent_id`, `menu_name`, `icon`, `value`, `menu_type`, `url`, `menu_status`, `sort`, `create_time`) VALUES (131, 100, '删除ansible任务', '', 'task:ansible:delete', 3, '', 2, 2, '2025-09-18 13:00:03');
+INSERT INTO `sys_menu` (`id`, `parent_id`, `menu_name`, `icon`, `value`, `menu_type`, `url`, `menu_status`, `sort`, `create_time`) VALUES (132, 100, '新增ansible任务', '', 'task:ansible:create', 3, '', 2, 3, '2025-09-18 13:00:45');
+INSERT INTO `sys_menu` (`id`, `parent_id`, `menu_name`, `icon`, `value`, `menu_type`, `url`, `menu_status`, `sort`, `create_time`) VALUES (133, 98, '新增模版', '', 'task:template:add', 3, '', 2, 1, '2025-09-18 13:16:38');
+INSERT INTO `sys_menu` (`id`, `parent_id`, `menu_name`, `icon`, `value`, `menu_type`, `url`, `menu_status`, `sort`, `create_time`) VALUES (134, 98, '修改模版', '', 'task:template:edit', 3, '', 2, 2, '2025-09-18 13:17:04');
+INSERT INTO `sys_menu` (`id`, `parent_id`, `menu_name`, `icon`, `value`, `menu_type`, `url`, `menu_status`, `sort`, `create_time`) VALUES (135, 98, '删除模版', '', 'task:template:delete', 3, '', 2, 3, '2025-09-18 13:18:25');
+INSERT INTO `sys_menu` (`id`, `parent_id`, `menu_name`, `icon`, `value`, `menu_type`, `url`, `menu_status`, `sort`, `create_time`) VALUES (136, 99, '新增任务', '', 'task:job:add', 3, '', 2, 1, '2025-09-18 13:24:19');
+INSERT INTO `sys_menu` (`id`, `parent_id`, `menu_name`, `icon`, `value`, `menu_type`, `url`, `menu_status`, `sort`, `create_time`) VALUES (137, 99, '启动任务', '', 'task:job:start', 3, '', 2, 2, '2025-09-18 13:24:59');
+INSERT INTO `sys_menu` (`id`, `parent_id`, `menu_name`, `icon`, `value`, `menu_type`, `url`, `menu_status`, `sort`, `create_time`) VALUES (138, 99, '删除任务', '', 'task:job:delete', 3, '', 2, 3, '2025-09-18 13:25:41');
+INSERT INTO `sys_menu` (`id`, `parent_id`, `menu_name`, `icon`, `value`, `menu_type`, `url`, `menu_status`, `sort`, `create_time`) VALUES (139, 111, '新建发布', '', 'app:quick-release:add', 3, '', 2, 1, '2025-09-18 13:30:53');
+INSERT INTO `sys_menu` (`id`, `parent_id`, `menu_name`, `icon`, `value`, `menu_type`, `url`, `menu_status`, `sort`, `create_time`) VALUES (140, 111, '启动发布', '', 'app:quick-release:start', 3, '', 2, 2, '2025-09-18 13:32:11');
+INSERT INTO `sys_menu` (`id`, `parent_id`, `menu_name`, `icon`, `value`, `menu_type`, `url`, `menu_status`, `sort`, `create_time`) VALUES (141, 111, '删除发布', '', 'app:quick-release:delete', 3, '', 2, 3, '2025-09-18 13:32:32');
+INSERT INTO `sys_menu` (`id`, `parent_id`, `menu_name`, `icon`, `value`, `menu_type`, `url`, `menu_status`, `sort`, `create_time`) VALUES (142, 110, '创建应用', '', 'app:application:add', 3, '', 2, 1, '2025-09-18 14:28:07');
+INSERT INTO `sys_menu` (`id`, `parent_id`, `menu_name`, `icon`, `value`, `menu_type`, `url`, `menu_status`, `sort`, `create_time`) VALUES (143, 110, '修改应用', '', 'app:application:edit', 3, '', 2, 2, '2025-09-18 14:28:59');
+INSERT INTO `sys_menu` (`id`, `parent_id`, `menu_name`, `icon`, `value`, `menu_type`, `url`, `menu_status`, `sort`, `create_time`) VALUES (144, 110, '配置应用环境', '', 'app:application:env', 3, '', 2, 3, '2025-09-18 14:29:34');
+INSERT INTO `sys_menu` (`id`, `parent_id`, `menu_name`, `icon`, `value`, `menu_type`, `url`, `menu_status`, `sort`, `create_time`) VALUES (145, 110, '删除应用', '', 'app:application:delete', 3, '', 2, 4, '2025-09-18 14:30:11');
+INSERT INTO `sys_menu` (`id`, `parent_id`, `menu_name`, `icon`, `value`, `menu_type`, `url`, `menu_status`, `sort`, `create_time`) VALUES (146, 95, '创建数据库账号', '', 'cmdb:db:add', 3, '', 2, 1, '2025-09-18 14:41:32');
+INSERT INTO `sys_menu` (`id`, `parent_id`, `menu_name`, `icon`, `value`, `menu_type`, `url`, `menu_status`, `sort`, `create_time`) VALUES (147, 95, '修改数据库配置', '', 'cmdb:db:edit', 3, '', 2, 2, '2025-09-18 14:42:47');
+INSERT INTO `sys_menu` (`id`, `parent_id`, `menu_name`, `icon`, `value`, `menu_type`, `url`, `menu_status`, `sort`, `create_time`) VALUES (148, 95, '删除数据库账号', '', 'cmdb:db:delete', 3, '', 2, 3, '2025-09-18 14:43:57');
+INSERT INTO `sys_menu` (`id`, `parent_id`, `menu_name`, `icon`, `value`, `menu_type`, `url`, `menu_status`, `sort`, `create_time`) VALUES (149, 78, '创建主机', '', 'cmdb:ecs:add', 3, '', 2, 1, '2025-09-18 14:47:42');
+INSERT INTO `sys_menu` (`id`, `parent_id`, `menu_name`, `icon`, `value`, `menu_type`, `url`, `menu_status`, `sort`, `create_time`) VALUES (150, 78, '主机终端', '', 'cmdb:ecs:terminal', 3, '', 2, 2, '2025-09-18 14:48:36');
+INSERT INTO `sys_menu` (`id`, `parent_id`, `menu_name`, `icon`, `value`, `menu_type`, `url`, `menu_status`, `sort`, `create_time`) VALUES (151, 78, '修改主机信息', '', 'cmdb:ecs:edit', 3, '', 2, 3, '2025-09-18 14:49:43');
+INSERT INTO `sys_menu` (`id`, `parent_id`, `menu_name`, `icon`, `value`, `menu_type`, `url`, `menu_status`, `sort`, `create_time`) VALUES (152, 78, '上传文件到主机', '', 'cmdb:ecs:upload', 3, '', 2, 4, '2025-09-18 14:50:38');
+INSERT INTO `sys_menu` (`id`, `parent_id`, `menu_name`, `icon`, `value`, `menu_type`, `url`, `menu_status`, `sort`, `create_time`) VALUES (153, 78, '执行主机命令', '', 'cmdb:ecs:shell', 3, '', 2, 5, '2025-09-18 14:51:10');
+INSERT INTO `sys_menu` (`id`, `parent_id`, `menu_name`, `icon`, `value`, `menu_type`, `url`, `menu_status`, `sort`, `create_time`) VALUES (154, 78, '监控主机', '', 'cmdb:ecs:monitor', 3, '', 2, 6, '2025-09-18 14:51:52');
+INSERT INTO `sys_menu` (`id`, `parent_id`, `menu_name`, `icon`, `value`, `menu_type`, `url`, `menu_status`, `sort`, `create_time`) VALUES (155, 78, '删除主机', '', 'cmdb:ecs:delete', 3, '', 2, 7, '2025-09-18 14:52:20');
+INSERT INTO `sys_menu` (`id`, `parent_id`, `menu_name`, `icon`, `value`, `menu_type`, `url`, `menu_status`, `sort`, `create_time`) VALUES (156, 99, '启动脚本', '', 'task:job:jobstart', 3, '', 2, 4, '2025-09-18 18:36:38');
+INSERT INTO `sys_menu` (`id`, `parent_id`, `menu_name`, `icon`, `value`, `menu_type`, `url`, `menu_status`, `sort`, `create_time`) VALUES (157, 99, '停止脚本', '', 'task:job:jobstop', 3, '', 2, 5, '2025-09-18 18:39:23');
+INSERT INTO `sys_menu` (`id`, `parent_id`, `menu_name`, `icon`, `value`, `menu_type`, `url`, `menu_status`, `sort`, `create_time`) VALUES (159, 100, '开始ansible任务作业', '', 'task:ansible:jobstart', 3, '', 2, 4, '2025-09-18 18:43:40');
+INSERT INTO `sys_menu` (`id`, `parent_id`, `menu_name`, `icon`, `value`, `menu_type`, `url`, `menu_status`, `sort`, `create_time`) VALUES (160, 111, '启动jenkins任务', '', 'app:quick-release:jobstart', 3, '', 2, 4, '2025-09-18 18:47:39');
+INSERT INTO `sys_menu` (`id`, `parent_id`, `menu_name`, `icon`, `value`, `menu_type`, `url`, `menu_status`, `sort`, `create_time`) VALUES (161, 111, '停止jenkins任务', '', 'app:quick-release:jobstop', 3, '', 2, 5, '2025-09-18 18:48:16');
+INSERT INTO `sys_menu` (`id`, `parent_id`, `menu_name`, `icon`, `value`, `menu_type`, `url`, `menu_status`, `sort`, `create_time`) VALUES (162, 110, '新增环境', '', 'app:application:envadd', 3, '', 2, 5, '2025-09-18 21:02:28');
+INSERT INTO `sys_menu` (`id`, `parent_id`, `menu_name`, `icon`, `value`, `menu_type`, `url`, `menu_status`, `sort`, `create_time`) VALUES (163, 110, '修改环境', '', 'app:application:envedit', 3, '', 2, 6, '2025-09-18 21:03:08');
+INSERT INTO `sys_menu` (`id`, `parent_id`, `menu_name`, `icon`, `value`, `menu_type`, `url`, `menu_status`, `sort`, `create_time`) VALUES (164, 110, '删除环境', '', 'app:application:envdelete', 3, '', 2, 7, '2025-09-18 21:04:43');
+INSERT INTO `sys_menu` (`id`, `parent_id`, `menu_name`, `icon`, `value`, `menu_type`, `url`, `menu_status`, `sort`, `create_time`) VALUES (165, 78, '连接主机终端', '', 'cmdb:ecs:connecthost', 3, '', 2, 8, '2025-09-18 21:11:43');
+INSERT INTO `sys_menu` (`id`, `parent_id`, `menu_name`, `icon`, `value`, `menu_type`, `url`, `menu_status`, `sort`, `create_time`) VALUES (166, 78, '同步主机信息', '', 'cmdb:ecs:rsync', 3, '', 2, 9, '2025-09-19 21:35:06');
+INSERT INTO `sys_menu` (`id`, `parent_id`, `menu_name`, `icon`, `value`, `menu_type`, `url`, `menu_status`, `sort`, `create_time`) VALUES (167, 82, '注册集群', '', 'cloud:k8s:register', 3, '', 2, 1, '2025-09-19 21:57:54');
+INSERT INTO `sys_menu` (`id`, `parent_id`, `menu_name`, `icon`, `value`, `menu_type`, `url`, `menu_status`, `sort`, `create_time`) VALUES (168, 82, '创建集群', '', 'cloud:k8s:add', 3, '', 2, 2, '2025-09-19 21:58:19');
+INSERT INTO `sys_menu` (`id`, `parent_id`, `menu_name`, `icon`, `value`, `menu_type`, `url`, `menu_status`, `sort`, `create_time`) VALUES (169, 82, '修改集群', '', 'cloud:k8s:edit', 3, '', 2, 3, '2025-09-19 21:59:06');
+INSERT INTO `sys_menu` (`id`, `parent_id`, `menu_name`, `icon`, `value`, `menu_type`, `url`, `menu_status`, `sort`, `create_time`) VALUES (170, 82, '同步集群', '', 'cloud:k8s:rsync', 3, '', 2, 4, '2025-09-19 21:59:31');
+INSERT INTO `sys_menu` (`id`, `parent_id`, `menu_name`, `icon`, `value`, `menu_type`, `url`, `menu_status`, `sort`, `create_time`) VALUES (171, 82, '删除集群', '', 'cloud:k8s:delete', 3, '', 2, 5, '2025-09-19 21:59:56');
+INSERT INTO `sys_menu` (`id`, `parent_id`, `menu_name`, `icon`, `value`, `menu_type`, `url`, `menu_status`, `sort`, `create_time`) VALUES (172, 83, '查看监控仪表盘', '', 'k8s:node:monitor', 3, '', 2, 1, '2025-09-20 00:19:49');
+INSERT INTO `sys_menu` (`id`, `parent_id`, `menu_name`, `icon`, `value`, `menu_type`, `url`, `menu_status`, `sort`, `create_time`) VALUES (173, 83, '查看节点资源详情', '', 'k8s:node:details', 3, '', 2, 2, '2025-09-20 00:21:20');
+INSERT INTO `sys_menu` (`id`, `parent_id`, `menu_name`, `icon`, `value`, `menu_type`, `url`, `menu_status`, `sort`, `create_time`) VALUES (174, 83, '配置节点污点', '', 'k8s:node:stain', 3, '', 2, 3, '2025-09-20 00:22:17');
+INSERT INTO `sys_menu` (`id`, `parent_id`, `menu_name`, `icon`, `value`, `menu_type`, `url`, `menu_status`, `sort`, `create_time`) VALUES (175, 83, '增加标签', '', 'k8s:node:label', 3, '', 2, 4, '2025-09-20 00:23:15');
+INSERT INTO `sys_menu` (`id`, `parent_id`, `menu_name`, `icon`, `value`, `menu_type`, `url`, `menu_status`, `sort`, `create_time`) VALUES (176, 83, '封锁节点', '', 'k8s:node:close', 3, '', 2, 5, '2025-09-20 00:24:13');
+INSERT INTO `sys_menu` (`id`, `parent_id`, `menu_name`, `icon`, `value`, `menu_type`, `url`, `menu_status`, `sort`, `create_time`) VALUES (177, 83, '驱逐节点', '', 'k8s:node:expel', 3, '', 2, 6, '2025-09-20 00:25:04');
+INSERT INTO `sys_menu` (`id`, `parent_id`, `menu_name`, `icon`, `value`, `menu_type`, `url`, `menu_status`, `sort`, `create_time`) VALUES (178, 105, '创建命名空间', '', 'k8s:namespace:add', 3, '', 2, 1, '2025-09-20 00:36:14');
+INSERT INTO `sys_menu` (`id`, `parent_id`, `menu_name`, `icon`, `value`, `menu_type`, `url`, `menu_status`, `sort`, `create_time`) VALUES (179, 105, '查看命名空间详情', '', 'k8s:namespace:details', 3, '', 2, 2, '2025-09-20 00:37:22');
+INSERT INTO `sys_menu` (`id`, `parent_id`, `menu_name`, `icon`, `value`, `menu_type`, `url`, `menu_status`, `sort`, `create_time`) VALUES (180, 105, '查看命名空间资源配置', '', 'k8s:namespace:setup', 3, '', 2, 3, '2025-09-20 00:39:05');
+INSERT INTO `sys_menu` (`id`, `parent_id`, `menu_name`, `icon`, `value`, `menu_type`, `url`, `menu_status`, `sort`, `create_time`) VALUES (181, 105, '添加命名空间资源配置', '', 'k8s:namespace:setupadd', 3, '', 2, 4, '2025-09-20 00:40:06');
+INSERT INTO `sys_menu` (`id`, `parent_id`, `menu_name`, `icon`, `value`, `menu_type`, `url`, `menu_status`, `sort`, `create_time`) VALUES (182, 105, '查看限制命名空间资源', '', 'k8s:namespace:restriction', 3, '', 2, 5, '2025-09-20 00:41:25');
+INSERT INTO `sys_menu` (`id`, `parent_id`, `menu_name`, `icon`, `value`, `menu_type`, `url`, `menu_status`, `sort`, `create_time`) VALUES (183, 105, '添加限制命名空间资源', '', 'k8s:namespace:restrictionadd', 3, '', 2, 6, '2025-09-20 00:42:23');
+INSERT INTO `sys_menu` (`id`, `parent_id`, `menu_name`, `icon`, `value`, `menu_type`, `url`, `menu_status`, `sort`, `create_time`) VALUES (184, 105, '删除命名空间', '', 'k8s:namespace:delete', 3, '', 2, 7, '2025-09-20 00:43:03');
+INSERT INTO `sys_menu` (`id`, `parent_id`, `menu_name`, `icon`, `value`, `menu_type`, `url`, `menu_status`, `sort`, `create_time`) VALUES (185, 93, '新增工作负载', '', 'k8s:workload:add', 3, '', 2, 1, '2025-09-20 01:05:08');
+INSERT INTO `sys_menu` (`id`, `parent_id`, `menu_name`, `icon`, `value`, `menu_type`, `url`, `menu_status`, `sort`, `create_time`) VALUES (186, 93, '伸缩pod', '', 'k8s:workload:expandable', 3, '', 2, 2, '2025-09-20 01:06:18');
+INSERT INTO `sys_menu` (`id`, `parent_id`, `menu_name`, `icon`, `value`, `menu_type`, `url`, `menu_status`, `sort`, `create_time`) VALUES (187, 93, '重启pod', '', 'k8s:workload:restart', 3, '', 2, 3, '2025-09-20 01:07:13');
+INSERT INTO `sys_menu` (`id`, `parent_id`, `menu_name`, `icon`, `value`, `menu_type`, `url`, `menu_status`, `sort`, `create_time`) VALUES (188, 93, '更新pod资源限制', '', 'k8s:workload:resource', 3, '', 2, 4, '2025-09-20 01:08:39');
+INSERT INTO `sys_menu` (`id`, `parent_id`, `menu_name`, `icon`, `value`, `menu_type`, `url`, `menu_status`, `sort`, `create_time`) VALUES (189, 93, '更新pod资调度', '', 'k8s:workload:dispatch', 3, '', 2, 5, '2025-09-20 01:09:36');
+INSERT INTO `sys_menu` (`id`, `parent_id`, `menu_name`, `icon`, `value`, `menu_type`, `url`, `menu_status`, `sort`, `create_time`) VALUES (190, 93, '更新yaml文件', '', 'k8s:workload:edityaml', 3, '', 2, 6, '2025-09-20 01:10:57');
+INSERT INTO `sys_menu` (`id`, `parent_id`, `menu_name`, `icon`, `value`, `menu_type`, `url`, `menu_status`, `sort`, `create_time`) VALUES (191, 93, '删除工作负载', '', 'k8s:workload:delete', 3, '', 2, 7, '2025-09-20 01:11:52');
+INSERT INTO `sys_menu` (`id`, `parent_id`, `menu_name`, `icon`, `value`, `menu_type`, `url`, `menu_status`, `sort`, `create_time`) VALUES (192, 93, '回滚工作负载版本', '', 'k8s:workload:rollback_version', 3, '', 2, 8, '2025-09-20 01:39:38');
+INSERT INTO `sys_menu` (`id`, `parent_id`, `menu_name`, `icon`, `value`, `menu_type`, `url`, `menu_status`, `sort`, `create_time`) VALUES (193, 93, '查看pod日志', '', 'k8s:workload:podlog', 3, '', 2, 9, '2025-09-20 01:44:37');
+INSERT INTO `sys_menu` (`id`, `parent_id`, `menu_name`, `icon`, `value`, `menu_type`, `url`, `menu_status`, `sort`, `create_time`) VALUES (194, 93, '删除pod', '', 'k8s:workload:poddelete', 3, '', 2, 10, '2025-09-20 01:45:16');
+INSERT INTO `sys_menu` (`id`, `parent_id`, `menu_name`, `icon`, `value`, `menu_type`, `url`, `menu_status`, `sort`, `create_time`) VALUES (195, 93, '登陆pod终端', '', 'k8s:workload:terminal', 3, '', 2, 11, '2025-09-20 01:46:07');
+INSERT INTO `sys_menu` (`id`, `parent_id`, `menu_name`, `icon`, `value`, `menu_type`, `url`, `menu_status`, `sort`, `create_time`) VALUES (196, 93, '编辑pod yaml文件', '', 'k8s:workload:edityaml', 3, '', 2, 12, '2025-09-20 01:47:22');
+INSERT INTO `sys_menu` (`id`, `parent_id`, `menu_name`, `icon`, `value`, `menu_type`, `url`, `menu_status`, `sort`, `create_time`) VALUES (197, 106, '新增service', '', 'k8s:network:addservice', 3, '', 2, 1, '2025-09-20 02:14:21');
+INSERT INTO `sys_menu` (`id`, `parent_id`, `menu_name`, `icon`, `value`, `menu_type`, `url`, `menu_status`, `sort`, `create_time`) VALUES (198, 106, '编辑 Service', '', 'k8s:network:editservice', 3, '', 2, 2, '2025-09-20 02:15:19');
+INSERT INTO `sys_menu` (`id`, `parent_id`, `menu_name`, `icon`, `value`, `menu_type`, `url`, `menu_status`, `sort`, `create_time`) VALUES (199, 106, '编辑service YAML', '', 'k8s:network:edit_service_yaml', 3, '', 2, 3, '2025-09-20 02:16:15');
+INSERT INTO `sys_menu` (`id`, `parent_id`, `menu_name`, `icon`, `value`, `menu_type`, `url`, `menu_status`, `sort`, `create_time`) VALUES (200, 106, '查看Service 事件', '', 'k8s:network:service_event', 3, '', 2, 4, '2025-09-20 02:18:11');
+INSERT INTO `sys_menu` (`id`, `parent_id`, `menu_name`, `icon`, `value`, `menu_type`, `url`, `menu_status`, `sort`, `create_time`) VALUES (201, 106, '删除Service', '', 'k8s:network:deleteservice', 3, '', 2, 5, '2025-09-20 02:18:59');
+INSERT INTO `sys_menu` (`id`, `parent_id`, `menu_name`, `icon`, `value`, `menu_type`, `url`, `menu_status`, `sort`, `create_time`) VALUES (202, 106, '编辑ingress', '', 'k8s:network:editingress', 3, '', 2, 6, '2025-09-20 02:26:59');
+INSERT INTO `sys_menu` (`id`, `parent_id`, `menu_name`, `icon`, `value`, `menu_type`, `url`, `menu_status`, `sort`, `create_time`) VALUES (203, 106, '新增ingress', '', 'k8s:network:addingress', 3, '', 2, 7, '2025-09-20 02:27:29');
+INSERT INTO `sys_menu` (`id`, `parent_id`, `menu_name`, `icon`, `value`, `menu_type`, `url`, `menu_status`, `sort`, `create_time`) VALUES (204, 106, '编辑ingress_yaml', '', 'k8s:network:edit_ingress_yaml', 3, '', 2, 8, '2025-09-20 02:28:23');
+INSERT INTO `sys_menu` (`id`, `parent_id`, `menu_name`, `icon`, `value`, `menu_type`, `url`, `menu_status`, `sort`, `create_time`) VALUES (205, 106, '查看ingress 事件', '', 'k8s:network:ingress_event', 3, '', 2, 9, '2025-09-20 02:29:24');
+INSERT INTO `sys_menu` (`id`, `parent_id`, `menu_name`, `icon`, `value`, `menu_type`, `url`, `menu_status`, `sort`, `create_time`) VALUES (206, 106, '删除ingress', '', 'k8s:network:delete_ingress', 3, '', 2, 10, '2025-09-20 02:30:04');
+COMMIT;
+
+-- ----------------------------
+-- Table structure for sys_operation_log
+-- ----------------------------
+DROP TABLE IF EXISTS `sys_operation_log`;
+CREATE TABLE `sys_operation_log` (
+  `id` int NOT NULL AUTO_INCREMENT COMMENT '主键',
+  `admin_id` bigint unsigned NOT NULL COMMENT '''管理员id''',
+  `username` varchar(64) NOT NULL COMMENT '''管理员账号''',
+  `method` varchar(64) NOT NULL COMMENT '''请求方式''',
+  `ip` varchar(64) DEFAULT NULL COMMENT '''IP''',
+  `url` varchar(500) DEFAULT NULL COMMENT '''URL''',
+  `create_time` datetime(3) NOT NULL COMMENT '''创建时间''',
+  `description` varchar(255) DEFAULT NULL COMMENT '''操作描述''',
+  PRIMARY KEY (`id`) USING BTREE,
+  KEY `username` (`username`) USING BTREE,
+  KEY `create_time` (`create_time`) USING BTREE
+) ENGINE=InnoDB AUTO_INCREMENT=1874 DEFAULT CHARSET=utf8mb3 ROW_FORMAT=DYNAMIC COMMENT='操作日志记录表';
+
+-- ----------------------------
+-- Records of sys_operation_log
+-- ----------------------------
+BEGIN;
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1, 89, 'admin', 'put', '192.168.3.40', '/api/post/updateStatus', '2025-06-28 20:40:41.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (2, 89, 'admin', 'put', '192.168.3.40', '/api/post/updateStatus', '2025-06-28 20:51:55.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (3, 89, 'admin', 'put', '192.168.3.40', '/api/post/updateStatus', '2025-06-28 20:58:31.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (4, 89, 'admin', 'put', '192.168.3.40', '/api/post/updateStatus', '2025-06-28 20:58:34.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (5, 89, 'admin', 'put', '192.168.3.40', '/api/post/updateStatus', '2025-06-28 22:35:25.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (6, 89, 'admin', 'post', '192.168.3.40', '/api/post/add', '2025-06-28 22:46:32.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (7, 89, 'admin', 'put', '192.168.3.40', '/api/post/update', '2025-06-28 22:48:09.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (8, 89, 'admin', 'delete', '192.168.3.40', '/api/post/delete', '2025-06-28 22:48:24.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (9, 89, 'admin', 'post', '192.168.3.40', '/api/post/add', '2025-06-28 22:50:29.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (10, 89, 'admin', 'post', '192.168.3.40', '/api/post/add', '2025-06-28 22:52:57.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (11, 89, 'admin', 'put', '192.168.3.40', '/api/post/updateStatus', '2025-06-28 23:04:14.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (12, 89, 'admin', 'put', '192.168.3.40', '/api/post/updateStatus', '2025-06-28 23:08:01.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (13, 89, 'admin', 'put', '192.168.3.40', '/api/post/update', '2025-06-28 23:08:24.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (14, 89, 'admin', 'put', '192.168.3.40', '/api/dept/update', '2025-06-28 23:41:00.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (15, 89, 'admin', 'put', '192.168.3.40', '/api/dept/update', '2025-06-28 23:41:41.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (16, 89, 'admin', 'put', '192.168.3.40', '/api/dept/update', '2025-06-28 23:42:31.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (17, 89, 'admin', 'post', '192.168.3.40', '/api/dept/add', '2025-06-28 23:42:46.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (18, 89, 'admin', 'post', '192.168.3.40', '/api/dept/add', '2025-06-28 23:43:15.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (19, 89, 'admin', 'post', '192.168.3.40', '/api/dept/add', '2025-06-28 23:43:34.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (20, 89, 'admin', 'post', '192.168.3.40', '/api/dept/add', '2025-06-28 23:43:50.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (21, 89, 'admin', 'post', '192.168.3.40', '/api/dept/add', '2025-06-28 23:44:11.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (22, 89, 'admin', 'post', '192.168.3.40', '/api/dept/add', '2025-06-28 23:44:15.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (23, 89, 'admin', 'delete', '192.168.3.40', '/api/dept/delete', '2025-06-28 23:54:32.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (24, 89, 'admin', 'put', '192.168.3.40', '/api/dept/update', '2025-06-28 23:54:40.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (25, 89, 'admin', 'put', '192.168.3.40', '/api/dept/update', '2025-06-28 23:54:45.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (26, 89, 'admin', 'post', '192.168.3.40', '/api/menu/add', '2025-06-29 00:30:35.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (27, 89, 'admin', 'put', '192.168.3.40', '/api/menu/update', '2025-06-29 00:49:46.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (28, 89, 'admin', 'put', '192.168.3.40', '/api/menu/update', '2025-06-29 13:18:50.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (29, 89, 'admin', 'put', '192.168.3.40', '/api/role/updateStatus', '2025-06-29 13:55:46.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (30, 89, 'admin', 'put', '192.168.3.40', '/api/role/updateStatus', '2025-06-29 13:59:53.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (31, 89, 'admin', 'post', '192.168.3.40', '/api/role/add', '2025-06-29 14:01:02.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (32, 89, 'admin', 'post', '192.168.3.40', '/api/role/add', '2025-06-29 14:01:15.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (33, 89, 'admin', 'post', '192.168.3.40', '/api/role/add', '2025-06-29 14:01:20.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (34, 89, 'admin', 'delete', '192.168.3.40', '/api/role/delete', '2025-06-29 14:01:32.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (35, 89, 'admin', 'post', '192.168.3.40', '/api/role/add', '2025-06-29 14:01:49.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (36, 89, 'admin', 'put', '192.168.3.40', '/api/role/update', '2025-06-29 14:02:14.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (37, 89, 'admin', 'post', '192.168.3.40', '/api/role/add', '2025-06-29 14:02:29.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (38, 89, 'admin', 'put', '192.168.3.40', '/api/role/update', '2025-06-29 14:10:23.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (39, 89, 'admin', 'put', '192.168.3.40', '/api/role/assignPermissions', '2025-06-29 14:10:35.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (40, 89, 'admin', 'put', '192.168.3.40', '/api/role/updateStatus', '2025-06-29 14:11:56.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (41, 89, 'admin', 'put', '192.168.3.40', '/api/role/assignPermissions', '2025-06-29 14:12:13.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (42, 89, 'admin', 'put', '192.168.3.40', '/api/role/assignPermissions', '2025-06-29 14:29:21.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (43, 89, 'admin', 'put', '192.168.3.40', '/api/role/updateStatus', '2025-06-29 14:37:06.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (44, 89, 'admin', 'put', '192.168.3.40', '/api/admin/updateStatus', '2025-06-29 14:37:30.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (45, 89, 'admin', 'put', '192.168.3.40', '/api/admin/updateStatus', '2025-06-29 14:37:33.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (46, 89, 'admin', 'put', '192.168.3.40', '/api/admin/update', '2025-06-29 14:37:58.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (47, 89, 'admin', 'put', '192.168.3.40', '/api/admin/updatePassword', '2025-06-29 14:55:31.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (48, 89, 'admin', 'post', '192.168.3.40', '/api/admin/add', '2025-06-29 15:02:48.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (49, 89, 'admin', 'put', '192.168.3.40', '/api/admin/update', '2025-06-29 15:06:23.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (50, 89, 'admin', 'post', '192.168.3.40', '/api/admin/add', '2025-06-29 15:07:28.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (51, 89, 'admin', 'put', '192.168.3.40', '/api/admin/updatePassword', '2025-06-29 15:07:41.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (52, 99, 'zhangfan', 'post', '127.0.0.1', '/api/upload', '2025-06-29 15:13:26.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (53, 99, 'zhangfan', 'put', '192.168.3.40', '/api/admin/updatePersonal', '2025-06-29 15:13:35.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (54, 89, 'admin', 'put', '192.168.3.40', '/api/admin/updatePassword', '2025-06-29 15:15:17.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (55, 89, 'admin', 'put', '192.168.3.40', '/api/admin/update', '2025-06-29 15:17:10.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (56, 89, 'admin', 'put', '192.168.3.40', '/api/admin/updatePassword', '2025-06-29 15:22:48.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (57, 89, 'admin', 'put', '192.168.3.40', '/api/admin/updatePassword', '2025-06-29 15:22:56.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (58, 100, 'test', 'post', '127.0.0.1', '/api/upload', '2025-06-29 15:24:12.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (59, 100, 'test', 'put', '192.168.3.40', '/api/admin/updatePersonal', '2025-06-29 15:24:18.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (60, 89, 'admin', 'put', '192.168.3.40', '/api/role/assignPermissions', '2025-06-29 15:25:09.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (61, 98, 'lisi', 'post', '127.0.0.1', '/api/upload', '2025-06-29 15:26:13.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (62, 98, 'lisi', 'put', '192.168.3.40', '/api/admin/updatePersonal', '2025-06-29 15:26:18.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (63, 89, 'admin', 'put', '192.168.3.40', '/api/admin/updatePersonalPassword', '2025-06-29 15:28:16.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (64, 89, 'admin', 'delete', '192.168.3.40', '/api/sysLoginInfo/batch/delete', '2025-06-29 15:31:44.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (65, 89, 'admin', 'delete', '192.168.3.40', '/api/sysLoginInfo/batch/delete', '2025-06-29 15:31:50.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (66, 89, 'admin', 'delete', '192.168.3.40', '/api/sysLoginInfo/batch/delete', '2025-06-29 15:32:08.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (67, 89, 'admin', 'delete', '192.168.3.40', '/api/sysLoginInfo/delete', '2025-06-29 15:32:14.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (68, 89, 'admin', 'put', '192.168.3.40', '/api/role/assignPermissions', '2025-06-29 16:15:39.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (69, 99, 'zhangfan', 'delete', '192.168.3.40', '/api/admin/delete', '2025-06-29 16:16:31.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (70, 89, 'admin', 'put', '192.168.3.40', '/api/role/assignPermissions', '2025-06-30 00:52:42.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (71, 89, 'admin', 'put', '192.168.3.40', '/api/admin/updatePassword', '2025-06-30 00:52:59.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (72, 89, 'admin', 'put', '192.168.3.40', '/api/admin/update', '2025-06-30 00:53:07.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (73, 89, 'admin', 'put', '10.7.16.22', '/api/admin/update', '2025-06-30 13:16:08.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (74, 89, 'admin', 'put', '10.7.16.22', '/api/admin/update', '2025-06-30 14:05:25.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (75, 89, 'admin', 'put', '10.7.16.22', '/api/admin/update', '2025-06-30 14:05:48.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (76, 89, 'admin', 'put', '10.7.16.22', '/api/admin/update', '2025-06-30 14:13:13.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (77, 89, 'admin', 'put', '10.7.16.22', '/api/role/update', '2025-06-30 17:23:18.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (78, 89, 'admin', 'post', '10.7.16.22', '/api/admin/add', '2025-07-01 14:34:18.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (79, 89, 'admin', 'put', '10.7.16.22', '/api/admin/updateStatus', '2025-07-01 14:45:39.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (80, 89, 'admin', 'put', '10.7.16.22', '/api/admin/updateStatus', '2025-07-01 14:45:50.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (81, 89, 'admin', 'put', '10.7.16.22', '/api/role/updateStatus', '2025-07-01 15:49:01.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (82, 89, 'admin', 'put', '10.7.16.22', '/api/admin/updateStatus', '2025-07-01 15:49:07.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (83, 89, 'admin', 'put', '10.7.16.22', '/api/admin/updateStatus', '2025-07-01 16:20:45.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (84, 89, 'admin', 'put', '10.7.16.22', '/api/admin/updateStatus', '2025-07-01 16:20:55.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (85, 89, 'admin', 'put', '10.7.16.22', '/api/admin/updateStatus', '2025-07-01 16:22:42.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (86, 89, 'admin', 'put', '10.7.16.22', '/api/admin/updateStatus', '2025-07-01 16:24:06.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (87, 89, 'admin', 'put', '10.7.16.22', '/api/admin/updateStatus', '2025-07-01 16:24:13.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (88, 89, 'admin', 'put', '10.7.16.22', '/api/admin/updatePassword', '2025-07-02 14:06:36.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (89, 89, 'admin', 'put', '10.7.16.22', '/api/post/updateStatus', '2025-07-02 14:13:30.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (90, 89, 'admin', 'put', '10.7.16.22', '/api/post/updateStatus', '2025-07-02 14:13:33.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (91, 89, 'admin', 'delete', '10.7.16.22', '/api/menu/delete', '2025-07-03 10:22:59.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (92, 89, 'admin', 'delete', '10.7.16.22', '/api/menu/delete', '2025-07-03 10:23:57.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (93, 89, 'admin', 'put', '10.7.16.22', '/api/menu/update', '2025-07-03 10:32:20.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (94, 89, 'admin', 'put', '10.7.16.22', '/api/menu/update', '2025-07-03 10:37:08.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (95, 89, 'admin', 'put', '10.7.16.22', '/api/menu/update', '2025-07-03 10:40:08.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (96, 89, 'admin', 'post', '10.7.16.22', '/api/menu/add', '2025-07-03 10:42:22.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (97, 89, 'admin', 'delete', '10.7.16.22', '/api/menu/delete', '2025-07-03 11:12:17.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (98, 89, 'admin', 'delete', '10.7.16.22', '/api/menu/delete', '2025-07-03 11:31:47.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (99, 89, 'admin', 'delete', '10.7.16.22', '/api/menu/delete', '2025-07-03 11:33:03.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (100, 89, 'admin', 'delete', '10.7.16.22', '/api/menu/delete', '2025-07-03 11:33:21.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (101, 89, 'admin', 'put', '10.7.16.22', '/api/menu/update', '2025-07-03 11:33:34.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (102, 89, 'admin', 'delete', '10.7.16.22', '/api/menu/delete', '2025-07-03 11:33:40.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (103, 89, 'admin', 'put', '10.7.16.22', '/api/menu/update', '2025-07-03 11:33:54.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (104, 89, 'admin', 'delete', '10.7.16.22', '/api/menu/delete', '2025-07-03 11:34:02.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (105, 89, 'admin', 'post', '10.7.16.22', '/api/menu/add', '2025-07-03 11:47:07.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (106, 89, 'admin', 'put', '10.7.16.22', '/api/menu/update', '2025-07-03 11:47:41.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (107, 89, 'admin', 'put', '10.7.16.22', '/api/menu/update', '2025-07-03 11:48:46.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (108, 89, 'admin', 'put', '10.7.16.22', '/api/menu/update', '2025-07-03 11:48:57.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (109, 89, 'admin', 'post', '10.7.16.22', '/api/menu/add', '2025-07-03 11:50:47.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (110, 89, 'admin', 'put', '10.7.16.22', '/api/menu/update', '2025-07-03 11:50:55.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (111, 89, 'admin', 'put', '10.7.16.22', '/api/menu/update', '2025-07-03 11:51:22.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (112, 89, 'admin', 'post', '10.7.16.22', '/api/menu/add', '2025-07-03 11:56:44.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (113, 89, 'admin', 'put', '10.7.16.22', '/api/menu/update', '2025-07-03 12:00:01.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (114, 89, 'admin', 'put', '10.7.16.22', '/api/menu/update', '2025-07-03 12:03:21.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (115, 89, 'admin', 'post', '10.7.16.22', '/api/menu/add', '2025-07-03 12:04:59.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (116, 89, 'admin', 'put', '10.7.16.22', '/api/role/assignPermissions', '2025-07-03 12:58:09.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (117, 89, 'admin', 'put', '10.7.16.22', '/api/role/assignPermissions', '2025-07-03 12:58:24.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (118, 89, 'admin', 'put', '10.7.16.22', '/api/role/assignPermissions', '2025-07-03 12:58:54.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (119, 89, 'admin', 'put', '10.7.16.22', '/api/role/updateStatus', '2025-07-03 12:59:09.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (120, 89, 'admin', 'put', '10.7.16.22', '/api/role/assignPermissions', '2025-07-03 12:59:27.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (121, 89, 'admin', 'put', '10.7.16.22', '/api/role/assignPermissions', '2025-07-03 13:06:15.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (122, 89, 'admin', 'put', '10.7.16.22', '/api/role/assignPermissions', '2025-07-03 13:06:47.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (123, 89, 'admin', 'put', '10.7.16.22', '/api/role/assignPermissions', '2025-07-03 13:10:08.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (124, 89, 'admin', 'put', '10.7.16.22', '/api/role/assignPermissions', '2025-07-03 13:10:18.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (125, 89, 'admin', 'put', '10.7.16.22', '/api/role/assignPermissions', '2025-07-03 13:10:27.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (126, 89, 'admin', 'put', '10.7.16.22', '/api/role/assignPermissions', '2025-07-03 13:12:41.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (127, 89, 'admin', 'put', '10.7.16.22', '/api/role/assignPermissions', '2025-07-03 13:13:39.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (128, 89, 'admin', 'put', '10.7.16.22', '/api/role/assignPermissions', '2025-07-03 13:15:30.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (129, 89, 'admin', 'put', '10.7.16.22', '/api/admin/update', '2025-07-03 13:21:25.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (130, 89, 'admin', 'put', '10.7.16.22', '/api/role/assignPermissions', '2025-07-03 13:24:38.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (131, 89, 'admin', 'put', '10.7.16.22', '/api/role/assignPermissions', '2025-07-03 13:26:24.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (132, 89, 'admin', 'put', '10.7.16.22', '/api/role/assignPermissions', '2025-07-03 13:32:33.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (133, 89, 'admin', 'put', '10.7.16.22', '/api/role/assignPermissions', '2025-07-03 13:36:36.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (134, 89, 'admin', 'put', '10.7.16.22', '/api/role/assignPermissions', '2025-07-03 13:40:00.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (135, 89, 'admin', 'put', '10.7.16.22', '/api/role/assignPermissions', '2025-07-03 13:41:15.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (136, 89, 'admin', 'put', '10.7.16.22', '/api/role/assignPermissions', '2025-07-03 13:41:29.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (137, 89, 'admin', 'put', '10.7.16.22', '/api/role/assignPermissions', '2025-07-03 13:41:48.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (138, 89, 'admin', 'put', '10.7.16.22', '/api/role/assignPermissions', '2025-07-03 13:42:03.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (139, 89, 'admin', 'put', '10.7.16.22', '/api/role/assignPermissions', '2025-07-03 13:46:17.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (140, 89, 'admin', 'put', '10.7.16.22', '/api/role/assignPermissions', '2025-07-03 13:46:28.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (141, 89, 'admin', 'put', '10.7.16.22', '/api/role/assignPermissions', '2025-07-03 13:47:02.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (142, 89, 'admin', 'put', '10.7.16.22', '/api/role/assignPermissions', '2025-07-03 13:47:16.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (143, 89, 'admin', 'put', '10.7.16.22', '/api/role/assignPermissions', '2025-07-03 13:47:31.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (144, 89, 'admin', 'put', '10.7.16.22', '/api/role/assignPermissions', '2025-07-03 13:50:07.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (145, 89, 'admin', 'put', '10.7.16.22', '/api/role/assignPermissions', '2025-07-03 13:50:14.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (146, 89, 'admin', 'put', '10.7.16.22', '/api/role/assignPermissions', '2025-07-03 14:03:26.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (147, 89, 'admin', 'put', '10.7.16.22', '/api/role/assignPermissions', '2025-07-03 14:11:50.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (148, 89, 'admin', 'put', '10.7.16.22', '/api/menu/update', '2025-07-03 14:25:37.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (149, 89, 'admin', 'put', '10.7.16.22', '/api/menu/update', '2025-07-03 14:25:44.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (150, 89, 'admin', 'put', '10.7.16.22', '/api/menu/update', '2025-07-03 14:26:12.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (151, 89, 'admin', 'put', '10.7.16.22', '/api/menu/update', '2025-07-03 14:26:49.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (152, 89, 'admin', 'put', '10.7.16.22', '/api/menu/update', '2025-07-03 14:26:54.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (153, 89, 'admin', 'put', '10.7.16.22', '/api/role/assignPermissions', '2025-07-03 14:30:15.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (154, 89, 'admin', 'put', '10.7.16.22', '/api/role/assignPermissions', '2025-07-03 14:30:34.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (155, 89, 'admin', 'put', '10.7.16.22', '/api/role/assignPermissions', '2025-07-03 14:30:40.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (156, 89, 'admin', 'put', '10.7.16.22', '/api/role/assignPermissions', '2025-07-03 15:00:48.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (157, 89, 'admin', 'put', '10.7.16.22', '/api/role/assignPermissions', '2025-07-03 16:52:40.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (158, 89, 'admin', 'put', '10.7.16.22', '/api/role/assignPermissions', '2025-07-03 17:23:16.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (159, 89, 'admin', 'put', '10.7.16.22', '/api/role/assignPermissions', '2025-07-03 17:23:40.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (160, 89, 'admin', 'put', '10.7.16.22', '/api/role/assignPermissions', '2025-07-03 17:24:27.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (161, 89, 'admin', 'put', '10.7.16.22', '/api/role/assignPermissions', '2025-07-03 17:26:06.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (162, 89, 'admin', 'put', '10.7.16.22', '/api/admin/updatePassword', '2025-07-03 17:27:46.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (163, 89, 'admin', 'put', '10.7.16.22', '/api/role/assignPermissions', '2025-07-03 17:28:03.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (164, 99, 'zhangfan', 'put', '10.7.16.22', '/api/role/assignPermissions', '2025-07-03 17:29:23.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (165, 89, 'admin', 'put', '10.7.16.22', '/api/role/assignPermissions', '2025-07-03 17:39:30.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (166, 89, 'admin', 'put', '10.7.16.22', '/api/role/assignPermissions', '2025-07-03 17:39:44.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (167, 89, 'admin', 'put', '10.7.16.22', '/api/role/assignPermissions', '2025-07-03 17:40:23.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (168, 89, 'admin', 'put', '10.7.16.22', '/api/role/assignPermissions', '2025-07-03 17:40:49.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (169, 89, 'admin', 'put', '10.7.16.22', '/api/role/assignPermissions', '2025-07-03 17:47:01.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (170, 89, 'admin', 'post', '10.7.16.22', '/api/role/add', '2025-07-03 18:47:25.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (171, 89, 'admin', 'put', '10.7.16.22', '/api/role/assignPermissions', '2025-07-03 18:53:44.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (172, 89, 'admin', 'put', '10.7.16.22', '/api/admin/update', '2025-07-03 18:54:06.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (173, 89, 'admin', 'put', '10.7.16.22', '/api/admin/updatePassword', '2025-07-03 18:54:13.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (174, 89, 'admin', 'put', '10.7.16.22', '/api/admin/update', '2025-07-04 13:09:00.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (175, 89, 'admin', 'put', '10.7.16.22', '/api/admin/update', '2025-07-04 13:09:09.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (176, 89, 'admin', 'put', '10.7.16.22', '/api/admin/update', '2025-07-04 13:09:24.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (177, 89, 'admin', 'delete', '10.7.16.22', '/api/post/delete', '2025-07-04 13:09:37.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (178, 89, 'admin', 'delete', '10.7.16.22', '/api/post/delete', '2025-07-04 13:09:39.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (179, 89, 'admin', 'delete', '10.7.16.22', '/api/dept/delete', '2025-07-04 13:10:05.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (180, 89, 'admin', 'put', '10.7.16.22', '/api/dept/update', '2025-07-04 13:10:20.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (181, 89, 'admin', 'post', '10.7.16.22', '/api/dept/add', '2025-07-04 13:10:58.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (182, 89, 'admin', 'delete', '10.7.16.22', '/api/dept/delete', '2025-07-04 13:11:11.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (183, 89, 'admin', 'put', '10.7.16.22', '/api/post/update', '2025-07-04 16:09:07.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (184, 89, 'admin', 'put', '10.7.16.22', '/api/post/update', '2025-07-04 16:09:17.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (185, 89, 'admin', 'put', '10.7.16.22', '/api/menu/update', '2025-07-04 16:46:34.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (186, 89, 'admin', 'post', '10.7.16.22', '/api/menu/add', '2025-07-04 17:00:01.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (187, 89, 'admin', 'put', '10.7.16.22', '/api/menu/update', '2025-07-04 17:00:13.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (188, 89, 'admin', 'put', '10.7.16.22', '/api/menu/update', '2025-07-04 17:00:18.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (189, 89, 'admin', 'post', '10.7.16.22', '/api/menu/add', '2025-07-04 17:03:10.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (190, 89, 'admin', 'put', '10.7.16.22', '/api/menu/update', '2025-07-04 17:05:10.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (191, 89, 'admin', 'put', '10.7.16.22', '/api/menu/update', '2025-07-04 17:05:25.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (192, 89, 'admin', 'post', '10.7.16.22', '/api/menu/add', '2025-07-04 17:08:20.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (193, 89, 'admin', 'put', '10.7.16.22', '/api/role/assignPermissions', '2025-07-04 17:14:22.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (194, 89, 'admin', 'put', '10.7.16.22', '/api/role/assignPermissions', '2025-07-04 17:52:21.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (195, 89, 'admin', 'put', '10.7.16.22', '/api/role/assignPermissions', '2025-07-04 17:55:20.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (196, 89, 'admin', 'put', '10.7.16.22', '/api/dept/update', '2025-07-07 16:58:41.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (197, 89, 'admin', 'put', '10.7.16.22', '/api/admin/update', '2025-07-07 18:50:09.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (198, 89, 'admin', 'post', '10.7.16.22', '/api/menu/add', '2025-07-07 20:13:00.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (199, 89, 'admin', 'post', '127.0.0.1', '/api/cmdb/groupadd', '2025-07-09 15:34:46.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (200, 89, 'admin', 'post', '127.0.0.1', '/api/cmdb/groupadd', '2025-07-10 10:55:21.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (201, 89, 'admin', 'post', '127.0.0.1', '/api/cmdb/groupadd', '2025-07-10 11:02:07.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (202, 89, 'admin', 'post', '127.0.0.1', '/api/cmdb/groupadd', '2025-07-10 11:03:37.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (203, 89, 'admin', 'post', '127.0.0.1', '/api/cmdb/groupadd', '2025-07-10 11:03:56.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (205, 89, 'admin', 'post', '127.0.0.1', '/api/cmdb/groupadd', '2025-07-10 11:11:47.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (208, 89, 'admin', 'post', '127.0.0.1', '/api/cmdb/groupadd', '2025-07-10 11:30:01.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (209, 89, 'admin', 'post', '127.0.0.1', '/api/cmdb/groupadd', '2025-07-14 11:45:04.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (210, 89, 'admin', 'delete', '127.0.0.1', '/api/cmdb/groupdelete', '2025-07-14 11:45:44.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (211, 89, 'admin', 'put', '127.0.0.1', '/api/cmdb/groupupdate', '2025-07-14 11:48:31.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (212, 89, 'admin', 'put', '127.0.0.1', '/api/cmdb/groupupdate', '2025-07-14 11:51:22.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (213, 89, 'admin', 'put', '127.0.0.1', '/api/cmdb/groupupdate', '2025-07-14 11:52:34.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (214, 89, 'admin', 'post', '127.0.0.1', '/api/config/ecsauthadd', '2025-07-15 14:25:53.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (215, 89, 'admin', 'post', '127.0.0.1', '/api/config/ecsauthadd', '2025-07-15 14:31:46.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (218, 89, 'admin', 'delete', '127.0.0.1', '/api/v1/config/ecsauthdelete', '2025-07-31 11:01:29.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (219, 89, 'admin', 'delete', '127.0.0.1', '/api/v1/config/ecsauthdelete', '2025-07-31 11:01:32.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (220, 89, 'admin', 'delete', '127.0.0.1', '/api/v1/sysLoginInfo/clean', '2025-07-31 11:01:47.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (221, 89, 'admin', 'delete', '127.0.0.1', '/api/v1/sysLoginInfo/clean', '2025-07-31 11:01:54.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (222, 89, 'admin', 'delete', '127.0.0.1', '/api/v1/sysLoginInfo/clean', '2025-07-31 11:02:24.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (223, 89, 'admin', 'delete', '127.0.0.1', '/api/v1/sysLoginInfo/batch/delete', '2025-07-31 11:02:28.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (224, 89, 'admin', 'delete', '127.0.0.1', '/api/v1/sysLoginInfo/batch/delete', '2025-07-31 11:02:33.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (225, 89, 'admin', 'delete', '127.0.0.1', '/api/v1/sysLoginInfo/batch/delete', '2025-07-31 11:02:39.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (226, 89, 'admin', 'post', '127.0.0.1', '/api/v1/cmdb/sql/databaselist', '2025-07-31 11:45:56.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (227, 89, 'admin', 'post', '127.0.0.1', '/api/v1/cmdb/sql/select', '2025-07-31 11:46:20.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (228, 89, 'admin', 'post', '127.0.0.1', '/api/v1/cmdb/sql/select', '2025-07-31 11:46:50.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (229, 89, 'admin', 'post', '127.0.0.1', '/api/v1/cmdb/sql/databaselist', '2025-07-31 12:25:57.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (230, 89, 'admin', 'post', '127.0.0.1', '/api/v1/cmdb/sql/select', '2025-07-31 12:26:22.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (231, 89, 'admin', 'delete', '127.0.0.1', '/api/v1/cmdb/sqlLog/delete', '2025-07-31 12:26:45.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (232, 89, 'admin', 'post', '127.0.0.1', '/api/v1/menu/add', '2025-07-31 12:44:07.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (233, 89, 'admin', 'put', '127.0.0.1', '/api/v1/role/assignPermissions', '2025-07-31 12:44:35.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (234, 89, 'admin', 'put', '127.0.0.1', '/api/v1/role/assignPermissions', '2025-07-31 12:44:43.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (235, 89, 'admin', 'put', '127.0.0.1', '/api/v1/menu/update', '2025-07-31 12:46:16.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (236, 89, 'admin', 'post', '127.0.0.1', '/api/v1/cmdb/sql/databaselist', '2025-07-31 12:56:08.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (237, 89, 'admin', 'post', '127.0.0.1', '/api/v1/cmdb/sql/select', '2025-07-31 12:56:19.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (238, 89, 'admin', 'post', '127.0.0.1', '/api/v1/cmdb/sql/databaselist', '2025-07-31 12:58:11.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (239, 89, 'admin', 'post', '127.0.0.1', '/api/v1/cmdb/sql/select', '2025-07-31 12:58:19.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (240, 89, 'admin', 'post', '127.0.0.1', '/api/v1/cmdb/sql/select', '2025-07-31 12:58:26.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (241, 89, 'admin', 'post', '127.0.0.1', '/api/v1/cmdb/sql/select', '2025-07-31 12:59:05.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (242, 89, 'admin', 'post', '127.0.0.1', '/api/v1/cmdb/sql/select', '2025-07-31 12:59:31.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (243, 89, 'admin', 'put', '127.0.0.1', '/api/v1/role/assignPermissions', '2025-07-31 13:19:45.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (244, 89, 'admin', 'put', '127.0.0.1', '/api/v1/role/assignPermissions', '2025-07-31 13:21:14.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (245, 89, 'admin', 'post', '127.0.0.1', '/api/v1/cmdb/hostimport', '2025-07-31 21:04:02.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (246, 89, 'admin', 'post', '127.0.0.1', '/api/v1/cmdb/hostimport', '2025-07-31 21:06:36.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (247, 89, 'admin', 'post', '127.0.0.1', '/api/v1/cmdb/hostimport', '2025-07-31 21:09:02.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (248, 89, 'admin', 'post', '127.0.0.1', '/api/v1/cmdb/hostimport', '2025-07-31 21:10:36.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (249, 89, 'admin', 'post', '127.0.0.1', '/api/v1/cmdb/hostimport', '2025-07-31 21:20:08.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (250, 89, 'admin', 'post', '127.0.0.1', '/api/v1/cmdb/hostimport', '2025-07-31 21:23:21.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (251, 89, 'admin', 'post', '127.0.0.1', '/api/v1/cmdb/hostimport', '2025-07-31 21:34:30.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (252, 89, 'admin', 'put', '127.0.0.1', '/api/v1/cmdb/hostupdate', '2025-07-31 21:36:08.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (253, 89, 'admin', 'post', '127.0.0.1', '/api/v1/cmdb/hostssh/upload/440', '2025-07-31 21:37:07.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (254, 89, 'admin', 'post', '127.0.0.1', '/api/v1/config/accountauth/decrypt', '2025-08-01 10:18:27.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (255, 89, 'admin', 'post', '127.0.0.1', '/api/v1/config/accountauth/decrypt', '2025-08-01 10:18:30.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (256, 89, 'admin', 'post', '127.0.0.1', '/api/v1/config/accountauth/decrypt', '2025-08-01 10:18:36.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (257, 89, 'admin', 'post', '127.0.0.1', '/api/v1/config/accountauth/decrypt', '2025-08-01 10:19:10.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (258, 89, 'admin', 'post', '127.0.0.1', '/api/v1/config/accountauth/decrypt', '2025-08-01 10:27:54.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (259, 89, 'admin', 'post', '127.0.0.1', '/api/v1/config/accountauth/decrypt', '2025-08-01 10:27:59.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (260, 89, 'admin', 'post', '127.0.0.1', '/api/v1/config/accountauth/decrypt', '2025-08-01 10:29:56.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (261, 89, 'admin', 'post', '127.0.0.1', '/api/v1/config/accountauth/decrypt', '2025-08-01 10:29:59.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (262, 89, 'admin', 'post', '127.0.0.1', '/api/v1/cmdb/hostimport', '2025-08-01 11:51:00.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (263, 89, 'admin', 'put', '127.0.0.1', '/api/v1/cmdb/hostupdate', '2025-08-01 12:05:13.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (264, 89, 'admin', 'put', '127.0.0.1', '/api/v1/cmdb/hostupdate', '2025-08-01 12:06:33.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (265, 89, 'admin', 'put', '127.0.0.1', '/api/v1/cmdb/hostupdate', '2025-08-01 12:06:50.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (266, 89, 'admin', 'post', '127.0.0.1', '/api/v1/cmdb/sql/databaselist', '2025-08-01 16:47:37.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (267, 89, 'admin', 'post', '127.0.0.1', '/api/v1/cmdb/sql/select', '2025-08-01 16:47:59.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (268, 89, 'admin', 'post', '127.0.0.1', '/api/v1/cmdb/sql/select', '2025-08-01 16:48:15.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (269, 89, 'admin', 'delete', '127.0.0.1', '/api/v1/cmdb/hostdelete', '2025-08-02 00:48:20.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (270, 89, 'admin', 'delete', '127.0.0.1', '/api/v1/cmdb/hostdelete', '2025-08-02 00:48:24.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (271, 89, 'admin', 'delete', '127.0.0.1', '/api/v1/cmdb/hostdelete', '2025-08-02 00:48:31.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (272, 89, 'admin', 'delete', '127.0.0.1', '/api/v1/cmdb/hostdelete', '2025-08-02 00:48:35.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (273, 89, 'admin', 'delete', '127.0.0.1', '/api/v1/cmdb/hostdelete', '2025-08-02 00:48:38.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (274, 89, 'admin', 'delete', '127.0.0.1', '/api/v1/cmdb/hostdelete', '2025-08-02 00:48:41.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (275, 89, 'admin', 'delete', '127.0.0.1', '/api/v1/cmdb/hostdelete', '2025-08-02 00:48:44.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (276, 89, 'admin', 'delete', '127.0.0.1', '/api/v1/cmdb/hostdelete', '2025-08-02 00:48:47.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (277, 89, 'admin', 'delete', '127.0.0.1', '/api/v1/cmdb/hostdelete', '2025-08-02 00:48:50.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (278, 89, 'admin', 'put', '127.0.0.1', '/api/v1/cmdb/hostupdate', '2025-08-02 00:49:19.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (279, 89, 'admin', 'put', '127.0.0.1', '/api/v1/cmdb/hostupdate', '2025-08-02 00:49:25.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (280, 89, 'admin', 'put', '127.0.0.1', '/api/v1/cmdb/hostupdate', '2025-08-02 01:25:00.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (281, 89, 'admin', 'put', '127.0.0.1', '/api/v1/cmdb/hostupdate', '2025-08-02 01:49:51.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (282, 89, 'admin', 'put', '127.0.0.1', '/api/v1/cmdb/hostupdate', '2025-08-02 01:50:00.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (283, 89, 'admin', 'post', '127.0.0.1', '/api/v1/cmdb/hostcreate', '2025-08-02 01:50:52.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (284, 89, 'admin', 'delete', '127.0.0.1', '/api/v1/cmdb/hostdelete', '2025-08-02 01:51:55.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (285, 89, 'admin', 'put', '127.0.0.1', '/api/v1/cmdb/hostupdate', '2025-08-02 01:52:06.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (286, 89, 'admin', 'put', '127.0.0.1', '/api/v1/cmdb/hostupdate', '2025-08-02 01:52:17.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (287, 89, 'admin', 'put', '127.0.0.1', '/api/v1/cmdb/hostupdate', '2025-08-02 03:13:28.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (288, 89, 'admin', 'put', '127.0.0.1', '/api/v1/cmdb/hostupdate', '2025-08-02 03:20:08.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (289, 89, 'admin', 'post', '127.0.0.1', '/api/v1/config/accountauth/decrypt', '2025-08-02 12:56:10.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (290, 89, 'admin', 'put', '127.0.0.1', '/api/v1/cmdb/hostupdate', '2025-08-02 16:01:06.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (291, 89, 'admin', 'put', '127.0.0.1', '/api/v1/cmdb/hostupdate', '2025-08-02 19:39:47.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (292, 89, 'admin', 'put', '127.0.0.1', '/api/v1/cmdb/hostupdate', '2025-08-02 19:41:46.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (293, 89, 'admin', 'put', '127.0.0.1', '/api/v1/cmdb/hostupdate', '2025-08-03 00:58:34.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (294, 89, 'admin', 'put', '127.0.0.1', '/api/v1/cmdb/hostupdate', '2025-08-03 11:51:55.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (295, 89, 'admin', 'put', '127.0.0.1', '/api/v1/cmdb/hostupdate', '2025-08-04 19:39:13.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (296, 89, 'admin', 'post', '127.0.0.1', '/api/v1/taskcenter/template', '2025-08-06 11:27:07.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (297, 89, 'admin', 'post', '127.0.0.1', '/api/v1/taskcenter/template', '2025-08-06 11:51:02.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (298, 89, 'admin', 'post', '127.0.0.1', '/api/v1/cmdb/sql/databaselist', '2025-08-06 11:58:35.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (299, 89, 'admin', 'post', '127.0.0.1', '/api/v1/cmdb/sql/execute', '2025-08-06 11:58:40.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (300, 89, 'admin', 'delete', '127.0.0.1', '/api/v1/cmdb/sql', '2025-08-06 11:58:51.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (301, 89, 'admin', 'post', '127.0.0.1', '/api/v1/taskcenter/template', '2025-08-06 12:09:14.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (302, 89, 'admin', 'post', '127.0.0.1', '/api/v1/taskcenter/template', '2025-08-06 12:38:13.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (303, 89, 'admin', 'post', '127.0.0.1', '/api/v1/taskcenter/template', '2025-08-06 12:38:44.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (304, 89, 'admin', 'post', '127.0.0.1', '/api/v1/taskcenter/template', '2025-08-06 12:38:53.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (305, 89, 'admin', 'post', '127.0.0.1', '/api/v1/taskcenter/template', '2025-08-06 12:46:55.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (306, 89, 'admin', 'post', '127.0.0.1', '/api/v1/taskcenter/template', '2025-08-06 12:47:57.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (307, 89, 'admin', 'post', '127.0.0.1', '/api/v1/taskcenter/template', '2025-08-06 12:48:34.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (308, 89, 'admin', 'post', '127.0.0.1', '/api/v1/taskcenter/template', '2025-08-06 12:49:39.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (309, 89, 'admin', 'post', '127.0.0.1', '/api/v1/taskcenter/template', '2025-08-06 12:51:29.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (310, 89, 'admin', 'delete', '127.0.0.1', '/api/v1/taskcenter/template/5', '2025-08-06 12:51:41.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (311, 89, 'admin', 'put', '127.0.0.1', '/api/v1/taskcenter/template', '2025-08-06 12:53:15.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (312, 89, 'admin', 'put', '127.0.0.1', '/api/v1/taskcenter/template', '2025-08-06 12:53:39.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (313, 89, 'admin', 'put', '127.0.0.1', '/api/v1/taskcenter/template', '2025-08-06 12:54:55.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (314, 89, 'admin', 'post', '127.0.0.1', '/api/v1/taskcenter/template', '2025-08-06 13:00:32.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (315, 89, 'admin', 'post', '127.0.0.1', '/api/v1/taskcenter/template', '2025-08-06 13:01:27.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (316, 89, 'admin', 'put', '127.0.0.1', '/api/v1/taskcenter/template/7', '2025-08-06 13:02:38.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (317, 89, 'admin', 'put', '127.0.0.1', '/api/v1/taskcenter/template/7', '2025-08-06 13:04:44.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (318, 89, 'admin', 'delete', '127.0.0.1', '/api/v1/taskcenter/template/1', '2025-08-06 13:05:28.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (319, 89, 'admin', 'post', '127.0.0.1', '/api/v1/taskcenter/template', '2025-08-06 13:17:16.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (320, 89, 'admin', 'post', '127.0.0.1', '/api/v1/taskcenter/template', '2025-08-06 13:17:24.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (321, 89, 'admin', 'post', '127.0.0.1', '/api/v1/taskcenter/template', '2025-08-06 13:19:38.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (322, 89, 'admin', 'put', '127.0.0.1', '/api/v1/taskcenter/template/8', '2025-08-06 13:21:52.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (323, 89, 'admin', 'put', '127.0.0.1', '/api/v1/taskcenter/template/8', '2025-08-06 13:24:13.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (324, 89, 'admin', 'put', '127.0.0.1', '/api/v1/taskcenter/template/8', '2025-08-06 13:26:52.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (325, 89, 'admin', 'post', '127.0.0.1', '/api/v1/menu/add', '2025-08-06 13:33:47.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (326, 89, 'admin', 'put', '127.0.0.1', '/api/v1/menu/update', '2025-08-06 13:34:01.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (327, 89, 'admin', 'post', '127.0.0.1', '/api/v1/menu/add', '2025-08-06 13:35:19.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (328, 89, 'admin', 'post', '127.0.0.1', '/api/v1/menu/add', '2025-08-06 13:36:06.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (329, 89, 'admin', 'put', '127.0.0.1', '/api/v1/role/assignPermissions', '2025-08-06 13:36:42.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (330, 89, 'admin', 'put', '127.0.0.1', '/api/v1/menu/update', '2025-08-06 13:38:10.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (331, 89, 'admin', 'put', '127.0.0.1', '/api/v1/menu/update', '2025-08-06 13:38:15.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (332, 89, 'admin', 'put', '127.0.0.1', '/api/v1/menu/update', '2025-08-06 14:08:34.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (333, 89, 'admin', 'put', '127.0.0.1', '/api/v1/menu/update', '2025-08-06 14:08:44.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (334, 89, 'admin', 'put', '127.0.0.1', '/api/v1/menu/update', '2025-08-06 14:09:10.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (335, 89, 'admin', 'put', '127.0.0.1', '/api/v1/menu/update', '2025-08-06 14:09:11.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (336, 89, 'admin', 'put', '127.0.0.1', '/api/v1/menu/update', '2025-08-06 14:09:22.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (337, 89, 'admin', 'post', '127.0.0.1', '/api/v1/template/add', '2025-08-06 14:45:59.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (338, 89, 'admin', 'post', '127.0.0.1', '/api/v1/template/add', '2025-08-06 14:46:03.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (339, 89, 'admin', 'delete', '127.0.0.1', '/api/v1/template/delete', '2025-08-06 14:49:10.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (340, 89, 'admin', 'delete', '127.0.0.1', '/api/v1/template/delete', '2025-08-06 15:10:18.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (341, 89, 'admin', 'delete', '127.0.0.1', '/api/v1/template/delete', '2025-08-06 15:17:49.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (342, 89, 'admin', 'delete', '127.0.0.1', '/api/v1/template/delete', '2025-08-06 15:22:07.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (343, 89, 'admin', 'put', '127.0.0.1', '/api/v1/template/update', '2025-08-06 15:34:50.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (344, 89, 'admin', 'post', '127.0.0.1', '/api/v1/config/accountauth/decrypt', '2025-08-06 15:46:47.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (345, 89, 'admin', 'post', '127.0.0.1', '/api/v1/cmdb/sql/databaselist', '2025-08-06 15:48:39.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (346, 89, 'admin', 'post', '127.0.0.1', '/api/v1/cmdb/sql/select', '2025-08-06 15:49:25.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (347, 89, 'admin', 'post', '127.0.0.1', '/api/v1/cmdb/sql/select', '2025-08-06 15:49:47.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (348, 89, 'admin', 'post', '127.0.0.1', '/api/v1/cmdb/sql/select', '2025-08-06 15:49:57.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (349, 89, 'admin', 'post', '127.0.0.1', '/api/v1/cmdb/sql/select', '2025-08-06 15:50:16.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (350, 89, 'admin', 'put', '127.0.0.1', '/api/v1/template/update', '2025-08-06 16:36:51.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (351, 89, 'admin', 'delete', '127.0.0.1', '/api/v1/template/delete', '2025-08-06 16:37:10.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (352, 89, 'admin', 'delete', '127.0.0.1', '/api/v1/template/delete', '2025-08-06 16:37:20.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (353, 89, 'admin', 'put', '127.0.0.1', '/api/v1/template/update', '2025-08-06 16:43:48.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (354, 89, 'admin', 'put', '127.0.0.1', '/api/v1/template/update', '2025-08-06 16:44:30.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (355, 89, 'admin', 'post', '127.0.0.1', '/api/v1/template/add', '2025-08-06 16:45:08.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (356, 89, 'admin', 'put', '127.0.0.1', '/api/v1/template/update', '2025-08-06 17:14:33.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (357, 89, 'admin', 'put', '127.0.0.1', '/api/v1/template/update', '2025-08-06 17:16:00.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (358, 89, 'admin', 'put', '127.0.0.1', '/api/v1/template/update', '2025-08-06 17:16:54.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (359, 89, 'admin', 'put', '127.0.0.1', '/api/v1/template/update', '2025-08-06 17:18:14.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (360, 89, 'admin', 'post', '127.0.0.1', '/api/v1/template/add', '2025-08-06 17:19:10.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (361, 89, 'admin', 'put', '127.0.0.1', '/api/v1/template/update', '2025-08-06 17:19:23.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (362, 89, 'admin', 'put', '127.0.0.1', '/api/v1/template/update', '2025-08-06 17:20:47.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (363, 89, 'admin', 'put', '127.0.0.1', '/api/v1/template/update', '2025-08-06 17:21:10.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (364, 89, 'admin', 'put', '127.0.0.1', '/api/v1/template/update', '2025-08-06 17:23:29.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (365, 89, 'admin', 'post', '127.0.0.1', '/api/v1/cmdb/sql/databaselist', '2025-08-06 23:20:03.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (366, 89, 'admin', 'post', '127.0.0.1', '/api/v1/template/add', '2025-08-08 10:03:54.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (367, 89, 'admin', 'put', '127.0.0.1', '/api/v1/template/update', '2025-08-08 11:27:38.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (368, 89, 'admin', 'post', '127.0.0.1', '/api/v1/task/add', '2025-08-08 12:38:14.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (369, 89, 'admin', 'post', '127.0.0.1', '/api/v1/task/add', '2025-08-08 12:45:25.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (370, 89, 'admin', 'post', '127.0.0.1', '/api/v1/task/add', '2025-08-08 12:53:03.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (371, 89, 'admin', 'post', '127.0.0.1', '/api/v1/task/add', '2025-08-08 12:53:28.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (372, 89, 'admin', 'post', '127.0.0.1', '/api/v1/task/add', '2025-08-08 12:53:35.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (373, 89, 'admin', 'post', '127.0.0.1', '/api/v1/task/add', '2025-08-08 12:55:08.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (374, 89, 'admin', 'post', '127.0.0.1', '/api/v1/task/add', '2025-08-08 12:55:57.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (375, 89, 'admin', 'post', '127.0.0.1', '/api/v1/task/add', '2025-08-08 12:56:04.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (376, 89, 'admin', 'delete', '127.0.0.1', '/api/v1/task/delete', '2025-08-08 12:56:31.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (377, 89, 'admin', 'post', '127.0.0.1', '/api/v1/task/info', '2025-08-08 12:56:53.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (378, 89, 'admin', 'post', '127.0.0.1', '/api/v1/task/info', '2025-08-08 12:57:23.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (379, 89, 'admin', 'post', '127.0.0.1', '/api/v1/task/add', '2025-08-08 17:17:34.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (380, 89, 'admin', 'post', '127.0.0.1', '/api/v1/task/add', '2025-08-08 17:27:54.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (381, 89, 'admin', 'post', '127.0.0.1', '/api/v1/task/add', '2025-08-08 17:31:54.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (382, 89, 'admin', 'post', '127.0.0.1', '/api/v1/task/add', '2025-08-08 17:33:57.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (383, 89, 'admin', 'post', '127.0.0.1', '/api/v1/task/add', '2025-08-08 17:35:23.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (384, 89, 'admin', 'delete', '127.0.0.1', '/api/v1/task/delete', '2025-08-08 17:35:42.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (385, 89, 'admin', 'delete', '127.0.0.1', '/api/v1/task/delete', '2025-08-08 17:36:09.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (386, 89, 'admin', 'delete', '127.0.0.1', '/api/v1/task/delete', '2025-08-08 17:36:52.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (387, 89, 'admin', 'delete', '127.0.0.1', '/api/v1/task/delete', '2025-08-08 17:39:01.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (388, 89, 'admin', 'delete', '127.0.0.1', '/api/v1/task/delete', '2025-08-08 17:40:11.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (389, 89, 'admin', 'delete', '127.0.0.1', '/api/v1/task/delete', '2025-08-08 17:41:43.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (390, 89, 'admin', 'delete', '127.0.0.1', '/api/v1/task/delete', '2025-08-08 17:43:11.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (391, 89, 'admin', 'delete', '127.0.0.1', '/api/v1/task/delete', '2025-08-08 17:43:22.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (392, 89, 'admin', 'delete', '127.0.0.1', '/api/v1/task/delete', '2025-08-08 17:45:05.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (393, 89, 'admin', 'post', '127.0.0.1', '/api/v1/task/add', '2025-08-08 18:05:21.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (394, 89, 'admin', 'post', '127.0.0.1', '/api/v1/task/add', '2025-08-08 19:01:58.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (395, 89, 'admin', 'post', '127.0.0.1', '/api/v1/task/add', '2025-08-09 00:38:33.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (396, 89, 'admin', 'put', '127.0.0.1', '/api/v1/template/update', '2025-08-09 12:29:06.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (397, 89, 'admin', 'put', '127.0.0.1', '/api/v1/template/update', '2025-08-09 12:30:31.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (398, 89, 'admin', 'put', '127.0.0.1', '/api/v1/template/update', '2025-08-09 12:30:45.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (399, 89, 'admin', 'put', '127.0.0.1', '/api/v1/template/update', '2025-08-09 12:30:53.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (400, 89, 'admin', 'put', '127.0.0.1', '/api/v1/template/update', '2025-08-09 12:31:58.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (401, 89, 'admin', 'put', '127.0.0.1', '/api/v1/template/update', '2025-08-09 12:32:04.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (402, 89, 'admin', 'post', '127.0.0.1', '/api/v1/task/add', '2025-08-09 12:34:23.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (403, 89, 'admin', 'post', '127.0.0.1', '/api/v1/taskjobstart', '2025-08-09 12:39:29.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (404, 89, 'admin', 'post', '127.0.0.1', '/api/v1/taskjobstart', '2025-08-09 12:45:04.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (405, 89, 'admin', 'post', '127.0.0.1', '/api/v1/taskjobstart', '2025-08-09 12:49:34.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (406, 89, 'admin', 'post', '127.0.0.1', '/api/v1/task/add', '2025-08-09 12:59:30.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (407, 89, 'admin', 'post', '127.0.0.1', '/api/v1/task/add', '2025-08-09 13:06:23.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (408, 89, 'admin', 'post', '127.0.0.1', '/api/v1/taskjobstart', '2025-08-09 13:10:14.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (409, 89, 'admin', 'post', '127.0.0.1', '/api/v1/taskjobstart', '2025-08-09 13:13:45.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (410, 89, 'admin', 'post', '127.0.0.1', '/api/v1/taskjobstart', '2025-08-09 13:18:29.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (411, 89, 'admin', 'post', '127.0.0.1', '/api/v1/taskjobstart', '2025-08-09 13:20:15.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (412, 89, 'admin', 'post', '127.0.0.1', '/api/v1/taskjobstart', '2025-08-09 13:22:31.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (413, 89, 'admin', 'post', '127.0.0.1', '/api/v1/taskjobstart', '2025-08-09 13:30:36.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (414, 89, 'admin', 'post', '127.0.0.1', '/api/v1/taskjobstart', '2025-08-09 13:41:28.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (415, 89, 'admin', 'post', '127.0.0.1', '/api/v1/taskjobstart', '2025-08-09 13:44:31.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (416, 89, 'admin', 'post', '127.0.0.1', '/api/v1/taskjobstart', '2025-08-09 13:44:49.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (417, 89, 'admin', 'post', '127.0.0.1', '/api/v1/taskjobstart', '2025-08-09 13:46:47.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (418, 89, 'admin', 'post', '127.0.0.1', '/api/v1/taskjobstart', '2025-08-09 13:48:13.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (419, 89, 'admin', 'post', '127.0.0.1', '/api/v1/taskjobstart', '2025-08-09 13:49:48.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (420, 89, 'admin', 'post', '127.0.0.1', '/api/v1/taskjobstart', '2025-08-09 13:51:44.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (421, 89, 'admin', 'post', '127.0.0.1', '/api/v1/taskjobstart', '2025-08-09 13:53:32.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (422, 89, 'admin', 'post', '127.0.0.1', '/api/v1/taskjobstart', '2025-08-09 13:57:48.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (423, 89, 'admin', 'post', '127.0.0.1', '/api/v1/taskjobstart', '2025-08-09 14:01:54.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (424, 89, 'admin', 'post', '127.0.0.1', '/api/v1/taskjobstart', '2025-08-09 14:31:37.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (425, 89, 'admin', 'post', '127.0.0.1', '/api/v1/taskjobstart', '2025-08-09 14:36:05.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (426, 89, 'admin', 'post', '127.0.0.1', '/api/v1/taskjobstart', '2025-08-09 14:41:53.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (427, 89, 'admin', 'post', '127.0.0.1', '/api/v1/task/add', '2025-08-09 14:59:05.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (428, 89, 'admin', 'post', '127.0.0.1', '/api/v1/taskjobstart', '2025-08-09 15:00:57.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (429, 89, 'admin', 'put', '127.0.0.1', '/api/v1/template/update', '2025-08-09 15:23:18.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (430, 89, 'admin', 'delete', '127.0.0.1', '/api/v1/task/delete', '2025-08-09 15:23:36.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (431, 89, 'admin', 'delete', '127.0.0.1', '/api/v1/task/delete', '2025-08-09 15:23:40.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (432, 89, 'admin', 'post', '127.0.0.1', '/api/v1/task/add', '2025-08-09 15:24:17.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (433, 89, 'admin', 'put', '127.0.0.1', '/api/v1/template/update', '2025-08-09 15:25:20.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (434, 89, 'admin', 'post', '127.0.0.1', '/api/v1/taskjobstart', '2025-08-09 15:25:36.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (435, 89, 'admin', 'put', '127.0.0.1', '/api/v1/template/update', '2025-08-09 15:35:52.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (436, 89, 'admin', 'post', '127.0.0.1', '/api/v1/taskjobstart', '2025-08-09 15:36:24.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (437, 89, 'admin', 'post', '127.0.0.1', '/api/v1/taskjobstop', '2025-08-09 15:51:21.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (438, 89, 'admin', 'post', '127.0.0.1', '/api/v1/taskjobstart', '2025-08-09 15:52:26.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (439, 89, 'admin', 'post', '127.0.0.1', '/api/v1/taskjob/stop', '2025-08-09 15:52:39.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (440, 89, 'admin', 'post', '127.0.0.1', '/api/v1/taskjob/stop', '2025-08-09 15:52:56.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (441, 89, 'admin', 'post', '127.0.0.1', '/api/v1/taskjob/stop', '2025-08-09 15:53:07.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (442, 89, 'admin', 'post', '127.0.0.1', '/api/v1/taskjob/stop', '2025-08-09 15:53:14.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (443, 89, 'admin', 'delete', '127.0.0.1', '/api/v1/task/delete', '2025-08-09 16:01:38.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (444, 89, 'admin', 'post', '127.0.0.1', '/api/v1/task/add', '2025-08-09 16:01:57.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (445, 89, 'admin', 'post', '127.0.0.1', '/api/v1/taskjobstart', '2025-08-09 16:03:32.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (446, 89, 'admin', 'post', '127.0.0.1', '/api/v1/taskjob/stop', '2025-08-09 16:04:06.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (447, 89, 'admin', 'post', '127.0.0.1', '/api/v1/taskjobstart', '2025-08-09 16:13:39.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (448, 89, 'admin', 'post', '127.0.0.1', '/api/v1/taskjobstart', '2025-08-09 16:16:26.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (449, 89, 'admin', 'post', '127.0.0.1', '/api/v1/taskjobstart', '2025-08-09 16:16:55.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (450, 89, 'admin', 'post', '127.0.0.1', '/api/v1/taskjobstart', '2025-08-09 16:17:34.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (451, 89, 'admin', 'post', '127.0.0.1', '/api/v1/taskjob/stop', '2025-08-09 16:17:47.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (452, 89, 'admin', 'post', '127.0.0.1', '/api/v1/taskjob/stop', '2025-08-09 16:17:51.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (453, 89, 'admin', 'post', '127.0.0.1', '/api/v1/taskjob/stop', '2025-08-09 16:17:59.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (454, 89, 'admin', 'post', '127.0.0.1', '/api/v1/taskjobstart', '2025-08-09 16:20:53.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (455, 89, 'admin', 'post', '127.0.0.1', '/api/v1/taskjob/stop', '2025-08-09 16:21:06.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (456, 89, 'admin', 'post', '127.0.0.1', '/api/v1/taskjobstart', '2025-08-09 16:26:55.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (457, 89, 'admin', 'post', '127.0.0.1', '/api/v1/taskjob/stop', '2025-08-09 16:27:07.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (458, 89, 'admin', 'post', '127.0.0.1', '/api/v1/taskjobstart', '2025-08-09 16:33:42.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (459, 89, 'admin', 'post', '127.0.0.1', '/api/v1/taskjob/stop', '2025-08-09 16:33:54.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (460, 89, 'admin', 'post', '127.0.0.1', '/api/v1/taskjobstart', '2025-08-09 16:39:35.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (461, 89, 'admin', 'post', '127.0.0.1', '/api/v1/taskjob/stop', '2025-08-09 16:39:47.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (462, 89, 'admin', 'post', '127.0.0.1', '/api/v1/taskjobstart', '2025-08-09 16:50:36.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (463, 89, 'admin', 'post', '127.0.0.1', '/api/v1/taskjobstart', '2025-08-09 16:54:06.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (464, 89, 'admin', 'post', '127.0.0.1', '/api/v1/taskjobstart', '2025-08-09 17:01:19.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (465, 89, 'admin', 'post', '127.0.0.1', '/api/v1/taskjobstart', '2025-08-09 17:03:04.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (466, 89, 'admin', 'post', '127.0.0.1', '/api/v1/taskjobstart', '2025-08-09 17:14:39.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (467, 89, 'admin', 'post', '127.0.0.1', '/api/v1/taskjobstart', '2025-08-09 17:15:49.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (468, 89, 'admin', 'post', '127.0.0.1', '/api/v1/taskjobstart', '2025-08-09 17:19:01.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (469, 89, 'admin', 'post', '127.0.0.1', '/api/v1/taskjobstart', '2025-08-09 17:24:26.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (470, 89, 'admin', 'post', '127.0.0.1', '/api/v1/taskjobstart', '2025-08-09 17:28:24.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (471, 89, 'admin', 'post', '127.0.0.1', '/api/v1/taskjobstart', '2025-08-09 17:28:45.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (472, 89, 'admin', 'post', '127.0.0.1', '/api/v1/taskjobstart', '2025-08-09 17:36:37.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (473, 89, 'admin', 'post', '127.0.0.1', '/api/v1/taskjobstart', '2025-08-09 17:38:07.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (474, 89, 'admin', 'post', '127.0.0.1', '/api/v1/taskjobstart', '2025-08-09 17:40:21.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (475, 89, 'admin', 'post', '127.0.0.1', '/api/v1/taskjobstart', '2025-08-09 17:42:04.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (476, 89, 'admin', 'post', '127.0.0.1', '/api/v1/taskjobstart', '2025-08-09 17:51:34.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (477, 89, 'admin', 'post', '127.0.0.1', '/api/v1/taskjobstart', '2025-08-09 17:54:13.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (478, 89, 'admin', 'post', '127.0.0.1', '/api/v1/taskjobstart', '2025-08-09 17:56:45.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (479, 89, 'admin', 'post', '127.0.0.1', '/api/v1/taskjobstart', '2025-08-09 17:58:35.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (480, 89, 'admin', 'post', '127.0.0.1', '/api/v1/taskjobstart', '2025-08-09 18:01:03.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (481, 89, 'admin', 'post', '127.0.0.1', '/api/v1/taskjobstart', '2025-08-09 18:04:17.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (482, 89, 'admin', 'post', '127.0.0.1', '/api/v1/taskjobstart', '2025-08-09 18:08:43.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (483, 89, 'admin', 'post', '127.0.0.1', '/api/v1/taskjobstart', '2025-08-09 18:16:40.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (484, 89, 'admin', 'put', '127.0.0.1', '/api/v1/template/update', '2025-08-09 18:18:43.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (485, 89, 'admin', 'post', '127.0.0.1', '/api/v1/taskjobstart', '2025-08-09 18:19:04.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (486, 89, 'admin', 'post', '127.0.0.1', '/api/v1/taskjob/stop', '2025-08-09 18:20:39.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (487, 89, 'admin', 'put', '127.0.0.1', '/api/v1/template/update', '2025-08-09 18:22:09.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (488, 89, 'admin', 'post', '127.0.0.1', '/api/v1/taskjobstart', '2025-08-09 18:23:00.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (489, 89, 'admin', 'post', '127.0.0.1', '/api/v1/taskjob/stop', '2025-08-09 18:23:50.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (490, 89, 'admin', 'post', '127.0.0.1', '/api/v1/taskjob/stop', '2025-08-09 18:26:31.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (491, 89, 'admin', 'post', '127.0.0.1', '/api/v1/taskjob/stop', '2025-08-09 18:44:13.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (492, 89, 'admin', 'post', '127.0.0.1', '/api/v1/taskjob/stop', '2025-08-09 18:44:29.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (493, 89, 'admin', 'post', '127.0.0.1', '/api/v1/taskjobstart', '2025-08-09 18:45:05.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (494, 89, 'admin', 'post', '127.0.0.1', '/api/v1/taskjob/stop', '2025-08-09 18:45:12.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (495, 89, 'admin', 'post', '127.0.0.1', '/api/v1/taskjob/stop', '2025-08-09 18:46:36.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (496, 89, 'admin', 'post', '127.0.0.1', '/api/v1/taskjob/stop', '2025-08-09 18:47:40.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (497, 89, 'admin', 'post', '127.0.0.1', '/api/v1/taskjobstart', '2025-08-09 18:52:15.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (498, 89, 'admin', 'post', '127.0.0.1', '/api/v1/taskjobstart', '2025-08-09 20:09:17.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (499, 89, 'admin', 'put', '127.0.0.1', '/api/v1/template/update', '2025-08-09 20:26:40.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (500, 89, 'admin', 'post', '127.0.0.1', '/api/v1/taskjobstart', '2025-08-09 20:28:27.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (501, 89, 'admin', 'post', '127.0.0.1', '/api/v1/taskjobstart', '2025-08-09 20:39:31.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (502, 89, 'admin', 'post', '127.0.0.1', '/api/v1/taskjobstart', '2025-08-09 20:45:53.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (503, 89, 'admin', 'post', '127.0.0.1', '/api/v1/taskjobstart', '2025-08-09 20:51:22.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (504, 89, 'admin', 'post', '127.0.0.1', '/api/v1/taskjobstart', '2025-08-09 20:55:24.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (505, 89, 'admin', 'post', '127.0.0.1', '/api/v1/taskjobstart', '2025-08-09 20:57:35.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (506, 89, 'admin', 'post', '127.0.0.1', '/api/v1/taskjobstart', '2025-08-09 21:16:17.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (507, 89, 'admin', 'post', '127.0.0.1', '/api/v1/taskjobstart', '2025-08-09 21:30:20.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (508, 89, 'admin', 'post', '127.0.0.1', '/api/v1/taskjobstart', '2025-08-09 21:31:48.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (509, 89, 'admin', 'post', '127.0.0.1', '/api/v1/taskjobstart', '2025-08-09 21:40:55.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (510, 89, 'admin', 'post', '127.0.0.1', '/api/v1/taskjobstart', '2025-08-09 21:52:39.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (511, 89, 'admin', 'post', '127.0.0.1', '/api/v1/taskjob/stop', '2025-08-09 21:53:03.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (512, 89, 'admin', 'post', '127.0.0.1', '/api/v1/taskjobstart', '2025-08-09 22:00:30.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (513, 89, 'admin', 'post', '127.0.0.1', '/api/v1/taskjobstart', '2025-08-09 22:02:18.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (514, 89, 'admin', 'post', '127.0.0.1', '/api/v1/taskjob/stop', '2025-08-09 22:02:33.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (515, 89, 'admin', 'post', '127.0.0.1', '/api/v1/taskjobstart', '2025-08-09 22:08:22.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (516, 89, 'admin', 'post', '127.0.0.1', '/api/v1/taskjob/stop', '2025-08-09 22:08:39.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (517, 89, 'admin', 'post', '127.0.0.1', '/api/v1/taskjobstart', '2025-08-09 22:18:19.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (518, 89, 'admin', 'post', '127.0.0.1', '/api/v1/taskjobstart', '2025-08-09 22:20:51.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (519, 89, 'admin', 'post', '127.0.0.1', '/api/v1/taskjobstart', '2025-08-09 22:24:28.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (520, 89, 'admin', 'post', '127.0.0.1', '/api/v1/taskjob/stop', '2025-08-09 22:25:18.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (521, 89, 'admin', 'post', '127.0.0.1', '/api/v1/taskjobstart', '2025-08-09 22:39:23.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (522, 89, 'admin', 'post', '127.0.0.1', '/api/v1/taskjob/stop', '2025-08-09 22:39:44.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (523, 89, 'admin', 'post', '127.0.0.1', '/api/v1/taskjobstart', '2025-08-09 22:47:15.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (524, 89, 'admin', 'post', '127.0.0.1', '/api/v1/taskjob/stop', '2025-08-09 22:47:45.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (525, 89, 'admin', 'post', '127.0.0.1', '/api/v1/taskjobstart', '2025-08-09 22:54:13.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (526, 89, 'admin', 'post', '127.0.0.1', '/api/v1/taskjob/stop', '2025-08-09 22:54:42.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (527, 89, 'admin', 'post', '127.0.0.1', '/api/v1/taskjobstart', '2025-08-09 23:05:44.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (528, 89, 'admin', 'post', '127.0.0.1', '/api/v1/taskjobstart', '2025-08-09 23:09:25.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (529, 89, 'admin', 'post', '127.0.0.1', '/api/v1/taskjob/stop', '2025-08-09 23:09:53.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (530, 89, 'admin', 'delete', '127.0.0.1', '/api/v1/task/delete', '2025-08-10 01:09:19.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (531, 89, 'admin', 'post', '127.0.0.1', '/api/v1/task/add', '2025-08-10 01:11:08.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (532, 89, 'admin', 'delete', '127.0.0.1', '/api/v1/task/delete', '2025-08-10 01:18:28.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (533, 89, 'admin', 'post', '127.0.0.1', '/api/v1/task/add', '2025-08-10 01:19:01.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (534, 89, 'admin', 'delete', '127.0.0.1', '/api/v1/task/delete', '2025-08-10 16:18:26.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (535, 89, 'admin', 'delete', '127.0.0.1', '/api/v1/task/delete', '2025-08-10 16:18:29.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (536, 89, 'admin', 'post', '127.0.0.1', '/api/v1/task/add', '2025-08-10 16:19:19.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (537, 89, 'admin', 'post', '127.0.0.1', '/api/v1/taskjob/start', '2025-08-10 16:35:04.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (538, 89, 'admin', 'post', '127.0.0.1', '/api/v1/taskjob/start', '2025-08-10 16:37:13.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (539, 89, 'admin', 'post', '127.0.0.1', '/api/v1/taskjob/start', '2025-08-10 20:23:25.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (540, 89, 'admin', 'post', '127.0.0.1', '/api/v1/taskjob/start', '2025-08-10 20:25:24.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (541, 89, 'admin', 'post', '127.0.0.1', '/api/v1/taskjob/start', '2025-08-10 20:25:45.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (542, 89, 'admin', 'post', '127.0.0.1', '/api/v1/taskjob/start', '2025-08-10 20:31:21.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (543, 89, 'admin', 'post', '127.0.0.1', '/api/v1/taskjob/start', '2025-08-10 20:36:17.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (544, 89, 'admin', 'post', '127.0.0.1', '/api/v1/taskjob/start', '2025-08-10 20:38:29.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (545, 89, 'admin', 'post', '127.0.0.1', '/api/v1/taskjob/start', '2025-08-10 20:39:35.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (546, 89, 'admin', 'post', '127.0.0.1', '/api/v1/taskjob/start', '2025-08-10 20:40:54.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (547, 89, 'admin', 'post', '127.0.0.1', '/api/v1/taskjob/start', '2025-08-10 20:41:20.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (548, 89, 'admin', 'post', '127.0.0.1', '/api/v1/taskjob/start', '2025-08-10 20:43:39.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (549, 89, 'admin', 'post', '127.0.0.1', '/api/v1/taskjob/start', '2025-08-10 21:16:05.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (550, 89, 'admin', 'post', '127.0.0.1', '/api/v1/taskjob/stop', '2025-08-10 21:17:44.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (551, 89, 'admin', 'post', '127.0.0.1', '/api/v1/taskjob/stop', '2025-08-10 21:18:56.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (552, 89, 'admin', 'post', '127.0.0.1', '/api/v1/taskjob/start', '2025-08-10 21:21:05.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (553, 89, 'admin', 'post', '127.0.0.1', '/api/v1/taskjob/start', '2025-08-10 21:27:44.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (554, 89, 'admin', 'post', '127.0.0.1', '/api/v1/taskjob/start', '2025-08-10 21:30:45.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (555, 89, 'admin', 'post', '127.0.0.1', '/api/v1/taskjob/start', '2025-08-10 21:36:10.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (556, 89, 'admin', 'post', '127.0.0.1', '/api/v1/taskjob/start', '2025-08-10 21:38:00.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (557, 89, 'admin', 'post', '127.0.0.1', '/api/v1/taskjob/start', '2025-08-10 21:44:44.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (558, 89, 'admin', 'post', '127.0.0.1', '/api/v1/taskjob/start', '2025-08-11 11:30:17.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (559, 89, 'admin', 'post', '127.0.0.1', '/api/v1/taskjob/stop', '2025-08-11 11:30:51.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (560, 89, 'admin', 'post', '127.0.0.1', '/api/v1/taskjob/start', '2025-08-11 11:37:33.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (561, 89, 'admin', 'post', '127.0.0.1', '/api/v1/taskjob/start', '2025-08-11 11:50:07.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (562, 89, 'admin', 'post', '127.0.0.1', '/api/v1/taskjob/start', '2025-08-11 11:59:16.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (563, 89, 'admin', 'post', '127.0.0.1', '/api/v1/taskjob/start', '2025-08-11 12:49:35.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (564, 89, 'admin', 'post', '127.0.0.1', '/api/v1/taskjob/start', '2025-08-11 12:54:35.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (565, 89, 'admin', 'post', '127.0.0.1', '/api/v1/taskjob/start', '2025-08-11 13:00:00.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (566, 89, 'admin', 'post', '127.0.0.1', '/api/v1/taskjob/start', '2025-08-11 13:03:54.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (567, 89, 'admin', 'post', '127.0.0.1', '/api/v1/taskjob/start', '2025-08-11 13:05:44.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (568, 89, 'admin', 'post', '127.0.0.1', '/api/v1/taskjob/start', '2025-08-11 14:15:59.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (569, 89, 'admin', 'post', '127.0.0.1', '/api/v1/taskjob/start', '2025-08-11 14:18:10.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (570, 89, 'admin', 'post', '127.0.0.1', '/api/v1/taskjob/start', '2025-08-11 14:25:00.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (571, 89, 'admin', 'post', '127.0.0.1', '/api/v1/taskjob/start', '2025-08-11 14:26:15.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (572, 89, 'admin', 'post', '127.0.0.1', '/api/v1/taskjob/start', '2025-08-11 14:33:17.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (573, 89, 'admin', 'post', '127.0.0.1', '/api/v1/taskjob/start', '2025-08-11 14:38:02.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (574, 89, 'admin', 'post', '127.0.0.1', '/api/v1/taskjob/start', '2025-08-11 14:41:41.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (575, 89, 'admin', 'post', '127.0.0.1', '/api/v1/taskjob/start', '2025-08-11 14:43:07.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (576, 89, 'admin', 'post', '127.0.0.1', '/api/v1/taskjob/start', '2025-08-11 14:56:41.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (577, 89, 'admin', 'put', '127.0.0.1', '/api/v1/template/update', '2025-08-11 14:58:34.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (578, 89, 'admin', 'post', '127.0.0.1', '/api/v1/taskjob/start', '2025-08-11 15:00:56.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (579, 89, 'admin', 'post', '127.0.0.1', '/api/v1/taskjob/start', '2025-08-11 15:06:56.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (580, 89, 'admin', 'post', '127.0.0.1', '/api/v1/taskjob/start', '2025-08-11 15:08:15.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (581, 89, 'admin', 'post', '127.0.0.1', '/api/v1/taskjob/start', '2025-08-11 18:02:49.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (582, 89, 'admin', 'post', '127.0.0.1', '/api/v1/taskjob/start', '2025-08-11 18:09:59.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (583, 89, 'admin', 'post', '127.0.0.1', '/api/v1/taskjob/start', '2025-08-11 18:53:47.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (584, 89, 'admin', 'post', '127.0.0.1', '/api/v1/taskjob/stop', '2025-08-11 18:55:09.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (585, 89, 'admin', 'post', '127.0.0.1', '/api/v1/taskjob/start', '2025-08-11 18:56:39.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (586, 89, 'admin', 'post', '127.0.0.1', '/api/v1/taskjob/stop', '2025-08-11 18:57:58.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (587, 89, 'admin', 'post', '127.0.0.1', '/api/v1/task/add', '2025-08-11 19:27:06.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (588, 89, 'admin', 'post', '127.0.0.1', '/api/v1/taskjob/start', '2025-08-11 20:16:00.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (589, 89, 'admin', 'post', '127.0.0.1', '/api/v1/taskjob/start', '2025-08-11 20:19:02.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (590, 89, 'admin', 'post', '127.0.0.1', '/api/v1/taskjob/stop', '2025-08-11 20:20:51.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (591, 89, 'admin', 'post', '127.0.0.1', '/api/v1/taskjob/start', '2025-08-11 20:21:41.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (592, 89, 'admin', 'post', '127.0.0.1', '/api/v1/taskjob/start', '2025-08-11 20:30:19.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (593, 89, 'admin', 'post', '127.0.0.1', '/api/v1/taskjob/start', '2025-08-11 20:32:57.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (594, 89, 'admin', 'post', '127.0.0.1', '/api/v1/taskjob/start', '2025-08-11 20:58:40.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (595, 89, 'admin', 'post', '127.0.0.1', '/api/v1/taskjob/start', '2025-08-11 21:02:13.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (596, 89, 'admin', 'post', '127.0.0.1', '/api/v1/taskjob/start', '2025-08-11 21:19:17.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (597, 89, 'admin', 'post', '127.0.0.1', '/api/v1/taskjob/start', '2025-08-11 21:29:02.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (598, 89, 'admin', 'post', '127.0.0.1', '/api/v1/taskjob/start', '2025-08-11 21:35:30.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (599, 89, 'admin', 'post', '127.0.0.1', '/api/v1/taskjob/start', '2025-08-11 21:50:43.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (600, 89, 'admin', 'post', '127.0.0.1', '/api/v1/taskjob/stop', '2025-08-11 21:51:59.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (601, 89, 'admin', 'post', '127.0.0.1', '/api/v1/taskjob/start', '2025-08-12 10:15:50.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (602, 89, 'admin', 'post', '127.0.0.1', '/api/v1/taskjob/start', '2025-08-12 10:16:54.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (603, 89, 'admin', 'post', '127.0.0.1', '/api/v1/taskjob/start', '2025-08-12 10:25:10.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (604, 89, 'admin', 'post', '127.0.0.1', '/api/v1/taskjob/start', '2025-08-12 10:33:47.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (605, 89, 'admin', 'post', '127.0.0.1', '/api/v1/taskjob/start', '2025-08-12 10:39:19.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (606, 89, 'admin', 'post', '127.0.0.1', '/api/v1/taskjob/start', '2025-08-12 10:59:07.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (607, 89, 'admin', 'post', '127.0.0.1', '/api/v1/taskjob/stop', '2025-08-12 11:00:21.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (608, 89, 'admin', 'post', '127.0.0.1', '/api/v1/taskjob/start', '2025-08-12 11:22:49.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (609, 89, 'admin', 'post', '127.0.0.1', '/api/v1/taskjob/stop', '2025-08-12 11:23:25.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (610, 89, 'admin', 'post', '127.0.0.1', '/api/v1/taskjob/start', '2025-08-12 11:51:26.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (611, 89, 'admin', 'post', '127.0.0.1', '/api/v1/taskjob/start', '2025-08-12 11:53:06.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (612, 89, 'admin', 'post', '127.0.0.1', '/api/v1/taskjob/start', '2025-08-12 11:54:28.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (613, 89, 'admin', 'post', '127.0.0.1', '/api/v1/taskjob/start', '2025-08-12 11:56:53.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (614, 89, 'admin', 'post', '127.0.0.1', '/api/v1/taskjob/start', '2025-08-12 12:23:06.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (615, 89, 'admin', 'post', '127.0.0.1', '/api/v1/taskjob/stop', '2025-08-12 12:24:14.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (616, 89, 'admin', 'post', '127.0.0.1', '/api/v1/taskjob/start', '2025-08-12 12:30:55.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (617, 89, 'admin', 'post', '127.0.0.1', '/api/v1/taskjob/start', '2025-08-12 12:31:15.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (618, 89, 'admin', 'post', '127.0.0.1', '/api/v1/taskjob/start', '2025-08-12 13:11:23.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (619, 89, 'admin', 'post', '127.0.0.1', '/api/v1/taskjob/stop', '2025-08-12 13:11:42.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (620, 89, 'admin', 'post', '127.0.0.1', '/api/v1/task/add', '2025-08-12 13:22:21.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (621, 89, 'admin', 'post', '127.0.0.1', '/api/v1/taskjob/start', '2025-08-12 13:24:01.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (622, 89, 'admin', 'post', '127.0.0.1', '/api/v1/taskjob/stop', '2025-08-12 13:24:54.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (623, 89, 'admin', 'post', '127.0.0.1', '/api/v1/taskjob/start', '2025-08-12 13:37:16.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (624, 89, 'admin', 'post', '127.0.0.1', '/api/v1/taskjob/stop', '2025-08-12 13:37:34.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (625, 89, 'admin', 'post', '127.0.0.1', '/api/v1/taskjob/stop', '2025-08-12 13:38:45.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (626, 89, 'admin', 'post', '127.0.0.1', '/api/v1/taskjob/start', '2025-08-12 13:45:05.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (627, 89, 'admin', 'post', '127.0.0.1', '/api/v1/taskjob/stop', '2025-08-12 13:45:21.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (628, 89, 'admin', 'post', '127.0.0.1', '/api/v1/taskjob/stop', '2025-08-12 13:45:38.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (629, 89, 'admin', 'post', '127.0.0.1', '/api/v1/taskjob/stop', '2025-08-12 13:48:59.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (630, 89, 'admin', 'post', '127.0.0.1', '/api/v1/taskjob/stop', '2025-08-12 14:15:22.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (631, 89, 'admin', 'post', '127.0.0.1', '/api/v1/taskjob/stop', '2025-08-12 14:20:47.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (632, 89, 'admin', 'post', '127.0.0.1', '/api/v1/taskjob/stop', '2025-08-12 14:21:17.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (633, 89, 'admin', 'post', '127.0.0.1', '/api/v1/taskjob/stop', '2025-08-12 14:24:19.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (634, 89, 'admin', 'post', '127.0.0.1', '/api/v1/taskjob/stop', '2025-08-12 14:25:23.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (635, 89, 'admin', 'post', '127.0.0.1', '/api/v1/taskjob/stop', '2025-08-12 14:25:57.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (636, 89, 'admin', 'post', '127.0.0.1', '/api/v1/taskjob/start', '2025-08-12 14:26:49.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (637, 89, 'admin', 'post', '127.0.0.1', '/api/v1/taskjob/stop', '2025-08-12 14:27:16.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (638, 89, 'admin', 'post', '127.0.0.1', '/api/v1/taskjob/start', '2025-08-12 14:36:13.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (639, 89, 'admin', 'post', '127.0.0.1', '/api/v1/taskjob/stop', '2025-08-12 14:36:28.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (640, 89, 'admin', 'post', '127.0.0.1', '/api/v1/taskjob/stop', '2025-08-12 14:39:32.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (641, 89, 'admin', 'post', '127.0.0.1', '/api/v1/taskjob/stop', '2025-08-12 14:40:34.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (642, 89, 'admin', 'post', '127.0.0.1', '/api/v1/taskjob/stop', '2025-08-12 14:40:37.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (643, 89, 'admin', 'post', '127.0.0.1', '/api/v1/taskjob/stop', '2025-08-12 14:40:55.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (644, 89, 'admin', 'post', '127.0.0.1', '/api/v1/taskjob/stop', '2025-08-12 14:41:01.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (645, 89, 'admin', 'post', '127.0.0.1', '/api/v1/taskjob/stop', '2025-08-12 14:41:25.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (646, 89, 'admin', 'post', '127.0.0.1', '/api/v1/taskjob/stop', '2025-08-12 14:41:33.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (647, 89, 'admin', 'post', '127.0.0.1', '/api/v1/taskjob/start', '2025-08-12 14:47:19.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (648, 89, 'admin', 'post', '127.0.0.1', '/api/v1/taskjob/start', '2025-08-12 14:50:55.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (649, 89, 'admin', 'post', '127.0.0.1', '/api/v1/taskjob/start', '2025-08-12 15:01:47.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (650, 89, 'admin', 'post', '127.0.0.1', '/api/v1/taskjob/stop', '2025-08-12 15:02:41.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (651, 89, 'admin', 'post', '127.0.0.1', '/api/v1/taskjob/start', '2025-08-12 15:06:50.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (652, 89, 'admin', 'post', '127.0.0.1', '/api/v1/taskjob/stop', '2025-08-12 15:07:29.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (653, 89, 'admin', 'post', '127.0.0.1', '/api/v1/taskjob/stop', '2025-08-12 15:07:33.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (654, 89, 'admin', 'post', '127.0.0.1', '/api/v1/taskjob/start', '2025-08-12 15:49:03.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (655, 89, 'admin', 'post', '127.0.0.1', '/api/v1/taskjob/stop', '2025-08-12 15:49:31.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (656, 89, 'admin', 'post', '127.0.0.1', '/api/v1/taskjob/start', '2025-08-12 15:51:20.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (657, 89, 'admin', 'post', '127.0.0.1', '/api/v1/taskjob/start', '2025-08-12 15:53:07.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (658, 89, 'admin', 'put', '127.0.0.1', '/api/v1/template/update', '2025-08-12 15:59:33.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (659, 89, 'admin', 'put', '127.0.0.1', '/api/v1/template/update', '2025-08-12 15:59:47.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (660, 89, 'admin', 'put', '127.0.0.1', '/api/v1/template/update', '2025-08-12 16:13:35.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (661, 89, 'admin', 'put', '127.0.0.1', '/api/v1/template/update', '2025-08-12 16:14:21.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (662, 89, 'admin', 'put', '127.0.0.1', '/api/v1/template/update', '2025-08-12 16:14:49.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (663, 89, 'admin', 'put', '127.0.0.1', '/api/v1/template/update', '2025-08-12 16:20:41.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (664, 89, 'admin', 'put', '127.0.0.1', '/api/v1/template/update', '2025-08-12 16:21:24.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (665, 89, 'admin', 'put', '127.0.0.1', '/api/v1/template/update', '2025-08-12 16:22:03.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (666, 89, 'admin', 'put', '127.0.0.1', '/api/v1/template/update', '2025-08-12 16:22:43.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (667, 89, 'admin', 'put', '127.0.0.1', '/api/v1/template/update', '2025-08-12 16:23:10.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (668, 89, 'admin', 'put', '127.0.0.1', '/api/v1/template/update', '2025-08-12 16:24:35.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (669, 89, 'admin', 'post', '127.0.0.1', '/api/v1/taskjob/start', '2025-08-12 16:25:45.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (670, 89, 'admin', 'post', '127.0.0.1', '/api/v1/task/add', '2025-08-12 16:28:54.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (671, 89, 'admin', 'post', '127.0.0.1', '/api/v1/taskjob/start', '2025-08-12 16:29:00.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (672, 89, 'admin', 'put', '127.0.0.1', '/api/v1/template/update', '2025-08-12 16:36:31.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (673, 89, 'admin', 'post', '127.0.0.1', '/api/v1/taskjob/start', '2025-08-12 16:40:22.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (674, 89, 'admin', 'post', '127.0.0.1', '/api/v1/taskjob/start', '2025-08-12 16:41:43.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (675, 89, 'admin', 'post', '127.0.0.1', '/api/v1/taskjob/stop', '2025-08-13 10:43:13.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (676, 89, 'admin', 'post', '127.0.0.1', '/api/v1/taskjob/start', '2025-08-13 10:43:50.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (677, 89, 'admin', 'post', '127.0.0.1', '/api/v1/taskjob/stop', '2025-08-13 10:44:24.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (678, 89, 'admin', 'post', '127.0.0.1', '/api/v1/taskjob/start', '2025-08-13 10:54:53.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (679, 89, 'admin', 'post', '127.0.0.1', '/api/v1/taskjob/start', '2025-08-13 10:58:01.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (680, 89, 'admin', 'post', '127.0.0.1', '/api/v1/taskjob/start', '2025-08-13 11:00:49.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (681, 89, 'admin', 'post', '127.0.0.1', '/api/v1/taskjob/start', '2025-08-13 11:09:56.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (682, 89, 'admin', 'post', '127.0.0.1', '/api/v1/taskjob/start', '2025-08-13 11:19:53.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (683, 89, 'admin', 'post', '127.0.0.1', '/api/v1/taskjob/start', '2025-08-13 11:37:35.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (684, 89, 'admin', 'post', '127.0.0.1', '/api/v1/taskjob/start', '2025-08-13 11:43:54.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (685, 89, 'admin', 'post', '127.0.0.1', '/api/v1/taskjob/start', '2025-08-13 11:48:23.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (686, 89, 'admin', 'post', '127.0.0.1', '/api/v1/taskjob/start', '2025-08-13 11:54:48.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (687, 89, 'admin', 'post', '127.0.0.1', '/api/v1/taskjob/start', '2025-08-13 12:03:42.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (688, 89, 'admin', 'post', '127.0.0.1', '/api/v1/taskjob/start', '2025-08-13 12:07:19.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (689, 89, 'admin', 'post', '127.0.0.1', '/api/v1/taskjob/start', '2025-08-13 12:47:11.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (690, 89, 'admin', 'post', '127.0.0.1', '/api/v1/taskjob/start', '2025-08-13 13:00:25.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (691, 89, 'admin', 'post', '127.0.0.1', '/api/v1/taskjob/start', '2025-08-13 13:02:50.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (692, 89, 'admin', 'post', '127.0.0.1', '/api/v1/taskjob/start', '2025-08-13 13:06:02.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (693, 89, 'admin', 'post', '127.0.0.1', '/api/v1/taskjob/start', '2025-08-13 13:10:17.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (694, 89, 'admin', 'post', '127.0.0.1', '/api/v1/taskjob/start', '2025-08-13 13:15:04.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (695, 89, 'admin', 'post', '127.0.0.1', '/api/v1/taskjob/start', '2025-08-13 13:17:45.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (696, 89, 'admin', 'post', '127.0.0.1', '/api/v1/taskjob/start', '2025-08-13 13:22:36.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (697, 89, 'admin', 'post', '127.0.0.1', '/api/v1/task/add', '2025-08-14 10:41:59.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (698, 89, 'admin', 'post', '127.0.0.1', '/api/v1/taskjob/start', '2025-08-14 10:42:14.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (699, 89, 'admin', 'post', '127.0.0.1', '/api/v1/taskjob/start', '2025-08-14 11:20:33.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (700, 89, 'admin', 'post', '127.0.0.1', '/api/v1/taskjob/start', '2025-08-14 11:26:57.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (701, 89, 'admin', 'post', '127.0.0.1', '/api/v1/taskjob/stop', '2025-08-14 11:27:54.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (702, 89, 'admin', 'post', '127.0.0.1', '/api/v1/task/add', '2025-08-14 11:44:48.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (703, 89, 'admin', 'post', '127.0.0.1', '/api/v1/taskjob/start', '2025-08-14 11:45:24.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (704, 89, 'admin', 'post', '127.0.0.1', '/api/v1/taskjob/start', '2025-08-14 12:09:07.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (705, 89, 'admin', 'post', '127.0.0.1', '/api/v1/taskjob/start', '2025-08-14 12:16:39.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (706, 89, 'admin', 'post', '127.0.0.1', '/api/v1/taskjob/start', '2025-08-14 12:23:24.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (707, 89, 'admin', 'post', '127.0.0.1', '/api/v1/taskjob/stop', '2025-08-14 12:24:42.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (708, 89, 'admin', 'post', '127.0.0.1', '/api/v1/taskjob/start', '2025-08-14 12:26:28.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (709, 89, 'admin', 'post', '127.0.0.1', '/api/v1/task/add', '2025-08-14 13:34:21.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (710, 89, 'admin', 'post', '127.0.0.1', '/api/v1/task/add', '2025-08-14 13:39:37.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (711, 89, 'admin', 'post', '127.0.0.1', '/api/v1/task/add', '2025-08-14 13:42:23.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (712, 89, 'admin', 'post', '127.0.0.1', '/api/v1/task/add', '2025-08-14 13:48:35.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (713, 89, 'admin', 'post', '127.0.0.1', '/api/v1/taskjob/start', '2025-08-14 13:48:47.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (714, 89, 'admin', 'post', '127.0.0.1', '/api/v1/task/add', '2025-08-14 14:31:31.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (715, 89, 'admin', 'post', '127.0.0.1', '/api/v1/task/add', '2025-08-14 14:45:35.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (716, 89, 'admin', 'post', '127.0.0.1', '/api/v1/task/add', '2025-08-14 14:47:54.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (717, 89, 'admin', 'post', '127.0.0.1', '/api/v1/taskjob/start', '2025-08-14 14:48:19.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (718, 89, 'admin', 'post', '127.0.0.1', '/api/v1/task/add', '2025-08-14 14:49:10.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (719, 89, 'admin', 'post', '127.0.0.1', '/api/v1/taskjob/start', '2025-08-14 14:52:18.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (720, 89, 'admin', 'post', '127.0.0.1', '/api/v1/taskjob/stop', '2025-08-14 14:52:59.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (721, 89, 'admin', 'post', '127.0.0.1', '/api/v1/taskjob/start', '2025-08-14 15:07:46.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (722, 89, 'admin', 'post', '127.0.0.1', '/api/v1/taskjob/start', '2025-08-14 15:37:28.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (723, 89, 'admin', 'post', '127.0.0.1', '/api/v1/taskjob/start', '2025-08-14 15:39:13.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (724, 89, 'admin', 'post', '127.0.0.1', '/api/v1/taskjob/start', '2025-08-14 15:43:39.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (725, 89, 'admin', 'post', '127.0.0.1', '/api/v1/taskjob/start', '2025-08-14 15:47:56.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (726, 89, 'admin', 'post', '127.0.0.1', '/api/v1/taskjob/start', '2025-08-14 16:18:50.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (727, 89, 'admin', 'post', '127.0.0.1', '/api/v1/taskjob/start', '2025-08-14 16:19:23.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (728, 89, 'admin', 'post', '127.0.0.1', '/api/v1/taskjob/start', '2025-08-14 16:25:28.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (729, 89, 'admin', 'post', '127.0.0.1', '/api/v1/taskjob/start', '2025-08-14 16:25:49.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (730, 89, 'admin', 'post', '127.0.0.1', '/api/v1/taskjob/start', '2025-08-14 16:46:07.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (731, 89, 'admin', 'post', '127.0.0.1', '/api/v1/taskjob/start', '2025-08-14 16:58:49.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (732, 89, 'admin', 'post', '127.0.0.1', '/api/v1/taskjob/start', '2025-08-14 17:06:25.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (733, 89, 'admin', 'post', '127.0.0.1', '/api/v1/task/add', '2025-08-14 17:09:33.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (734, 89, 'admin', 'post', '127.0.0.1', '/api/v1/task/add', '2025-08-14 17:14:18.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (735, 89, 'admin', 'post', '127.0.0.1', '/api/v1/task/add', '2025-08-14 17:17:29.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (736, 89, 'admin', 'post', '127.0.0.1', '/api/v1/task/add', '2025-08-14 17:19:09.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (737, 89, 'admin', 'post', '127.0.0.1', '/api/v1/task/add', '2025-08-14 17:26:08.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (738, 89, 'admin', 'delete', '127.0.0.1', '/api/v1/task/delete', '2025-08-14 17:27:22.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (739, 89, 'admin', 'delete', '127.0.0.1', '/api/v1/task/delete', '2025-08-14 17:27:24.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (740, 89, 'admin', 'delete', '127.0.0.1', '/api/v1/task/delete', '2025-08-14 17:27:26.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (741, 89, 'admin', 'delete', '127.0.0.1', '/api/v1/task/delete', '2025-08-14 17:27:29.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (742, 89, 'admin', 'delete', '127.0.0.1', '/api/v1/task/delete', '2025-08-14 17:27:33.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (743, 89, 'admin', 'delete', '127.0.0.1', '/api/v1/task/delete', '2025-08-14 17:27:35.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (744, 89, 'admin', 'delete', '127.0.0.1', '/api/v1/task/delete', '2025-08-14 17:32:07.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (745, 89, 'admin', 'post', '127.0.0.1', '/api/v1/task/add', '2025-08-14 17:32:49.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (746, 89, 'admin', 'post', '127.0.0.1', '/api/v1/task/add', '2025-08-14 17:43:42.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (747, 89, 'admin', 'delete', '127.0.0.1', '/api/v1/task/delete', '2025-08-14 17:46:33.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (748, 89, 'admin', 'post', '127.0.0.1', '/api/v1/task/add', '2025-08-14 17:47:08.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (749, 89, 'admin', 'post', '127.0.0.1', '/api/v1/taskjob/start', '2025-08-14 17:47:31.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (750, 89, 'admin', 'post', '127.0.0.1', '/api/v1/taskjob/start', '2025-08-14 17:54:46.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (751, 89, 'admin', 'post', '127.0.0.1', '/api/v1/taskjob/start', '2025-08-14 19:10:06.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (752, 89, 'admin', 'post', '127.0.0.1', '/api/v1/task/add', '2025-08-14 19:28:41.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (753, 89, 'admin', 'post', '127.0.0.1', '/api/v1/taskjob/start', '2025-08-14 19:28:57.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (754, 89, 'admin', 'post', '127.0.0.1', '/api/v1/taskjob/start', '2025-08-14 19:37:51.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (755, 89, 'admin', 'post', '127.0.0.1', '/api/v1/taskjob/start', '2025-08-14 19:39:56.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (756, 89, 'admin', 'post', '127.0.0.1', '/api/v1/taskjob/start', '2025-08-14 19:56:38.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (757, 89, 'admin', 'post', '127.0.0.1', '/api/v1/taskjob/start', '2025-08-14 20:10:13.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (758, 89, 'admin', 'post', '127.0.0.1', '/api/v1/taskjob/stop', '2025-08-14 20:19:12.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (759, 89, 'admin', 'post', '127.0.0.1', '/api/v1/taskjob/stop', '2025-08-14 20:19:43.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (760, 89, 'admin', 'post', '127.0.0.1', '/api/v1/taskjob/stop', '2025-08-14 20:19:52.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (761, 89, 'admin', 'post', '127.0.0.1', '/api/v1/taskjob/stop', '2025-08-14 20:20:17.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (762, 89, 'admin', 'post', '127.0.0.1', '/api/v1/taskjob/start', '2025-08-14 20:21:59.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (763, 89, 'admin', 'delete', '127.0.0.1', '/api/v1/task/delete', '2025-08-14 20:22:31.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (764, 89, 'admin', 'delete', '127.0.0.1', '/api/v1/task/delete', '2025-08-14 20:22:35.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (765, 89, 'admin', 'post', '127.0.0.1', '/api/v1/taskjob/stop', '2025-08-14 20:24:47.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (766, 89, 'admin', 'delete', '127.0.0.1', '/api/v1/task/delete', '2025-08-14 22:32:07.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (767, 89, 'admin', 'post', '127.0.0.1', '/api/v1/task/add', '2025-08-14 22:34:52.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (768, 89, 'admin', 'post', '127.0.0.1', '/api/v1/taskjob/start', '2025-08-14 22:35:12.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (769, 89, 'admin', 'post', '127.0.0.1', '/api/v1/task/add', '2025-08-14 22:41:22.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (770, 89, 'admin', 'post', '127.0.0.1', '/api/v1/task/add', '2025-08-14 22:46:55.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (771, 89, 'admin', 'post', '127.0.0.1', '/api/v1/task/add', '2025-08-14 23:37:13.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (772, 89, 'admin', 'post', '127.0.0.1', '/api/v1/task/add', '2025-08-14 23:46:05.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (773, 89, 'admin', 'post', '127.0.0.1', '/api/v1/task/add', '2025-08-14 23:48:15.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (774, 89, 'admin', 'post', '127.0.0.1', '/api/v1/task/add', '2025-08-14 23:49:16.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (775, 89, 'admin', 'post', '127.0.0.1', '/api/v1/taskjob/start', '2025-08-14 23:49:54.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (776, 89, 'admin', 'delete', '127.0.0.1', '/api/v1/task/delete', '2025-08-14 23:54:07.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (777, 89, 'admin', 'post', '127.0.0.1', '/api/v1/taskjob/stop', '2025-08-14 23:56:22.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (778, 89, 'admin', 'post', '127.0.0.1', '/api/v1/config/accountauth/decrypt', '2025-08-15 00:05:22.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (779, 89, 'admin', 'delete', '127.0.0.1', '/api/v1/task/delete', '2025-08-15 00:22:09.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (780, 89, 'admin', 'post', '127.0.0.1', '/api/v1/template/add', '2025-08-15 10:58:03.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (781, 89, 'admin', 'post', '127.0.0.1', '/api/v1/task/add', '2025-08-15 17:31:47.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (782, 89, 'admin', 'post', '127.0.0.1', '/api/v1/task/ansible', '2025-08-21 11:45:55.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (783, 89, 'admin', 'post', '127.0.0.1', '/api/v1/task/ansible', '2025-08-21 11:46:14.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (784, 89, 'admin', 'post', '127.0.0.1', '/api/v1/task/ansible', '2025-08-21 11:46:22.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (785, 89, 'admin', 'post', '127.0.0.1', '/api/v1/task/ansible', '2025-08-21 11:47:56.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (786, 89, 'admin', 'post', '127.0.0.1', '/api/v1/task/ansible', '2025-08-21 11:50:42.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (787, 89, 'admin', 'post', '127.0.0.1', '/api/v1/task/ansible', '2025-08-21 11:51:19.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (788, 89, 'admin', 'post', '127.0.0.1', '/api/v1/task/ansible', '2025-08-21 11:53:12.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (789, 89, 'admin', 'post', '127.0.0.1', '/api/v1/task/ansible', '2025-08-21 11:55:46.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (790, 89, 'admin', 'post', '127.0.0.1', '/api/v1/task/ansible', '2025-08-21 11:57:39.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (791, 89, 'admin', 'post', '127.0.0.1', '/api/v1/task/ansible', '2025-08-21 12:01:04.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (792, 89, 'admin', 'post', '127.0.0.1', '/api/v1/task/ansible', '2025-08-21 12:14:45.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (793, 89, 'admin', 'post', '127.0.0.1', '/api/v1/task/ansible', '2025-08-21 14:34:13.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (794, 89, 'admin', 'post', '127.0.0.1', '/api/v1/task/ansible', '2025-08-21 14:43:24.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (795, 89, 'admin', 'post', '127.0.0.1', '/api/v1/task/ansible', '2025-08-21 14:43:56.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (796, 89, 'admin', 'post', '127.0.0.1', '/api/v1/task/ansible', '2025-08-21 14:46:29.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (797, 89, 'admin', 'post', '127.0.0.1', '/api/v1/task/ansible', '2025-08-21 14:54:06.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (798, 89, 'admin', 'post', '127.0.0.1', '/api/v1/task/ansible', '2025-08-22 17:17:06.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (799, 89, 'admin', 'post', '127.0.0.1', '/api/v1/cmdb/hostcreate', '2025-08-22 20:35:14.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (800, 89, 'admin', 'post', '127.0.0.1', '/api/v1/task/ansible', '2025-08-22 20:49:57.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (801, 89, 'admin', 'post', '127.0.0.1', '/api/v1/task/ansible', '2025-08-22 21:01:28.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (802, 89, 'admin', 'post', '127.0.0.1', '/api/v1/task/ansible', '2025-08-22 21:01:50.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (803, 89, 'admin', 'post', '127.0.0.1', '/api/v1/task/ansible', '2025-08-22 21:12:30.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (804, 89, 'admin', 'post', '127.0.0.1', '/api/v1/task/ansible', '2025-08-22 21:13:44.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (805, 89, 'admin', 'put', '127.0.0.1', '/api/v1/cmdb/hostupdate', '2025-08-22 21:15:11.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (806, 89, 'admin', 'put', '127.0.0.1', '/api/v1/config/ecsauthupdate', '2025-08-22 21:16:08.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (807, 89, 'admin', 'post', '127.0.0.1', '/api/v1/task/ansible', '2025-08-22 21:21:04.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (808, 89, 'admin', 'post', '127.0.0.1', '/api/v1/taskjob/start', '2025-08-22 21:47:21.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (809, 89, 'admin', 'post', '127.0.0.1', '/api/v1/task/ansible/18/start', '2025-08-23 12:40:51.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (810, 89, 'admin', 'post', '127.0.0.1', '/api/v1/task/ansible/18/start', '2025-08-23 13:09:41.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (811, 89, 'admin', 'post', '127.0.0.1', '/api/v1/task/ansible/18/start', '2025-08-23 13:16:47.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (812, 89, 'admin', 'post', '127.0.0.1', '/api/v1/task/ansible/18/start', '2025-08-23 13:22:04.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (813, 89, 'admin', 'post', '127.0.0.1', '/api/v1/task/ansible/18/start', '2025-08-23 13:30:59.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (814, 89, 'admin', 'post', '127.0.0.1', '/api/v1/task/ansible/18/start', '2025-08-23 13:49:23.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (815, 89, 'admin', 'post', '127.0.0.1', '/api/v1/task/ansible', '2025-08-23 17:49:18.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (816, 89, 'admin', 'post', '127.0.0.1', '/api/v1/task/ansible/19/start', '2025-08-23 17:53:51.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (817, 89, 'admin', 'post', '127.0.0.1', '/api/v1/task/ansible', '2025-08-23 18:27:10.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (818, 89, 'admin', 'put', '127.0.0.1', '/api/v1/menu/update', '2025-08-23 18:33:55.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (819, 89, 'admin', 'post', '127.0.0.1', '/api/v1/menu/add', '2025-08-23 18:35:24.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (820, 89, 'admin', 'put', '127.0.0.1', '/api/v1/role/assignPermissions', '2025-08-23 18:36:06.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (821, 89, 'admin', 'delete', '127.0.0.1', '/api/v1/task/ansible/7', '2025-08-23 19:00:16.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (822, 89, 'admin', 'delete', '127.0.0.1', '/api/v1/task/ansible/8', '2025-08-23 19:00:55.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (823, 89, 'admin', 'post', '127.0.0.1', '/api/v1/task/ansible/20/start', '2025-08-23 19:06:40.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (824, 89, 'admin', 'post', '127.0.0.1', '/api/v1/task/ansible', '2025-08-23 20:41:18.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (825, 89, 'admin', 'post', '127.0.0.1', '/api/v1/task/ansible', '2025-08-23 20:52:58.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (826, 89, 'admin', 'post', '127.0.0.1', '/api/v1/task/ansible', '2025-08-23 20:57:09.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (827, 89, 'admin', 'post', '127.0.0.1', '/api/v1/task/ansible', '2025-08-23 21:04:05.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (828, 89, 'admin', 'post', '127.0.0.1', '/api/v1/task/ansible', '2025-08-23 21:10:24.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (829, 89, 'admin', 'post', '127.0.0.1', '/api/v1/task/ansible/24/start', '2025-08-23 22:04:30.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (830, 89, 'admin', 'post', '127.0.0.1', '/api/v1/task/ansible/25/start', '2025-08-23 22:27:35.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (831, 89, 'admin', 'delete', '127.0.0.1', '/api/v1/task/ansible/9', '2025-08-23 22:32:06.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (832, 89, 'admin', 'delete', '127.0.0.1', '/api/v1/task/ansible/10', '2025-08-23 22:32:09.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (833, 89, 'admin', 'delete', '127.0.0.1', '/api/v1/task/ansible/11', '2025-08-23 22:32:12.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (834, 89, 'admin', 'delete', '127.0.0.1', '/api/v1/task/ansible/12', '2025-08-23 22:32:15.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (835, 89, 'admin', 'delete', '127.0.0.1', '/api/v1/task/ansible/13', '2025-08-23 22:32:18.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (836, 89, 'admin', 'delete', '127.0.0.1', '/api/v1/task/ansible/14', '2025-08-23 22:32:21.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (837, 89, 'admin', 'delete', '127.0.0.1', '/api/v1/task/ansible/15', '2025-08-23 22:32:25.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (838, 89, 'admin', 'delete', '127.0.0.1', '/api/v1/task/ansible/16', '2025-08-23 22:32:31.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (839, 89, 'admin', 'delete', '127.0.0.1', '/api/v1/task/ansible/17', '2025-08-23 22:32:34.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (840, 89, 'admin', 'delete', '127.0.0.1', '/api/v1/task/ansible/18', '2025-08-23 22:32:38.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (841, 89, 'admin', 'delete', '127.0.0.1', '/api/v1/task/ansible/19', '2025-08-23 22:32:40.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (842, 89, 'admin', 'put', '127.0.0.1', '/api/v1/menu/update', '2025-08-23 22:42:45.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (843, 89, 'admin', 'put', '127.0.0.1', '/api/v1/menu/update', '2025-08-23 22:42:51.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (844, 89, 'admin', 'post', '127.0.0.1', '/api/v1/task/ansible/25/start', '2025-08-24 00:14:46.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (845, 89, 'admin', 'post', '127.0.0.1', '/api/v1/task/ansible/25/start', '2025-08-24 00:16:57.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (846, 89, 'admin', 'post', '127.0.0.1', '/api/v1/task/ansible/25/start', '2025-08-24 00:22:07.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (847, 89, 'admin', 'post', '127.0.0.1', '/api/v1/task/ansible/25/start', '2025-08-24 00:27:20.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (848, 89, 'admin', 'post', '127.0.0.1', '/api/v1/task/ansible/25/start', '2025-08-24 00:34:53.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (849, 89, 'admin', 'post', '127.0.0.1', '/api/v1/task/ansible/25/start', '2025-08-24 00:35:46.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (850, 89, 'admin', 'post', '127.0.0.1', '/api/v1/task/add', '2025-08-24 15:33:05.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (851, 89, 'admin', 'post', '127.0.0.1', '/api/v1/taskjob/start', '2025-08-24 15:33:15.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (852, 89, 'admin', 'post', '127.0.0.1', '/api/v1/cmdb/hostssh/upload/1', '2025-08-24 16:58:24.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (853, 89, 'admin', 'post', '127.0.0.1', '/api/v1/cmdb/hostsync', '2025-08-24 17:20:15.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (854, 89, 'admin', 'post', '127.0.0.1', '/api/v1/cmdb/hostsync', '2025-08-24 17:28:08.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (855, 89, 'admin', 'post', '127.0.0.1', '/api/v1/cmdb/hostsync', '2025-08-24 17:28:25.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (856, 89, 'admin', 'post', '127.0.0.1', '/api/v1/cmdb/hostsync', '2025-08-24 17:32:17.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (857, 89, 'admin', 'post', '127.0.0.1', '/api/v1/cmdb/sql/databaselist', '2025-08-25 10:17:06.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (858, 89, 'admin', 'post', '127.0.0.1', '/api/v1/cmdb/sql/select', '2025-08-25 10:17:23.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (859, 89, 'admin', 'post', '127.0.0.1', '/api/v1/config/ecsauthadd', '2025-08-26 20:11:31.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (860, 89, 'admin', 'post', '127.0.0.1', '/api/v1/cmdb/hostcreate', '2025-08-26 20:15:07.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (861, 89, 'admin', 'post', '127.0.0.1', '/api/v1/cmdb/hostsync', '2025-08-26 20:15:22.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (862, 89, 'admin', 'post', '127.0.0.1', '/api/v1/monitor/agent/deploy/446', '2025-08-26 20:19:10.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (863, 89, 'admin', 'post', '127.0.0.1', '/api/v1/monitor/agent/deploy/446', '2025-08-26 20:21:06.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (864, 89, 'admin', 'post', '127.0.0.1', '/api/v1/monitor/agent/deploy/446', '2025-08-26 20:22:30.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (865, 89, 'admin', 'post', '127.0.0.1', '/api/v1/monitor/agent/deploy/446', '2025-08-26 20:25:39.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (866, 89, 'admin', 'post', '127.0.0.1', '/api/v1/monitor/agent/deploy/446', '2025-08-26 20:30:11.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (867, 89, 'admin', 'post', '127.0.0.1', '/api/v1/monitor/agent/deploy/446', '2025-08-26 20:32:59.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (868, 89, 'admin', 'post', '127.0.0.1', '/api/v1/monitor/agent/deploy/446', '2025-08-26 20:41:23.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (869, 89, 'admin', 'post', '127.0.0.1', '/api/v1/monitor/agent/deploy/446', '2025-08-26 20:45:57.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (870, 89, 'admin', 'post', '127.0.0.1', '/api/v1/monitor/agent/deploy/446', '2025-08-26 20:51:41.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (871, 89, 'admin', 'post', '127.0.0.1', '/api/v1/monitor/agent/deploy/446', '2025-08-26 21:10:57.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (872, 89, 'admin', 'post', '127.0.0.1', '/api/v1/monitor/agent/deploy/446', '2025-08-26 21:18:21.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (873, 89, 'admin', 'post', '127.0.0.1', '/api/v1/monitor/agent/deploy/446', '2025-08-26 21:20:02.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (874, 89, 'admin', 'post', '127.0.0.1', '/api/v1/monitor/agent/deploy/446', '2025-08-26 21:23:53.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (875, 89, 'admin', 'post', '127.0.0.1', '/api/v1/monitor/agent/deploy/446', '2025-08-26 21:27:30.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (876, 89, 'admin', 'post', '127.0.0.1', '/api/v1/monitor/agent/deploy/446', '2025-08-26 21:31:11.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (877, 89, 'admin', 'post', '127.0.0.1', '/api/v1/monitor/agent/deploy/446', '2025-08-26 21:35:12.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (878, 89, 'admin', 'post', '127.0.0.1', '/api/v1/monitor/agent/deploy/446', '2025-08-26 21:49:45.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (879, 89, 'admin', 'post', '127.0.0.1', '/api/v1/monitor/agent/heartbeat/446', '2025-08-26 21:55:58.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (880, 89, 'admin', 'post', '127.0.0.1', '/api/v1/monitor/agent/restart/446', '2025-08-26 21:56:21.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (881, 89, 'admin', 'post', '127.0.0.1', '/api/v1/monitor/agent/restart/446', '2025-08-26 21:57:34.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (882, 89, 'admin', 'post', '127.0.0.1', '/api/v1/monitor/agent/restart/446', '2025-08-26 22:02:33.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (883, 89, 'admin', 'post', '127.0.0.1', '/api/v1/monitor/agent/restart/446', '2025-08-26 22:03:50.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (884, 89, 'admin', 'post', '127.0.0.1', '/api/v1/monitor/agent/restart/446', '2025-08-26 22:06:38.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (885, 89, 'admin', 'post', '127.0.0.1', '/api/v1/monitor/agent/restart/446', '2025-08-26 22:10:15.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (886, 89, 'admin', 'post', '127.0.0.1', '/api/v1/monitor/agent/restart/446', '2025-08-26 22:13:27.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (887, 89, 'admin', 'post', '127.0.0.1', '/api/v1/monitor/agent/restart/446', '2025-08-26 22:18:15.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (888, 89, 'admin', 'post', '127.0.0.1', '/api/v1/monitor/agent/heartbeat/446', '2025-08-27 13:00:26.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (889, 89, 'admin', 'post', '127.0.0.1', '/api/v1/monitor/agent/heartbeat/446', '2025-08-27 15:53:40.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (890, 89, 'admin', 'post', '127.0.0.1', '/api/v1/monitor/agent/heartbeat/446', '2025-08-28 11:06:40.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (891, 89, 'admin', 'delete', '127.0.0.1', '/api/v1/monitor/agent/uninstall/446', '2025-08-28 13:09:50.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (892, 89, 'admin', 'post', '127.0.0.1', '/api/v1/monitor/agent/deploy/446', '2025-08-28 13:11:42.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (893, 89, 'admin', 'post', '127.0.0.1', '/api/v1/config/accountauth/decrypt', '2025-08-28 20:52:49.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (894, 89, 'admin', 'post', '127.0.0.1', '/api/v1/menu/add', '2025-08-29 10:59:35.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (895, 89, 'admin', 'put', '127.0.0.1', '/api/v1/menu/update', '2025-08-29 11:00:12.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (896, 89, 'admin', 'put', '127.0.0.1', '/api/v1/menu/update', '2025-08-29 11:00:34.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (897, 89, 'admin', 'put', '127.0.0.1', '/api/v1/menu/update', '2025-08-29 11:00:43.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (898, 89, 'admin', 'put', '127.0.0.1', '/api/v1/role/assignPermissions', '2025-08-29 11:02:00.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (899, 89, 'admin', 'put', '127.0.0.1', '/api/v1/role/assignPermissions', '2025-08-29 11:09:22.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (900, 89, 'admin', 'put', '127.0.0.1', '/api/v1/role/assignPermissions', '2025-08-29 11:10:02.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (901, 89, 'admin', 'put', '127.0.0.1', '/api/v1/menu/update', '2025-08-29 11:20:29.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (902, 89, 'admin', 'put', '127.0.0.1', '/api/v1/menu/update', '2025-08-29 11:20:35.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (903, 89, 'admin', 'post', '127.0.0.1', '/api/v1/menu/add', '2025-08-29 11:22:20.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (904, 89, 'admin', 'put', '127.0.0.1', '/api/v1/menu/update', '2025-08-29 11:22:31.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (905, 89, 'admin', 'post', '127.0.0.1', '/api/v1/menu/add', '2025-08-29 11:29:01.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (906, 89, 'admin', 'put', '127.0.0.1', '/api/v1/menu/update', '2025-08-29 11:29:12.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (907, 89, 'admin', 'put', '127.0.0.1', '/api/v1/role/assignPermissions', '2025-08-29 11:29:55.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (908, 89, 'admin', 'delete', '127.0.0.1', '/api/v1/monitor/agent/uninstall', '2025-08-29 13:14:43.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (909, 89, 'admin', 'post', '127.0.0.1', '/api/v1/monitor/agent/deploy', '2025-08-29 13:15:15.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (910, 89, 'admin', 'delete', '127.0.0.1', '/api/v1/monitor/agent/uninstall', '2025-08-29 15:13:15.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (911, 89, 'admin', 'post', '127.0.0.1', '/api/v1/monitor/agent/deploy', '2025-08-29 15:17:02.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (912, 89, 'admin', 'delete', '127.0.0.1', '/api/v1/monitor/agent/uninstall', '2025-08-29 15:27:32.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (913, 89, 'admin', 'post', '127.0.0.1', '/api/v1/monitor/agent/deploy', '2025-08-29 15:29:00.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (914, 89, 'admin', 'post', '127.0.0.1', '/api/v1/cmdb/hostsync', '2025-09-05 01:16:57.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (915, 89, 'admin', 'put', '127.0.0.1', '/api/v1/role/assignPermissions', '2025-09-05 15:10:47.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (916, 89, 'admin', 'put', '127.0.0.1', '/api/v1/admin/update', '2025-09-05 17:21:34.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (917, 89, 'admin', 'post', '127.0.0.1', '/api/v1/config/accountauth/decrypt', '2025-09-05 18:19:22.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (918, 89, 'admin', 'post', '127.0.0.1', '/api/v1/config/accountauth/decrypt', '2025-09-05 18:24:00.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (919, 89, 'admin', 'delete', '127.0.0.1', '/api/v1/task/ansible/20', '2025-09-05 20:35:03.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (920, 89, 'admin', 'delete', '127.0.0.1', '/api/v1/config/accountauth', '2025-09-06 15:06:44.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (921, 89, 'admin', 'put', '127.0.0.1', '/api/v1/cmdb/database', '2025-09-06 15:11:58.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (922, 89, 'admin', 'put', '127.0.0.1', '/api/v1/cmdb/database', '2025-09-06 15:12:22.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (923, 89, 'admin', 'put', '127.0.0.1', '/api/v1/cmdb/database', '2025-09-06 15:12:35.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (924, 89, 'admin', 'put', '127.0.0.1', '/api/v1/cmdb/database', '2025-09-06 15:12:44.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (927, 89, 'admin', 'put', '127.0.0.1', '/api/v1/cmdb/database', '2025-09-06 15:30:50.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (928, 89, 'admin', 'put', '127.0.0.1', '/api/v1/cmdb/database', '2025-09-06 15:37:34.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (929, 89, 'admin', 'put', '127.0.0.1', '/api/v1/cmdb/database', '2025-09-06 15:37:48.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (930, 89, 'admin', 'put', '127.0.0.1', '/api/v1/cmdb/database', '2025-09-06 15:40:34.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (931, 89, 'admin', 'put', '127.0.0.1', '/api/v1/cmdb/database', '2025-09-06 15:41:09.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (932, 89, 'admin', 'delete', '127.0.0.1', '/api/v1/cmdb/database', '2025-09-06 15:53:19.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (933, 89, 'admin', 'delete', '127.0.0.1', '/api/v1/cmdb/database', '2025-09-06 15:53:31.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (934, 89, 'admin', 'put', '127.0.0.1', '/api/v1/template/update', '2025-09-06 16:27:02.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (935, 89, 'admin', 'put', '127.0.0.1', '/api/v1/template/update', '2025-09-06 16:27:07.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (936, 89, 'admin', 'put', '127.0.0.1', '/api/v1/template/update', '2025-09-06 16:27:16.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (937, 89, 'admin', 'post', '127.0.0.1', '/api/v1/cmdb/hostcreate', '2025-09-06 21:56:34.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (938, 89, 'admin', 'post', '127.0.0.1', '/api/v1/monitor/agent/deploy', '2025-09-06 21:57:22.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (939, 89, 'admin', 'post', '127.0.0.1', '/api/v1/cmdb/hostcreate', '2025-09-07 16:09:50.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (940, 89, 'admin', 'delete', '127.0.0.1', '/api/v1/cmdb/hostdelete', '2025-09-07 16:21:20.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (941, 89, 'admin', 'delete', '127.0.0.1', '/api/v1/config/ecsauthdelete', '2025-09-07 16:23:47.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (942, 89, 'admin', 'post', '127.0.0.1', '/api/v1/config/ecsauthadd', '2025-09-07 16:24:04.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (943, 89, 'admin', 'post', '127.0.0.1', '/api/v1/config/ecsauthadd', '2025-09-07 16:27:53.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (944, 89, 'admin', 'delete', '127.0.0.1', '/api/v1/config/ecsauthdelete', '2025-09-07 16:28:06.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (945, 89, 'admin', 'post', '127.0.0.1', '/api/v1/cmdb/hostcreate', '2025-09-07 16:33:43.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (946, 89, 'admin', 'post', '127.0.0.1', '/api/v1/monitor/agent/deploy', '2025-09-07 16:34:55.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (947, 89, 'admin', 'post', '127.0.0.1', '/api/v1/cmdb/groupadd', '2025-09-07 17:48:31.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (948, 89, 'admin', 'delete', '127.0.0.1', '/api/v1/cmdb/groupdelete', '2025-09-07 17:49:02.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (949, 89, 'admin', 'post', '127.0.0.1', '/api/v1/cmdb/groupadd', '2025-09-07 17:49:17.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (950, 89, 'admin', 'post', '127.0.0.1', '/api/v1/cmdb/groupadd', '2025-09-07 17:50:56.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (951, 89, 'admin', 'put', '127.0.0.1', '/api/v1/cmdb/groupupdate', '2025-09-07 17:52:03.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (952, 89, 'admin', 'put', '127.0.0.1', '/api/v1/cmdb/groupupdate', '2025-09-07 17:53:05.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (953, 89, 'admin', 'delete', '127.0.0.1', '/api/v1/cmdb/groupdelete', '2025-09-07 17:53:57.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (954, 89, 'admin', 'put', '127.0.0.1', '/api/v1/cmdb/groupupdate', '2025-09-07 18:04:37.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (955, 89, 'admin', 'post', '127.0.0.1', '/api/v1/cmdb/groupadd', '2025-09-07 18:04:56.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (956, 89, 'admin', 'post', '127.0.0.1', '/api/v1/cmdb/groupadd', '2025-09-07 18:05:13.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (957, 89, 'admin', 'post', '127.0.0.1', '/api/v1/cmdb/groupadd', '2025-09-07 18:05:31.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (958, 89, 'admin', 'put', '127.0.0.1', '/api/v1/cmdb/groupupdate', '2025-09-07 18:05:50.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (959, 89, 'admin', 'put', '127.0.0.1', '/api/v1/cmdb/hostupdate', '2025-09-07 18:20:36.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (960, 89, 'admin', 'put', '127.0.0.1', '/api/v1/cmdb/hostupdate', '2025-09-07 18:22:30.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (961, 89, 'admin', 'put', '127.0.0.1', '/api/v1/cmdb/hostupdate', '2025-09-07 18:25:05.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (962, 89, 'admin', 'put', '127.0.0.1', '/api/v1/cmdb/hostupdate', '2025-09-07 18:25:14.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (963, 89, 'admin', 'put', '127.0.0.1', '/api/v1/cmdb/hostupdate', '2025-09-07 18:25:24.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (964, 89, 'admin', 'put', '127.0.0.1', '/api/v1/cmdb/hostupdate', '2025-09-07 18:51:29.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (965, 89, 'admin', 'post', '127.0.0.1', '/api/v1/menu/add', '2025-09-08 13:24:40.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (966, 89, 'admin', 'put', '127.0.0.1', '/api/v1/menu/update', '2025-09-08 13:25:08.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (967, 89, 'admin', 'put', '127.0.0.1', '/api/v1/role/assignPermissions', '2025-09-08 13:25:56.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (968, 89, 'admin', 'put', '127.0.0.1', '/api/v1/role/assignPermissions', '2025-09-08 13:26:23.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (969, 89, 'admin', 'put', '127.0.0.1', '/api/v1/role/assignPermissions', '2025-09-08 13:26:53.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (970, 89, 'admin', 'put', '127.0.0.1', '/api/v1/role/assignPermissions', '2025-09-08 13:37:07.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (971, 89, 'admin', 'put', '127.0.0.1', '/api/v1/role/assignPermissions', '2025-09-08 13:39:22.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (972, 89, 'admin', 'put', '127.0.0.1', '/api/v1/role/assignPermissions', '2025-09-08 13:40:27.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (973, 89, 'admin', 'put', '127.0.0.1', '/api/v1/role/assignPermissions', '2025-09-08 14:11:36.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (974, 89, 'admin', 'put', '127.0.0.1', '/api/v1/role/assignPermissions', '2025-09-08 14:17:07.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (975, 89, 'admin', 'put', '127.0.0.1', '/api/v1/role/assignPermissions', '2025-09-08 14:18:07.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (976, 89, 'admin', 'put', '127.0.0.1', '/api/v1/role/assignPermissions', '2025-09-08 14:22:25.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (977, 89, 'admin', 'put', '127.0.0.1', '/api/v1/role/assignPermissions', '2025-09-08 14:26:52.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (978, 89, 'admin', 'put', '127.0.0.1', '/api/v1/role/assignPermissions', '2025-09-08 14:27:15.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (979, 89, 'admin', 'post', '127.0.0.1', '/api/v1/config/keymanage', '2025-09-08 14:50:36.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (980, 89, 'admin', 'post', '127.0.0.1', '/api/v1/config/keymanage', '2025-09-08 14:50:57.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (981, 89, 'admin', 'post', '127.0.0.1', '/api/v1/config/keymanage', '2025-09-08 14:51:16.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (982, 89, 'admin', 'post', '127.0.0.1', '/api/v1/config/keymanage', '2025-09-08 14:59:19.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (983, 89, 'admin', 'post', '127.0.0.1', '/api/v1/config/keymanage', '2025-09-08 15:09:49.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (984, 89, 'admin', 'post', '127.0.0.1', '/api/v1/config/keymanage', '2025-09-08 15:10:12.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (985, 89, 'admin', 'post', '127.0.0.1', '/api/v1/config/keymanage', '2025-09-08 15:10:24.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (986, 89, 'admin', 'post', '127.0.0.1', '/api/v1/config/keymanage', '2025-09-08 15:10:33.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (987, 89, 'admin', 'post', '127.0.0.1', '/api/v1/config/keymanage/sync/aliyun', '2025-09-08 15:22:27.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (988, 89, 'admin', 'post', '127.0.0.1', '/api/v1/config/keymanage/sync/aliyun', '2025-09-08 15:25:33.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (989, 89, 'admin', 'post', '127.0.0.1', '/api/v1/config/keymanage/sync/aliyun', '2025-09-08 15:25:57.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (990, 89, 'admin', 'post', '127.0.0.1', '/api/v1/config/keymanage/sync/aliyun', '2025-09-08 15:29:34.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (991, 89, 'admin', 'post', '127.0.0.1', '/api/v1/config/keymanage/sync/aliyun', '2025-09-08 15:34:01.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (992, 89, 'admin', 'post', '127.0.0.1', '/api/v1/config/keymanage/sync', '2025-09-08 15:43:42.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (993, 89, 'admin', 'post', '127.0.0.1', '/api/v1/config/keymanage/sync', '2025-09-08 16:03:07.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (994, 89, 'admin', 'put', '127.0.0.1', '/api/v1/config/keymanage', '2025-09-08 16:10:16.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (995, 89, 'admin', 'post', '127.0.0.1', '/api/v1/config/keymanage/sync', '2025-09-08 16:12:59.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (996, 89, 'admin', 'post', '127.0.0.1', '/api/v1/config/keymanage/sync', '2025-09-08 16:13:09.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (997, 89, 'admin', 'post', '127.0.0.1', '/api/v1/config/keymanage/sync', '2025-09-08 16:19:45.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (998, 89, 'admin', 'put', '127.0.0.1', '/api/v1/cmdb/hostupdate', '2025-09-08 16:20:42.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (999, 89, 'admin', 'post', '127.0.0.1', '/api/v1/cmdb/hostsync', '2025-09-08 16:21:33.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1000, 89, 'admin', 'post', '127.0.0.1', '/api/v1/monitor/agent/deploy', '2025-09-08 16:22:11.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1001, 89, 'admin', 'post', '127.0.0.1', '/api/v1/config/keymanage/sync', '2025-09-08 16:26:02.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1002, 89, 'admin', 'post', '127.0.0.1', '/api/v1/config/keymanage/sync', '2025-09-08 16:28:38.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1003, 89, 'admin', 'delete', '127.0.0.1', '/api/v1/cmdb/hostdelete', '2025-09-08 16:29:15.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1004, 89, 'admin', 'delete', '127.0.0.1', '/api/v1/cmdb/hostdelete', '2025-09-08 16:29:22.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1005, 89, 'admin', 'put', '127.0.0.1', '/api/v1/cmdb/hostupdate', '2025-09-08 16:40:08.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1006, 89, 'admin', 'post', '127.0.0.1', '/api/v1/task/ansible', '2025-09-08 17:24:57.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1007, 89, 'admin', 'post', '127.0.0.1', '/api/v1/task/ansible', '2025-09-08 17:25:39.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1008, 89, 'admin', 'post', '127.0.0.1', '/api/v1/task/ansible', '2025-09-08 17:28:07.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1009, 89, 'admin', 'delete', '127.0.0.1', '/api/v1/task/ansible/26', '2025-09-08 17:31:20.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1010, 89, 'admin', 'post', '127.0.0.1', '/api/v1/task/ansible', '2025-09-08 17:32:44.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1011, 89, 'admin', 'post', '127.0.0.1', '/api/v1/task/ansible/27/start', '2025-09-08 17:33:00.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1012, 89, 'admin', 'post', '127.0.0.1', '/api/v1/cmdb/hostsync', '2025-09-08 20:21:59.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1013, 89, 'admin', 'delete', '127.0.0.1', '/api/v1/cmdb/hostdelete', '2025-09-09 15:51:02.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1014, 89, 'admin', 'delete', '127.0.0.1', '/api/v1/cmdb/hostdelete', '2025-09-09 15:51:08.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1015, 89, 'admin', 'post', '127.0.0.1', '/api/v1/cmdb/hostcreate', '2025-09-09 15:52:38.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1016, 89, 'admin', 'put', '127.0.0.1', '/api/v1/cmdb/hostupdate', '2025-09-09 15:52:59.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1017, 89, 'admin', 'post', '127.0.0.1', '/api/v1/cmdb/hostcreate', '2025-09-09 15:53:18.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1018, 89, 'admin', 'post', '127.0.0.1', '/api/v1/cmdb/hostcreate', '2025-09-09 15:53:51.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1019, 89, 'admin', 'post', '127.0.0.1', '/api/v1/cmdb/hostcreate', '2025-09-09 15:54:09.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1020, 89, 'admin', 'post', '127.0.0.1', '/api/v1/k8s/cluster', '2025-09-09 15:55:29.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1021, 89, 'admin', 'post', '127.0.0.1', '/api/v1/k8s/cluster', '2025-09-09 15:56:16.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1022, 89, 'admin', 'post', '127.0.0.1', '/api/v1/k8s/cluster', '2025-09-09 15:58:49.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1023, 89, 'admin', 'delete', '127.0.0.1', '/api/v1/task/ansible/28', '2025-09-09 16:15:32.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1024, 89, 'admin', 'delete', '127.0.0.1', '/api/v1/k8s/cluster/1', '2025-09-09 16:15:45.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1025, 89, 'admin', 'post', '127.0.0.1', '/api/v1/k8s/cluster', '2025-09-09 16:16:39.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1026, 89, 'admin', 'delete', '127.0.0.1', '/api/v1/k8s/cluster/2', '2025-09-09 16:28:48.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1027, 89, 'admin', 'delete', '127.0.0.1', '/api/v1/k8s/cluster/2', '2025-09-09 16:33:28.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1028, 89, 'admin', 'post', '127.0.0.1', '/api/v1/k8s/cluster', '2025-09-09 16:34:40.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1029, 89, 'admin', 'delete', '127.0.0.1', '/api/v1/task/ansible/29', '2025-09-09 16:50:21.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1030, 89, 'admin', 'delete', '127.0.0.1', '/api/v1/k8s/cluster/3', '2025-09-09 16:51:09.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1031, 89, 'admin', 'post', '127.0.0.1', '/api/v1/k8s/cluster', '2025-09-09 16:52:48.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1032, 89, 'admin', 'delete', '127.0.0.1', '/api/v1/k8s/cluster/4', '2025-09-09 16:53:49.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1033, 89, 'admin', 'delete', '127.0.0.1', '/api/v1/task/ansible/29', '2025-09-09 16:53:56.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1034, 89, 'admin', 'delete', '127.0.0.1', '/api/v1/task/ansible/29', '2025-09-09 16:54:23.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1035, 89, 'admin', 'post', '127.0.0.1', '/api/v1/k8s/cluster', '2025-09-09 16:55:03.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1036, 89, 'admin', 'post', '127.0.0.1', '/api/v1/task/ansible/31/start', '2025-09-09 16:55:51.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1037, 89, 'admin', 'delete', '127.0.0.1', '/api/v1/k8s/cluster/5', '2025-09-09 17:19:03.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1038, 89, 'admin', 'delete', '127.0.0.1', '/api/v1/task/ansible/31', '2025-09-09 17:19:11.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1039, 89, 'admin', 'post', '127.0.0.1', '/api/v1/k8s/cluster', '2025-09-09 17:21:42.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1040, 89, 'admin', 'post', '127.0.0.1', '/api/v1/task/ansible/32/start', '2025-09-09 17:22:32.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1041, 89, 'admin', 'post', '127.0.0.1', '/api/v1/task/ansible/32/start', '2025-09-09 17:25:27.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1042, 89, 'admin', 'post', '127.0.0.1', '/api/v1/task/ansible/32/start', '2025-09-09 17:30:12.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1043, 89, 'admin', 'post', '127.0.0.1', '/api/v1/task/ansible/32/start', '2025-09-09 17:33:35.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1044, 89, 'admin', 'post', '127.0.0.1', '/api/v1/k8s/cluster', '2025-09-09 17:52:58.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1045, 89, 'admin', 'delete', '127.0.0.1', '/api/v1/k8s/cluster/7', '2025-09-09 17:59:18.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1046, 89, 'admin', 'post', '127.0.0.1', '/api/v1/k8s/cluster', '2025-09-09 18:00:20.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1047, 89, 'admin', 'post', '127.0.0.1', '/api/v1/task/ansible/33/start', '2025-09-09 18:01:09.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1048, 89, 'admin', 'post', '127.0.0.1', '/api/v1/k8s/cluster', '2025-09-09 18:08:55.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1049, 89, 'admin', 'post', '127.0.0.1', '/api/v1/k8s/cluster', '2025-09-09 18:16:48.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1050, 89, 'admin', 'delete', '127.0.0.1', '/api/v1/k8s/cluster/10', '2025-09-09 18:18:18.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1051, 89, 'admin', 'delete', '127.0.0.1', '/api/v1/k8s/cluster/9', '2025-09-09 18:18:26.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1052, 89, 'admin', 'delete', '127.0.0.1', '/api/v1/k8s/cluster/8', '2025-09-09 18:18:29.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1053, 89, 'admin', 'delete', '127.0.0.1', '/api/v1/k8s/cluster/6', '2025-09-09 18:18:31.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1054, 89, 'admin', 'delete', '127.0.0.1', '/api/v1/task/ansible/33', '2025-09-09 18:18:37.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1055, 89, 'admin', 'delete', '127.0.0.1', '/api/v1/task/ansible/32', '2025-09-09 18:18:39.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1056, 89, 'admin', 'post', '127.0.0.1', '/api/v1/k8s/cluster', '2025-09-09 18:19:19.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1057, 89, 'admin', 'delete', '127.0.0.1', '/api/v1/k8s/cluster/11', '2025-09-09 18:28:37.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1058, 89, 'admin', 'post', '127.0.0.1', '/api/v1/k8s/cluster', '2025-09-09 18:29:26.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1059, 89, 'admin', 'post', '127.0.0.1', '/api/v1/k8s/cluster', '2025-09-09 18:33:47.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1060, 89, 'admin', 'post', '127.0.0.1', '/api/v1/k8s/cluster', '2025-09-09 18:36:52.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1061, 89, 'admin', 'post', '127.0.0.1', '/api/v1/task/ansible/36/start', '2025-09-09 18:38:08.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1062, 89, 'admin', 'post', '127.0.0.1', '/api/v1/task/ansible/36/start', '2025-09-09 18:55:10.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1063, 89, 'admin', 'post', '127.0.0.1', '/api/v1/task/ansible/36/start', '2025-09-09 19:14:56.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1064, 89, 'admin', 'post', '127.0.0.1', '/api/v1/task/ansible/36/start', '2025-09-09 19:32:23.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1065, 89, 'admin', 'post', '127.0.0.1', '/api/v1/task/ansible/36/start', '2025-09-09 19:40:21.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1066, 89, 'admin', 'post', '127.0.0.1', '/api/v1/task/ansible/36/start', '2025-09-09 20:26:28.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1067, 89, 'admin', 'post', '127.0.0.1', '/api/v1/task/ansible/36/start', '2025-09-09 20:39:46.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1068, 89, 'admin', 'post', '127.0.0.1', '/api/v1/task/ansible/36/start', '2025-09-09 20:44:12.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1069, 89, 'admin', 'post', '127.0.0.1', '/api/v1/task/ansible/36/start', '2025-09-09 20:48:24.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1070, 89, 'admin', 'post', '127.0.0.1', '/api/v1/task/ansible/36/start', '2025-09-09 20:55:42.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1071, 89, 'admin', 'post', '127.0.0.1', '/api/v1/monitor/agent/deploy', '2025-09-09 20:57:59.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1072, 89, 'admin', 'post', '127.0.0.1', '/api/v1/monitor/agent/deploy', '2025-09-09 20:58:12.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1073, 89, 'admin', 'delete', '127.0.0.1', '/api/v1/monitor/agent/uninstall', '2025-09-09 20:58:22.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1074, 89, 'admin', 'post', '127.0.0.1', '/api/v1/task/ansible/36/start', '2025-09-09 20:59:56.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1075, 89, 'admin', 'post', '127.0.0.1', '/api/v1/task/ansible/36/start', '2025-09-09 21:05:16.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1076, 89, 'admin', 'post', '127.0.0.1', '/api/v1/task/ansible/36/start', '2025-09-09 21:08:27.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1077, 89, 'admin', 'post', '127.0.0.1', '/api/v1/task/ansible/36/start', '2025-09-09 21:14:21.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1078, 89, 'admin', 'post', '127.0.0.1', '/api/v1/task/ansible/36/start', '2025-09-09 21:21:24.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1079, 89, 'admin', 'post', '127.0.0.1', '/api/v1/task/ansible/36/start', '2025-09-10 12:04:48.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1080, 89, 'admin', 'post', '127.0.0.1', '/api/v1/task/ansible/36/start', '2025-09-10 12:08:36.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1081, 89, 'admin', 'post', '127.0.0.1', '/api/v1/task/ansible/36/start', '2025-09-10 12:14:16.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1082, 89, 'admin', 'post', '127.0.0.1', '/api/v1/task/ansible/36/start', '2025-09-10 12:21:11.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1083, 89, 'admin', 'post', '127.0.0.1', '/api/v1/k8s/cluster', '2025-09-10 12:40:58.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1084, 89, 'admin', 'post', '127.0.0.1', '/api/v1/task/ansible/37/start', '2025-09-10 12:41:15.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1085, 89, 'admin', 'post', '127.0.0.1', '/api/v1/task/ansible/37/start', '2025-09-10 14:57:04.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1086, 89, 'admin', 'post', '127.0.0.1', '/api/v1/k8s/cluster', '2025-09-10 14:59:47.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1087, 89, 'admin', 'post', '127.0.0.1', '/api/v1/task/ansible/38/start', '2025-09-10 15:00:09.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1088, 89, 'admin', 'delete', '127.0.0.1', '/api/v1/task/ansible/34', '2025-09-10 15:08:15.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1089, 89, 'admin', 'delete', '127.0.0.1', '/api/v1/task/ansible/35', '2025-09-10 15:08:19.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1090, 89, 'admin', 'post', '127.0.0.1', '/api/v1/monitor/agent/deploy', '2025-09-10 17:07:12.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1091, 89, 'admin', 'delete', '127.0.0.1', '/api/v1/monitor/agent/uninstall', '2025-09-10 17:11:03.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1092, 89, 'admin', 'post', '127.0.0.1', '/api/v1/monitor/agent/deploy', '2025-09-10 17:16:59.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1093, 89, 'admin', 'post', '127.0.0.1', '/api/v1/config/keymanage/sync', '2025-09-10 17:34:22.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1094, 89, 'admin', 'delete', '127.0.0.1', '/api/v1/k8s/cluster/12', '2025-09-10 17:36:15.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1095, 89, 'admin', 'delete', '127.0.0.1', '/api/v1/k8s/cluster/13', '2025-09-10 17:36:18.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1096, 89, 'admin', 'delete', '127.0.0.1', '/api/v1/k8s/cluster/14', '2025-09-10 17:36:24.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1097, 89, 'admin', 'put', '127.0.0.1', '/api/v1/k8s/cluster/16', '2025-09-10 19:01:40.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1098, 89, 'admin', 'put', '127.0.0.1', '/api/v1/k8s/cluster/16', '2025-09-10 19:07:04.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1099, 89, 'admin', 'post', '127.0.0.1', '/api/v1/k8s/cluster/16/sync', '2025-09-10 19:32:36.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1100, 89, 'admin', 'post', '127.0.0.1', '/api/v1/k8s/cluster/16/sync', '2025-09-10 19:32:52.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1101, 89, 'admin', 'post', '127.0.0.1', '/api/v1/k8s/cluster/16/sync', '2025-09-10 19:38:07.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1102, 89, 'admin', 'post', '127.0.0.1', '/api/v1/k8s/cluster/16/sync', '2025-09-10 19:41:14.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1103, 89, 'admin', 'put', '127.0.0.1', '/api/v1/k8s/cluster/16', '2025-09-10 19:41:26.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1104, 89, 'admin', 'put', '127.0.0.1', '/api/v1/k8s/cluster/16', '2025-09-10 19:41:46.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1105, 89, 'admin', 'put', '127.0.0.1', '/api/v1/k8s/cluster/16', '2025-09-10 19:42:20.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1106, 89, 'admin', 'post', '127.0.0.1', '/api/v1/task/ansible/36/start', '2025-09-10 19:58:01.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1107, 89, 'admin', 'post', '127.0.0.1', '/api/v1/task/ansible/36/start', '2025-09-10 20:04:43.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1108, 89, 'admin', 'put', '127.0.0.1', '/api/v1/role/assignPermissions', '2025-09-10 22:51:20.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1109, 89, 'admin', 'post', '127.0.0.1', '/api/v1/cmdb/hostssh/upload/1', '2025-09-10 22:55:37.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1110, 89, 'admin', 'post', '127.0.0.1', '/api/v1/cmdb/sql/databaselist', '2025-09-10 23:08:18.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1111, 89, 'admin', 'post', '127.0.0.1', '/api/v1/cmdb/sql/select', '2025-09-10 23:09:22.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1112, 89, 'admin', 'post', '127.0.0.1', '/api/v1/cmdb/sql/databaselist', '2025-09-10 23:10:17.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1113, 89, 'admin', 'post', '127.0.0.1', '/api/v1/task/add', '2025-09-10 23:21:13.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1114, 89, 'admin', 'post', '127.0.0.1', '/api/v1/task/add', '2025-09-10 23:21:21.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1115, 89, 'admin', 'post', '127.0.0.1', '/api/v1/taskjob/start', '2025-09-10 23:22:01.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1116, 89, 'admin', 'post', '127.0.0.1', '/api/v1/config/accountauth/decrypt', '2025-09-10 23:37:10.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1117, 89, 'admin', 'post', '127.0.0.1', '/api/v1/k8s/cluster/16/sync', '2025-09-11 11:22:31.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1118, 89, 'admin', 'post', '127.0.0.1', '/api/v1/k8s/cluster/16/sync', '2025-09-11 11:22:32.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1119, 89, 'admin', 'post', '127.0.0.1', '/api/v1/k8s/cluster/16/sync', '2025-09-11 11:27:15.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1120, 89, 'admin', 'put', '127.0.0.1', '/api/v1/menu/update', '2025-09-11 12:28:46.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1121, 89, 'admin', 'put', '127.0.0.1', '/api/v1/menu/update', '2025-09-11 12:29:03.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1122, 89, 'admin', 'put', '127.0.0.1', '/api/v1/menu/update', '2025-09-11 12:29:16.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1123, 89, 'admin', 'put', '127.0.0.1', '/api/v1/menu/update', '2025-09-11 12:29:26.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1124, 89, 'admin', 'post', '127.0.0.1', '/api/v1/k8s/cluster/16/nodes/k8s-node02/labels', '2025-09-11 13:22:48.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1125, 89, 'admin', 'delete', '127.0.0.1', '/api/v1/k8s/cluster/15', '2025-09-11 13:23:55.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1126, 89, 'admin', 'post', '127.0.0.1', '/api/v1/k8s/cluster', '2025-09-11 13:27:16.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1127, 89, 'admin', 'post', '127.0.0.1', '/api/v1/k8s/cluster', '2025-09-11 13:32:45.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1128, 89, 'admin', 'post', '127.0.0.1', '/api/v1/k8s/cluster/17/sync', '2025-09-11 13:38:32.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1129, 89, 'admin', 'post', '127.0.0.1', '/api/v1/k8s/cluster/17/nodes/k8s-node01/labels', '2025-09-11 14:37:56.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1130, 89, 'admin', 'post', '127.0.0.1', '/api/v1/k8s/cluster/17/nodes/k8s-master01/labels', '2025-09-11 14:38:41.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1131, 89, 'admin', 'post', '127.0.0.1', '/api/v1/k8s/cluster/17/nodes/k8s-master01/labels', '2025-09-11 14:39:13.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1132, 89, 'admin', 'post', '127.0.0.1', '/api/v1/k8s/cluster', '2025-09-11 14:41:45.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1133, 89, 'admin', 'put', '127.0.0.1', '/api/v1/menu/update', '2025-09-11 15:00:41.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1134, 89, 'admin', 'post', '127.0.0.1', '/api/v1/menu/add', '2025-09-11 15:02:14.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1135, 89, 'admin', 'put', '127.0.0.1', '/api/v1/menu/update', '2025-09-11 15:03:19.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1136, 89, 'admin', 'post', '127.0.0.1', '/api/v1/menu/add', '2025-09-11 15:04:14.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1137, 89, 'admin', 'post', '127.0.0.1', '/api/v1/menu/add', '2025-09-11 15:04:51.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1138, 89, 'admin', 'post', '127.0.0.1', '/api/v1/menu/add', '2025-09-11 15:05:40.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1139, 89, 'admin', 'put', '127.0.0.1', '/api/v1/role/assignPermissions', '2025-09-11 15:06:26.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1140, 89, 'admin', 'put', '127.0.0.1', '/api/v1/menu/update', '2025-09-11 15:09:00.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1141, 89, 'admin', 'post', '127.0.0.1', '/api/v1/k8s/cluster/18/namespaces', '2025-09-11 15:59:20.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1142, 89, 'admin', 'post', '127.0.0.1', '/api/v1/k8s/cluster/18/namespaces', '2025-09-11 15:59:33.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1143, 89, 'admin', 'post', '127.0.0.1', '/api/v1/k8s/cluster/18/namespaces', '2025-09-11 16:00:18.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1144, 89, 'admin', 'post', '127.0.0.1', '/api/v1/k8s/cluster/18/namespaces', '2025-09-11 16:04:59.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1145, 89, 'admin', 'post', '127.0.0.1', '/api/v1/k8s/cluster/18/namespaces', '2025-09-11 16:05:04.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1146, 89, 'admin', 'post', '127.0.0.1', '/api/v1/k8s/cluster/18/namespaces/test/resourcequotas', '2025-09-11 16:05:53.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1147, 89, 'admin', 'post', '127.0.0.1', '/api/v1/k8s/cluster/18/namespaces/test/resourcequotas', '2025-09-11 16:06:41.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1148, 89, 'admin', 'delete', '127.0.0.1', '/api/v1/k8s/cluster/18/namespaces/test/resourcequotas/aaaaa', '2025-09-11 16:24:39.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1149, 89, 'admin', 'post', '127.0.0.1', '/api/v1/k8s/cluster/18/namespaces/test/limitranges', '2025-09-11 16:31:14.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1150, 89, 'admin', 'post', '127.0.0.1', '/api/v1/k8s/cluster/18/namespaces/test/limitranges', '2025-09-11 16:31:29.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1151, 89, 'admin', 'post', '127.0.0.1', '/api/v1/k8s/cluster/18/namespaces/test/limitranges', '2025-09-11 16:33:43.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1152, 89, 'admin', 'post', '127.0.0.1', '/api/v1/k8s/cluster/18/namespaces/test/limitranges', '2025-09-11 16:38:23.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1153, 89, 'admin', 'post', '127.0.0.1', '/api/v1/k8s/cluster/18/namespaces', '2025-09-11 16:41:55.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1154, 89, 'admin', 'post', '127.0.0.1', '/api/v1/k8s/cluster/18/namespaces', '2025-09-11 20:18:08.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1155, 89, 'admin', 'post', '127.0.0.1', '/api/v1/k8s/cluster/18/namespaces/ingress-nginx/deployments/ingress-nginx-controller/restart', '2025-09-11 21:26:43.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1156, 89, 'admin', 'delete', '127.0.0.1', '/api/v1/k8s/cluster/18', '2025-09-12 11:21:02.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1157, 89, 'admin', 'delete', '127.0.0.1', '/api/v1/k8s/cluster/17', '2025-09-12 11:21:07.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1158, 89, 'admin', 'post', '127.0.0.1', '/api/v1/k8s/cluster/16/namespaces/default/deployments/nginx-deployment/scale', '2025-09-12 13:59:15.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1159, 89, 'admin', 'post', '127.0.0.1', '/api/v1/k8s/cluster/16/namespaces/default/deployments/nginx-deployment/scale', '2025-09-12 14:18:54.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1160, 89, 'admin', 'post', '127.0.0.1', '/api/v1/k8s/cluster/16/namespaces/default/deployments/nginx-deployment/scale', '2025-09-12 14:19:10.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1161, 89, 'admin', 'post', '127.0.0.1', '/api/v1/k8s/cluster/16/namespaces/default/deployments/nginx-deployment/restart', '2025-09-12 14:21:33.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1162, 89, 'admin', 'post', '127.0.0.1', '/api/v1/k8s/cluster/16/namespaces/default/deployments/nginx-deployment/restart', '2025-09-12 14:23:25.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1163, 89, 'admin', 'post', '127.0.0.1', '/api/v1/k8s/cluster/16/namespaces/default/deployments/nginx-deployment/scale', '2025-09-12 14:36:49.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1164, 89, 'admin', 'delete', '127.0.0.1', '/api/v1/k8s/cluster/16/namespaces/default/pods/nginx-deployment-79df99db77-vk975', '2025-09-12 15:31:12.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1165, 89, 'admin', 'post', '127.0.0.1', '/api/v1/task/add', '2025-09-12 17:43:11.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1166, 89, 'admin', 'put', '127.0.0.1', '/api/v1/k8s/cluster/16', '2025-09-12 18:54:57.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1167, 89, 'admin', 'post', '127.0.0.1', '/api/v1/k8s/cluster/16/namespaces/default/deployments/nginx-deployment/scale', '2025-09-12 19:01:43.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1168, 89, 'admin', 'post', '127.0.0.1', '/api/v1/k8s/cluster', '2025-09-12 23:09:51.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1169, 89, 'admin', 'post', '127.0.0.1', '/api/v1/k8s/cluster/19/nodes/192.168.0.15/labels', '2025-09-12 23:56:16.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1170, 89, 'admin', 'post', '127.0.0.1', '/api/v1/k8s/cluster/19/namespaces/default/deployments/kubernetes-proxy/scale', '2025-09-13 01:12:54.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1171, 89, 'admin', 'post', '127.0.0.1', '/api/v1/k8s/cluster/19/yaml/validate', '2025-09-13 01:58:27.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1172, 89, 'admin', 'post', '127.0.0.1', '/api/v1/k8s/cluster/19/yaml/validate', '2025-09-13 01:58:32.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1173, 89, 'admin', 'post', '127.0.0.1', '/api/v1/k8s/cluster/19/yaml/validate', '2025-09-13 01:58:42.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1174, 89, 'admin', 'post', '127.0.0.1', '/api/v1/k8s/cluster/19/yaml/validate', '2025-09-13 01:58:52.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1175, 89, 'admin', 'post', '127.0.0.1', '/api/v1/k8s/cluster/19/namespaces/default/pods/yaml', '2025-09-13 02:35:28.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1176, 89, 'admin', 'post', '127.0.0.1', '/api/v1/k8s/cluster/19/yaml/validate', '2025-09-13 02:35:32.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1177, 89, 'admin', 'post', '127.0.0.1', '/api/v1/k8s/cluster/19/namespaces/default/pods/yaml', '2025-09-13 02:35:41.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1178, 89, 'admin', 'post', '127.0.0.1', '/api/v1/k8s/cluster/19/yaml/validate', '2025-09-13 02:35:46.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1179, 89, 'admin', 'post', '127.0.0.1', '/api/v1/k8s/cluster', '2025-09-13 15:20:56.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1180, 89, 'admin', 'post', '127.0.0.1', '/api/v1/k8s/cluster/20/sync', '2025-09-13 15:32:45.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1181, 89, 'admin', 'post', '127.0.0.1', '/api/v1/k8s/cluster/19/sync', '2025-09-13 15:32:52.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1182, 89, 'admin', 'post', '127.0.0.1', '/api/v1/k8s/cluster/20/sync', '2025-09-13 15:43:32.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1183, 89, 'admin', 'put', '127.0.0.1', '/api/v1/k8s/cluster/20', '2025-09-13 15:55:29.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1184, 89, 'admin', 'put', '127.0.0.1', '/api/v1/k8s/cluster/20', '2025-09-13 15:56:49.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1185, 89, 'admin', 'post', '127.0.0.1', '/api/v1/k8s/cluster', '2025-09-13 16:01:30.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1186, 89, 'admin', 'delete', '127.0.0.1', '/api/v1/k8s/cluster/21', '2025-09-13 16:05:43.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1187, 89, 'admin', 'post', '127.0.0.1', '/api/v1/k8s/cluster', '2025-09-13 16:06:04.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1188, 89, 'admin', 'delete', '127.0.0.1', '/api/v1/k8s/cluster/22', '2025-09-13 16:06:16.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1189, 89, 'admin', 'post', '127.0.0.1', '/api/v1/k8s/cluster/20/sync', '2025-09-13 16:07:19.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1190, 89, 'admin', 'post', '127.0.0.1', '/api/v1/k8s/cluster/19/sync', '2025-09-13 16:13:04.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1191, 89, 'admin', 'post', '127.0.0.1', '/api/v1/k8s/cluster/19/sync', '2025-09-13 16:13:23.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1192, 89, 'admin', 'post', '127.0.0.1', '/api/v1/k8s/cluster/19/sync', '2025-09-13 16:21:06.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1193, 89, 'admin', 'post', '127.0.0.1', '/api/v1/k8s/cluster/20/sync', '2025-09-13 16:21:31.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1194, 89, 'admin', 'post', '127.0.0.1', '/api/v1/k8s/cluster/16/sync', '2025-09-13 16:22:02.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1195, 89, 'admin', 'post', '127.0.0.1', '/api/v1/k8s/cluster/16/sync', '2025-09-13 16:25:18.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1196, 89, 'admin', 'post', '127.0.0.1', '/api/v1/k8s/cluster/20/sync', '2025-09-13 16:26:06.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1197, 89, 'admin', 'post', '127.0.0.1', '/api/v1/k8s/cluster/20/sync', '2025-09-13 16:26:30.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1198, 89, 'admin', 'post', '127.0.0.1', '/api/v1/k8s/cluster/20/sync', '2025-09-13 16:27:00.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1199, 89, 'admin', 'post', '127.0.0.1', '/api/v1/k8s/cluster/19/sync', '2025-09-13 16:27:04.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1200, 89, 'admin', 'put', '127.0.0.1', '/api/v1/k8s/cluster/20', '2025-09-13 16:41:47.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1201, 89, 'admin', 'put', '127.0.0.1', '/api/v1/k8s/cluster/20', '2025-09-13 16:42:01.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1202, 89, 'admin', 'put', '127.0.0.1', '/api/v1/k8s/cluster/20', '2025-09-13 16:42:10.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1203, 89, 'admin', 'post', '127.0.0.1', '/api/v1/k8s/cluster', '2025-09-13 16:44:48.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1204, 89, 'admin', 'delete', '127.0.0.1', '/api/v1/k8s/cluster/19', '2025-09-13 16:46:36.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1205, 89, 'admin', 'post', '127.0.0.1', '/api/v1/k8s/cluster/23/nodes/172.16.0.16/labels', '2025-09-13 18:03:24.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1206, 89, 'admin', 'post', '127.0.0.1', '/api/v1/k8s/cluster/23/nodes/172.16.0.14/taints', '2025-09-13 18:16:39.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1207, 89, 'admin', 'post', '127.0.0.1', '/api/v1/k8s/cluster/23/sync', '2025-09-13 19:59:21.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1208, 89, 'admin', 'post', '127.0.0.1', '/api/v1/k8s/cluster/23/sync', '2025-09-13 20:35:41.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1209, 89, 'admin', 'post', '127.0.0.1', '/api/v1/k8s/cluster/23/namespaces', '2025-09-13 21:10:54.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1210, 89, 'admin', 'post', '127.0.0.1', '/api/v1/k8s/cluster/23/yaml/validate', '2025-09-13 21:41:49.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1211, 89, 'admin', 'post', '127.0.0.1', '/api/v1/k8s/cluster/23/namespaces/default/pods/yaml', '2025-09-13 21:41:51.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1212, 89, 'admin', 'post', '127.0.0.1', '/api/v1/k8s/cluster/23/yaml/validate', '2025-09-13 22:35:17.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1213, 89, 'admin', 'post', '127.0.0.1', '/api/v1/k8s/cluster/23/namespaces/default/deployments/kubernetes-proxy/scale', '2025-09-13 23:18:25.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1214, 89, 'admin', 'post', '127.0.0.1', '/api/v1/k8s/cluster/23/namespaces/default/pods/yaml', '2025-09-14 13:12:01.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1215, 89, 'admin', 'post', '127.0.0.1', '/api/v1/k8s/cluster/23/namespaces/default/pods/yaml', '2025-09-14 13:12:05.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1216, 89, 'admin', 'post', '127.0.0.1', '/api/v1/k8s/cluster/23/namespaces/default/deployments/kubernetes-proxy/scale', '2025-09-14 13:30:49.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1217, 89, 'admin', 'post', '127.0.0.1', '/api/v1/k8s/cluster/23/namespaces/default/deployments/kubernetes-proxy/scale', '2025-09-14 13:58:25.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1218, 89, 'admin', 'post', '127.0.0.1', '/api/v1/k8s/cluster/23/namespaces/default/deployments/kubernetes-proxy/scale', '2025-09-14 14:37:32.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1219, 89, 'admin', 'put', '127.0.0.1', '/api/v1/k8s/cluster/23/namespaces/default/deployments/kubernetes-proxy', '2025-09-14 15:11:34.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1220, 89, 'admin', 'put', '127.0.0.1', '/api/v1/k8s/cluster/23/namespaces/default/deployments/kubernetes-proxy', '2025-09-14 15:13:52.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1221, 89, 'admin', 'put', '127.0.0.1', '/api/v1/k8s/cluster/23/namespaces/default/deployments/kubernetes-proxy', '2025-09-14 15:14:03.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1222, 89, 'admin', 'put', '127.0.0.1', '/api/v1/k8s/cluster/23/namespaces/default/deployments/kubernetes-proxy', '2025-09-14 15:21:32.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1223, 89, 'admin', 'put', '127.0.0.1', '/api/v1/k8s/cluster/23/namespaces/default/deployments/kubernetes-proxy', '2025-09-14 15:26:59.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1224, 89, 'admin', 'put', '127.0.0.1', '/api/v1/k8s/cluster/23/namespaces/default/deployments/kubernetes-proxy', '2025-09-14 15:27:19.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1225, 89, 'admin', 'post', '127.0.0.1', '/api/v1/k8s/cluster/23/namespaces/default/pods/yaml', '2025-09-14 15:31:22.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1226, 89, 'admin', 'post', '127.0.0.1', '/api/v1/k8s/cluster/23/namespaces/default/pods/yaml', '2025-09-14 15:31:35.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1227, 89, 'admin', 'post', '127.0.0.1', '/api/v1/k8s/cluster/23/yaml/validate', '2025-09-14 15:43:21.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1228, 89, 'admin', 'post', '127.0.0.1', '/api/v1/k8s/cluster/23/namespaces/default/pods/yaml', '2025-09-14 15:43:22.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1229, 89, 'admin', 'post', '127.0.0.1', '/api/v1/k8s/cluster/23/namespaces/default/pods/yaml', '2025-09-14 15:44:55.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1230, 89, 'admin', 'post', '127.0.0.1', '/api/v1/k8s/cluster/23/namespaces/default/pods/yaml', '2025-09-14 15:45:14.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1231, 89, 'admin', 'post', '127.0.0.1', '/api/v1/k8s/cluster/23/namespaces/default/pods/yaml', '2025-09-14 15:47:16.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1232, 89, 'admin', 'post', '127.0.0.1', '/api/v1/k8s/cluster/23/namespaces/default/pods/yaml', '2025-09-14 15:47:32.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1233, 89, 'admin', 'post', '127.0.0.1', '/api/v1/k8s/cluster/23/yaml/validate', '2025-09-14 15:49:21.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1234, 89, 'admin', 'post', '127.0.0.1', '/api/v1/k8s/cluster/23/namespaces/default/pods/yaml', '2025-09-14 15:49:24.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1235, 89, 'admin', 'post', '127.0.0.1', '/api/v1/k8s/cluster/23/yaml/validate', '2025-09-14 15:51:10.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1236, 89, 'admin', 'post', '127.0.0.1', '/api/v1/k8s/cluster/23/yaml/validate', '2025-09-14 15:51:14.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1237, 89, 'admin', 'post', '127.0.0.1', '/api/v1/k8s/cluster/23/namespaces/default/pods/yaml', '2025-09-14 15:51:17.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1238, 89, 'admin', 'post', '127.0.0.1', '/api/v1/k8s/cluster/23/yaml/validate', '2025-09-14 15:51:30.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1239, 89, 'admin', 'post', '127.0.0.1', '/api/v1/k8s/cluster/23/yaml/validate', '2025-09-14 15:51:39.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1240, 89, 'admin', 'post', '127.0.0.1', '/api/v1/k8s/cluster/23/yaml/validate', '2025-09-14 15:51:42.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1241, 89, 'admin', 'post', '127.0.0.1', '/api/v1/k8s/cluster/23/yaml/validate', '2025-09-14 15:51:50.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1242, 89, 'admin', 'post', '127.0.0.1', '/api/v1/k8s/cluster/23/namespaces/default/pods/yaml', '2025-09-14 15:51:54.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1243, 89, 'admin', 'post', '127.0.0.1', '/api/v1/k8s/cluster/23/namespaces/default/pods/yaml', '2025-09-14 15:55:38.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1244, 89, 'admin', 'post', '127.0.0.1', '/api/v1/k8s/cluster/23/namespaces/default/pods/yaml', '2025-09-14 15:55:42.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1245, 89, 'admin', 'post', '127.0.0.1', '/api/v1/k8s/cluster/23/namespaces/default/pods/yaml', '2025-09-14 16:00:15.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1246, 89, 'admin', 'post', '127.0.0.1', '/api/v1/k8s/cluster/23/namespaces/default/pods/yaml', '2025-09-14 16:02:30.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1247, 89, 'admin', 'post', '127.0.0.1', '/api/v1/k8s/cluster/23/namespaces/default/pods/yaml', '2025-09-14 16:03:58.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1248, 89, 'admin', 'post', '127.0.0.1', '/api/v1/k8s/cluster/23/namespaces/default/pods/yaml', '2025-09-14 16:14:04.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1249, 89, 'admin', 'delete', '127.0.0.1', '/api/v1/k8s/cluster/23/namespaces/default/pods/custom-pod-1757837032917', '2025-09-14 16:24:32.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1250, 89, 'admin', 'delete', '127.0.0.1', '/api/v1/k8s/cluster/23/namespaces/default/pods/custom-pod-1757836046122', '2025-09-14 16:24:37.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1251, 89, 'admin', 'delete', '127.0.0.1', '/api/v1/k8s/cluster/23/namespaces/default/pods/custom-pod-1757836033366', '2025-09-14 16:24:40.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1252, 89, 'admin', 'post', '127.0.0.1', '/api/v1/k8s/cluster/23/namespaces/default/deployments/kubernetes-proxy/scale', '2025-09-14 16:56:11.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1253, 89, 'admin', 'post', '127.0.0.1', '/api/v1/k8s/cluster/23/namespaces/default/pods/yaml', '2025-09-14 17:32:02.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1254, 89, 'admin', 'post', '127.0.0.1', '/api/v1/k8s/cluster/23/namespaces/default/pods/yaml', '2025-09-14 17:33:41.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1255, 89, 'admin', 'post', '127.0.0.1', '/api/v1/k8s/cluster/23/namespaces/default/pods/yaml', '2025-09-14 17:35:57.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1256, 89, 'admin', 'post', '127.0.0.1', '/api/v1/k8s/cluster/23/namespaces/default/pods/yaml', '2025-09-14 17:36:16.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1257, 89, 'admin', 'post', '127.0.0.1', '/api/v1/k8s/cluster/23/yaml/validate', '2025-09-14 17:37:19.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1258, 89, 'admin', 'post', '127.0.0.1', '/api/v1/k8s/cluster/23/yaml/validate', '2025-09-14 17:40:44.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1259, 89, 'admin', 'post', '127.0.0.1', '/api/v1/k8s/cluster/23/yaml/validate', '2025-09-14 17:41:55.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1260, 89, 'admin', 'post', '127.0.0.1', '/api/v1/k8s/cluster/23/yaml/validate', '2025-09-14 17:43:51.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1261, 89, 'admin', 'post', '127.0.0.1', '/api/v1/k8s/cluster/23/yaml/validate', '2025-09-14 17:46:24.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1262, 89, 'admin', 'post', '127.0.0.1', '/api/v1/k8s/cluster/23/yaml/validate', '2025-09-14 17:48:23.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1263, 89, 'admin', 'post', '127.0.0.1', '/api/v1/k8s/cluster/23/namespaces/default/pods/yaml', '2025-09-14 17:50:51.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1264, 89, 'admin', 'delete', '127.0.0.1', '/api/v1/k8s/cluster/23/namespaces/default/pods/custom-pod-1757835887526', '2025-09-14 17:51:00.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1265, 89, 'admin', 'post', '127.0.0.1', '/api/v1/k8s/cluster/23/yaml/validate', '2025-09-14 17:51:42.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1266, 89, 'admin', 'post', '127.0.0.1', '/api/v1/k8s/cluster/23/yaml/validate', '2025-09-14 17:54:08.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1267, 89, 'admin', 'post', '127.0.0.1', '/api/v1/k8s/cluster/23/namespaces/default/deployments/zf-nginx-test/restart', '2025-09-14 22:46:04.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1268, 89, 'admin', 'post', '127.0.0.1', '/api/v1/k8s/cluster/23/namespaces/default/deployments/zf-nginx-test/scale', '2025-09-14 22:53:55.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1269, 89, 'admin', 'post', '127.0.0.1', '/api/v1/k8s/cluster/23/namespaces/default/deployments/zf-nginx-test/scale', '2025-09-15 00:06:03.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1270, 89, 'admin', 'post', '127.0.0.1', '/api/v1/k8s/cluster/23/namespaces/default/deployments/zf-nginx-test/restart', '2025-09-15 00:32:13.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1271, 89, 'admin', 'put', '127.0.0.1', '/api/v1/k8s/cluster/23/namespaces/default/deployments/zf-nginx-test', '2025-09-15 00:33:06.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1272, 89, 'admin', 'put', '127.0.0.1', '/api/v1/k8s/cluster/23/namespaces/default/deployments/zf-nginx-test', '2025-09-15 00:33:20.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1273, 89, 'admin', 'put', '127.0.0.1', '/api/v1/k8s/cluster/23/namespaces/default/deployments/zf-nginx-test', '2025-09-15 00:33:30.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1274, 89, 'admin', 'put', '127.0.0.1', '/api/v1/k8s/cluster/23/namespaces/default/deployments/zf-nginx-test', '2025-09-15 00:46:43.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1275, 89, 'admin', 'post', '127.0.0.1', '/api/v1/k8s/cluster/23/namespaces/default/deployments/zf-nginx-test/rollback', '2025-09-15 01:00:01.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1276, 89, 'admin', 'post', '127.0.0.1', '/api/v1/k8s/cluster/23/namespaces/default/deployments/zf-nginx-test/rollback', '2025-09-15 01:00:09.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1277, 89, 'admin', 'post', '127.0.0.1', '/api/v1/k8s/cluster/23/namespaces/default/deployments/zf-nginx-test/rollback', '2025-09-15 01:03:57.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1278, 89, 'admin', 'post', '127.0.0.1', '/api/v1/k8s/cluster', '2025-09-15 10:59:18.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1279, 89, 'admin', 'put', '127.0.0.1', '/api/v1/menu/update', '2025-09-15 11:02:13.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1280, 89, 'admin', 'put', '127.0.0.1', '/api/v1/menu/update', '2025-09-15 11:02:24.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1281, 89, 'admin', 'post', '127.0.0.1', '/api/v1/k8s/cluster/24/namespaces/default/pods/yaml', '2025-09-15 11:03:16.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1282, 89, 'admin', 'post', '127.0.0.1', '/api/v1/k8s/cluster/24/namespaces/default/deployments/nginx-001/scale', '2025-09-15 11:19:58.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1283, 89, 'admin', 'put', '127.0.0.1', '/api/v1/k8s/cluster/24/namespaces/default/deployments/nginx-001', '2025-09-15 11:20:39.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1284, 89, 'admin', 'post', '127.0.0.1', '/api/v1/k8s/cluster/24/namespaces/default/pods/yaml', '2025-09-15 13:49:58.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1285, 89, 'admin', 'post', '127.0.0.1', '/api/v1/k8s/cluster/24/namespaces/default/pods/yaml', '2025-09-15 13:50:38.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1286, 89, 'admin', 'post', '127.0.0.1', '/api/v1/k8s/cluster/24/namespaces/default/pods/yaml', '2025-09-15 13:50:44.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1287, 89, 'admin', 'post', '127.0.0.1', '/api/v1/k8s/cluster/24/namespaces/default/pods/yaml', '2025-09-15 13:51:07.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1288, 89, 'admin', 'post', '127.0.0.1', '/api/v1/k8s/cluster/24/namespaces/default/pods/yaml', '2025-09-15 14:18:52.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1289, 89, 'admin', 'post', '127.0.0.1', '/api/v1/k8s/cluster/24/namespaces/default/pods/yaml', '2025-09-15 15:29:58.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1290, 89, 'admin', 'post', '127.0.0.1', '/api/v1/k8s/cluster/24/namespaces/default/pods/yaml', '2025-09-15 16:27:43.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1291, 89, 'admin', 'post', '127.0.0.1', '/api/v1/k8s/cluster/24/namespaces/default/pods/yaml', '2025-09-15 16:28:03.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1292, 89, 'admin', 'post', '127.0.0.1', '/api/v1/k8s/cluster/24/namespaces/default/pods/yaml', '2025-09-15 16:28:30.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1293, 89, 'admin', 'post', '127.0.0.1', '/api/v1/k8s/cluster/24/namespaces/default/pods/yaml', '2025-09-15 16:29:38.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1294, 89, 'admin', 'post', '127.0.0.1', '/api/v1/k8s/cluster/24/namespaces/default/pods/yaml', '2025-09-15 16:31:57.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1295, 89, 'admin', 'post', '127.0.0.1', '/api/v1/k8s/cluster/24/namespaces/default/pods/yaml', '2025-09-15 16:39:19.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1296, 89, 'admin', 'post', '127.0.0.1', '/api/v1/k8s/cluster/24/namespaces/default/pods/yaml', '2025-09-15 16:43:37.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1297, 89, 'admin', 'post', '127.0.0.1', '/api/v1/config/accountauth', '2025-09-15 19:59:15.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1298, 89, 'admin', 'post', '127.0.0.1', '/api/v1/menu/add', '2025-09-16 09:49:54.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1299, 89, 'admin', 'put', '127.0.0.1', '/api/v1/menu/update', '2025-09-16 09:50:21.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1300, 89, 'admin', 'put', '127.0.0.1', '/api/v1/menu/update', '2025-09-16 09:50:48.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1301, 89, 'admin', 'put', '127.0.0.1', '/api/v1/menu/update', '2025-09-16 09:51:01.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1302, 89, 'admin', 'put', '127.0.0.1', '/api/v1/menu/update', '2025-09-16 09:51:08.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1303, 89, 'admin', 'put', '127.0.0.1', '/api/v1/menu/update', '2025-09-16 09:51:15.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1304, 89, 'admin', 'put', '127.0.0.1', '/api/v1/menu/update', '2025-09-16 09:51:44.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1305, 89, 'admin', 'post', '127.0.0.1', '/api/v1/menu/add', '2025-09-16 09:52:57.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1306, 89, 'admin', 'put', '127.0.0.1', '/api/v1/menu/update', '2025-09-16 09:53:12.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1307, 89, 'admin', 'put', '127.0.0.1', '/api/v1/role/assignPermissions', '2025-09-16 09:54:04.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1308, 89, 'admin', 'put', '127.0.0.1', '/api/v1/menu/update', '2025-09-16 09:54:58.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1309, 89, 'admin', 'post', '127.0.0.1', '/api/v1/apps', '2025-09-16 11:34:34.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1310, 89, 'admin', 'post', '127.0.0.1', '/api/v1/apps', '2025-09-16 11:35:05.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1311, 89, 'admin', 'put', '127.0.0.1', '/api/v1/admin/updateStatus', '2025-09-16 12:52:27.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1312, 89, 'admin', 'post', '127.0.0.1', '/api/v1/apps', '2025-09-16 12:58:01.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1313, 89, 'admin', 'post', '127.0.0.1', '/api/v1/apps', '2025-09-16 13:02:13.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1314, 89, 'admin', 'delete', '127.0.0.1', '/api/v1/apps/1', '2025-09-16 13:07:46.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1315, 89, 'admin', 'post', '127.0.0.1', '/api/v1/apps', '2025-09-16 13:08:08.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1316, 89, 'admin', 'post', '127.0.0.1', '/api/v1/apps', '2025-09-16 13:17:17.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1317, 89, 'admin', 'delete', '127.0.0.1', '/api/v1/apps/3', '2025-09-16 13:24:24.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1318, 89, 'admin', 'post', '127.0.0.1', '/api/v1/apps', '2025-09-16 13:35:13.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1319, 89, 'admin', 'put', '127.0.0.1', '/api/v1/apps/4', '2025-09-16 13:40:47.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1320, 89, 'admin', 'post', '127.0.0.1', '/api/v1/config/accountauth/decrypt', '2025-09-16 14:29:53.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1321, 89, 'admin', 'post', '127.0.0.1', '/api/v1/config/accountauth/decrypt', '2025-09-16 14:30:07.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1322, 89, 'admin', 'delete', '127.0.0.1', '/api/v1/config/accountauth', '2025-09-16 14:30:11.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1323, 89, 'admin', 'delete', '127.0.0.1', '/api/v1/config/accountauth', '2025-09-16 14:30:20.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1324, 89, 'admin', 'delete', '127.0.0.1', '/api/v1/config/accountauth', '2025-09-16 14:30:27.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1325, 89, 'admin', 'delete', '127.0.0.1', '/api/v1/config/accountauth', '2025-09-16 14:30:33.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1326, 89, 'admin', 'post', '127.0.0.1', '/api/v1/config/accountauth/decrypt', '2025-09-16 14:30:39.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1327, 89, 'admin', 'post', '127.0.0.1', '/api/v1/config/accountauth', '2025-09-16 14:31:39.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1328, 89, 'admin', 'post', '127.0.0.1', '/api/v1/apps/jenkins-job/validate', '2025-09-16 14:54:35.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1329, 89, 'admin', 'put', '127.0.0.1', '/api/v1/apps/4/jenkins-envs/6', '2025-09-16 14:54:49.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1330, 89, 'admin', 'post', '127.0.0.1', '/api/v1/apps/jenkins-job/validate', '2025-09-16 14:55:27.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1331, 89, 'admin', 'put', '127.0.0.1', '/api/v1/apps/4/jenkins-envs/4', '2025-09-16 14:56:28.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1332, 89, 'admin', 'post', '127.0.0.1', '/api/v1/config/accountauth', '2025-09-16 14:57:21.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1333, 89, 'admin', 'post', '127.0.0.1', '/api/v1/apps/jenkins-job/validate', '2025-09-16 14:58:07.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1334, 89, 'admin', 'put', '127.0.0.1', '/api/v1/apps/4/jenkins-envs/5', '2025-09-16 14:58:16.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1335, 89, 'admin', 'post', '127.0.0.1', '/api/v1/apps', '2025-09-16 15:02:40.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1336, 89, 'admin', 'post', '127.0.0.1', '/api/v1/apps/jenkins-job/validate', '2025-09-16 15:25:44.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1337, 89, 'admin', 'post', '127.0.0.1', '/api/v1/apps/jenkins-job/validate', '2025-09-16 15:26:35.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1338, 89, 'admin', 'put', '127.0.0.1', '/api/v1/apps/5/jenkins-envs/9', '2025-09-16 15:26:43.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1339, 89, 'admin', 'post', '127.0.0.1', '/api/v1/apps/jenkins-job/validate', '2025-09-16 15:27:00.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1340, 89, 'admin', 'put', '127.0.0.1', '/api/v1/apps/5/jenkins-envs/7', '2025-09-16 15:27:01.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1341, 89, 'admin', 'post', '127.0.0.1', '/api/v1/apps/jenkins-job/validate', '2025-09-16 15:27:10.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1342, 89, 'admin', 'put', '127.0.0.1', '/api/v1/apps/5/jenkins-envs/8', '2025-09-16 15:27:12.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1343, 89, 'admin', 'post', '127.0.0.1', '/api/v1/apps/jenkins-job/validate', '2025-09-16 15:27:30.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1344, 89, 'admin', 'post', '127.0.0.1', '/api/v1/apps/5/jenkins-envs', '2025-09-16 15:27:32.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1345, 89, 'admin', 'post', '127.0.0.1', '/api/v1/apps/jenkins-job/validate', '2025-09-16 15:31:09.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1346, 89, 'admin', 'post', '127.0.0.1', '/api/v1/apps/5/jenkins-envs', '2025-09-16 15:31:18.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1347, 89, 'admin', 'post', '127.0.0.1', '/api/v1/apps/jenkins-job/validate', '2025-09-16 15:36:36.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1348, 89, 'admin', 'post', '127.0.0.1', '/api/v1/apps/5/jenkins-envs', '2025-09-16 15:36:43.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1349, 89, 'admin', 'post', '127.0.0.1', '/api/v1/apps', '2025-09-16 16:11:24.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1350, 89, 'admin', 'post', '127.0.0.1', '/api/v1/apps', '2025-09-16 16:11:50.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1351, 89, 'admin', 'put', '127.0.0.1', '/api/v1/apps/7', '2025-09-16 16:12:11.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1352, 89, 'admin', 'post', '127.0.0.1', '/api/v1/apps', '2025-09-16 16:12:42.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1353, 89, 'admin', 'post', '127.0.0.1', '/api/v1/apps', '2025-09-16 16:13:35.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1354, 89, 'admin', 'post', '127.0.0.1', '/api/v1/apps/jenkins-job/validate', '2025-09-16 16:14:05.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1355, 89, 'admin', 'put', '127.0.0.1', '/api/v1/apps/6/jenkins-envs/13', '2025-09-16 16:14:06.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1356, 89, 'admin', 'post', '127.0.0.1', '/api/v1/apps/jenkins-job/validate', '2025-09-16 16:14:19.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1357, 89, 'admin', 'put', '127.0.0.1', '/api/v1/apps/6/jenkins-envs/12', '2025-09-16 16:14:20.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1358, 89, 'admin', 'post', '127.0.0.1', '/api/v1/apps/jenkins-job/validate', '2025-09-16 16:14:42.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1359, 89, 'admin', 'put', '127.0.0.1', '/api/v1/apps/6/jenkins-envs/11', '2025-09-16 16:14:44.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1360, 89, 'admin', 'post', '127.0.0.1', '/api/v1/apps/jenkins-job/validate', '2025-09-16 16:15:06.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1361, 89, 'admin', 'put', '127.0.0.1', '/api/v1/apps/7/jenkins-envs/16', '2025-09-16 16:15:07.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1362, 89, 'admin', 'post', '127.0.0.1', '/api/v1/apps/jenkins-job/validate', '2025-09-16 16:15:17.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1363, 89, 'admin', 'put', '127.0.0.1', '/api/v1/apps/7/jenkins-envs/15', '2025-09-16 16:15:18.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1364, 89, 'admin', 'put', '127.0.0.1', '/api/v1/menu/update', '2025-09-16 17:10:57.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1365, 89, 'admin', 'put', '127.0.0.1', '/api/v1/menu/update', '2025-09-16 17:11:07.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1366, 89, 'admin', 'post', '127.0.0.1', '/api/v1/menu/add', '2025-09-16 17:12:11.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1367, 89, 'admin', 'post', '127.0.0.1', '/api/v1/menu/add', '2025-09-16 17:13:18.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1368, 89, 'admin', 'put', '127.0.0.1', '/api/v1/role/assignPermissions', '2025-09-16 17:13:34.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1369, 89, 'admin', 'delete', '127.0.0.1', '/api/v1/menu/delete', '2025-09-16 17:18:07.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1370, 89, 'admin', 'put', '127.0.0.1', '/api/v1/role/assignPermissions', '2025-09-16 17:18:18.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1371, 89, 'admin', 'delete', '127.0.0.1', '/api/v1/menu/delete', '2025-09-16 17:18:44.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1372, 89, 'admin', 'put', '127.0.0.1', '/api/v1/role/assignPermissions', '2025-09-16 17:20:43.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1373, 89, 'admin', 'put', '127.0.0.1', '/api/v1/apps/9', '2025-09-16 18:06:29.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1374, 89, 'admin', 'put', '127.0.0.1', '/api/v1/apps/8', '2025-09-16 18:06:48.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1375, 89, 'admin', 'put', '127.0.0.1', '/api/v1/cmdb/groupupdate', '2025-09-16 18:07:38.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1376, 89, 'admin', 'put', '127.0.0.1', '/api/v1/apps/7', '2025-09-16 18:07:54.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1377, 89, 'admin', 'post', '127.0.0.1', '/api/v1/apps', '2025-09-16 18:07:55.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1378, 89, 'admin', 'put', '127.0.0.1', '/api/v1/apps/6', '2025-09-16 18:08:09.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1379, 89, 'admin', 'put', '127.0.0.1', '/api/v1/apps/9', '2025-09-16 18:08:30.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1380, 89, 'admin', 'put', '127.0.0.1', '/api/v1/apps/9', '2025-09-16 18:08:31.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1381, 89, 'admin', 'put', '127.0.0.1', '/api/v1/apps/8', '2025-09-16 18:08:49.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1382, 89, 'admin', 'put', '127.0.0.1', '/api/v1/apps/8', '2025-09-16 18:08:50.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1383, 89, 'admin', 'put', '127.0.0.1', '/api/v1/apps/5', '2025-09-16 18:08:57.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1384, 89, 'admin', 'put', '127.0.0.1', '/api/v1/apps/5', '2025-09-16 18:08:57.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1385, 89, 'admin', 'put', '127.0.0.1', '/api/v1/apps/4', '2025-09-16 18:09:09.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1386, 89, 'admin', 'put', '127.0.0.1', '/api/v1/cmdb/groupupdate', '2025-09-16 19:01:37.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1387, 89, 'admin', 'put', '127.0.0.1', '/api/v1/cmdb/groupupdate', '2025-09-16 19:01:54.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1388, 89, 'admin', 'put', '127.0.0.1', '/api/v1/cmdb/groupupdate', '2025-09-16 19:02:07.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1389, 89, 'admin', 'put', '127.0.0.1', '/api/v1/cmdb/groupupdate', '2025-09-16 19:02:25.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1390, 89, 'admin', 'put', '127.0.0.1', '/api/v1/cmdb/groupupdate', '2025-09-16 19:02:30.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1391, 89, 'admin', 'put', '127.0.0.1', '/api/v1/cmdb/groupupdate', '2025-09-16 19:02:35.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1392, 89, 'admin', 'put', '127.0.0.1', '/api/v1/cmdb/groupupdate', '2025-09-16 19:02:54.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1393, 89, 'admin', 'post', '127.0.0.1', '/api/v1/apps/deployment/quick', '2025-09-16 21:09:25.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1394, 89, 'admin', 'post', '127.0.0.1', '/api/v1/apps/deployment/quick', '2025-09-16 21:10:47.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1395, 89, 'admin', 'post', '127.0.0.1', '/api/v1/apps/deployment/quick', '2025-09-16 21:14:32.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1396, 89, 'admin', 'post', '127.0.0.1', '/api/v1/apps/deployment/quick', '2025-09-16 21:14:46.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1397, 89, 'admin', 'post', '127.0.0.1', '/api/v1/apps/deployment/quick', '2025-09-16 21:18:05.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1398, 89, 'admin', 'post', '127.0.0.1', '/api/v1/apps/deployment/execute', '2025-09-16 21:21:50.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1399, 89, 'admin', 'post', '127.0.0.1', '/api/v1/apps/deployment/execute', '2025-09-16 21:26:13.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1400, 89, 'admin', 'post', '127.0.0.1', '/api/v1/apps/deployment/quick', '2025-09-16 21:44:20.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1401, 89, 'admin', 'post', '127.0.0.1', '/api/v1/apps/deployment/quick', '2025-09-17 11:14:02.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1402, 89, 'admin', 'post', '127.0.0.1', '/api/v1/apps/deployment/execute', '2025-09-17 11:14:17.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1403, 89, 'admin', 'post', '127.0.0.1', '/api/v1/apps/deployment/execute', '2025-09-17 11:16:15.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1404, 89, 'admin', 'post', '127.0.0.1', '/api/v1/config/accountauth/decrypt', '2025-09-17 11:25:42.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1405, 89, 'admin', 'post', '127.0.0.1', '/api/v1/apps/deployment/quick', '2025-09-17 11:36:36.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1406, 89, 'admin', 'post', '127.0.0.1', '/api/v1/apps/deployment/execute', '2025-09-17 11:36:50.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1407, 89, 'admin', 'post', '127.0.0.1', '/api/v1/apps/deployment/execute', '2025-09-17 11:38:56.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1408, 89, 'admin', 'post', '127.0.0.1', '/api/v1/apps/deployment/quick', '2025-09-17 11:39:31.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1409, 89, 'admin', 'post', '127.0.0.1', '/api/v1/apps/deployment/execute', '2025-09-17 11:39:46.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1410, 89, 'admin', 'post', '127.0.0.1', '/api/v1/apps/deployment/quick', '2025-09-17 11:46:00.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1411, 89, 'admin', 'post', '127.0.0.1', '/api/v1/apps/deployment/execute', '2025-09-17 11:46:15.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1412, 89, 'admin', 'post', '127.0.0.1', '/api/v1/apps/deployment/quick', '2025-09-17 11:57:03.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1413, 89, 'admin', 'post', '127.0.0.1', '/api/v1/apps/deployment/execute', '2025-09-17 11:57:23.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1414, 89, 'admin', 'post', '127.0.0.1', '/api/v1/apps/deployment/quick', '2025-09-17 13:31:45.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1415, 89, 'admin', 'post', '127.0.0.1', '/api/v1/apps/deployment/execute', '2025-09-17 13:31:59.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1416, 89, 'admin', 'post', '127.0.0.1', '/api/v1/apps/deployment/quick', '2025-09-17 13:39:12.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1417, 89, 'admin', 'post', '127.0.0.1', '/api/v1/apps/deployment/execute', '2025-09-17 13:39:31.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1418, 89, 'admin', 'post', '127.0.0.1', '/api/v1/apps/deployment/quick', '2025-09-17 14:25:51.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1419, 89, 'admin', 'post', '127.0.0.1', '/api/v1/apps/deployment/quick', '2025-09-17 14:26:06.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1420, 89, 'admin', 'post', '127.0.0.1', '/api/v1/apps/deployment/execute', '2025-09-17 14:26:36.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1421, 89, 'admin', 'delete', '127.0.0.1', '/api/v1/apps/deployment/1', '2025-09-17 14:58:20.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1422, 89, 'admin', 'delete', '127.0.0.1', '/api/v1/apps/deployment/2', '2025-09-17 14:58:25.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1423, 89, 'admin', 'delete', '127.0.0.1', '/api/v1/apps/deployment/3', '2025-09-17 14:58:29.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1424, 89, 'admin', 'delete', '127.0.0.1', '/api/v1/apps/deployment/4', '2025-09-17 14:58:32.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1425, 89, 'admin', 'delete', '127.0.0.1', '/api/v1/apps/deployment/5', '2025-09-17 14:58:35.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1426, 89, 'admin', 'post', '127.0.0.1', '/api/v1/apps/deployment/quick', '2025-09-17 15:18:44.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1427, 89, 'admin', 'post', '127.0.0.1', '/api/v1/apps/deployment/execute', '2025-09-17 15:21:25.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1428, 89, 'admin', 'post', '127.0.0.1', '/api/v1/apps/deployment/execute', '2025-09-17 15:42:34.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1429, 89, 'admin', 'post', '127.0.0.1', '/api/v1/apps/deployment/quick', '2025-09-17 15:43:23.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1430, 89, 'admin', 'post', '127.0.0.1', '/api/v1/apps/deployment/execute', '2025-09-17 15:43:37.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1431, 89, 'admin', 'put', '127.0.0.1', '/api/v1/role/assignPermissions', '2025-09-17 19:10:56.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1432, 89, 'admin', 'put', '127.0.0.1', '/api/v1/admin/update', '2025-09-17 19:12:01.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1433, 89, 'admin', 'put', '127.0.0.1', '/api/v1/role/assignPermissions', '2025-09-17 19:29:42.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1434, 89, 'admin', 'put', '127.0.0.1', '/api/v1/role/assignPermissions', '2025-09-17 19:31:09.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1435, 99, 'zhangsan', 'delete', '127.0.0.1', '/api/v1/sysLoginInfo/delete', '2025-09-17 19:32:12.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1436, 89, 'admin', 'put', '127.0.0.1', '/api/v1/role/assignPermissions', '2025-09-17 19:33:21.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1437, 99, 'zhangsan', 'delete', '127.0.0.1', '/api/v1/sysLoginInfo/delete', '2025-09-17 19:33:37.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1438, 89, 'admin', 'put', '127.0.0.1', '/api/v1/role/assignPermissions', '2025-09-17 19:35:04.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1439, 89, 'admin', 'put', '127.0.0.1', '/api/v1/role/assignPermissions', '2025-09-17 19:35:21.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1440, 89, 'admin', 'put', '127.0.0.1', '/api/v1/role/assignPermissions', '2025-09-17 19:54:41.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1441, 89, 'admin', 'put', '127.0.0.1', '/api/v1/role/assignPermissions', '2025-09-17 19:55:33.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1442, 89, 'admin', 'put', '127.0.0.1', '/api/v1/role/assignPermissions', '2025-09-17 19:55:48.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1443, 89, 'admin', 'put', '127.0.0.1', '/api/v1/role/assignPermissions', '2025-09-17 19:58:33.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1444, 89, 'admin', 'put', '127.0.0.1', '/api/v1/role/assignPermissions', '2025-09-17 20:14:16.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1445, 89, 'admin', 'put', '127.0.0.1', '/api/v1/role/assignPermissions', '2025-09-17 20:14:39.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1446, 89, 'admin', 'put', '127.0.0.1', '/api/v1/role/assignPermissions', '2025-09-17 20:14:53.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1447, 99, 'zhangsan', 'delete', '127.0.0.1', '/api/v1/sysLoginInfo/delete', '2025-09-17 20:17:27.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1448, 99, 'zhangsan', 'delete', '127.0.0.1', '/api/v1/sysLoginInfo/delete', '2025-09-17 20:17:32.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1449, 89, 'admin', 'put', '127.0.0.1', '/api/v1/menu/update', '2025-09-17 20:35:14.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1450, 89, 'admin', 'put', '127.0.0.1', '/api/v1/menu/update', '2025-09-17 20:35:30.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1451, 89, 'admin', 'put', '127.0.0.1', '/api/v1/menu/update', '2025-09-17 20:36:25.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1452, 89, 'admin', 'put', '127.0.0.1', '/api/v1/menu/update', '2025-09-17 20:36:54.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1453, 89, 'admin', 'put', '127.0.0.1', '/api/v1/menu/update', '2025-09-17 20:38:19.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1454, 89, 'admin', 'put', '127.0.0.1', '/api/v1/role/assignPermissions', '2025-09-17 20:41:12.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1455, 89, 'admin', 'put', '127.0.0.1', '/api/v1/role/assignPermissions', '2025-09-17 20:41:32.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1456, 99, 'zhangsan', 'delete', '127.0.0.1', '/api/v1/cmdb/sqlLog/delete', '2025-09-17 20:42:13.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1457, 89, 'admin', 'put', '127.0.0.1', '/api/v1/role/assignPermissions', '2025-09-17 20:49:53.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1458, 89, 'admin', 'put', '127.0.0.1', '/api/v1/menu/update', '2025-09-17 20:53:41.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1459, 89, 'admin', 'post', '127.0.0.1', '/api/v1/menu/add', '2025-09-17 20:55:13.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1460, 89, 'admin', 'put', '127.0.0.1', '/api/v1/menu/update', '2025-09-17 20:55:57.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1461, 89, 'admin', 'put', '127.0.0.1', '/api/v1/role/assignPermissions', '2025-09-17 20:58:13.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1462, 89, 'admin', 'put', '127.0.0.1', '/api/v1/role/assignPermissions', '2025-09-17 21:01:24.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1463, 89, 'admin', 'post', '127.0.0.1', '/api/v1/apps/jenkins-job/validate', '2025-09-18 10:29:37.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1464, 89, 'admin', 'put', '127.0.0.1', '/api/v1/apps/10/jenkins-envs/25', '2025-09-18 10:29:40.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1465, 89, 'admin', 'post', '127.0.0.1', '/api/v1/apps/jenkins-job/validate', '2025-09-18 10:30:11.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1466, 89, 'admin', 'put', '127.0.0.1', '/api/v1/apps/9/jenkins-envs/22', '2025-09-18 10:30:13.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1467, 89, 'admin', 'post', '127.0.0.1', '/api/v1/menu/add', '2025-09-18 10:45:56.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1468, 89, 'admin', 'post', '127.0.0.1', '/api/v1/menu/add', '2025-09-18 10:53:44.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1469, 89, 'admin', 'post', '127.0.0.1', '/api/v1/menu/add', '2025-09-18 10:53:47.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1470, 89, 'admin', 'post', '127.0.0.1', '/api/v1/menu/add', '2025-09-18 10:54:05.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1471, 89, 'admin', 'post', '127.0.0.1', '/api/v1/menu/add', '2025-09-18 10:54:55.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1472, 89, 'admin', 'post', '127.0.0.1', '/api/v1/menu/add', '2025-09-18 10:55:28.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1473, 89, 'admin', 'delete', '127.0.0.1', '/api/v1/menu/delete', '2025-09-18 10:56:47.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1474, 89, 'admin', 'post', '127.0.0.1', '/api/v1/menu/add', '2025-09-18 10:57:25.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1475, 89, 'admin', 'post', '127.0.0.1', '/api/v1/menu/add', '2025-09-18 10:57:39.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1476, 89, 'admin', 'post', '127.0.0.1', '/api/v1/menu/add', '2025-09-18 10:58:02.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1477, 89, 'admin', 'post', '127.0.0.1', '/api/v1/menu/add', '2025-09-18 10:58:02.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1478, 89, 'admin', 'post', '127.0.0.1', '/api/v1/menu/add', '2025-09-18 11:01:11.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1479, 89, 'admin', 'put', '127.0.0.1', '/api/v1/role/assignPermissions', '2025-09-18 11:03:08.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1480, 89, 'admin', 'put', '127.0.0.1', '/api/v1/role/assignPermissions', '2025-09-18 11:39:38.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1481, 89, 'admin', 'post', '127.0.0.1', '/api/v1/config/keymanage/sync', '2025-09-18 11:41:05.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1482, 89, 'admin', 'post', '127.0.0.1', '/api/v1/menu/add', '2025-09-18 11:47:33.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1483, 89, 'admin', 'post', '127.0.0.1', '/api/v1/menu/add', '2025-09-18 11:48:17.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1484, 89, 'admin', 'post', '127.0.0.1', '/api/v1/menu/add', '2025-09-18 11:48:57.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1485, 89, 'admin', 'post', '127.0.0.1', '/api/v1/menu/add', '2025-09-18 11:49:30.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1486, 89, 'admin', 'post', '127.0.0.1', '/api/v1/menu/add', '2025-09-18 11:54:15.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1487, 89, 'admin', 'post', '127.0.0.1', '/api/v1/menu/add', '2025-09-18 11:54:51.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1488, 89, 'admin', 'post', '127.0.0.1', '/api/v1/menu/add', '2025-09-18 11:55:21.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1489, 89, 'admin', 'post', '127.0.0.1', '/api/v1/menu/add', '2025-09-18 12:47:48.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1490, 89, 'admin', 'post', '127.0.0.1', '/api/v1/menu/add', '2025-09-18 12:49:02.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1491, 89, 'admin', 'post', '127.0.0.1', '/api/v1/menu/add', '2025-09-18 12:49:56.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1492, 89, 'admin', 'post', '127.0.0.1', '/api/v1/menu/add', '2025-09-18 12:50:51.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1493, 89, 'admin', 'post', '127.0.0.1', '/api/v1/menu/add', '2025-09-18 12:59:30.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1494, 89, 'admin', 'post', '127.0.0.1', '/api/v1/menu/add', '2025-09-18 13:00:03.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1495, 89, 'admin', 'post', '127.0.0.1', '/api/v1/menu/add', '2025-09-18 13:00:45.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1496, 89, 'admin', 'post', '127.0.0.1', '/api/v1/menu/add', '2025-09-18 13:16:38.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1497, 89, 'admin', 'post', '127.0.0.1', '/api/v1/menu/add', '2025-09-18 13:17:04.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1498, 89, 'admin', 'post', '127.0.0.1', '/api/v1/menu/add', '2025-09-18 13:18:25.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1499, 89, 'admin', 'post', '127.0.0.1', '/api/v1/menu/add', '2025-09-18 13:24:19.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1500, 89, 'admin', 'post', '127.0.0.1', '/api/v1/menu/add', '2025-09-18 13:24:59.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1501, 89, 'admin', 'post', '127.0.0.1', '/api/v1/menu/add', '2025-09-18 13:25:40.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1502, 89, 'admin', 'post', '127.0.0.1', '/api/v1/menu/add', '2025-09-18 13:30:53.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1503, 89, 'admin', 'post', '127.0.0.1', '/api/v1/menu/add', '2025-09-18 13:32:11.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1504, 89, 'admin', 'post', '127.0.0.1', '/api/v1/menu/add', '2025-09-18 13:32:32.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1505, 89, 'admin', 'put', '127.0.0.1', '/api/v1/menu/update', '2025-09-18 13:32:54.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1506, 89, 'admin', 'post', '127.0.0.1', '/api/v1/menu/add', '2025-09-18 14:28:06.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1507, 89, 'admin', 'post', '127.0.0.1', '/api/v1/menu/add', '2025-09-18 14:28:59.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1508, 89, 'admin', 'post', '127.0.0.1', '/api/v1/menu/add', '2025-09-18 14:29:33.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1509, 89, 'admin', 'post', '127.0.0.1', '/api/v1/menu/add', '2025-09-18 14:30:11.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1510, 89, 'admin', 'post', '127.0.0.1', '/api/v1/menu/add', '2025-09-18 14:41:31.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1511, 89, 'admin', 'post', '127.0.0.1', '/api/v1/menu/add', '2025-09-18 14:42:47.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1512, 89, 'admin', 'put', '127.0.0.1', '/api/v1/menu/update', '2025-09-18 14:42:57.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1513, 89, 'admin', 'put', '127.0.0.1', '/api/v1/menu/update', '2025-09-18 14:43:18.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1514, 89, 'admin', 'post', '127.0.0.1', '/api/v1/menu/add', '2025-09-18 14:43:57.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1515, 89, 'admin', 'post', '127.0.0.1', '/api/v1/menu/add', '2025-09-18 14:47:42.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1516, 89, 'admin', 'post', '127.0.0.1', '/api/v1/menu/add', '2025-09-18 14:48:36.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1517, 89, 'admin', 'post', '127.0.0.1', '/api/v1/menu/add', '2025-09-18 14:49:43.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1518, 89, 'admin', 'post', '127.0.0.1', '/api/v1/menu/add', '2025-09-18 14:50:38.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1519, 89, 'admin', 'post', '127.0.0.1', '/api/v1/menu/add', '2025-09-18 14:51:10.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1520, 89, 'admin', 'post', '127.0.0.1', '/api/v1/menu/add', '2025-09-18 14:51:52.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1521, 89, 'admin', 'put', '127.0.0.1', '/api/v1/menu/update', '2025-09-18 14:51:59.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1522, 89, 'admin', 'post', '127.0.0.1', '/api/v1/menu/add', '2025-09-18 14:52:20.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1523, 89, 'admin', 'put', '127.0.0.1', '/api/v1/role/assignPermissions', '2025-09-18 15:15:46.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1524, 89, 'admin', 'put', '127.0.0.1', '/api/v1/role/assignPermissions', '2025-09-18 15:16:32.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1525, 89, 'admin', 'put', '127.0.0.1', '/api/v1/role/assignPermissions', '2025-09-18 18:29:50.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1526, 89, 'admin', 'post', '127.0.0.1', '/api/v1/menu/add', '2025-09-18 18:36:38.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1527, 89, 'admin', 'post', '127.0.0.1', '/api/v1/taskjob/stop', '2025-09-18 18:38:00.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1528, 89, 'admin', 'post', '127.0.0.1', '/api/v1/menu/add', '2025-09-18 18:39:23.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1529, 89, 'admin', 'post', '127.0.0.1', '/api/v1/menu/add', '2025-09-18 18:39:36.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1530, 89, 'admin', 'delete', '127.0.0.1', '/api/v1/menu/delete', '2025-09-18 18:39:50.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1531, 89, 'admin', 'put', '127.0.0.1', '/api/v1/menu/update', '2025-09-18 18:40:00.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1532, 89, 'admin', 'put', '127.0.0.1', '/api/v1/menu/update', '2025-09-18 18:40:11.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1533, 89, 'admin', 'put', '127.0.0.1', '/api/v1/menu/update', '2025-09-18 18:42:49.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1534, 89, 'admin', 'post', '127.0.0.1', '/api/v1/menu/add', '2025-09-18 18:43:40.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1535, 89, 'admin', 'post', '127.0.0.1', '/api/v1/menu/add', '2025-09-18 18:47:38.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1536, 89, 'admin', 'post', '127.0.0.1', '/api/v1/menu/add', '2025-09-18 18:48:16.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1537, 89, 'admin', 'post', '127.0.0.1', '/api/v1/menu/add', '2025-09-18 21:02:28.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1538, 89, 'admin', 'put', '127.0.0.1', '/api/v1/menu/update', '2025-09-18 21:02:45.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1539, 89, 'admin', 'post', '127.0.0.1', '/api/v1/menu/add', '2025-09-18 21:03:07.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1540, 89, 'admin', 'post', '127.0.0.1', '/api/v1/menu/add', '2025-09-18 21:04:43.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1541, 89, 'admin', 'post', '127.0.0.1', '/api/v1/menu/add', '2025-09-18 21:11:42.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1542, 89, 'admin', 'put', '127.0.0.1', '/api/v1/menu/update', '2025-09-18 21:12:18.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1543, 89, 'admin', 'post', '127.0.0.1', '/api/v1/k8s/cluster/16/sync', '2025-09-18 21:19:23.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1544, 89, 'admin', 'post', '127.0.0.1', '/api/v1/k8s/cluster', '2025-09-18 21:33:24.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1545, 89, 'admin', 'post', '127.0.0.1', '/api/v1/menu/add', '2025-09-19 21:35:06.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1546, 89, 'admin', 'post', '127.0.0.1', '/api/v1/k8s/cluster/25/sync', '2025-09-19 21:55:01.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1547, 89, 'admin', 'post', '127.0.0.1', '/api/v1/k8s/cluster/25/sync', '2025-09-19 21:55:18.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1548, 89, 'admin', 'post', '127.0.0.1', '/api/v1/menu/add', '2025-09-19 21:57:54.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1549, 89, 'admin', 'post', '127.0.0.1', '/api/v1/menu/add', '2025-09-19 21:58:18.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1550, 89, 'admin', 'put', '127.0.0.1', '/api/v1/menu/update', '2025-09-19 21:58:27.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1551, 89, 'admin', 'post', '127.0.0.1', '/api/v1/menu/add', '2025-09-19 21:59:06.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1552, 89, 'admin', 'post', '127.0.0.1', '/api/v1/menu/add', '2025-09-19 21:59:30.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1553, 89, 'admin', 'post', '127.0.0.1', '/api/v1/menu/add', '2025-09-19 21:59:56.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1554, 89, 'admin', 'put', '127.0.0.1', '/api/v1/role/assignPermissions', '2025-09-19 22:46:01.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1555, 89, 'admin', 'post', '127.0.0.1', '/api/v1/k8s/cluster', '2025-09-19 22:48:23.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1556, 89, 'admin', 'put', '127.0.0.1', '/api/v1/role/assignPermissions', '2025-09-19 22:50:09.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1557, 89, 'admin', 'put', '127.0.0.1', '/api/v1/role/assignPermissions', '2025-09-19 22:50:14.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1558, 89, 'admin', 'post', '127.0.0.1', '/api/v1/task/ansible/39/start', '2025-09-19 22:50:40.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1559, 89, 'admin', 'delete', '127.0.0.1', '/api/v1/task/ansible/39', '2025-09-19 23:29:40.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1560, 89, 'admin', 'delete', '127.0.0.1', '/api/v1/k8s/cluster/26', '2025-09-19 23:29:58.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1561, 89, 'admin', 'post', '127.0.0.1', '/api/v1/k8s/cluster', '2025-09-19 23:32:42.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1562, 89, 'admin', 'post', '127.0.0.1', '/api/v1/task/ansible/40/start', '2025-09-19 23:34:56.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1563, 89, 'admin', 'put', '127.0.0.1', '/api/v1/k8s/cluster/27', '2025-09-20 00:06:00.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1564, 89, 'admin', 'put', '127.0.0.1', '/api/v1/k8s/cluster/27', '2025-09-20 00:06:52.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1565, 89, 'admin', 'put', '127.0.0.1', '/api/v1/k8s/cluster/27', '2025-09-20 00:13:31.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1566, 89, 'admin', 'post', '127.0.0.1', '/api/v1/k8s/cluster/27/sync', '2025-09-20 00:13:40.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1567, 89, 'admin', 'delete', '127.0.0.1', '/api/v1/k8s/cluster/25', '2025-09-20 00:13:47.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1568, 89, 'admin', 'post', '127.0.0.1', '/api/v1/menu/add', '2025-09-20 00:19:49.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1569, 89, 'admin', 'post', '127.0.0.1', '/api/v1/menu/add', '2025-09-20 00:21:19.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1570, 89, 'admin', 'post', '127.0.0.1', '/api/v1/menu/add', '2025-09-20 00:22:17.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1571, 89, 'admin', 'post', '127.0.0.1', '/api/v1/k8s/cluster/27/nodes/k8s-master01/labels', '2025-09-20 00:22:42.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1572, 89, 'admin', 'post', '127.0.0.1', '/api/v1/menu/add', '2025-09-20 00:23:14.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1573, 89, 'admin', 'post', '127.0.0.1', '/api/v1/menu/add', '2025-09-20 00:24:13.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1574, 89, 'admin', 'post', '127.0.0.1', '/api/v1/menu/add', '2025-09-20 00:25:04.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1575, 89, 'admin', 'post', '127.0.0.1', '/api/v1/k8s/cluster/27/namespaces', '2025-09-20 00:35:31.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1576, 89, 'admin', 'post', '127.0.0.1', '/api/v1/menu/add', '2025-09-20 00:36:13.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1577, 89, 'admin', 'post', '127.0.0.1', '/api/v1/menu/add', '2025-09-20 00:37:21.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1578, 89, 'admin', 'post', '127.0.0.1', '/api/v1/k8s/cluster/27/namespaces/test/resourcequotas', '2025-09-20 00:38:07.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1579, 89, 'admin', 'post', '127.0.0.1', '/api/v1/menu/add', '2025-09-20 00:39:05.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1580, 89, 'admin', 'post', '127.0.0.1', '/api/v1/menu/add', '2025-09-20 00:40:06.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1581, 89, 'admin', 'put', '127.0.0.1', '/api/v1/menu/update', '2025-09-20 00:40:23.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1582, 89, 'admin', 'post', '127.0.0.1', '/api/v1/menu/add', '2025-09-20 00:41:24.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1583, 89, 'admin', 'put', '127.0.0.1', '/api/v1/menu/update', '2025-09-20 00:41:57.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1584, 89, 'admin', 'post', '127.0.0.1', '/api/v1/menu/add', '2025-09-20 00:42:23.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1585, 89, 'admin', 'post', '127.0.0.1', '/api/v1/menu/add', '2025-09-20 00:43:03.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1586, 89, 'admin', 'post', '127.0.0.1', '/api/v1/k8s/cluster/27/namespaces/default/pods/yaml', '2025-09-20 00:51:14.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1587, 89, 'admin', 'post', '127.0.0.1', '/api/v1/k8s/cluster/27/namespaces/default/deployments/custom-deployment-1758300659902/restart', '2025-09-20 00:55:36.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1588, 89, 'admin', 'post', '127.0.0.1', '/api/v1/k8s/cluster/27/namespaces/default/pods/yaml', '2025-09-20 00:57:18.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1589, 89, 'admin', 'delete', '127.0.0.1', '/api/v1/k8s/cluster/27/namespaces/default/deployments/custom-deployment-1758300659902', '2025-09-20 00:58:43.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1590, 89, 'admin', 'post', '127.0.0.1', '/api/v1/menu/add', '2025-09-20 01:05:08.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1591, 89, 'admin', 'post', '127.0.0.1', '/api/v1/menu/add', '2025-09-20 01:06:17.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1592, 89, 'admin', 'post', '127.0.0.1', '/api/v1/menu/add', '2025-09-20 01:07:13.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1593, 89, 'admin', 'put', '127.0.0.1', '/api/v1/menu/update', '2025-09-20 01:07:32.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1594, 89, 'admin', 'post', '127.0.0.1', '/api/v1/menu/add', '2025-09-20 01:08:38.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1595, 89, 'admin', 'post', '127.0.0.1', '/api/v1/menu/add', '2025-09-20 01:09:36.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1596, 89, 'admin', 'post', '127.0.0.1', '/api/v1/menu/add', '2025-09-20 01:10:57.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1597, 89, 'admin', 'post', '127.0.0.1', '/api/v1/menu/add', '2025-09-20 01:11:52.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1598, 89, 'admin', 'delete', '127.0.0.1', '/api/v1/k8s/cluster/27/namespaces/default/deployments/custom-deployment-1758300659902', '2025-09-20 01:15:38.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1599, 89, 'admin', 'delete', '127.0.0.1', '/api/v1/k8s/cluster/27/namespaces/default/pods/nginx-zf-574dd7798d-6rjdk', '2025-09-20 01:16:25.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1600, 89, 'admin', 'delete', '127.0.0.1', '/api/v1/k8s/cluster/27/namespaces/default/pods/nginx-zf-574dd7798d-qbks2', '2025-09-20 01:31:45.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1601, 89, 'admin', 'delete', '127.0.0.1', '/api/v1/k8s/cluster/27/namespaces/default/pods/nginx-zf-574dd7798d-4cn7q', '2025-09-20 01:36:05.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1602, 89, 'admin', 'delete', '127.0.0.1', '/api/v1/k8s/cluster/27/namespaces/default/pods/nginx-zf-574dd7798d-4rt56', '2025-09-20 01:36:13.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1603, 89, 'admin', 'delete', '127.0.0.1', '/api/v1/k8s/cluster/27/namespaces/default/pods/nginx-zf-574dd7798d-xrwqf', '2025-09-20 01:36:29.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1604, 89, 'admin', 'delete', '127.0.0.1', '/api/v1/k8s/cluster/27/namespaces/default/pods/nginx-zf-574dd7798d-rxndr', '2025-09-20 01:36:35.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1605, 89, 'admin', 'delete', '127.0.0.1', '/api/v1/k8s/cluster/27/namespaces/default/pods/nginx-zf-574dd7798d-qhgdw', '2025-09-20 01:36:39.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1606, 89, 'admin', 'delete', '127.0.0.1', '/api/v1/k8s/cluster/27/namespaces/default/pods/nginx-zf-574dd7798d-qfzql', '2025-09-20 01:36:41.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1607, 89, 'admin', 'delete', '127.0.0.1', '/api/v1/k8s/cluster/27/namespaces/default/pods/nginx-zf-574dd7798d-qbhb9', '2025-09-20 01:36:44.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1608, 89, 'admin', 'delete', '127.0.0.1', '/api/v1/k8s/cluster/27/namespaces/default/pods/nginx-zf-574dd7798d-k5c26', '2025-09-20 01:36:46.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1609, 89, 'admin', 'delete', '127.0.0.1', '/api/v1/k8s/cluster/27/namespaces/default/pods/nginx-zf-574dd7798d-gs2jj', '2025-09-20 01:36:48.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1610, 89, 'admin', 'delete', '127.0.0.1', '/api/v1/k8s/cluster/27/namespaces/default/pods/nginx-zf-574dd7798d-d8r98', '2025-09-20 01:36:51.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1611, 89, 'admin', 'delete', '127.0.0.1', '/api/v1/k8s/cluster/27/namespaces/default/pods/nginx-zf-574dd7798d-cz8gh', '2025-09-20 01:36:54.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1612, 89, 'admin', 'delete', '127.0.0.1', '/api/v1/k8s/cluster/27/namespaces/default/pods/nginx-zf-574dd7798d-bgkcf', '2025-09-20 01:36:57.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1613, 89, 'admin', 'delete', '127.0.0.1', '/api/v1/k8s/cluster/27/namespaces/default/pods/nginx-zf-574dd7798d-94l5s', '2025-09-20 01:37:00.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1614, 89, 'admin', 'delete', '127.0.0.1', '/api/v1/k8s/cluster/27/namespaces/default/pods/nginx-zf-574dd7798d-7gk7b', '2025-09-20 01:37:02.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1615, 89, 'admin', 'delete', '127.0.0.1', '/api/v1/k8s/cluster/27/namespaces/default/pods/nginx-zf-574dd7798d-67xfj', '2025-09-20 01:37:04.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1616, 89, 'admin', 'delete', '127.0.0.1', '/api/v1/k8s/cluster/27/namespaces/default/pods/nginx-zf-574dd7798d-5v679', '2025-09-20 01:37:06.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1617, 89, 'admin', 'post', '127.0.0.1', '/api/v1/menu/add', '2025-09-20 01:39:38.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1618, 89, 'admin', 'post', '127.0.0.1', '/api/v1/menu/add', '2025-09-20 01:44:37.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1619, 89, 'admin', 'post', '127.0.0.1', '/api/v1/menu/add', '2025-09-20 01:45:16.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1620, 89, 'admin', 'post', '127.0.0.1', '/api/v1/menu/add', '2025-09-20 01:46:07.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1621, 89, 'admin', 'put', '127.0.0.1', '/api/v1/menu/update', '2025-09-20 01:46:23.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1622, 89, 'admin', 'post', '127.0.0.1', '/api/v1/menu/add', '2025-09-20 01:47:21.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1623, 89, 'admin', 'post', '127.0.0.1', '/api/v1/k8s/cluster/27/namespaces/default/pods/yaml', '2025-09-20 01:51:53.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1624, 89, 'admin', 'put', '127.0.0.1', '/api/v1/role/assignPermissions', '2025-09-20 02:01:38.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1625, 89, 'admin', 'post', '127.0.0.1', '/api/v1/k8s/cluster/27/namespaces/default/pods/yaml', '2025-09-20 02:02:10.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1626, 89, 'admin', 'delete', '127.0.0.1', '/api/v1/k8s/cluster/27/namespaces/default/deployments/nginx-zf', '2025-09-20 02:03:44.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1627, 89, 'admin', 'delete', '127.0.0.1', '/api/v1/k8s/cluster/27/namespaces/default/pods/hello-world-8547c5b59d-jp6fd', '2025-09-20 02:04:12.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1628, 89, 'admin', 'post', '127.0.0.1', '/api/v1/k8s/cluster/27/namespaces/default/pods/yaml', '2025-09-20 02:04:49.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1629, 89, 'admin', 'post', '127.0.0.1', '/api/v1/k8s/cluster/27/namespaces/default/pods/yaml', '2025-09-20 02:04:49.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1630, 89, 'admin', 'post', '127.0.0.1', '/api/v1/k8s/cluster/27/namespaces/default/pods/yaml', '2025-09-20 02:04:50.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1631, 89, 'admin', 'post', '127.0.0.1', '/api/v1/k8s/cluster/27/namespaces/default/pods/yaml', '2025-09-20 02:04:50.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1632, 89, 'admin', 'post', '127.0.0.1', '/api/v1/k8s/cluster/27/namespaces/default/pods/yaml', '2025-09-20 02:04:47.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1633, 89, 'admin', 'post', '127.0.0.1', '/api/v1/k8s/cluster/27/namespaces/default/pods/yaml', '2025-09-20 02:04:44.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1634, 89, 'admin', 'post', '127.0.0.1', '/api/v1/k8s/cluster/27/namespaces/default/pods/yaml', '2025-09-20 02:05:49.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1635, 89, 'admin', 'post', '127.0.0.1', '/api/v1/menu/add', '2025-09-20 02:14:20.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1636, 89, 'admin', 'post', '127.0.0.1', '/api/v1/menu/add', '2025-09-20 02:15:19.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1637, 89, 'admin', 'put', '127.0.0.1', '/api/v1/menu/update', '2025-09-20 02:15:35.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1638, 89, 'admin', 'post', '127.0.0.1', '/api/v1/menu/add', '2025-09-20 02:16:15.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1639, 89, 'admin', 'put', '127.0.0.1', '/api/v1/menu/update', '2025-09-20 02:16:59.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1640, 89, 'admin', 'post', '127.0.0.1', '/api/v1/menu/add', '2025-09-20 02:18:11.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1641, 89, 'admin', 'post', '127.0.0.1', '/api/v1/menu/add', '2025-09-20 02:18:58.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1642, 89, 'admin', 'put', '127.0.0.1', '/api/v1/menu/update', '2025-09-20 02:24:48.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1643, 89, 'admin', 'post', '127.0.0.1', '/api/v1/menu/add', '2025-09-20 02:26:59.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1644, 89, 'admin', 'post', '127.0.0.1', '/api/v1/menu/add', '2025-09-20 02:27:29.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1645, 89, 'admin', 'post', '127.0.0.1', '/api/v1/menu/add', '2025-09-20 02:28:23.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1646, 89, 'admin', 'post', '127.0.0.1', '/api/v1/menu/add', '2025-09-20 02:29:23.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1647, 89, 'admin', 'post', '127.0.0.1', '/api/v1/menu/add', '2025-09-20 02:30:04.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1648, 89, 'admin', 'post', '127.0.0.1', '/api/v1/k8s/cluster/27/namespaces/default/pods/yaml', '2025-09-20 02:33:58.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1649, 89, 'admin', 'post', '127.0.0.1', '/api/v1/k8s/cluster/27/namespaces/default/pods/yaml', '2025-09-20 02:35:00.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1650, 89, 'admin', 'post', '127.0.0.1', '/api/v1/k8s/cluster/27/namespaces/default/pods/yaml', '2025-09-20 02:35:20.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1651, 89, 'admin', 'post', '127.0.0.1', '/api/v1/k8s/cluster/27/namespaces/default/pods/yaml', '2025-09-20 02:35:34.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1652, 89, 'admin', 'post', '127.0.0.1', '/api/v1/k8s/cluster/27/namespaces/default/pods/yaml', '2025-09-20 02:40:31.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1653, 89, 'admin', 'delete', '127.0.0.1', '/api/v1/k8s/cluster/27/pvs/demo-pv', '2025-09-20 02:40:40.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1654, 89, 'admin', 'post', '127.0.0.1', '/api/v1/k8s/cluster/27/namespaces/default/pods/yaml', '2025-09-20 02:40:51.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1655, 89, 'admin', 'post', '127.0.0.1', '/api/v1/k8s/cluster/27/namespaces/default/pods/yaml', '2025-09-20 02:44:26.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1656, 89, 'admin', 'post', '127.0.0.1', '/api/v1/k8s/cluster/27/namespaces/default/pods/yaml', '2025-09-20 02:47:31.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1657, 89, 'admin', 'post', '127.0.0.1', '/api/v1/cmdb/hostsync', '2025-09-20 11:15:58.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1658, 89, 'admin', 'post', '127.0.0.1', '/api/v1/config/keymanage/sync', '2025-09-20 11:27:20.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1659, 89, 'admin', 'post', '127.0.0.1', '/api/v1/cmdb/hostsync', '2025-09-20 11:29:30.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1660, 89, 'admin', 'put', '127.0.0.1', '/api/v1/cmdb/hostupdate', '2025-09-20 11:29:46.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1661, 89, 'admin', 'post', '127.0.0.1', '/api/v1/cmdb/hostsync', '2025-09-20 11:29:53.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1662, 89, 'admin', 'put', '127.0.0.1', '/api/v1/cmdb/hostupdate', '2025-09-20 11:32:02.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1663, 89, 'admin', 'post', '127.0.0.1', '/api/v1/cmdb/hostsync', '2025-09-20 11:32:09.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1664, 89, 'admin', 'put', '127.0.0.1', '/api/v1/cmdb/hostupdate', '2025-09-20 11:32:32.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1665, 89, 'admin', 'put', '127.0.0.1', '/api/v1/cmdb/hostupdate', '2025-09-20 11:32:38.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1666, 89, 'admin', 'post', '127.0.0.1', '/api/v1/cmdb/hostsync', '2025-09-20 11:32:42.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1667, 89, 'admin', 'delete', '127.0.0.1', '/api/v1/cmdb/hostdelete', '2025-09-20 11:33:29.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1668, 89, 'admin', 'delete', '127.0.0.1', '/api/v1/cmdb/hostdelete', '2025-09-20 11:33:37.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1669, 89, 'admin', 'delete', '127.0.0.1', '/api/v1/cmdb/hostdelete', '2025-09-20 11:33:51.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1670, 89, 'admin', 'post', '127.0.0.1', '/api/v1/k8s/cluster', '2025-09-20 11:35:14.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1671, 89, 'admin', 'post', '127.0.0.1', '/api/v1/task/ansible/41/start', '2025-09-20 11:35:32.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1672, 89, 'admin', 'post', '127.0.0.1', '/api/v1/task/ansible/41/start', '2025-09-20 12:01:18.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1673, 89, 'admin', 'put', '127.0.0.1', '/api/v1/cmdb/hostupdate', '2025-09-20 13:09:36.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1674, 89, 'admin', 'put', '127.0.0.1', '/api/v1/cmdb/hostupdate', '2025-09-20 13:09:48.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1675, 89, 'admin', 'delete', '127.0.0.1', '/api/v1/k8s/cluster/28', '2025-09-20 13:24:21.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1676, 89, 'admin', 'post', '127.0.0.1', '/api/v1/k8s/cluster', '2025-09-20 13:25:54.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1677, 89, 'admin', 'delete', '127.0.0.1', '/api/v1/task/ansible/41', '2025-09-20 13:28:17.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1678, 89, 'admin', 'post', '127.0.0.1', '/api/v1/task/ansible/42/start', '2025-09-20 13:28:23.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1679, 89, 'admin', 'delete', '127.0.0.1', '/api/v1/k8s/cluster/29', '2025-09-20 15:23:12.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1680, 89, 'admin', 'delete', '127.0.0.1', '/api/v1/k8s/cluster/27', '2025-09-20 15:23:22.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1681, 89, 'admin', 'put', '127.0.0.1', '/api/v1/k8s/cluster/24', '2025-09-20 15:23:38.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1682, 89, 'admin', 'post', '127.0.0.1', '/api/v1/k8s/cluster/24/sync', '2025-09-20 15:23:41.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1683, 89, 'admin', 'post', '127.0.0.1', '/api/v1/k8s/cluster/24/namespaces/default/pods/yaml', '2025-09-20 20:10:52.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1684, 89, 'admin', 'put', '127.0.0.1', '/api/v1/k8s/cluster/24/namespaces/default/workload-yaml', '2025-09-21 02:01:05.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1685, 89, 'admin', 'put', '127.0.0.1', '/api/v1/k8s/cluster/24/namespaces/default/workload-yaml', '2025-09-21 02:16:54.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1686, 89, 'admin', 'put', '127.0.0.1', '/api/v1/k8s/cluster/24/namespaces/default/workload-yaml', '2025-09-21 02:17:09.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1687, 89, 'admin', 'put', '127.0.0.1', '/api/v1/k8s/cluster/24/namespaces/default/workload-yaml', '2025-09-21 02:22:26.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1688, 89, 'admin', 'put', '127.0.0.1', '/api/v1/k8s/cluster/24/namespaces/default/workload-yaml', '2025-09-21 02:26:34.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1689, 89, 'admin', 'post', '127.0.0.1', '/api/v1/k8s/cluster/24/namespaces/default/deployments/custom-deployment-1758370247368/scale', '2025-09-21 02:27:28.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1690, 89, 'admin', 'put', '127.0.0.1', '/api/v1/k8s/cluster/24/namespaces/default/workload-yaml', '2025-09-21 02:29:47.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1691, 89, 'admin', 'put', '127.0.0.1', '/api/v1/k8s/cluster/24/namespaces/default/workload-yaml', '2025-09-21 02:48:08.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1692, 89, 'admin', 'post', '127.0.0.1', '/api/v1/apps/deployment/quick', '2025-09-21 18:10:45.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1693, 89, 'admin', 'post', '127.0.0.1', '/api/v1/apps/deployment/execute', '2025-09-21 18:11:03.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1694, 89, 'admin', 'post', '127.0.0.1', '/api/v1/apps/jenkins-job/validate', '2025-09-22 11:48:35.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1695, 89, 'admin', 'put', '127.0.0.1', '/api/v1/apps/8/jenkins-envs/19', '2025-09-22 11:48:38.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1696, 89, 'admin', 'post', '127.0.0.1', '/api/v1/apps/deployment/quick', '2025-09-22 11:49:40.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1697, 89, 'admin', 'post', '127.0.0.1', '/api/v1/apps/deployment/execute', '2025-09-22 11:49:53.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1698, 89, 'admin', 'post', '127.0.0.1', '/api/v1/k8s/cluster/20/sync', '2025-09-22 11:54:05.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1699, 89, 'admin', 'post', '127.0.0.1', '/api/v1/k8s/cluster/20/sync', '2025-09-22 11:54:11.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1700, 89, 'admin', 'post', '127.0.0.1', '/api/v1/k8s/cluster/23/sync', '2025-09-22 11:54:13.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1701, 89, 'admin', 'put', '127.0.0.1', '/api/v1/cmdb/hostupdate', '2025-09-22 12:59:43.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1702, 89, 'admin', 'put', '127.0.0.1', '/api/v1/cmdb/hostupdate', '2025-09-22 12:59:51.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1703, 89, 'admin', 'put', '127.0.0.1', '/api/v1/cmdb/hostupdate', '2025-09-22 12:59:58.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1704, 89, 'admin', 'put', '127.0.0.1', '/api/v1/role/assignPermissions', '2025-09-24 12:47:56.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1705, 89, 'admin', 'post', '127.0.0.1', '/api/v1/admin/add', '2025-09-24 12:49:06.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1706, 102, 'test', 'put', '127.0.0.1', '/api/v1/admin/updatePersonal', '2025-09-24 12:51:14.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1707, 102, 'test', 'put', '127.0.0.1', '/api/v1/admin/updatePersonal', '2025-09-24 12:56:41.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1708, 102, 'test', 'post', '127.0.0.1', '/api/v1/upload', '2025-09-24 13:01:02.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1709, 102, 'test', 'put', '127.0.0.1', '/api/v1/admin/updatePersonal', '2025-09-24 13:01:05.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1710, 89, 'admin', 'delete', '223.73.6.160', '/api/v1/cmdb/sqlLog/delete', '2025-09-24 15:04:51.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1711, 89, 'admin', 'delete', '223.73.6.160', '/api/v1/cmdb/sqlLog/delete', '2025-09-24 15:04:54.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1712, 89, 'admin', 'delete', '223.73.6.160', '/api/v1/cmdb/sqlLog/delete', '2025-09-24 15:05:05.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1713, 89, 'admin', 'delete', '223.73.6.160', '/api/v1/cmdb/sqlLog/delete', '2025-09-24 15:05:12.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1714, 89, 'admin', 'delete', '223.73.6.160', '/api/v1/cmdb/sqlLog/delete', '2025-09-24 15:05:14.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1715, 89, 'admin', 'post', '155.117.84.176', '/api/v1/k8s/cluster/24/sync', '2025-09-24 16:13:30.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1716, 89, 'admin', 'post', '155.117.84.176', '/api/v1/k8s/cluster/24/sync', '2025-09-24 16:32:20.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1717, 89, 'admin', 'post', '155.117.84.176', '/api/v1/k8s/cluster/23/sync', '2025-09-24 16:32:28.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1718, 89, 'admin', 'post', '155.117.84.176', '/api/v1/k8s/cluster/20/sync', '2025-09-24 16:32:45.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1719, 89, 'admin', 'post', '155.117.84.176', '/api/v1/k8s/cluster', '2025-09-24 16:33:14.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1720, 89, 'admin', 'delete', '155.117.84.176', '/api/v1/k8s/cluster/16', '2025-09-24 16:33:22.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1721, 89, 'admin', 'delete', '155.117.84.176', '/api/v1/k8s/cluster/20', '2025-09-24 16:33:24.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1722, 89, 'admin', 'delete', '155.117.84.176', '/api/v1/k8s/cluster/23', '2025-09-24 16:33:27.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1723, 89, 'admin', 'delete', '155.117.84.176', '/api/v1/k8s/cluster/24', '2025-09-24 16:33:30.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1724, 89, 'admin', 'delete', '155.117.84.176', '/api/v1/admin/delete', '2025-09-24 16:33:56.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1725, 89, 'admin', 'delete', '155.117.84.176', '/api/v1/admin/delete', '2025-09-24 16:33:58.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1726, 89, 'admin', 'delete', '155.117.84.176', '/api/v1/admin/delete', '2025-09-24 16:34:02.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1727, 89, 'admin', 'put', '155.117.84.176', '/api/v1/admin/updatePassword', '2025-09-24 16:34:15.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1728, 89, 'admin', 'delete', '155.117.84.176', '/api/v1/cmdb/hostdelete', '2025-09-24 16:41:02.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1729, 89, 'admin', 'delete', '155.117.84.176', '/api/v1/cmdb/hostdelete', '2025-09-24 19:26:16.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1730, 89, 'admin', 'delete', '155.117.84.176', '/api/v1/cmdb/hostdelete', '2025-09-24 19:26:19.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1731, 89, 'admin', 'delete', '155.117.84.176', '/api/v1/cmdb/hostdelete', '2025-09-24 19:26:25.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1732, 89, 'admin', 'delete', '155.117.84.176', '/api/v1/cmdb/hostdelete', '2025-09-24 19:26:29.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1733, 89, 'admin', 'delete', '155.117.84.176', '/api/v1/cmdb/hostdelete', '2025-09-24 19:26:31.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1734, 89, 'admin', 'delete', '155.117.84.176', '/api/v1/cmdb/hostdelete', '2025-09-24 19:26:34.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1735, 89, 'admin', 'delete', '155.117.84.176', '/api/v1/monitor/agent/uninstall', '2025-09-24 19:26:54.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1736, 89, 'admin', 'delete', '155.117.84.176', '/api/v1/monitor/agent/uninstall', '2025-09-24 19:27:11.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1737, 89, 'admin', 'post', '223.73.6.160', '/api/v1/upload', '2025-09-24 21:46:23.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1738, 89, 'admin', 'put', '223.73.6.160', '/api/v1/admin/updatePersonal', '2025-09-24 21:46:34.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1739, 89, 'admin', 'post', '223.73.6.160', '/api/v1/upload', '2025-09-24 21:47:18.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1740, 89, 'admin', 'put', '223.73.6.160', '/api/v1/admin/updatePersonal', '2025-09-24 21:48:52.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1741, 89, 'admin', 'post', '223.73.6.160', '/api/v1/upload', '2025-09-24 22:05:39.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1742, 89, 'admin', 'post', '223.73.6.160', '/api/v1/upload', '2025-09-24 22:06:53.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1743, 89, 'admin', 'post', '223.73.6.160', '/api/v1/upload', '2025-09-24 22:07:20.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1744, 89, 'admin', 'put', '223.73.6.160', '/api/v1/admin/updatePersonal', '2025-09-24 22:07:22.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1745, 89, 'admin', 'put', '223.73.6.160', '/api/v1/admin/updatePersonal', '2025-09-24 22:10:40.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1746, 89, 'admin', 'delete', '223.73.6.160', '/api/v1/config/ecsauthdelete', '2025-09-24 22:11:27.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1747, 89, 'admin', 'delete', '223.73.6.160', '/api/v1/config/ecsauthdelete', '2025-09-24 22:11:29.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1748, 89, 'admin', 'delete', '223.73.6.160', '/api/v1/config/ecsauthdelete', '2025-09-24 22:11:31.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1749, 89, 'admin', 'delete', '223.73.6.160', '/api/v1/config/ecsauthdelete', '2025-09-24 22:11:33.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1750, 89, 'admin', 'delete', '223.73.6.160', '/api/v1/config/ecsauthdelete', '2025-09-24 22:11:34.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1751, 89, 'admin', 'delete', '223.73.6.160', '/api/v1/config/ecsauthdelete', '2025-09-24 22:11:36.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1752, 89, 'admin', 'delete', '223.73.6.160', '/api/v1/config/ecsauthdelete', '2025-09-24 22:11:38.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1753, 89, 'admin', 'delete', '223.73.6.160', '/api/v1/config/ecsauthdelete', '2025-09-24 22:11:42.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1754, 89, 'admin', 'delete', '223.73.6.160', '/api/v1/monitor/agent/delete/7', '2025-09-24 22:11:55.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1755, 89, 'admin', 'delete', '223.73.6.160', '/api/v1/monitor/agent/delete/8', '2025-09-24 22:11:58.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1756, 89, 'admin', 'delete', '223.73.6.160', '/api/v1/monitor/agent/delete/10', '2025-09-24 22:12:02.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1757, 89, 'admin', 'delete', '223.73.6.160', '/api/v1/monitor/agent/delete/11', '2025-09-24 22:12:04.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1758, 89, 'admin', 'delete', '223.73.6.160', '/api/v1/monitor/agent/delete/16', '2025-09-24 22:12:06.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1759, 89, 'admin', 'post', '223.73.6.160', '/api/v1/monitor/agent/deploy', '2025-09-24 22:12:58.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1760, 89, 'admin', 'delete', '223.73.6.160', '/api/v1/monitor/agent/delete/17', '2025-09-24 22:32:31.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1761, 89, 'admin', 'post', '223.73.6.160', '/api/v1/monitor/agent/deploy', '2025-09-24 22:32:55.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1762, 89, 'admin', 'delete', '223.73.6.160', '/api/v1/monitor/agent/delete/18', '2025-09-24 22:34:18.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1763, 89, 'admin', 'post', '223.73.6.160', '/api/v1/monitor/agent/deploy', '2025-09-24 22:34:56.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1764, 89, 'admin', 'post', '223.73.6.160', '/api/v1/cmdb/hostsync', '2025-09-24 22:35:25.000', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1765, 89, 'admin', 'delete', '155.117.84.176', '/api/v1/monitor/agent/delete/19', '2025-09-24 22:46:48.098', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1766, 89, 'admin', 'post', '155.117.84.176', '/api/v1/monitor/agent/deploy', '2025-09-24 22:47:20.671', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1767, 89, 'admin', 'delete', '155.117.84.176', '/api/v1/monitor/agent/delete/20', '2025-09-24 22:51:35.262', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1768, 89, 'admin', 'post', '155.117.84.176', '/api/v1/monitor/agent/deploy', '2025-09-24 22:51:56.830', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1769, 89, 'admin', 'delete', '223.73.6.160', '/api/v1/monitor/agent/delete/21', '2025-09-24 23:15:02.761', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1770, 89, 'admin', 'post', '223.73.6.160', '/api/v1/monitor/agent/deploy', '2025-09-24 23:15:19.025', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1771, 89, 'admin', 'delete', '223.73.6.160', '/api/v1/monitor/agent/delete/22', '2025-09-24 23:37:17.337', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1772, 89, 'admin', 'post', '223.73.6.160', '/api/v1/monitor/agent/deploy', '2025-09-24 23:37:38.122', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1773, 89, 'admin', 'delete', '223.73.6.160', '/api/v1/monitor/agent/delete/23', '2025-09-24 23:48:33.214', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1774, 89, 'admin', 'post', '223.73.6.160', '/api/v1/monitor/agent/deploy', '2025-09-24 23:48:44.878', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1775, 89, 'admin', 'delete', '223.73.6.160', '/api/v1/monitor/agent/delete/24', '2025-09-24 23:50:30.361', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1776, 89, 'admin', 'post', '223.73.6.160', '/api/v1/monitor/agent/deploy', '2025-09-24 23:50:42.427', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1777, 89, 'admin', 'delete', '223.73.6.160', '/api/v1/monitor/agent/delete/25', '2025-09-25 00:08:33.806', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1778, 89, 'admin', 'post', '223.73.6.160', '/api/v1/monitor/agent/deploy', '2025-09-25 00:13:30.751', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1779, 89, 'admin', 'delete', '223.73.6.160', '/api/v1/monitor/agent/delete/26', '2025-09-25 00:26:40.629', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1780, 89, 'admin', 'post', '223.73.6.160', '/api/v1/monitor/agent/deploy', '2025-09-25 00:26:56.924', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1781, 89, 'admin', 'delete', '223.73.6.160', '/api/v1/monitor/agent/delete/27', '2025-09-25 01:02:27.834', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1782, 89, 'admin', 'post', '223.73.6.160', '/api/v1/monitor/agent/deploy', '2025-09-25 01:06:59.218', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1783, 89, 'admin', 'delete', '223.73.6.160', '/api/v1/monitor/agent/delete/28', '2025-09-25 01:08:52.369', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1784, 89, 'admin', 'post', '223.73.6.160', '/api/v1/monitor/agent/deploy', '2025-09-25 01:13:57.629', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1785, 89, 'admin', 'delete', '223.73.6.160', '/api/v1/monitor/agent/delete/29', '2025-09-25 01:32:22.722', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1786, 89, 'admin', 'post', '223.73.6.160', '/api/v1/monitor/agent/deploy', '2025-09-25 01:32:32.764', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1787, 89, 'admin', 'delete', '223.73.6.160', '/api/v1/monitor/agent/delete/30', '2025-09-25 01:36:40.800', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1788, 89, 'admin', 'post', '223.73.6.160', '/api/v1/monitor/agent/deploy', '2025-09-25 01:36:55.769', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1789, 89, 'admin', 'delete', '58.61.148.66', '/api/v1/monitor/agent/delete/31', '2025-09-25 10:27:12.867', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1790, 89, 'admin', 'post', '58.61.148.66', '/api/v1/monitor/agent/deploy', '2025-09-25 10:27:43.257', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1791, 89, 'admin', 'delete', '58.61.148.66', '/api/v1/monitor/agent/delete/32', '2025-09-25 10:33:33.695', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1792, 89, 'admin', 'post', '58.61.148.66', '/api/v1/monitor/agent/deploy', '2025-09-25 11:08:11.459', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1793, 89, 'admin', 'delete', '58.61.148.66', '/api/v1/monitor/agent/delete/33', '2025-09-25 11:49:26.010', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1794, 89, 'admin', 'post', '58.61.148.66', '/api/v1/monitor/agent/deploy', '2025-09-25 11:57:21.394', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1795, 89, 'admin', 'delete', '58.61.148.66', '/api/v1/monitor/agent/uninstall', '2025-09-25 12:14:02.580', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1796, 89, 'admin', 'post', '58.61.148.66', '/api/v1/monitor/agent/deploy', '2025-09-25 12:19:58.950', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1797, 89, 'admin', 'delete', '58.61.148.66', '/api/v1/monitor/agent/uninstall', '2025-09-25 13:04:36.335', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1798, 89, 'admin', 'post', '58.61.148.66', '/api/v1/monitor/agent/deploy', '2025-09-25 13:05:20.044', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1799, 89, 'admin', 'delete', '58.61.148.66', '/api/v1/monitor/agent/uninstall', '2025-09-25 13:21:28.209', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1800, 89, 'admin', 'post', '58.61.148.66', '/api/v1/monitor/agent/deploy', '2025-09-25 13:25:58.263', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1801, 89, 'admin', 'delete', '58.61.148.66', '/api/v1/monitor/agent/uninstall', '2025-09-25 13:39:34.566', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1802, 89, 'admin', 'post', '58.61.148.66', '/api/v1/monitor/agent/deploy', '2025-09-25 13:40:01.044', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1803, 89, 'admin', 'delete', '58.61.148.66', '/api/v1/cmdb/hostdelete', '2025-09-25 14:05:17.772', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1804, 89, 'admin', 'delete', '58.61.148.66', '/api/v1/monitor/agent/uninstall', '2025-09-25 14:15:25.862', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1805, 89, 'admin', 'post', '58.61.148.66', '/api/v1/monitor/agent/deploy', '2025-09-25 14:20:22.482', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1806, 89, 'admin', 'delete', '58.61.148.66', '/api/v1/monitor/agent/uninstall', '2025-09-25 15:02:57.054', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1807, 89, 'admin', 'post', '58.61.148.66', '/api/v1/monitor/agent/deploy', '2025-09-25 15:12:02.658', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1808, 89, 'admin', 'delete', '58.61.148.66', '/api/v1/monitor/agent/uninstall', '2025-09-25 15:51:03.918', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1809, 89, 'admin', 'post', '58.61.148.66', '/api/v1/monitor/agent/deploy', '2025-09-25 16:01:23.192', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1810, 89, 'admin', 'delete', '58.61.148.66', '/api/v1/monitor/agent/uninstall', '2025-09-25 18:42:58.686', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1811, 89, 'admin', 'post', '58.61.148.66', '/api/v1/monitor/agent/deploy', '2025-09-25 18:46:10.285', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1812, 89, 'admin', 'delete', '58.61.148.66', '/api/v1/monitor/agent/uninstall', '2025-09-25 19:08:30.123', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1813, 89, 'admin', 'post', '58.61.148.66', '/api/v1/monitor/agent/deploy', '2025-09-25 19:59:35.323', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1814, 89, 'admin', 'delete', '58.61.148.66', '/api/v1/monitor/agent/uninstall', '2025-09-26 13:23:55.297', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1815, 89, 'admin', 'post', '58.61.148.66', '/api/v1/monitor/agent/deploy', '2025-09-26 13:31:01.064', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1816, 89, 'admin', 'delete', '58.61.148.66', '/api/v1/monitor/agent/uninstall', '2025-09-26 14:07:05.655', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1817, 89, 'admin', 'post', '58.61.148.66', '/api/v1/monitor/agent/deploy', '2025-09-26 14:07:34.240', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1818, 89, 'admin', 'delete', '58.61.148.66', '/api/v1/monitor/agent/uninstall', '2025-09-26 14:18:34.401', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1819, 89, 'admin', 'post', '58.61.148.66', '/api/v1/monitor/agent/deploy', '2025-09-26 14:30:56.541', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1820, 89, 'admin', 'delete', '58.61.148.66', '/api/v1/monitor/agent/uninstall', '2025-09-26 14:41:55.303', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1821, 89, 'admin', 'post', '58.61.148.66', '/api/v1/monitor/agent/deploy', '2025-09-26 14:42:23.182', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1822, 89, 'admin', 'delete', '58.61.148.66', '/api/v1/monitor/agent/uninstall', '2025-09-26 14:46:25.450', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1823, 89, 'admin', 'post', '58.61.148.66', '/api/v1/monitor/agent/deploy', '2025-09-26 14:47:27.104', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1824, 89, 'admin', 'post', '58.61.148.66', '/api/v1/cmdb/hostcreate', '2025-09-26 16:05:50.217', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1825, 89, 'admin', 'post', '58.61.148.66', '/api/v1/monitor/agent/deploy', '2025-09-26 16:06:48.982', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1826, 89, 'admin', 'delete', '58.61.148.66', '/api/v1/monitor/agent/uninstall', '2025-09-26 17:13:04.363', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1827, 89, 'admin', 'post', '58.61.148.66', '/api/v1/monitor/agent/deploy', '2025-09-26 17:13:20.930', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1828, 89, 'admin', 'delete', '58.61.148.66', '/api/v1/monitor/agent/uninstall', '2025-09-26 17:23:53.921', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1829, 89, 'admin', 'post', '58.61.148.66', '/api/v1/monitor/agent/deploy', '2025-09-26 17:29:39.952', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1830, 89, 'admin', 'post', '58.61.148.66', '/api/v1/cmdb/hostsync', '2025-09-26 18:45:41.021', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1831, 89, 'admin', 'delete', '58.61.148.66', '/api/v1/monitor/agent/uninstall', '2025-09-26 18:48:02.634', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1832, 89, 'admin', 'delete', '58.61.148.66', '/api/v1/monitor/agent/uninstall', '2025-09-26 21:05:43.906', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1833, 89, 'admin', 'post', '58.61.148.66', '/api/v1/monitor/agent/deploy', '2025-09-26 21:11:25.050', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1834, 89, 'admin', 'post', '58.61.148.66', '/api/v1/monitor/agent/deploy', '2025-09-26 21:15:13.679', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1835, 89, 'admin', 'post', '58.61.148.66', '/api/v1/monitor/agent/deploy', '2025-09-26 21:17:51.472', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1836, 89, 'admin', 'delete', '58.61.148.66', '/api/v1/monitor/agent/delete/52', '2025-09-26 21:18:10.607', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1837, 89, 'admin', 'post', '58.251.35.38', '/api/v1/monitor/agent/deploy', '2025-09-28 11:22:34.886', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1838, 89, 'admin', 'post', '58.251.35.38', '/api/v1/cmdb/hostsync', '2025-09-28 11:23:36.346', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1839, 89, 'admin', 'delete', '58.61.148.66', '/api/v1/monitor/agent/uninstall', '2025-09-28 11:27:03.195', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1840, 89, 'admin', 'delete', '58.61.148.66', '/api/v1/monitor/agent/uninstall', '2025-09-28 11:30:33.459', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1841, 89, 'admin', 'post', '58.61.148.66', '/api/v1/monitor/agent/deploy', '2025-09-28 11:37:12.124', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1842, 89, 'admin', 'post', '58.61.148.66', '/api/v1/cmdb/hostsync', '2025-09-28 11:40:07.294', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1843, 89, 'admin', 'post', '58.251.35.38', '/api/v1/cmdb/hostsync', '2025-09-28 15:16:09.785', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1844, 89, 'admin', 'delete', '58.251.35.38', '/api/v1/cmdb/hostdelete', '2025-09-28 17:01:57.035', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1845, 89, 'admin', 'post', '58.251.35.38', '/api/v1/cmdb/hostsync', '2025-09-28 17:02:09.955', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1846, 89, 'admin', 'post', '58.251.35.38', '/api/v1/config/ecsauthadd', '2025-09-28 17:06:30.883', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1847, 89, 'admin', 'post', '58.251.35.38', '/api/v1/cmdb/hostcreate', '2025-09-28 17:07:10.558', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1848, 89, 'admin', 'put', '58.251.35.38', '/api/v1/config/ecsauthupdate', '2025-09-28 17:08:27.030', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1849, 89, 'admin', 'delete', '58.251.35.38', '/api/v1/cmdb/hostdelete', '2025-09-28 17:08:40.030', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1850, 89, 'admin', 'post', '58.251.35.38', '/api/v1/cmdb/hostcreate', '2025-09-28 17:09:42.273', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1851, 89, 'admin', 'delete', '58.251.35.38', '/api/v1/cmdb/hostdelete', '2025-09-28 17:10:27.879', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1852, 89, 'admin', 'post', '58.251.35.38', '/api/v1/cmdb/hostcreate', '2025-09-28 17:11:04.433', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1853, 89, 'admin', 'delete', '58.251.35.38', '/api/v1/cmdb/hostdelete', '2025-09-28 17:11:31.548', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1854, 89, 'admin', 'post', '58.251.35.38', '/api/v1/cmdb/hostcreate', '2025-09-28 17:11:43.034', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1855, 89, 'admin', 'post', '58.251.35.38', '/api/v1/config/keymanage/sync', '2025-09-29 14:37:15.177', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1856, 89, 'admin', 'delete', '120.231.244.207', '/api/v1/monitor/agent/uninstall', '2025-10-01 17:24:40.139', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1857, 89, 'admin', 'post', '120.231.244.207', '/api/v1/k8s/cluster/30/sync', '2025-10-03 14:23:07.657', NULL);
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1858, 89, 'admin', 'delete', '120.231.244.207', '/api/v1/cmdb/hostdelete', '2025-10-04 15:49:26.956', '删除主机');
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1859, 89, 'admin', 'delete', '120.231.244.207', '/api/v1/cmdb/hostdelete', '2025-10-04 15:49:33.079', '删除主机');
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1860, 89, 'admin', 'post', '120.231.244.207', '/api/v1/cmdb/hostcreate', '2025-10-04 15:51:06.356', '创建主机');
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1861, 89, 'admin', 'delete', '120.231.244.207', '/api/v1/config/ecsauthdelete', '2025-10-04 15:51:31.353', '删除ECS认证');
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1862, 89, 'admin', 'delete', '120.231.244.207', '/api/v1/config/ecsauthdelete', '2025-10-04 15:51:35.664', '删除ECS认证');
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1863, 89, 'admin', 'post', '120.231.244.207', '/api/v1/config/ecsauthadd', '2025-10-04 15:51:52.293', '新增ECS认证');
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1864, 89, 'admin', 'delete', '120.231.244.207', '/api/v1/cmdb/hostdelete', '2025-10-04 15:52:09.441', '删除主机');
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1865, 89, 'admin', 'post', '120.231.244.207', '/api/v1/cmdb/hostcreate', '2025-10-04 15:52:48.843', '创建主机');
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1866, 89, 'admin', 'delete', '120.231.244.207', '/api/v1/cmdb/hostdelete', '2025-10-04 15:55:21.365', '删除主机');
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1867, 89, 'admin', 'post', '120.231.244.207', '/api/v1/cmdb/hostcreate', '2025-10-04 15:55:37.973', '创建主机');
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1868, 89, 'admin', 'delete', '120.231.244.207', '/api/v1/cmdb/hostdelete', '2025-10-04 15:55:50.196', '删除主机');
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1869, 89, 'admin', 'post', '120.231.244.207', '/api/v1/cmdb/hostcreate', '2025-10-04 15:56:16.585', '创建主机');
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1870, 89, 'admin', 'post', '120.231.244.207', '/api/v1/monitor/agent/deploy', '2025-10-04 15:57:13.757', '部署Agent');
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1871, 89, 'admin', 'delete', '120.231.244.207', '/api/v1/monitor/agent/delete/57', '2025-10-04 16:00:31.031', '删除Agent');
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1872, 89, 'admin', 'delete', '120.231.244.207', '/api/v1/monitor/agent/delete/56', '2025-10-04 16:00:33.709', '删除Agent');
+INSERT INTO `sys_operation_log` (`id`, `admin_id`, `username`, `method`, `ip`, `url`, `create_time`, `description`) VALUES (1873, 89, 'admin', 'post', '120.231.244.207', '/api/v1/monitor/agent/deploy', '2025-10-04 16:42:28.409', '部署Agent');
+COMMIT;
+
+-- ----------------------------
+-- Table structure for sys_post
+-- ----------------------------
+DROP TABLE IF EXISTS `sys_post`;
+CREATE TABLE `sys_post` (
+  `id` int NOT NULL AUTO_INCREMENT COMMENT '岗位ID',
+  `post_code` varchar(64) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NOT NULL COMMENT '岗位编码',
+  `post_name` varchar(50) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NOT NULL COMMENT '岗位名称',
+  `post_status` int NOT NULL DEFAULT '1' COMMENT '状态（1->正常 2->停用）',
+  `create_time` datetime DEFAULT NULL COMMENT '创建时间',
+  `remark` varchar(500) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin DEFAULT NULL COMMENT '备注',
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_bin ROW_FORMAT=DYNAMIC COMMENT='岗位信息表';
+
+-- ----------------------------
+-- Records of sys_post
+-- ----------------------------
+BEGIN;
+INSERT INTO `sys_post` (`id`, `post_code`, `post_name`, `post_status`, `create_time`, `remark`) VALUES (1, 'AAA', '研发总监', 1, '2023-06-14 20:08:22', '主管各个部门');
+INSERT INTO `sys_post` (`id`, `post_code`, `post_name`, `post_status`, `create_time`, `remark`) VALUES (10, 'ops', '运维工程师', 1, '2025-06-28 22:46:33', '运维工程师');
+INSERT INTO `sys_post` (`id`, `post_code`, `post_name`, `post_status`, `create_time`, `remark`) VALUES (11, 'dev', '研发工程师', 1, '2025-06-28 22:50:29', '研发工程师');
+INSERT INTO `sys_post` (`id`, `post_code`, `post_name`, `post_status`, `create_time`, `remark`) VALUES (12, 'test', '测试工程师', 2, '2025-06-28 22:52:57', '测试工程师');
+COMMIT;
+
+-- ----------------------------
+-- Table structure for sys_role
+-- ----------------------------
+DROP TABLE IF EXISTS `sys_role`;
+CREATE TABLE `sys_role` (
+  `id` int NOT NULL AUTO_INCREMENT COMMENT '主键',
+  `role_name` varchar(64) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NOT NULL COMMENT '角色名称',
+  `role_key` varchar(64) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NOT NULL COMMENT '角色权限字符串',
+  `status` int NOT NULL DEFAULT '1' COMMENT '启用状态：1->启用；2->禁用',
+  `description` varchar(500) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci DEFAULT NULL COMMENT '描述',
+  `create_time` datetime NOT NULL COMMENT '创建时间',
+  PRIMARY KEY (`id`) USING BTREE,
+  KEY `name` (`role_name`) USING BTREE,
+  KEY `create_time` (`create_time`) USING BTREE
+) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=utf8mb3 ROW_FORMAT=DYNAMIC COMMENT='后台角色表';
+
+-- ----------------------------
+-- Records of sys_role
+-- ----------------------------
+BEGIN;
+INSERT INTO `sys_role` (`id`, `role_name`, `role_key`, `status`, `description`, `create_time`) VALUES (1, '超级管理员', 'admin', 1, '最大权限', '2023-06-12 20:04:53');
+INSERT INTO `sys_role` (`id`, `role_name`, `role_key`, `status`, `description`, `create_time`) VALUES (10, '研发同学', 'dev', 1, '研发同学', '2025-06-29 14:01:02');
+INSERT INTO `sys_role` (`id`, `role_name`, `role_key`, `status`, `description`, `create_time`) VALUES (11, '测试同学', 'test', 1, '测试同学', '2025-06-29 14:01:49');
+INSERT INTO `sys_role` (`id`, `role_name`, `role_key`, `status`, `description`, `create_time`) VALUES (12, '运维同学', 'ops', 1, '运维同学', '2025-06-29 14:02:29');
+INSERT INTO `sys_role` (`id`, `role_name`, `role_key`, `status`, `description`, `create_time`) VALUES (13, '游客', 'test1', 1, 'test1', '2025-07-03 18:47:25');
+COMMIT;
+
+-- ----------------------------
+-- Table structure for sys_role_menu
+-- ----------------------------
+DROP TABLE IF EXISTS `sys_role_menu`;
+CREATE TABLE `sys_role_menu` (
+  `role_id` int DEFAULT NULL COMMENT '角色ID',
+  `menu_id` int DEFAULT NULL COMMENT '菜单ID'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 ROW_FORMAT=DYNAMIC COMMENT='角色和菜单关系表';
+
+-- ----------------------------
+-- Records of sys_role_menu
+-- ----------------------------
+BEGIN;
+INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (11, 44);
+INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (11, 45);
+INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (11, 47);
+INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (11, 73);
+INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (11, 46);
+INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (11, 49);
+INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (11, 62);
+INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (10, 72);
+INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (12, 149);
+INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (12, 150);
+INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (12, 151);
+INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (12, 152);
+INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (12, 146);
+INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (12, 147);
+INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (12, 89);
+INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (12, 90);
+INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (12, 82);
+INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (12, 83);
+INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (12, 105);
+INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (12, 142);
+INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (12, 143);
+INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (12, 144);
+INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (12, 139);
+INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (12, 140);
+INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (12, 136);
+INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (12, 137);
+INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (12, 133);
+INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (12, 134);
+INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (12, 130);
+INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (12, 131);
+INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (12, 126);
+INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (12, 127);
+INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (12, 16);
+INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (12, 17);
+INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (12, 21);
+INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (12, 22);
+INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (12, 26);
+INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (12, 27);
+INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (12, 29);
+INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (12, 30);
+INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (12, 34);
+INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (12, 118);
+INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (12, 47);
+INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (12, 113);
+INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (12, 80);
+INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (12, 78);
+INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (12, 95);
+INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (12, 88);
+INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (12, 81);
+INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (12, 109);
+INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (12, 110);
+INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (12, 111);
+INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (12, 97);
+INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (12, 99);
+INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (12, 98);
+INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (12, 100);
+INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (12, 101);
+INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (12, 102);
+INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (12, 4);
+INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (12, 6);
+INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (12, 7);
+INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (12, 8);
+INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (12, 9);
+INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (12, 10);
+INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (12, 84);
+INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (12, 104);
+INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (12, 44);
+INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (12, 45);
+INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (1, 72);
+INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (1, 80);
+INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (1, 78);
+INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (1, 149);
+INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (1, 150);
+INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (1, 151);
+INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (1, 152);
+INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (1, 153);
+INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (1, 154);
+INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (1, 155);
+INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (1, 165);
+INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (1, 166);
+INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (1, 95);
+INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (1, 146);
+INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (1, 147);
+INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (1, 148);
+INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (1, 88);
+INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (1, 89);
+INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (1, 90);
+INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (1, 91);
+INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (1, 81);
+INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (1, 82);
+INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (1, 167);
+INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (1, 168);
+INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (1, 169);
+INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (1, 170);
+INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (1, 171);
+INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (1, 83);
+INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (1, 172);
+INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (1, 173);
+INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (1, 174);
+INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (1, 175);
+INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (1, 176);
+INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (1, 177);
+INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (1, 105);
+INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (1, 178);
+INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (1, 179);
+INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (1, 180);
+INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (1, 181);
+INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (1, 182);
+INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (1, 183);
+INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (1, 184);
+INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (1, 93);
+INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (1, 185);
+INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (1, 186);
+INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (1, 187);
+INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (1, 188);
+INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (1, 189);
+INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (1, 190);
+INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (1, 191);
+INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (1, 192);
+INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (1, 193);
+INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (1, 194);
+INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (1, 195);
+INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (1, 196);
+INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (1, 106);
+INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (1, 108);
+INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (1, 107);
+INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (1, 109);
+INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (1, 110);
+INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (1, 142);
+INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (1, 143);
+INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (1, 144);
+INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (1, 145);
+INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (1, 162);
+INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (1, 163);
+INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (1, 164);
+INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (1, 111);
+INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (1, 139);
+INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (1, 140);
+INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (1, 141);
+INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (1, 160);
+INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (1, 161);
+INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (1, 97);
+INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (1, 99);
+INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (1, 136);
+INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (1, 137);
+INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (1, 138);
+INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (1, 156);
+INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (1, 157);
+INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (1, 98);
+INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (1, 133);
+INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (1, 134);
+INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (1, 135);
+INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (1, 100);
+INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (1, 130);
+INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (1, 131);
+INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (1, 132);
+INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (1, 159);
+INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (1, 101);
+INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (1, 103);
+INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (1, 102);
+INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (1, 126);
+INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (1, 127);
+INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (1, 128);
+INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (1, 129);
+INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (1, 4);
+INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (1, 6);
+INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (1, 16);
+INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (1, 17);
+INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (1, 18);
+INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (1, 60);
+INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (1, 7);
+INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (1, 21);
+INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (1, 22);
+INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (1, 23);
+INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (1, 24);
+INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (1, 8);
+INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (1, 26);
+INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (1, 27);
+INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (1, 28);
+INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (1, 9);
+INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (1, 29);
+INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (1, 30);
+INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (1, 31);
+INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (1, 10);
+INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (1, 32);
+INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (1, 33);
+INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (1, 34);
+INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (1, 84);
+INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (1, 85);
+INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (1, 123);
+INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (1, 124);
+INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (1, 125);
+INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (1, 86);
+INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (1, 119);
+INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (1, 120);
+INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (1, 121);
+INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (1, 122);
+INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (1, 104);
+INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (1, 114);
+INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (1, 115);
+INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (1, 117);
+INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (1, 118);
+INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (1, 44);
+INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (1, 45);
+INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (1, 47);
+INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (1, 113);
+INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (1, 73);
+INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (1, 46);
+INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (1, 49);
+INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (1, 62);
+INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (1, 96);
+INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (13, 72);
+INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (13, 149);
+INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (13, 150);
+INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (13, 152);
+INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (13, 153);
+INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (13, 154);
+INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (13, 165);
+INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (13, 166);
+INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (13, 146);
+INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (13, 89);
+INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (13, 167);
+INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (13, 168);
+INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (13, 170);
+INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (13, 172);
+INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (13, 173);
+INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (13, 174);
+INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (13, 175);
+INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (13, 178);
+INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (13, 179);
+INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (13, 180);
+INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (13, 181);
+INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (13, 182);
+INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (13, 185);
+INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (13, 186);
+INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (13, 190);
+INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (13, 193);
+INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (13, 195);
+INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (13, 197);
+INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (13, 200);
+INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (13, 203);
+INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (13, 205);
+INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (13, 108);
+INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (13, 107);
+INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (13, 142);
+INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (13, 144);
+INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (13, 162);
+INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (13, 139);
+INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (13, 140);
+INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (13, 160);
+INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (13, 136);
+INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (13, 137);
+INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (13, 156);
+INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (13, 133);
+INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (13, 130);
+INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (13, 132);
+INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (13, 159);
+INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (13, 103);
+INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (13, 127);
+INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (13, 128);
+INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (13, 16);
+INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (13, 21);
+INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (13, 26);
+INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (13, 29);
+INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (13, 32);
+INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (13, 125);
+INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (13, 122);
+INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (13, 118);
+INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (13, 73);
+INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (13, 62);
+INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (13, 96);
+INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (13, 80);
+INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (13, 78);
+INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (13, 95);
+INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (13, 88);
+INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (13, 81);
+INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (13, 82);
+INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (13, 83);
+INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (13, 105);
+INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (13, 93);
+INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (13, 106);
+INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (13, 109);
+INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (13, 110);
+INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (13, 111);
+INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (13, 97);
+INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (13, 99);
+INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (13, 98);
+INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (13, 100);
+INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (13, 101);
+INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (13, 102);
+INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (13, 4);
+INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (13, 6);
+INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (13, 7);
+INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (13, 8);
+INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (13, 9);
+INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (13, 10);
+INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (13, 84);
+INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (13, 85);
+INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (13, 86);
+INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (13, 104);
+INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (13, 44);
+INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (13, 45);
+INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (13, 46);
+COMMIT;
+
+-- ----------------------------
+-- Table structure for task_ansible
+-- ----------------------------
+DROP TABLE IF EXISTS `task_ansible`;
+CREATE TABLE `task_ansible` (
+  `id` bigint unsigned NOT NULL AUTO_INCREMENT COMMENT '''主键ID''',
+  `name` varchar(100) NOT NULL COMMENT '''任务名称''',
+  `description` text COMMENT '''任务描述''',
+  `type` bigint NOT NULL DEFAULT '1' COMMENT '''任务类型:1-手动,2-Git,3-K8s''',
+  `git_repo` varchar(255) DEFAULT NULL COMMENT '''Git仓库地址''',
+  `host_groups` text NOT NULL COMMENT '''主机分组JSON''',
+  `all_host_ids` text NOT NULL COMMENT '''所有主机ID JSON数组''',
+  `global_vars` text COMMENT '''全局变量JSON''',
+  `status` bigint NOT NULL DEFAULT '1' COMMENT '''任务状态:1-等待中,2-运行中,3-成功,4-异常''',
+  `created_at` datetime(3) NOT NULL COMMENT '''创建时间''',
+  `updated_at` datetime(3) NOT NULL COMMENT '''更新时间''',
+  `error_msg` text COMMENT '''错误信息''',
+  `task_count` bigint NOT NULL DEFAULT '0' COMMENT '''任务数量(Type=1时为上传文件数,Type=2时为解析的playbook数,Type=3时固定为1)''',
+  `total_duration` bigint NOT NULL DEFAULT '0' COMMENT '''任务执行总耗时(秒,所有子任务耗时总和)''',
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `idx_task_ansible_name` (`name`),
+  KEY `idx_task_status` (`status`)
+) ENGINE=InnoDB AUTO_INCREMENT=43 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+-- ----------------------------
+-- Records of task_ansible
+-- ----------------------------
+BEGIN;
+INSERT INTO `task_ansible` (`id`, `name`, `description`, `type`, `git_repo`, `host_groups`, `all_host_ids`, `global_vars`, `status`, `created_at`, `updated_at`, `error_msg`, `task_count`, `total_duration`) VALUES (21, '前端测试001', '', 1, '', '{\"api\":[445],\"web\":[444]}', '[444,445]', '', 1, '2025-08-23 20:41:19.309', '2025-08-23 20:41:19.775', '', 1, 0);
+INSERT INTO `task_ansible` (`id`, `name`, `description`, `type`, `git_repo`, `host_groups`, `all_host_ids`, `global_vars`, `status`, `created_at`, `updated_at`, `error_msg`, `task_count`, `total_duration`) VALUES (22, '前端测试002', '', 1, '', '{\"api\":[445],\"web\":[444]}', '[444,445]', '', 1, '2025-08-23 20:52:59.124', '2025-08-23 20:52:59.616', '', 1, 0);
+INSERT INTO `task_ansible` (`id`, `name`, `description`, `type`, `git_repo`, `host_groups`, `all_host_ids`, `global_vars`, `status`, `created_at`, `updated_at`, `error_msg`, `task_count`, `total_duration`) VALUES (23, '前端测试003', '', 1, '', '{\"web\":[444]}', '[444]', '', 1, '2025-08-23 20:57:09.757', '2025-08-23 20:57:10.240', '', 1, 0);
+INSERT INTO `task_ansible` (`id`, `name`, `description`, `type`, `git_repo`, `host_groups`, `all_host_ids`, `global_vars`, `status`, `created_at`, `updated_at`, `error_msg`, `task_count`, `total_duration`) VALUES (24, '前端测试004', '', 1, '', '{\"web\":[444]}', '[444]', '', 3, '2025-08-23 21:04:05.718', '2025-08-23 22:04:47.011', '', 1, 15);
+INSERT INTO `task_ansible` (`id`, `name`, `description`, `type`, `git_repo`, `host_groups`, `all_host_ids`, `global_vars`, `status`, `created_at`, `updated_at`, `error_msg`, `task_count`, `total_duration`) VALUES (25, '前端测试005', '', 2, 'git@gitee.com:zhang_fan1024/ansible-playbook.git', '{\"api\":[444],\"web\":[444]}', '[444,444]', '', 3, '2025-08-23 21:10:24.966', '2025-08-24 00:36:24.804', '', 2, 37);
+INSERT INTO `task_ansible` (`id`, `name`, `description`, `type`, `git_repo`, `host_groups`, `all_host_ids`, `global_vars`, `status`, `created_at`, `updated_at`, `error_msg`, `task_count`, `total_duration`) VALUES (27, '2025-09-08测试ansible自动化任务', '', 2, 'git@gitee.com:zhang_fan1024/ansible-playbook.git', '{\"test\":[449]}', '[449]', '', 3, '2025-09-08 17:32:44.331', '2025-09-08 17:33:10.471', '', 2, 8);
+INSERT INTO `task_ansible` (`id`, `name`, `description`, `type`, `git_repo`, `host_groups`, `all_host_ids`, `global_vars`, `status`, `created_at`, `updated_at`, `error_msg`, `task_count`, `total_duration`) VALUES (36, 'k8s-3-deployment', 'k8s-3', 3, 'git@gitee.com:zhang_fan1024/zf-k8s.git', '{\"etcd\":[454],\"masters\":[454],\"workers\":[456,455]}', '[454,456,455]', '{\"cluster_name\":\"k8s-3\",\"cluster_version\":\"1.30.4\",\"deployment_mode\":\"1\",\"enabled_components\":\"coredns,metrics-server,calico\"}', 4, '2025-09-09 18:36:52.609', '2025-09-10 20:11:41.430', '', 1, 417);
+INSERT INTO `task_ansible` (`id`, `name`, `description`, `type`, `git_repo`, `host_groups`, `all_host_ids`, `global_vars`, `status`, `created_at`, `updated_at`, `error_msg`, `task_count`, `total_duration`) VALUES (37, 'k8s-4-deployment', '', 3, 'git@gitee.com:zhang_fan1024/zf-k8s.git', '{\"etcd\":[454],\"masters\":[454],\"workers\":[455,456]}', '[455,456,454]', '{\"cluster_name\":\"k8s-4\",\"cluster_version\":\"1.30.4\",\"deployment_mode\":\"1\",\"enabled_components\":\"coredns,calico\"}', 4, '2025-09-10 12:40:58.904', '2025-09-10 14:57:07.782', '', 1, 2);
+INSERT INTO `task_ansible` (`id`, `name`, `description`, `type`, `git_repo`, `host_groups`, `all_host_ids`, `global_vars`, `status`, `created_at`, `updated_at`, `error_msg`, `task_count`, `total_duration`) VALUES (38, 'k8s-5-deployment', '', 3, 'git@gitee.com:zhang_fan1024/zf-k8s.git', '{\"etcd\":[454],\"masters\":[454],\"workers\":[455,456]}', '[454,455,456]', '{\"cluster_name\":\"k8s-5\",\"cluster_version\":\"1.30.4\",\"deployment_mode\":\"1\",\"enabled_components\":\"coredns,calico\"}', 3, '2025-09-10 14:59:48.343', '2025-09-10 15:33:51.786', '', 1, 2022);
+INSERT INTO `task_ansible` (`id`, `name`, `description`, `type`, `git_repo`, `host_groups`, `all_host_ids`, `global_vars`, `status`, `created_at`, `updated_at`, `error_msg`, `task_count`, `total_duration`) VALUES (40, '虚拟机测试环境k8s集群001-deployment', '', 3, 'git@gitee.com:zhang_fan1024/zf-k8s.git', '{\"etcd\":[454],\"masters\":[454],\"workers\":[455,456]}', '[454,455,456]', '{\"cluster_name\":\"虚拟机测试环境k8s集群001\",\"cluster_version\":\"1.31.0\",\"deployment_mode\":\"1\",\"enabled_components\":\"coredns,metrics-server,ingress-nginx,calico\"}', 3, '2025-09-19 23:32:43.465', '2025-09-20 00:01:27.442', '', 1, 1590);
+INSERT INTO `task_ansible` (`id`, `name`, `description`, `type`, `git_repo`, `host_groups`, `all_host_ids`, `global_vars`, `status`, `created_at`, `updated_at`, `error_msg`, `task_count`, `total_duration`) VALUES (42, '腾讯云k8s001-deployment', '腾讯云k8s001', 3, 'git@gitee.com:zhang_fan1024/zf-k8s.git', '{\"etcd\":[457],\"masters\":[457],\"workers\":[458,459]}', '[457,458,459]', '{\"cluster_name\":\"腾讯云k8s001\",\"cluster_version\":\"1.31.0\",\"deployment_mode\":\"1\",\"enabled_components\":\"coredns,metrics-server,ingress-nginx,calico\"}', 4, '2025-09-20 13:25:54.975', '2025-09-20 13:38:38.337', '', 1, 614);
+COMMIT;
+
+-- ----------------------------
+-- Table structure for task_ansiblework
+-- ----------------------------
+DROP TABLE IF EXISTS `task_ansiblework`;
+CREATE TABLE `task_ansiblework` (
+  `id` bigint unsigned NOT NULL AUTO_INCREMENT COMMENT '''主键ID''',
+  `task_id` bigint unsigned NOT NULL COMMENT '''父任务ID''',
+  `entry_file_name` varchar(255) NOT NULL COMMENT '''入口文件名''',
+  `entry_file_path` varchar(255) NOT NULL COMMENT '''入口文件路径''',
+  `log_path` varchar(255) DEFAULT NULL COMMENT '''日志路径''',
+  `status` bigint NOT NULL DEFAULT '1' COMMENT '''子任务状态:1-等待中,2-运行中,3-成功,4-异常''',
+  `start_time` datetime(3) DEFAULT NULL COMMENT '''开始时间''',
+  `end_time` datetime(3) DEFAULT NULL COMMENT '''结束时间''',
+  `duration` bigint DEFAULT NULL COMMENT '''执行耗时(秒)''',
+  `exit_code` bigint DEFAULT NULL COMMENT '''退出代码''',
+  `error_msg` text COMMENT '''错误信息''',
+  `log` text COMMENT '''日志内容''',
+  PRIMARY KEY (`id`),
+  KEY `idx_task_ansiblework_task_id` (`task_id`),
+  KEY `idx_task_id` (`task_id`),
+  KEY `idx_task_work_composite` (`task_id`,`status`),
+  CONSTRAINT `fk_task_ansible_works` FOREIGN KEY (`task_id`) REFERENCES `task_ansible` (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=37 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+-- ----------------------------
+-- Records of task_ansiblework
+-- ----------------------------
+BEGIN;
+INSERT INTO `task_ansiblework` (`id`, `task_id`, `entry_file_name`, `entry_file_path`, `log_path`, `status`, `start_time`, `end_time`, `duration`, `exit_code`, `error_msg`, `log`) VALUES (16, 21, '01-linux-os.yaml.yml', 'task/21/前端测试001/01-linux-os.yaml.yml', '', 1, NULL, NULL, 0, 0, '', NULL);
+INSERT INTO `task_ansiblework` (`id`, `task_id`, `entry_file_name`, `entry_file_path`, `log_path`, `status`, `start_time`, `end_time`, `duration`, `exit_code`, `error_msg`, `log`) VALUES (17, 22, '01-linux-os.yaml.yml', 'task/22/前端测试002/01-linux-os.yaml.yml', '', 1, NULL, NULL, 0, 0, '', NULL);
+INSERT INTO `task_ansiblework` (`id`, `task_id`, `entry_file_name`, `entry_file_path`, `log_path`, `status`, `start_time`, `end_time`, `duration`, `exit_code`, `error_msg`, `log`) VALUES (18, 23, '01-linux-os.yaml.yml', 'task/23/前端测试003/01-linux-os.yaml.yml', '', 1, NULL, NULL, 0, 0, '', NULL);
+INSERT INTO `task_ansiblework` (`id`, `task_id`, `entry_file_name`, `entry_file_path`, `log_path`, `status`, `start_time`, `end_time`, `duration`, `exit_code`, `error_msg`, `log`) VALUES (19, 24, '01-linux-os.yaml.yml', 'task/24/前端测试004/01-linux-os.yaml.yml', 'logs/ansible/24/19/01-linux-os.yaml.yml.log', 3, '2025-08-23 22:04:31.142', '2025-08-23 22:04:46.673', 15, 0, '', NULL);
+INSERT INTO `task_ansiblework` (`id`, `task_id`, `entry_file_name`, `entry_file_path`, `log_path`, `status`, `start_time`, `end_time`, `duration`, `exit_code`, `error_msg`, `log`) VALUES (20, 25, '01-linux-os.yaml', 'task/25/前端测试005/01-linux-os.yaml', 'logs/ansible/25/20/01-linux-os.yaml.log', 3, '2025-08-24 00:35:46.757', '2025-08-24 00:35:59.775', 13, 0, '', NULL);
+INSERT INTO `task_ansiblework` (`id`, `task_id`, `entry_file_name`, `entry_file_path`, `log_path`, `status`, `start_time`, `end_time`, `duration`, `exit_code`, `error_msg`, `log`) VALUES (21, 25, '02-os.yaml', 'task/25/前端测试005/02-os.yaml', 'logs/ansible/25/21/02-os.yaml.log', 3, '2025-08-24 00:35:59.985', '2025-08-24 00:36:24.468', 24, 0, '', NULL);
+INSERT INTO `task_ansiblework` (`id`, `task_id`, `entry_file_name`, `entry_file_path`, `log_path`, `status`, `start_time`, `end_time`, `duration`, `exit_code`, `error_msg`, `log`) VALUES (22, 27, '01-linux-os.yaml', 'task/27/2025-09-08测试ansible自动化任务/01-linux-os.yaml', 'logs/ansible/27/22/01-linux-os.yaml.log', 3, '2025-09-08 17:33:00.979', '2025-09-08 17:33:07.235', 6, 0, '', NULL);
+INSERT INTO `task_ansiblework` (`id`, `task_id`, `entry_file_name`, `entry_file_path`, `log_path`, `status`, `start_time`, `end_time`, `duration`, `exit_code`, `error_msg`, `log`) VALUES (23, 27, '02-os.yaml', 'task/27/2025-09-08测试ansible自动化任务/02-os.yaml', 'logs/ansible/27/23/02-os.yaml.log', 3, '2025-09-08 17:33:07.467', '2025-09-08 17:33:10.126', 2, 0, '', NULL);
+INSERT INTO `task_ansiblework` (`id`, `task_id`, `entry_file_name`, `entry_file_path`, `log_path`, `status`, `start_time`, `end_time`, `duration`, `exit_code`, `error_msg`, `log`) VALUES (30, 36, 'deploy-simple.sh', './scripts/deploy-simple.sh', 'logs/ansible/36/30/deploy-simple.sh.log', 4, '2025-09-10 20:04:43.504', '2025-09-10 20:11:41.111', 417, 99, 'exit status 99', NULL);
+INSERT INTO `task_ansiblework` (`id`, `task_id`, `entry_file_name`, `entry_file_path`, `log_path`, `status`, `start_time`, `end_time`, `duration`, `exit_code`, `error_msg`, `log`) VALUES (31, 37, 'deploy-simple.sh', './scripts/deploy-simple.sh', 'logs/ansible/37/31/deploy-simple.sh.log', 4, '2025-09-10 14:57:04.562', '2025-09-10 14:57:07.467', 2, 4, 'exit status 4', NULL);
+INSERT INTO `task_ansiblework` (`id`, `task_id`, `entry_file_name`, `entry_file_path`, `log_path`, `status`, `start_time`, `end_time`, `duration`, `exit_code`, `error_msg`, `log`) VALUES (32, 38, 'deploy-simple.sh', './scripts/deploy-simple.sh', 'logs/ansible/38/32/deploy-simple.sh.log', 3, '2025-09-10 15:00:09.492', '2025-09-10 15:33:51.446', 2022, 0, '', NULL);
+INSERT INTO `task_ansiblework` (`id`, `task_id`, `entry_file_name`, `entry_file_path`, `log_path`, `status`, `start_time`, `end_time`, `duration`, `exit_code`, `error_msg`, `log`) VALUES (34, 40, 'deploy-simple.sh', './scripts/deploy-simple.sh', 'logs/ansible/40/34/deploy-simple.sh.log', 3, '2025-09-19 23:34:56.212', '2025-09-20 00:01:27.065', 1590, 0, '', NULL);
+INSERT INTO `task_ansiblework` (`id`, `task_id`, `entry_file_name`, `entry_file_path`, `log_path`, `status`, `start_time`, `end_time`, `duration`, `exit_code`, `error_msg`, `log`) VALUES (36, 42, 'deploy-simple.sh', './scripts/deploy-simple.sh', 'logs/ansible/42/36/deploy-simple.sh.log', 4, '2025-09-20 13:28:23.527', '2025-09-20 13:38:37.994', 614, 2, 'exit status 2', NULL);
+COMMIT;
+
+-- ----------------------------
+-- Table structure for task_job
+-- ----------------------------
+DROP TABLE IF EXISTS `task_job`;
+CREATE TABLE `task_job` (
+  `id` bigint unsigned NOT NULL AUTO_INCREMENT,
+  `name` varchar(255) DEFAULT NULL COMMENT '任务标题',
+  `type` bigint DEFAULT NULL COMMENT '任务类型 1=普通任务,2=定时任务,3=ansible任务',
+  `shell` text COMMENT '任务内容(任务模板ID,多个用逗号分隔)',
+  `host_ids` text COMMENT '主机ID(多个用逗号分隔)',
+  `cron_expr` varchar(255) DEFAULT NULL COMMENT '定时表达式(* * * * *)',
+  `tasklog` text COMMENT '任务执行日志',
+  `status` bigint DEFAULT NULL COMMENT '任务状态 1=等待中,2=运行中,3=成功,4=异常,5=已暂停',
+  `duration` bigint DEFAULT NULL COMMENT '执行耗时(秒)',
+  `remark` text COMMENT '任务备注',
+  `start_time` datetime(3) DEFAULT NULL COMMENT '任务开始时间',
+  `end_time` datetime(3) DEFAULT NULL COMMENT '任务结束时间',
+  `created_at` datetime(3) DEFAULT NULL COMMENT '任务创建时间',
+  `task_count` bigint DEFAULT NULL COMMENT '任务数量',
+  `is_recurring` tinyint(1) DEFAULT NULL COMMENT '是否周期性任务',
+  `scheduled_time` datetime(3) DEFAULT NULL COMMENT '计划执行时间',
+  `log_path` varchar(500) DEFAULT NULL COMMENT '日志文件路径',
+  `execute_count` bigint DEFAULT '0' COMMENT '执行次数',
+  `next_run_time` datetime(3) DEFAULT NULL COMMENT '下次执行时间',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=43 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+-- ----------------------------
+-- Records of task_job
+-- ----------------------------
+BEGIN;
+INSERT INTO `task_job` (`id`, `name`, `type`, `shell`, `host_ids`, `cron_expr`, `tasklog`, `status`, `duration`, `remark`, `start_time`, `end_time`, `created_at`, `task_count`, `is_recurring`, `scheduled_time`, `log_path`, `execute_count`, `next_run_time`) VALUES (14, '多个任务执行demo3', 1, '2,3,4', '1', '', '', 3, 0, '123', NULL, '2025-08-09 15:01:19.164', '2025-08-09 14:59:05.116', 3, NULL, NULL, NULL, 0, NULL);
+INSERT INTO `task_job` (`id`, `name`, `type`, `shell`, `host_ids`, `cron_expr`, `tasklog`, `status`, `duration`, `remark`, `start_time`, `end_time`, `created_at`, `task_count`, `is_recurring`, `scheduled_time`, `log_path`, `execute_count`, `next_run_time`) VALUES (15, '测试3', 1, '2,3,4', '1', '', '', 3, 26, '123', NULL, '2025-08-09 15:53:24.260', '2025-08-09 15:24:17.349', 3, NULL, NULL, NULL, 0, NULL);
+INSERT INTO `task_job` (`id`, `name`, `type`, `shell`, `host_ids`, `cron_expr`, `tasklog`, `status`, `duration`, `remark`, `start_time`, `end_time`, `created_at`, `task_count`, `is_recurring`, `scheduled_time`, `log_path`, `execute_count`, `next_run_time`) VALUES (16, '测试4', 1, '2,3', '1', '', '', 3, 78, '123', NULL, '2025-08-09 20:12:06.448', '2025-08-09 16:01:57.204', 2, NULL, NULL, NULL, 0, NULL);
+INSERT INTO `task_job` (`id`, `name`, `type`, `shell`, `host_ids`, `cron_expr`, `tasklog`, `status`, `duration`, `remark`, `start_time`, `end_time`, `created_at`, `task_count`, `is_recurring`, `scheduled_time`, `log_path`, `execute_count`, `next_run_time`) VALUES (18, '测试5', 1, '12,9,6,4,3,2', '1', '', '', 1, 0, '123', NULL, NULL, '2025-08-10 01:19:01.757', 6, NULL, NULL, NULL, 0, NULL);
+INSERT INTO `task_job` (`id`, `name`, `type`, `shell`, `host_ids`, `cron_expr`, `tasklog`, `status`, `duration`, `remark`, `start_time`, `end_time`, `created_at`, `task_count`, `is_recurring`, `scheduled_time`, `log_path`, `execute_count`, `next_run_time`) VALUES (19, '测试五', 1, '2,3', '1', '', '', 3, 99, '测试 任务启动', NULL, '2025-08-12 13:13:06.125', '2025-08-10 16:19:19.745', 2, NULL, NULL, NULL, 0, NULL);
+INSERT INTO `task_job` (`id`, `name`, `type`, `shell`, `host_ids`, `cron_expr`, `tasklog`, `status`, `duration`, `remark`, `start_time`, `end_time`, `created_at`, `task_count`, `is_recurring`, `scheduled_time`, `log_path`, `execute_count`, `next_run_time`) VALUES (20, 'test', 1, '9', '1', '', '', 3, 1, 'ls', NULL, '2025-08-12 12:30:58.079', '2025-08-11 19:27:06.166', 1, NULL, NULL, NULL, 0, NULL);
+INSERT INTO `task_job` (`id`, `name`, `type`, `shell`, `host_ids`, `cron_expr`, `tasklog`, `status`, `duration`, `remark`, `start_time`, `end_time`, `created_at`, `task_count`, `is_recurring`, `scheduled_time`, `log_path`, `execute_count`, `next_run_time`) VALUES (21, 'test001', 1, '3,2,4', '444', '', '', 3, 101, '', NULL, '2025-08-12 16:27:32.276', '2025-08-12 13:22:20.929', 3, NULL, NULL, NULL, 0, NULL);
+INSERT INTO `task_job` (`id`, `name`, `type`, `shell`, `host_ids`, `cron_expr`, `tasklog`, `status`, `duration`, `remark`, `start_time`, `end_time`, `created_at`, `task_count`, `is_recurring`, `scheduled_time`, `log_path`, `execute_count`, `next_run_time`) VALUES (22, 'test002', 1, '2,3,4', '444', '', '', 3, 107, 'test002', NULL, '2025-08-13 13:24:29.304', '2025-08-12 16:28:54.810', 3, NULL, NULL, NULL, 0, NULL);
+INSERT INTO `task_job` (`id`, `name`, `type`, `shell`, `host_ids`, `cron_expr`, `tasklog`, `status`, `duration`, `remark`, `start_time`, `end_time`, `created_at`, `task_count`, `is_recurring`, `scheduled_time`, `log_path`, `execute_count`, `next_run_time`) VALUES (23, '获取日志详细信息', 1, '2,3,12', '1', '', '', 3, 115, '', NULL, '2025-08-14 12:28:28.011', '2025-08-14 10:41:59.846', 3, NULL, NULL, NULL, 0, NULL);
+INSERT INTO `task_job` (`id`, `name`, `type`, `shell`, `host_ids`, `cron_expr`, `tasklog`, `status`, `duration`, `remark`, `start_time`, `end_time`, `created_at`, `task_count`, `is_recurring`, `scheduled_time`, `log_path`, `execute_count`, `next_run_time`) VALUES (24, '定时任务测试001', 2, '12', '1', '*/2 * * * * ', '', 2, 6, '定时任务测试001', NULL, '2025-08-14 15:07:54.377', '2025-08-14 11:44:48.087', 1, NULL, NULL, NULL, 0, '2025-10-04 16:42:00.000');
+INSERT INTO `task_job` (`id`, `name`, `type`, `shell`, `host_ids`, `cron_expr`, `tasklog`, `status`, `duration`, `remark`, `start_time`, `end_time`, `created_at`, `task_count`, `is_recurring`, `scheduled_time`, `log_path`, `execute_count`, `next_run_time`) VALUES (25, 'test003', 1, '3', '1', '', '', 1, 6, '123', NULL, '2025-08-14 16:18:58.990', '2025-08-14 13:48:35.838', 1, NULL, NULL, NULL, 0, NULL);
+INSERT INTO `task_job` (`id`, `name`, `type`, `shell`, `host_ids`, `cron_expr`, `tasklog`, `status`, `duration`, `remark`, `start_time`, `end_time`, `created_at`, `task_count`, `is_recurring`, `scheduled_time`, `log_path`, `execute_count`, `next_run_time`) VALUES (34, 'test004', 2, '3', '1', '*/2 * * * * ', '', 3, 9, '123', NULL, '2025-08-14 19:12:11.236', '2025-08-14 17:47:08.279', 1, NULL, NULL, NULL, 0, NULL);
+INSERT INTO `task_job` (`id`, `name`, `type`, `shell`, `host_ids`, `cron_expr`, `tasklog`, `status`, `duration`, `remark`, `start_time`, `end_time`, `created_at`, `task_count`, `is_recurring`, `scheduled_time`, `log_path`, `execute_count`, `next_run_time`) VALUES (35, 'test005', 2, '3', '1', '*/2 * * * * ', '', 4, 5, '123', NULL, '2025-08-14 20:24:07.453', '2025-08-14 19:28:41.064', 1, NULL, NULL, NULL, 0, NULL);
+INSERT INTO `task_job` (`id`, `name`, `type`, `shell`, `host_ids`, `cron_expr`, `tasklog`, `status`, `duration`, `remark`, `start_time`, `end_time`, `created_at`, `task_count`, `is_recurring`, `scheduled_time`, `log_path`, `execute_count`, `next_run_time`) VALUES (36, 'test006', 1, '2,3,4', '1', '', '', 3, 117, '多任务模式', NULL, '2025-08-14 22:37:15.623', '2025-08-14 22:34:52.332', 3, NULL, NULL, NULL, 0, NULL);
+INSERT INTO `task_job` (`id`, `name`, `type`, `shell`, `host_ids`, `cron_expr`, `tasklog`, `status`, `duration`, `remark`, `start_time`, `end_time`, `created_at`, `task_count`, `is_recurring`, `scheduled_time`, `log_path`, `execute_count`, `next_run_time`) VALUES (38, 'test008', 2, '3', '1', '*/2 * * * *', '', 4, 5, '', NULL, '2025-08-14 23:56:07.411', '2025-08-14 23:49:15.967', 1, NULL, NULL, NULL, 0, NULL);
+INSERT INTO `task_job` (`id`, `name`, `type`, `shell`, `host_ids`, `cron_expr`, `tasklog`, `status`, `duration`, `remark`, `start_time`, `end_time`, `created_at`, `task_count`, `is_recurring`, `scheduled_time`, `log_path`, `execute_count`, `next_run_time`) VALUES (39, '10个任务', 1, '2,4,3,6,9,10,11,12,13', '1', '', '', 1, 0, '', NULL, NULL, '2025-08-15 17:31:46.981', 9, NULL, NULL, NULL, 0, NULL);
+INSERT INTO `task_job` (`id`, `name`, `type`, `shell`, `host_ids`, `cron_expr`, `tasklog`, `status`, `duration`, `remark`, `start_time`, `end_time`, `created_at`, `task_count`, `is_recurring`, `scheduled_time`, `log_path`, `execute_count`, `next_run_time`) VALUES (40, '测试任务脚本', 1, '2', '1', '', '', 3, 105, '', NULL, '2025-08-24 15:35:02.983', '2025-08-24 15:33:05.565', 1, NULL, NULL, NULL, 0, NULL);
+INSERT INTO `task_job` (`id`, `name`, `type`, `shell`, `host_ids`, `cron_expr`, `tasklog`, `status`, `duration`, `remark`, `start_time`, `end_time`, `created_at`, `task_count`, `is_recurring`, `scheduled_time`, `log_path`, `execute_count`, `next_run_time`) VALUES (41, 'test111111', 1, '2', '1,449', '', '', 3, 206, '123', NULL, '2025-09-10 23:25:31.196', '2025-09-10 23:21:21.641', 1, NULL, NULL, NULL, 0, NULL);
+INSERT INTO `task_job` (`id`, `name`, `type`, `shell`, `host_ids`, `cron_expr`, `tasklog`, `status`, `duration`, `remark`, `start_time`, `end_time`, `created_at`, `task_count`, `is_recurring`, `scheduled_time`, `log_path`, `execute_count`, `next_run_time`) VALUES (42, 'test456', 1, '2,3,4,6,9,10,11', '1', '', '', 1, 0, '123', NULL, NULL, '2025-09-12 17:43:11.318', 7, NULL, NULL, NULL, 0, NULL);
+COMMIT;
+
+-- ----------------------------
+-- Table structure for task_template
+-- ----------------------------
+DROP TABLE IF EXISTS `task_template`;
+CREATE TABLE `task_template` (
+  `id` bigint unsigned NOT NULL AUTO_INCREMENT,
+  `name` varchar(100) NOT NULL,
+  `type` bigint NOT NULL,
+  `content` text NOT NULL,
+  `created_at` datetime(3) DEFAULT NULL,
+  `updated_at` datetime(3) DEFAULT NULL,
+  `created_by` varchar(50) DEFAULT NULL,
+  `updated_by` varchar(50) DEFAULT NULL,
+  `remark` varchar(500) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+-- ----------------------------
+-- Records of task_template
+-- ----------------------------
+BEGIN;
+INSERT INTO `task_template` (`id`, `name`, `type`, `content`, `created_at`, `updated_at`, `created_by`, `updated_by`, `remark`) VALUES (2, '1-数字 1-100', 1, '#!/bin/bash\n\n# 从 1 到 100，每秒打印一个数字\nfor ((i = 1; i <= 100; i++)); do\n    echo \"[$(date +%H:%M:%S)] $i\"\n    sleep 1\ndone\n\necho \"完成：所有数字 1-100 已打印完毕。\"\n', '2025-08-06 12:47:57.073', '2025-08-12 16:14:49.394', 'admin', 'admin', '测试脚本');
+INSERT INTO `task_template` (`id`, `name`, `type`, `content`, `created_at`, `updated_at`, `created_by`, `updated_by`, `remark`) VALUES (3, '2-系统状态检查脚本', 1, '#!/bin/bash\n\n#==================================================\n#       简化版 Linux 系统状态检查脚本\n#       输出直接打印到终端，不保存日志\n#==================================================\n\n# 颜色定义（可选，让输出更清晰）\nGREEN=\'\\033[0;32m\'\nYELLOW=\'\\033[1;33m\'\nRED=\'\\033[0;31m\'\nNC=\'\\033[0m\'\n\nlog() { echo -e \"${GREEN}[INFO] $1${NC}\"; }\nwarn() { echo -e \"${YELLOW}[WARN] $1${NC}\"; }\nerror() { echo -e \"${RED}[ERROR] $1${NC}\"; }\n\nseparator() {\n    echo \"----------------------------------------\"\n}\n\n# 1. 系统信息\nseparator\nlog \"系统信息\"\nseparator\necho \"主机名: $(hostname)\"\necho \"操作系统: $(grep \'^PRETTY_NAME=\' /etc/os-release | cut -d\'\"\' -f2 2>/dev/null || echo \'未知\')\"\necho \"内核: $(uname -r)\"\n\n# 2. 系统负载\nseparator\nlog \"系统负载 (1/5/15分钟)\"\nseparator\nuptime | awk -F\'load average:\' \'{print \"负载: \" $2}\'\n\n# 3. CPU 使用率\nseparator\nlog \"CPU 使用率\"\nseparator\ntop -bn1 | grep \"Cpu(s)\" | awk \'{print \"CPU 使用: \" $2 \"%\"}\'\n\n# 4. 内存使用\nseparator\nlog \"内存使用\"\nseparator\nfree -h | awk \'/^Mem:/ {printf \"总内存: %s\\t已用: %s\\t空闲: %s\\n\", $2, $3, $4}\'\n\n# 5. 磁盘使用（仅根分区）\nseparator\nlog \"磁盘使用 (/)\"\nseparator\ndf -h / | awk \'NR==2 {printf \"设备: %s\\t总大小: %s\\t已用: %s (%s)\\n\", $1, $2, $3, $5}\'\n\n# 6. 活跃进程数\nseparator\nlog \"进程统计\"\nseparator\nPROC=$(ps aux | wc -l)\necho \"当前运行进程数: $((PROC - 1))\"\n\n# 7. 网络监听端口（常用服务）\nseparator\nlog \"监听端口 (常见服务)\"\nseparator\nss -tuln | grep \':80\\|:443\\|:22\\|:3306\\|:5432\' || echo \"无常见服务监听\"\n\n# 8. 最近登录与 SSH 尝试\nseparator\nlog \"最近登录与安全\"\nseparator\necho \"最近3次登录:\"\nlast | head -3 | awk \'{print $1, $3, $4, $5}\'\n\nFAILED=$(grep \"Failed password\" /var/log/auth.log 2>/dev/null | wc -l)\nif [ $FAILED -gt 0 ]; then\n    warn \"发现 $FAILED 次 SSH 登录失败，请检查安全！\"\nelse\n    log \"无 SSH 登录失败记录\"\nfi\n\nseparator\nlog \"系统状态检查完成。\"', '2025-08-06 12:48:34.435', '2025-08-12 16:14:21.982', 'root', 'admin', 'test');
+INSERT INTO `task_template` (`id`, `name`, `type`, `content`, `created_at`, `updated_at`, `created_by`, `updated_by`, `remark`) VALUES (4, '3-自动优化 Linux 内核参数', 2, '#!/bin/bash\n\n# 自动优化 Linux 内核参数\n# 脚本针对 RHEL7\n\ncat >> /usr/lib/sysctl.d/00-system.conf << \'EOF\'\nfs.file-max=65535\nnet.ipv4.tcp_timestamps = 0\nnet.ipv4.tcp_synack_retries = 5\nnet.ipv4.tcp_syn_retries = 5\nnet.ipv4.tcp_tw_recycle = 1\nnet.ipv4.tcp_tw_reuse = 1\nnet.ipv4.tcp_fin_timeout = 30\n#net.ipv4.tcp_keepalive_time = 120\nnet.ipv4.ip_local_port_range = 1024 65535\nkernel.shmall = 2097152\nkernel.shmmax = 2147483648\nkernel.shmmni = 4096\nkernel.sem = 5010 641280 5010 128\nnet.core.wmem_default=262144\nnet.core.wmem_max=262144\nnet.core.rmem_default=4194304\nnet.core.rmem_max=4194304\nnet.ipv4.tcp_fin_timeout = 10\nnet.ipv4.tcp_keepalive_time = 30\nnet.ipv4.tcp_window_scaling = 0\nnet.ipv4.tcp_sack = 0\nEOF\n\nsysctl -p\nsleep 3\necho  \"已经完成优化\"\n', '2025-08-06 12:49:39.227', '2025-09-06 16:27:02.319', 'lisi', 'admin', 'test');
+INSERT INTO `task_template` (`id`, `name`, `type`, `content`, `created_at`, `updated_at`, `created_by`, `updated_by`, `remark`) VALUES (6, '切割 Nginx 日志文件', 2, '#mkdir  /data/scripts  \n#vim   /data/scripts/nginx_log.sh    \n#!/bin/bash  \n  \n# 切割 Nginx 日志文件(防止单个文件过大,后期处理很困难)   \nlogs_path=\"/usr/local/nginx/logs/\"  \nmv ${logs_path}access.log ${logs_path}access_$(date -d \"yesterday\" +\"%Y%m%d\").log  \nkill -USR1  `cat /usr/local/nginx/logs/nginx.pid`  \n  \n# chmod +x  /data/scripts/nginx_log.sh  \n# crontab  ‐e                    #脚本写完后,将脚本放入计划任务每天执行一次脚本  \n0  1  *  *   *   /data/scripts/nginx_log.sh  ', '2025-08-06 12:53:39.020', '2025-09-06 16:27:07.841', 'zhangsan', 'admin', 'test');
+INSERT INTO `task_template` (`id`, `name`, `type`, `content`, `created_at`, `updated_at`, `created_by`, `updated_by`, `remark`) VALUES (9, '查找 Linux 系统中的僵尸进程  ', 2, '#!/bin/bash  \n  \n# 查找 Linux 系统中的僵尸进程  \n# awk 判断 ps 命令输出的第 8 列为 Z 是,显示该进程的 PID 和进程命令  \nps aux | awk \'{if($8 == \"Z\"){print $2,$11}}\'  ', '2025-08-06 14:45:58.982', '2025-09-06 16:27:18.196', 'admin', 'admin', '查找 Linux 系统中的僵尸进程  ');
+INSERT INTO `task_template` (`id`, `name`, `type`, `content`, `created_at`, `updated_at`, `created_by`, `updated_by`, `remark`) VALUES (10, '获取本机 MAC 地址  ', 1, '#!/bin/bash  \n  \n# 获取本机 MAC 地址  \nip a s | awk \'BEGIN{print  \" 本 机 MAC 地 址 信 息 如 下 :\"}/^[0‐9]/{print $2;getline;if($0~/link\\/ether/){print $2}}\' | grep -v lo:  \n# awk 读取 ip 命令的输出,输出结果中如果有以数字开始的行,先显示该行的地 2 列(网卡名称),  \n# 接着使用 getline 再读取它的下一行数据,判断是否包含 link/ether  \n# 如果保护该关键词,就显示该行的第 2 列(MAC 地址)  \n# lo 回环设备没有 MAC,因此将其屏蔽,不显示  ', '2025-08-06 16:45:07.990', '2025-08-12 16:22:43.774', 'admin', 'admin', 'test');
+INSERT INTO `task_template` (`id`, `name`, `type`, `content`, `created_at`, `updated_at`, `created_by`, `updated_by`, `remark`) VALUES (11, '统计 Linux 进程相关数量信息   ', 1, '#!/bin/bash  \n  \n# 统计 Linux 进程相关数量信息   \nrunning=0  \nsleeping=0  \nstoped=0  \nzombie=0  \n# 在 proc 目录下所有以数字开始的都是当前计算机正在运行的进程的进程 PID  \n# 每个 PID 编号的目录下记录有该进程相关的信息  \nfor pid in /proc/[1‐9]*  \ndo  \n  procs=$[procs+1]  \n  stat=$(awk \'{print $3}\' $pid/stat)  \n# 每个 pid 目录下都有一个 stat 文件,该文件的第 3 列是该进程的状态信息  \n    case $stat in  \n    R)  \n    running=$[running+1]  \n    ;;  \n    T)  \n    stoped=$[stoped+1]  \n    ;;  \n    S)  \n    sleeping=$[sleeping+1]  \n    ;;  \n    Z)  \n     zombie=$[zombie+1]  \n     ;;  \n    esac  \ndone  \necho \"进程统计信息如下\"  \necho \"总进程数量为:$procs\"  \necho \"Running 进程数为:$running\"  \necho \"Stoped 进程数为:$stoped\"  \necho \"Sleeping 进程数为:$sleeping\"  \necho \"Zombie 进程数为:$zombie\"  ', '2025-08-06 17:19:10.669', '2025-08-12 16:23:10.614', 'admin', 'admin', 'ooo');
+INSERT INTO `task_template` (`id`, `name`, `type`, `content`, `created_at`, `updated_at`, `created_by`, `updated_by`, `remark`) VALUES (12, ' 显示本机 Linux 系统上所有开放的端口列表   ', 1, '#!/bin/bash  \n  \n# 显示本机 Linux 系统上所有开放的端口列表   \n  \n# 从端口列表中观测有没有没用的端口,有的话可以将该端口对应的服务关闭,防止意外的攻击可能性  \nss -nutlp | awk \'{print $1,$5}\' | awk -F\"[: ]\" \'{print \"协议:\"$1,\"端口号:\"$NF}\' | grep \"[0‐9]\" | uniq  ', '2025-08-08 10:03:54.197', '2025-08-12 16:24:35.774', 'admin', 'admin', '新机器初始化');
+INSERT INTO `task_template` (`id`, `name`, `type`, `content`, `created_at`, `updated_at`, `created_by`, `updated_by`, `remark`) VALUES (13, 'nginx安装配置', 3, '---\n- hosts: web   #指定标签组\n  vars:\n    hello: Ansible  #定义变量\n\n  tasks:\n  - name: \"配置nginx源\"\n    yum_repository:\n      name: nginx\n      description: nginx repo\n      baseurl: http://nginx.org/packages/centos/7/$basearch/\n      gpgcheck: no\n      enabled: 1\n  - name: \"安装nginx\"\n    yum:\n      name: nginx\n      state: latest\n  - name: \"编写虚拟主机的配置文件\"\n    copy:\n      src: ./site.conf\n      dest: /etc/nginx/conf.d/site.conf\n  - name: \"创建虚拟主机目录\"\n    file:\n      dest: /var/www/html\n      state: directory\n  - name: \"启动nginx\"\n    service:\n      name: nginx\n      state: started\n  - name:  \"测试nginx页面\"\n    shell: echo \"hello  {{hello}}\" > /var/www/html/index.html\n    #引用变量{{}}表示\n', '2025-08-15 10:58:03.845', '2025-08-15 10:58:03.845', 'admin', '', 'nginx安装配置');
+COMMIT;
+
+-- ----------------------------
+-- Table structure for task_work
+-- ----------------------------
+DROP TABLE IF EXISTS `task_work`;
+CREATE TABLE `task_work` (
+  `id` bigint unsigned NOT NULL AUTO_INCREMENT,
+  `task_id` bigint unsigned DEFAULT NULL COMMENT '关联的任务ID',
+  `template_id` bigint unsigned DEFAULT NULL COMMENT '任务模板ID',
+  `host_id` bigint unsigned DEFAULT NULL COMMENT '执行主机ID',
+  `status` bigint DEFAULT NULL COMMENT '任务状态 1=等待中,2=运行中,3=成功,4=异常',
+  `log` text COMMENT '任务日志',
+  `log_path` text COMMENT '日志文件路径',
+  `start_time` datetime(3) DEFAULT NULL COMMENT '任务开始时间',
+  `end_time` datetime(3) DEFAULT NULL COMMENT '任务结束时间',
+  `duration` bigint DEFAULT NULL COMMENT '执行耗时(秒)',
+  `created_at` datetime(3) DEFAULT NULL COMMENT '创建时间',
+  `type` bigint DEFAULT NULL COMMENT '任务类型 1=普通任务,2=定时任务',
+  `scheduled_time` datetime(3) DEFAULT NULL COMMENT '定时任务执行时间',
+  `cron_expr` longtext COMMENT 'cron表达式',
+  `is_recurring` tinyint(1) DEFAULT NULL COMMENT '是否周期性任务',
+  PRIMARY KEY (`id`),
+  KEY `idx_task_work_task_id` (`task_id`),
+  KEY `idx_task_work_template_id` (`template_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=81 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+-- ----------------------------
+-- Records of task_work
+-- ----------------------------
+BEGIN;
+INSERT INTO `task_work` (`id`, `task_id`, `template_id`, `host_id`, `status`, `log`, `log_path`, `start_time`, `end_time`, `duration`, `created_at`, `type`, `scheduled_time`, `cron_expr`, `is_recurring`) VALUES (2, 13, 2, 1, 4, '', 'logs/task_13/task_13_template_2.log', '2025-08-09 14:42:00.872', '2025-08-09 15:51:20.852', 0, '2025-08-09 13:06:23.985', NULL, NULL, NULL, NULL);
+INSERT INTO `task_work` (`id`, `task_id`, `template_id`, `host_id`, `status`, `log`, `log_path`, `start_time`, `end_time`, `duration`, `created_at`, `type`, `scheduled_time`, `cron_expr`, `is_recurring`) VALUES (3, 13, 3, 1, 4, '', 'logs/task_13/task_13_template_3.log', '2025-08-09 14:42:07.435', '2025-08-09 15:51:20.852', 0, '2025-08-09 13:06:24.091', NULL, NULL, NULL, NULL);
+INSERT INTO `task_work` (`id`, `task_id`, `template_id`, `host_id`, `status`, `log`, `log_path`, `start_time`, `end_time`, `duration`, `created_at`, `type`, `scheduled_time`, `cron_expr`, `is_recurring`) VALUES (4, 13, 4, 1, 4, '', 'logs/task_13/task_13_template_4.log', '2025-08-09 14:42:14.051', '2025-08-09 15:51:20.852', 0, '2025-08-09 13:06:24.197', NULL, NULL, NULL, NULL);
+INSERT INTO `task_work` (`id`, `task_id`, `template_id`, `host_id`, `status`, `log`, `log_path`, `start_time`, `end_time`, `duration`, `created_at`, `type`, `scheduled_time`, `cron_expr`, `is_recurring`) VALUES (5, 14, 2, 1, 3, '', 'logs/task_14/task_14_template_2.log', '2025-08-09 15:01:04.927', '2025-08-09 15:01:05.181', 0, '2025-08-09 14:59:05.220', NULL, NULL, NULL, NULL);
+INSERT INTO `task_work` (`id`, `task_id`, `template_id`, `host_id`, `status`, `log`, `log_path`, `start_time`, `end_time`, `duration`, `created_at`, `type`, `scheduled_time`, `cron_expr`, `is_recurring`) VALUES (6, 14, 3, 1, 3, '', 'logs/task_14/task_14_template_3.log', '2025-08-09 15:01:11.728', '2025-08-09 15:01:11.981', 0, '2025-08-09 14:59:06.943', NULL, NULL, NULL, NULL);
+INSERT INTO `task_work` (`id`, `task_id`, `template_id`, `host_id`, `status`, `log`, `log_path`, `start_time`, `end_time`, `duration`, `created_at`, `type`, `scheduled_time`, `cron_expr`, `is_recurring`) VALUES (7, 14, 4, 1, 3, '', 'logs/task_14/task_14_template_4.log', '2025-08-09 15:01:18.502', '2025-08-09 15:01:18.758', 0, '2025-08-09 14:59:07.046', NULL, NULL, NULL, NULL);
+INSERT INTO `task_work` (`id`, `task_id`, `template_id`, `host_id`, `status`, `log`, `log_path`, `start_time`, `end_time`, `duration`, `created_at`, `type`, `scheduled_time`, `cron_expr`, `is_recurring`) VALUES (8, 15, 2, 1, 3, '', 'logs/task_15/task_15_template_2.log', '2025-08-09 15:52:37.755', '2025-08-09 15:52:47.788', 10, '2025-08-09 15:24:17.455', NULL, NULL, NULL, NULL);
+INSERT INTO `task_work` (`id`, `task_id`, `template_id`, `host_id`, `status`, `log`, `log_path`, `start_time`, `end_time`, `duration`, `created_at`, `type`, `scheduled_time`, `cron_expr`, `is_recurring`) VALUES (9, 15, 3, 1, 3, '', 'logs/task_15/task_15_template_3.log', '2025-08-09 15:52:59.765', '2025-08-09 15:53:11.018', 11, '2025-08-09 15:24:17.561', NULL, NULL, NULL, NULL);
+INSERT INTO `task_work` (`id`, `task_id`, `template_id`, `host_id`, `status`, `log`, `log_path`, `start_time`, `end_time`, `duration`, `created_at`, `type`, `scheduled_time`, `cron_expr`, `is_recurring`) VALUES (10, 15, 4, 1, 3, '', 'logs/task_15/task_15_template_4.log', '2025-08-09 15:53:17.835', '2025-08-09 15:53:23.823', 5, '2025-08-09 15:24:17.664', NULL, NULL, NULL, NULL);
+INSERT INTO `task_work` (`id`, `task_id`, `template_id`, `host_id`, `status`, `log`, `log_path`, `start_time`, `end_time`, `duration`, `created_at`, `type`, `scheduled_time`, `cron_expr`, `is_recurring`) VALUES (11, 16, 2, 1, 4, '', 'logs/task_16/task_16_template_2.log', '2025-08-09 23:09:56.390', '2025-08-09 23:10:08.909', 923, '2025-08-09 16:01:57.305', NULL, NULL, NULL, NULL);
+INSERT INTO `task_work` (`id`, `task_id`, `template_id`, `host_id`, `status`, `log`, `log_path`, `start_time`, `end_time`, `duration`, `created_at`, `type`, `scheduled_time`, `cron_expr`, `is_recurring`) VALUES (12, 16, 3, 1, 4, '', 'logs/task_16/task_16_template_3.log', '2025-08-09 22:55:10.447', '2025-08-09 23:09:53.573', 11, '2025-08-09 16:01:57.406', NULL, NULL, NULL, NULL);
+INSERT INTO `task_work` (`id`, `task_id`, `template_id`, `host_id`, `status`, `log`, `log_path`, `start_time`, `end_time`, `duration`, `created_at`, `type`, `scheduled_time`, `cron_expr`, `is_recurring`) VALUES (20, 19, 2, 444, 3, '[22:23:19] 1\n[22:23:20] 2\n[22:23:21] 3\n[22:23:22] 4\n[22:23:23] 5\n[22:23:24] 6\n[22:23:25] 7\n[22:23:26] 8\n[22:23:27] 9\n[22:23:28] 10\n[22:23:29] 11\n[22:23:30] 12\n[22:23:31] 13\n[22:23:32] 14\n[22:23:33] 15\n[22:23:34] 16\n[22:23:35] 17\n[22:23:36] 18\n[22:23:37] 19\n[22:23:38] 20\n[22:23:39] 21\n[22:23:40] 22\n[22:23:41] 23\n[22:23:42] 24\n[22:23:43] 25\n[22:23:44] 26\n[22:23:45] 27\n[22:23:46] 28\n[22:23:47] 29\n[22:23:48] 30\n[22:23:49] 31\n[22:23:50] 32\n[22:23:51] 33\n[22:23:52] 34\n[22:23:53] 35\n[22:23:54] 36\n[22:23:55] 37\n[22:23:57] 38\n[22:23:58] 39\n[22:23:59] 40\n[22:24:00] 41\n[22:24:01] 42\n[22:24:02] 43\n[22:24:03] 44\n[22:24:04] 45\n[22:24:05] 46\n[22:24:06] 47\n[22:24:07] 48\n[22:24:08] 49\n[22:24:09] 50\n[22:24:10] 51\n[22:24:11] 52\n[22:24:12] 53\n[22:24:13] 54\n[22:24:14] 55\n[22:24:15] 56\n[22:24:16] 57\n[22:24:17] 58\n[22:24:18] 59\n[22:24:19] 60\n[22:24:20] 61\n[22:24:21] 62\n[22:24:22] 63\n[22:24:23] 64\n[22:24:24] 65\n[22:24:25] 66\n[22:24:26] 67\n[22:24:27] 68\n[22:24:28] 69\n[22:24:29] 70\n[22:24:30] 71\n[22:24:31] 72\n[22:24:32] 73\n[22:24:33] 74\n[22:24:34] 75\n[22:24:35] 76\n[22:24:36] 77\n[22:24:37] 78\n[22:24:38] 79\n[22:24:39] 80\n[22:24:40] 81\n[22:24:41] 82\n[22:24:42] 83\n[22:24:43] 84\n[22:24:44] 85\n[22:24:45] 86\n[22:24:46] 87\n[22:24:47] 88\n[22:24:48] 89\n[22:24:49] 90\n[22:24:50] 91\n[22:24:51] 92\n[22:24:52] 93\n[22:24:53] 94\n[22:24:54] 95\n[22:24:55] 96\n[22:24:56] 97\n[22:24:57] 98\n[22:24:58] 99\n[22:24:59] 100\n完成：所有数字 1-100 已打印完毕。\n', 'logs/task_19/task_19_template_2.log', '2025-08-12 13:11:23.735', '2025-08-12 13:12:58.231', 94, '2025-08-10 16:19:19.854', NULL, NULL, NULL, NULL);
+INSERT INTO `task_work` (`id`, `task_id`, `template_id`, `host_id`, `status`, `log`, `log_path`, `start_time`, `end_time`, `duration`, `created_at`, `type`, `scheduled_time`, `cron_expr`, `is_recurring`) VALUES (21, 19, 3, 444, 3, '2025年 08月 01日 星期五 22:25:03 CST\n开始检查系统内容\n              total        used        free      shared  buff/cache   available\nMem:           3.6G        1.3G        1.9G         57M        416M        2.1G\nSwap:          2.0G          0B        2.0G\nhsperfdata_jenkins\nsystemd-private-27c855ecb36841b984b6543efee1c0ef-chronyd.service-yTl0km\ntask_19_2.log\ntask_19_2.pid\ntask_19_2.sh\ntask_19_3.log\ntask_19_3.pid\ntask_19_3.sh\nwinstone7085214317916283420.jar\n', 'logs/task_19/task_19_template_3.log', '2025-08-12 13:12:59.534', '2025-08-12 13:13:05.040', 5, '2025-08-10 16:19:19.854', NULL, NULL, NULL, NULL);
+INSERT INTO `task_work` (`id`, `task_id`, `template_id`, `host_id`, `status`, `log`, `log_path`, `start_time`, `end_time`, `duration`, `created_at`, `type`, `scheduled_time`, `cron_expr`, `is_recurring`) VALUES (22, 20, 9, 1, 3, '1.txt\ninfo\ninfo.sh\nlogs\nluban-master\npoetize\nzf.sh\n', 'logs/task_20/task_20_template_9.log', '2025-08-12 12:30:55.130', '2025-08-12 12:30:57.016', 1, '2025-08-11 19:27:06.270', 0, NULL, NULL, NULL);
+INSERT INTO `task_work` (`id`, `task_id`, `template_id`, `host_id`, `status`, `log`, `log_path`, `start_time`, `end_time`, `duration`, `created_at`, `type`, `scheduled_time`, `cron_expr`, `is_recurring`) VALUES (23, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `task_work` (`id`, `task_id`, `template_id`, `host_id`, `status`, `log`, `log_path`, `start_time`, `end_time`, `duration`, `created_at`, `type`, `scheduled_time`, `cron_expr`, `is_recurring`) VALUES (24, 21, 3, 444, 3, '命令执行出错: 进程107236不存在或已终止\n', 'logs/task_21/task_21_template_3.log', '2025-08-12 16:25:46.016', '2025-08-12 16:25:48.861', 2, '2025-08-12 13:22:21.027', 0, NULL, NULL, NULL);
+INSERT INTO `task_work` (`id`, `task_id`, `template_id`, `host_id`, `status`, `log`, `log_path`, `start_time`, `end_time`, `duration`, `created_at`, `type`, `scheduled_time`, `cron_expr`, `is_recurring`) VALUES (25, 21, 2, 444, 3, '[01:53:58] 1\n[01:53:59] 2\n[01:54:00] 3\n[01:54:01] 4\n[01:54:02] 5\n[01:54:03] 6\n[01:54:04] 7\n[01:54:05] 8\n[01:54:06] 9\n[01:54:07] 10\n[01:54:08] 11\n[01:54:09] 12\n[01:54:10] 13\n[01:54:11] 14\n[01:54:12] 15\n[01:54:13] 16\n[01:54:14] 17\n[01:54:15] 18\n[01:54:16] 19\n[01:54:17] 20\n[01:54:18] 21\n[01:54:19] 22\n[01:54:20] 23\n[01:54:21] 24\n[01:54:22] 25\n[01:54:23] 26\n[01:54:24] 27\n[01:54:25] 28\n[01:54:26] 29\n[01:54:27] 30\n[01:54:28] 31\n[01:54:29] 32\n[01:54:30] 33\n[01:54:31] 34\n[01:54:32] 35\n[01:54:33] 36\n[01:54:34] 37\n[01:54:35] 38\n[01:54:36] 39\n[01:54:37] 40\n[01:54:38] 41\n[01:54:39] 42\n[01:54:40] 43\n[01:54:41] 44\n[01:54:42] 45\n[01:54:43] 46\n[01:54:44] 47\n[01:54:45] 48\n[01:54:46] 49\n[01:54:47] 50\n[01:54:48] 51\n[01:54:49] 52\n[01:54:50] 53\n[01:54:51] 54\n[01:54:52] 55\n[01:54:53] 56\n[01:54:54] 57\n[01:54:55] 58\n[01:54:56] 59\n[01:54:57] 60\n[01:54:58] 61\n[01:54:59] 62\n[01:55:00] 63\n[01:55:01] 64\n[01:55:02] 65\n[01:55:03] 66\n[01:55:04] 67\n[01:55:05] 68\n[01:55:06] 69\n[01:55:07] 70\n[01:55:08] 71\n[01:55:09] 72\n[01:55:10] 73\n[01:55:11] 74\n[01:55:12] 75\n[01:55:13] 76\n[01:55:14] 77\n[01:55:15] 78\n[01:55:17] 79\n[01:55:18] 80\n[01:55:19] 81\n[01:55:20] 82\n[01:55:21] 83\n[01:55:22] 84\n[01:55:23] 85\n[01:55:24] 86\n[01:55:25] 87\n[01:55:26] 88\n[01:55:27] 89\n[01:55:28] 90\n[01:55:29] 91\n[01:55:30] 92\n[01:55:31] 93\n[01:55:32] 94\n[01:55:33] 95\n[01:55:34] 96\n[01:55:35] 97\n[01:55:36] 98\n[01:55:37] 99\n[01:55:38] 100\n完成：所有数字 1-100 已打印完毕。\n', 'logs/task_21/task_21_template_2.log', '2025-08-12 16:25:50.185', '2025-08-12 16:27:25.690', 95, '2025-08-12 13:22:21.027', 0, NULL, NULL, NULL);
+INSERT INTO `task_work` (`id`, `task_id`, `template_id`, `host_id`, `status`, `log`, `log_path`, `start_time`, `end_time`, `duration`, `created_at`, `type`, `scheduled_time`, `cron_expr`, `is_recurring`) VALUES (26, 21, 4, 444, 3, '命令执行出错: 进程109843不存在或已终止\n', 'logs/task_21/task_21_template_4.log', '2025-08-12 16:27:27.033', '2025-08-12 16:27:31.161', 4, '2025-08-12 13:22:21.027', 0, NULL, NULL, NULL);
+INSERT INTO `task_work` (`id`, `task_id`, `template_id`, `host_id`, `status`, `log`, `log_path`, `start_time`, `end_time`, `duration`, `created_at`, `type`, `scheduled_time`, `cron_expr`, `is_recurring`) VALUES (27, 22, 2, 444, 3, '[00:35:28] 1\n[00:35:29] 2\n[00:35:30] 3\n[00:35:31] 4\n[00:35:32] 5\n[00:35:33] 6\n[00:35:34] 7\n[00:35:35] 8\n[00:35:36] 9\n[00:35:37] 10\n[00:35:38] 11\n[00:35:39] 12\n[00:35:40] 13\n[00:35:41] 14\n[00:35:42] 15\n[00:35:43] 16\n[00:35:44] 17\n[00:35:45] 18\n[00:35:46] 19\n[00:35:47] 20\n[00:35:48] 21\n[00:35:49] 22\n[00:35:50] 23\n[00:35:51] 24\n[00:35:52] 25\n[00:35:53] 26\n[00:35:54] 27\n[00:35:55] 28\n[00:35:56] 29\n[00:35:57] 30\n[00:35:58] 31\n[00:35:59] 32\n[00:36:00] 33\n[00:36:01] 34\n[00:36:02] 35\n[00:36:03] 36\n[00:36:04] 37\n[00:36:05] 38\n[00:36:06] 39\n[00:36:07] 40\n[00:36:08] 41\n[00:36:09] 42\n[00:36:10] 43\n[00:36:11] 44\n[00:36:12] 45\n[00:36:13] 46\n[00:36:14] 47\n[00:36:15] 48\n[00:36:16] 49\n[00:36:17] 50\n[00:36:18] 51\n[00:36:19] 52\n[00:36:20] 53\n[00:36:21] 54\n[00:36:22] 55\n[00:36:23] 56\n[00:36:24] 57\n[00:36:25] 58\n[00:36:26] 59\n[00:36:27] 60\n[00:36:28] 61\n[00:36:29] 62\n[00:36:30] 63\n[00:36:31] 64\n[00:36:32] 65\n[00:36:33] 66\n[00:36:34] 67\n[00:36:35] 68\n[00:36:37] 69\n[00:36:38] 70\n[00:36:39] 71\n[00:36:40] 72\n[00:36:41] 73\n[00:36:42] 74\n[00:36:43] 75\n[00:36:44] 76\n[00:36:45] 77\n[00:36:46] 78\n[00:36:47] 79\n[00:36:48] 80\n[00:36:49] 81\n[00:36:50] 82\n[00:36:51] 83\n[00:36:52] 84\n[00:36:53] 85\n[00:36:54] 86\n[00:36:55] 87\n[00:36:56] 88\n[00:36:57] 89\n[00:36:58] 90\n[00:36:59] 91\n[00:37:00] 92\n[00:37:01] 93\n[00:37:02] 94\n[00:37:03] 95\n[00:37:04] 96\n[00:37:05] 97\n[00:37:06] 98\n[00:37:07] 99\n[00:37:08] 100\n完成：所有数字 1-100 已打印完毕。\n', 'logs/task_22/task_22_template_2.log', '2025-08-13 13:22:36.380', '2025-08-13 13:24:13.567', 97, '2025-08-12 16:28:54.917', 0, NULL, NULL, NULL);
+INSERT INTO `task_work` (`id`, `task_id`, `template_id`, `host_id`, `status`, `log`, `log_path`, `start_time`, `end_time`, `duration`, `created_at`, `type`, `scheduled_time`, `cron_expr`, `is_recurring`) VALUES (28, 22, 3, 444, 3, '----------------------------------------\n[0;32m[INFO] 系统信息[0m\n----------------------------------------\n主机名: jenkins\n操作系统: CentOS Linux 7 (Core)\n内核: 3.10.0-1160.119.1.el7.x86_64\n----------------------------------------\n[0;32m[INFO] 系统负载 (1/5/15分钟)[0m\n----------------------------------------\n负载:  0.31, 0.24, 0.21\n----------------------------------------\n[0;32m[INFO] CPU 使用率[0m\n----------------------------------------\nCPU 使用: 2.6%\n----------------------------------------\n[0;32m[INFO] 内存使用[0m\n----------------------------------------\n总内存: 3.6G	已用: 1.3G	空闲: 1.8G\n----------------------------------------\n[0;32m[INFO] 磁盘使用 (/)[0m\n----------------------------------------\n设备: /dev/mapper/centos-root	总大小: 17G	已用: 3.3G (20%)\n----------------------------------------\n[0;32m[INFO] 进程统计[0m\n----------------------------------------\n当前运行进程数: 123\n----------------------------------------\n[0;32m[INFO] 监听端口 (常见服务)[0m\n----------------------------------------\ntcp    LISTEN     0      128       *:22                    *:*                  \ntcp    LISTEN     0      128    [::]:22                 [::]:*                  \ntcp    LISTEN     0      50     [::]:8080               [::]:*                  \n----------------------------------------\n[0;32m[INFO] 最近登录与安全[0m\n----------------------------------------\n最近3次登录:\nroot gateway Fri Aug\nroot gateway Fri Aug\nroot 172.16.226.1 Fri Aug\n[0;32m[INFO] 无 SSH 登录失败记录[0m\n----------------------------------------\n[0;32m[INFO] 系统状态检查完成。[0m\n', 'logs/task_22/task_22_template_3.log', '2025-08-13 13:24:14.944', '2025-08-13 13:24:19.816', 4, '2025-08-12 16:28:54.917', 0, NULL, NULL, NULL);
+INSERT INTO `task_work` (`id`, `task_id`, `template_id`, `host_id`, `status`, `log`, `log_path`, `start_time`, `end_time`, `duration`, `created_at`, `type`, `scheduled_time`, `cron_expr`, `is_recurring`) VALUES (29, 22, 4, 444, 3, '/tmp/task_22_4.sh:行27: 警告:立即文档在第 6 行被文件结束符分隔 (需要 `EOF\')\n', 'logs/task_22/task_22_template_4.log', '2025-08-13 13:24:21.282', '2025-08-13 13:24:28.224', 6, '2025-08-12 16:28:54.917', 0, NULL, NULL, NULL);
+INSERT INTO `task_work` (`id`, `task_id`, `template_id`, `host_id`, `status`, `log`, `log_path`, `start_time`, `end_time`, `duration`, `created_at`, `type`, `scheduled_time`, `cron_expr`, `is_recurring`) VALUES (30, 23, 2, 1, 3, '[2025-08-14-12:26:30] 任务开始\n[12:26:30] 1\n[12:26:31] 2\n[12:26:32] 3\n[12:26:33] 4\n[12:26:34] 5\n[12:26:35] 6\n[12:26:36] 7\n[12:26:37] 8\n[12:26:38] 9\n[12:26:39] 10\n[12:26:40] 11\n[12:26:41] 12\n[12:26:42] 13\n[12:26:43] 14\n[12:26:44] 15\n[12:26:45] 16\n[12:26:46] 17\n[12:26:47] 18\n[12:26:48] 19\n[12:26:49] 20\n[12:26:50] 21\n[12:26:51] 22\n[12:26:52] 23\n[12:26:53] 24\n[12:26:54] 25\n[12:26:55] 26\n[12:26:56] 27\n[12:26:57] 28\n[12:26:58] 29\n[12:26:59] 30\n[12:27:00] 31\n[12:27:01] 32\n[12:27:02] 33\n[12:27:03] 34\n[12:27:04] 35\n[12:27:05] 36\n[12:27:06] 37\n[12:27:07] 38\n[12:27:08] 39\n[12:27:09] 40\n[12:27:10] 41\n[12:27:11] 42\n[12:27:12] 43\n[12:27:13] 44\n[12:27:14] 45\n[12:27:15] 46\n[12:27:16] 47\n[12:27:17] 48\n[12:27:18] 49\n[12:27:19] 50\n[12:27:20] 51\n[12:27:21] 52\n[12:27:22] 53\n[12:27:23] 54\n[12:27:24] 55\n[12:27:25] 56\n[12:27:26] 57\n[12:27:27] 58\n[12:27:28] 59\n[12:27:29] 60\n[12:27:30] 61\n[12:27:31] 62\n[12:27:32] 63\n[12:27:33] 64\n[12:27:34] 65\n[12:27:35] 66\n[12:27:36] 67\n[12:27:37] 68\n[12:27:38] 69\n[12:27:39] 70\n[12:27:40] 71\n[12:27:41] 72\n[12:27:42] 73\n[12:27:43] 74\n[12:27:44] 75\n[12:27:45] 76\n[12:27:46] 77\n[12:27:47] 78\n[12:27:48] 79\n[12:27:49] 80\n[12:27:50] 81\n[12:27:51] 82\n[12:27:52] 83\n[12:27:53] 84\n[12:27:54] 85\n[12:27:55] 86\n[12:27:56] 87\n[12:27:57] 88\n[12:27:58] 89\n[12:27:59] 90\n[12:28:00] 91\n[12:28:01] 92\n[12:28:02] 93\n[12:28:03] 94\n[12:28:04] 95\n[12:28:05] 96\n[12:28:06] 97\n[12:28:07] 98\n[12:28:08] 99\n[12:28:09] 100\n完成：所有数字 1-100 已打印完毕。\n[2025-08-14-12:28:10] 任务完成\n', 'logs/task_23/task_23_template_2.log', '2025-08-14 12:26:28.154', '2025-08-14 12:28:13.186', 105, '2025-08-14 10:41:59.948', 0, NULL, NULL, NULL);
+INSERT INTO `task_work` (`id`, `task_id`, `template_id`, `host_id`, `status`, `log`, `log_path`, `start_time`, `end_time`, `duration`, `created_at`, `type`, `scheduled_time`, `cron_expr`, `is_recurring`) VALUES (31, 23, 3, 1, 3, '[2025-08-14-12:28:15] 任务开始\n----------------------------------------\n[0;32m[INFO] 系统信息[0m\n----------------------------------------\n主机名: go-ops\n操作系统: Ubuntu 24.04.2 LTS\n内核: 6.8.0-57-generic\n----------------------------------------\n[0;32m[INFO] 系统负载 (1/5/15分钟)[0m\n----------------------------------------\n负载:  0.05, 0.08, 0.05\n----------------------------------------\n[0;32m[INFO] CPU 使用率[0m\n----------------------------------------\nCPU 使用: 4.5%\n----------------------------------------\n[0;32m[INFO] 内存使用[0m\n----------------------------------------\n总内存: 1.6Gi	已用: 1.3Gi	空闲: 83Mi\n----------------------------------------\n[0;32m[INFO] 磁盘使用 (/)[0m\n----------------------------------------\n设备: /dev/vda3	总大小: 40G	已用: 8.3G (23%)\n----------------------------------------\n[0;32m[INFO] 进程统计[0m\n----------------------------------------\n当前运行进程数: 164\n----------------------------------------\n[0;32m[INFO] 监听端口 (常见服务)[0m\n----------------------------------------\ntcp   LISTEN 0      4096             127.0.0.1:8088       0.0.0.0:*          \ntcp   LISTEN 0      70                 0.0.0.0:33060      0.0.0.0:*          \ntcp   LISTEN 0      128                0.0.0.0:44323      0.0.0.0:*          \ntcp   LISTEN 0      128                0.0.0.0:44322      0.0.0.0:*          \ntcp   LISTEN 0      5                  0.0.0.0:44321      0.0.0.0:*          \ntcp   LISTEN 0      151                0.0.0.0:3306       0.0.0.0:*          \ntcp   LISTEN 0      4096               0.0.0.0:80         0.0.0.0:*          \ntcp   LISTEN 0      4096                     *:8086             *:*          \ntcp   LISTEN 0      128                   [::]:44323         [::]:*          \ntcp   LISTEN 0      128                   [::]:44322         [::]:*          \ntcp   LISTEN 0      5                     [::]:44321         [::]:*          \ntcp   LISTEN 0      4096                  [::]:80            [::]:*          \ntcp   LISTEN 0      4096                     *:22               *:*          \n----------------------------------------\n[0;32m[INFO] 最近登录与安全[0m\n----------------------------------------\n最近3次登录:\nroot 58.251.35.38 Thu Aug\nroot 58.251.35.38 Thu Aug\nroot 58.61.148.66 Wed Aug\n[1;33m[WARN] 发现 127 次 SSH 登录失败，请检查安全！[0m\n----------------------------------------\n[0;32m[INFO] 系统状态检查完成。[0m\n[2025-08-14-12:28:16] 任务完成\n', 'logs/task_23/task_23_template_3.log', '2025-08-14 12:28:14.523', '2025-08-14 12:28:19.932', 5, '2025-08-14 10:41:59.948', 0, NULL, NULL, NULL);
+INSERT INTO `task_work` (`id`, `task_id`, `template_id`, `host_id`, `status`, `log`, `log_path`, `start_time`, `end_time`, `duration`, `created_at`, `type`, `scheduled_time`, `cron_expr`, `is_recurring`) VALUES (32, 23, 12, 1, 3, '[2025-08-14-12:28:22] 任务开始\n协议:tcp 端口号:8088\n协议:tcp 端口号:33060\n协议:tcp 端口号:6379\n协议:tcp 端口号:4330\n协议:tcp 端口号:3306\n协议:tcp 端口号:80\n协议:tcp 端口号:9091\n协议:tcp 端口号:9090\n协议:tcp 端口号:9100\n协议:tcp 端口号:8086\n协议:tcp 端口号:4330\n协议:tcp 端口号:80\n[2025-08-14-12:28:22] 任务完成\n', 'logs/task_23/task_23_template_12.log', '2025-08-14 12:28:21.253', '2025-08-14 12:28:26.935', 5, '2025-08-14 10:41:59.948', 0, NULL, NULL, NULL);
+INSERT INTO `task_work` (`id`, `task_id`, `template_id`, `host_id`, `status`, `log`, `log_path`, `start_time`, `end_time`, `duration`, `created_at`, `type`, `scheduled_time`, `cron_expr`, `is_recurring`) VALUES (33, 24, 12, 1, 2, '[2025-08-14-15:07:49] 任务开始\n协议:tcp 端口号:8088\n协议:tcp 端口号:33060\n协议:tcp 端口号:6379\n协议:tcp 端口号:4330\n协议:tcp 端口号:3306\n协议:tcp 端口号:80\n协议:tcp 端口号:9091\n协议:tcp 端口号:9090\n协议:tcp 端口号:9100\n协议:tcp 端口号:8086\n协议:tcp 端口号:4330\n协议:tcp 端口号:80\n[2025-08-14-15:07:49] 任务完成\n', 'logs/task_24/task_24_template_12.log', '2025-08-14 15:07:47.018', '2025-08-14 15:07:53.316', 6, '2025-08-14 11:44:48.193', 0, NULL, NULL, NULL);
+INSERT INTO `task_work` (`id`, `task_id`, `template_id`, `host_id`, `status`, `log`, `log_path`, `start_time`, `end_time`, `duration`, `created_at`, `type`, `scheduled_time`, `cron_expr`, `is_recurring`) VALUES (34, 25, 3, 1, 3, '[2025-08-14-16:18:53] 任务开始\n----------------------------------------\n[0;32m[INFO] 系统信息[0m\n----------------------------------------\n主机名: go-ops\n操作系统: Ubuntu 24.04.2 LTS\n内核: 6.8.0-57-generic\n----------------------------------------\n[0;32m[INFO] 系统负载 (1/5/15分钟)[0m\n----------------------------------------\n负载:  0.11, 0.03, 0.01\n----------------------------------------\n[0;32m[INFO] CPU 使用率[0m\n----------------------------------------\nCPU 使用: 0.0%\n----------------------------------------\n[0;32m[INFO] 内存使用[0m\n----------------------------------------\n总内存: 1.6Gi	已用: 1.3Gi	空闲: 86Mi\n----------------------------------------\n[0;32m[INFO] 磁盘使用 (/)[0m\n----------------------------------------\n设备: /dev/vda3	总大小: 40G	已用: 8.4G (23%)\n----------------------------------------\n[0;32m[INFO] 进程统计[0m\n----------------------------------------\n当前运行进程数: 155\n----------------------------------------\n[0;32m[INFO] 监听端口 (常见服务)[0m\n----------------------------------------\ntcp   LISTEN 0      4096             127.0.0.1:8088       0.0.0.0:*          \ntcp   LISTEN 0      70                 0.0.0.0:33060      0.0.0.0:*          \ntcp   LISTEN 0      128                0.0.0.0:44323      0.0.0.0:*          \ntcp   LISTEN 0      128                0.0.0.0:44322      0.0.0.0:*          \ntcp   LISTEN 0      5                  0.0.0.0:44321      0.0.0.0:*          \ntcp   LISTEN 0      151                0.0.0.0:3306       0.0.0.0:*          \ntcp   LISTEN 0      4096               0.0.0.0:80         0.0.0.0:*          \ntcp   LISTEN 0      4096                     *:8086             *:*          \ntcp   LISTEN 0      128                   [::]:44323         [::]:*          \ntcp   LISTEN 0      128                   [::]:44322         [::]:*          \ntcp   LISTEN 0      5                     [::]:44321         [::]:*          \ntcp   LISTEN 0      4096                  [::]:80            [::]:*          \ntcp   LISTEN 0      4096                     *:22               *:*          \n----------------------------------------\n[0;32m[INFO] 最近登录与安全[0m\n----------------------------------------\n最近3次登录:\nroot 58.251.35.38 Thu Aug\nroot 58.251.35.38 Thu Aug\nroot 58.61.148.66 Wed Aug\n[1;33m[WARN] 发现 134 次 SSH 登录失败，请检查安全！[0m\n----------------------------------------\n[0;32m[INFO] 系统状态检查完成。[0m\n[2025-08-14-16:18:53] 任务完成\n', 'logs/task_25/task_25_template_3.log', '2025-08-14 16:18:51.005', '2025-08-14 16:18:57.902', 6, '2025-08-14 13:48:35.952', 0, NULL, NULL, NULL);
+INSERT INTO `task_work` (`id`, `task_id`, `template_id`, `host_id`, `status`, `log`, `log_path`, `start_time`, `end_time`, `duration`, `created_at`, `type`, `scheduled_time`, `cron_expr`, `is_recurring`) VALUES (35, 26, 3, 1, 3, '[2025-08-14-14:48:22] 任务开始\n----------------------------------------\n[0;32m[INFO] 系统信息[0m\n----------------------------------------\n主机名: go-ops\n操作系统: Ubuntu 24.04.2 LTS\n内核: 6.8.0-57-generic\n----------------------------------------\n[0;32m[INFO] 系统负载 (1/5/15分钟)[0m\n----------------------------------------\n负载:  0.08, 0.09, 0.03\n----------------------------------------\n[0;32m[INFO] CPU 使用率[0m\n----------------------------------------\nCPU 使用: 0.0%\n----------------------------------------\n[0;32m[INFO] 内存使用[0m\n----------------------------------------\n总内存: 1.6Gi	已用: 1.3Gi	空闲: 93Mi\n----------------------------------------\n[0;32m[INFO] 磁盘使用 (/)[0m\n----------------------------------------\n设备: /dev/vda3	总大小: 40G	已用: 8.3G (23%)\n----------------------------------------\n[0;32m[INFO] 进程统计[0m\n----------------------------------------\n当前运行进程数: 161\n----------------------------------------\n[0;32m[INFO] 监听端口 (常见服务)[0m\n----------------------------------------\ntcp   LISTEN 0      4096             127.0.0.1:8088       0.0.0.0:*          \ntcp   LISTEN 0      70                 0.0.0.0:33060      0.0.0.0:*          \ntcp   LISTEN 0      128                0.0.0.0:44323      0.0.0.0:*          \ntcp   LISTEN 0      128                0.0.0.0:44322      0.0.0.0:*          \ntcp   LISTEN 0      5                  0.0.0.0:44321      0.0.0.0:*          \ntcp   LISTEN 0      151                0.0.0.0:3306       0.0.0.0:*          \ntcp   LISTEN 0      4096               0.0.0.0:80         0.0.0.0:*          \ntcp   LISTEN 0      4096                     *:8086             *:*          \ntcp   LISTEN 0      128                   [::]:44323         [::]:*          \ntcp   LISTEN 0      128                   [::]:44322         [::]:*          \ntcp   LISTEN 0      5                     [::]:44321         [::]:*          \ntcp   LISTEN 0      4096                  [::]:80            [::]:*          \ntcp   LISTEN 0      4096                     *:22               *:*          \n----------------------------------------\n[0;32m[INFO] 最近登录与安全[0m\n----------------------------------------\n最近3次登录:\nroot 58.251.35.38 Thu Aug\nroot 58.251.35.38 Thu Aug\nroot 58.61.148.66 Wed Aug\n[1;33m[WARN] 发现 127 次 SSH 登录失败，请检查安全！[0m\n----------------------------------------\n[0;32m[INFO] 系统状态检查完成。[0m\n[2025-08-14-14:48:22] 任务完成\n', 'logs/task_26/task_26_template_3.log', '2025-08-14 14:48:19.650', '2025-08-14 14:48:26.641', 6, '2025-08-14 14:47:54.883', 0, NULL, NULL, NULL);
+INSERT INTO `task_work` (`id`, `task_id`, `template_id`, `host_id`, `status`, `log`, `log_path`, `start_time`, `end_time`, `duration`, `created_at`, `type`, `scheduled_time`, `cron_expr`, `is_recurring`) VALUES (36, 27, 2, 1, 3, '[2025-08-14-14:52:20] 任务开始\n[14:52:20] 1\n[14:52:21] 2\n[14:52:22] 3\n[14:52:23] 4\n[14:52:24] 5\n[14:52:25] 6\n[14:52:26] 7\n[14:52:27] 8\n[14:52:28] 9\n[14:52:29] 10\n[14:52:30] 11\n[14:52:31] 12\n[14:52:32] 13\n[14:52:33] 14\n[14:52:34] 15\n[14:52:35] 16\n[14:52:36] 17\n[14:52:37] 18\n[14:52:38] 19\n[14:52:39] 20\n[14:52:40] 21\n[14:52:41] 22\n[14:52:42] 23\n[14:52:43] 24\n[14:52:44] 25\n[14:52:45] 26\n[14:52:46] 27\n[14:52:47] 28\n[14:52:48] 29\n[14:52:49] 30\n[14:52:50] 31\n[14:52:51] 32\n[14:52:52] 33\n[14:52:53] 34\n[14:52:54] 35\n[14:52:55] 36\n[14:52:56] 37\n[14:52:57] 38\n[14:52:58] 39\n[14:52:59] 40\n[14:53:00] 41\n', 'logs/task_27/task_27_template_2.log', '2025-08-14 14:52:18.350', '2025-08-14 14:53:01.993', 43, '2025-08-14 14:49:10.171', 0, NULL, NULL, NULL);
+INSERT INTO `task_work` (`id`, `task_id`, `template_id`, `host_id`, `status`, `log`, `log_path`, `start_time`, `end_time`, `duration`, `created_at`, `type`, `scheduled_time`, `cron_expr`, `is_recurring`) VALUES (51, 34, 3, 1, 3, '[2025-08-14-19:12:03] 任务开始\n----------------------------------------\n[0;32m[INFO] 系统信息[0m\n----------------------------------------\n主机名: go-ops\n操作系统: Ubuntu 24.04.2 LTS\n内核: 6.8.0-57-generic\n----------------------------------------\n[0;32m[INFO] 系统负载 (1/5/15分钟)[0m\n----------------------------------------\n负载:  0.04, 0.04, 0.00\n----------------------------------------\n[0;32m[INFO] CPU 使用率[0m\n----------------------------------------\nCPU 使用: 4.8%\n----------------------------------------\n[0;32m[INFO] 内存使用[0m\n----------------------------------------\n总内存: 1.6Gi	已用: 1.3Gi	空闲: 86Mi\n----------------------------------------\n[0;32m[INFO] 磁盘使用 (/)[0m\n----------------------------------------\n设备: /dev/vda3	总大小: 40G	已用: 8.4G (23%)\n----------------------------------------\n[0;32m[INFO] 进程统计[0m\n----------------------------------------\n当前运行进程数: 157\n----------------------------------------\n[0;32m[INFO] 监听端口 (常见服务)[0m\n----------------------------------------\ntcp   LISTEN 0      4096             127.0.0.1:8088       0.0.0.0:*          \ntcp   LISTEN 0      70                 0.0.0.0:33060      0.0.0.0:*          \ntcp   LISTEN 0      128                0.0.0.0:44323      0.0.0.0:*          \ntcp   LISTEN 0      128                0.0.0.0:44322      0.0.0.0:*          \ntcp   LISTEN 0      5                  0.0.0.0:44321      0.0.0.0:*          \ntcp   LISTEN 0      151                0.0.0.0:3306       0.0.0.0:*          \ntcp   LISTEN 0      4096               0.0.0.0:80         0.0.0.0:*          \ntcp   LISTEN 0      4096                     *:8086             *:*          \ntcp   LISTEN 0      128                   [::]:44323         [::]:*          \ntcp   LISTEN 0      128                   [::]:44322         [::]:*          \ntcp   LISTEN 0      5                     [::]:44321         [::]:*          \ntcp   LISTEN 0      4096                  [::]:80            [::]:*          \ntcp   LISTEN 0      4096                     *:22               *:*          \n----------------------------------------\n[0;32m[INFO] 最近登录与安全[0m\n----------------------------------------\n最近3次登录:\nroot 58.251.35.38 Thu Aug\nroot 58.251.35.38 Thu Aug\nroot 58.61.148.66 Wed Aug\n[1;33m[WARN] 发现 135 次 SSH 登录失败，请检查安全！[0m\n----------------------------------------\n[0;32m[INFO] 系统状态检查完成。[0m\n[2025-08-14-19:12:04] 任务完成\n', 'logs/task_34/task_34_template_3.log', '2025-08-14 19:12:00.796', '2025-08-14 19:12:10.164', 9, '2025-08-14 17:47:08.382', 0, '2025-08-14 19:12:00.000', NULL, NULL);
+INSERT INTO `task_work` (`id`, `task_id`, `template_id`, `host_id`, `status`, `log`, `log_path`, `start_time`, `end_time`, `duration`, `created_at`, `type`, `scheduled_time`, `cron_expr`, `is_recurring`) VALUES (53, 35, 3, 1, 4, '任务被手动停止于 2025-08-14T20:24:48+08:00', 'logs/task_35/task_35_template_3.log', NULL, '2025-08-14 20:24:48.514', 0, '2025-08-14 19:28:41.165', 0, '2025-08-14 20:26:00.000', NULL, NULL);
+INSERT INTO `task_work` (`id`, `task_id`, `template_id`, `host_id`, `status`, `log`, `log_path`, `start_time`, `end_time`, `duration`, `created_at`, `type`, `scheduled_time`, `cron_expr`, `is_recurring`) VALUES (55, 36, 2, 1, 3, '[2025-08-14-22:35:14] 任务开始\n[22:35:14] 1\n[22:35:15] 2\n[22:35:16] 3\n[22:35:17] 4\n[22:35:18] 5\n[22:35:19] 6\n[22:35:20] 7\n[22:35:21] 8\n[22:35:22] 9\n[22:35:23] 10\n[22:35:24] 11\n[22:35:25] 12\n[22:35:26] 13\n[22:35:27] 14\n[22:35:28] 15\n[22:35:29] 16\n[22:35:30] 17\n[22:35:31] 18\n[22:35:32] 19\n[22:35:33] 20\n[22:35:34] 21\n[22:35:35] 22\n[22:35:36] 23\n[22:35:37] 24\n[22:35:38] 25\n[22:35:39] 26\n[22:35:40] 27\n[22:35:41] 28\n[22:35:42] 29\n[22:35:43] 30\n[22:35:44] 31\n[22:35:45] 32\n[22:35:46] 33\n[22:35:47] 34\n[22:35:48] 35\n[22:35:49] 36\n[22:35:50] 37\n[22:35:51] 38\n[22:35:52] 39\n[22:35:53] 40\n[22:35:54] 41\n[22:35:55] 42\n[22:35:56] 43\n[22:35:57] 44\n[22:35:58] 45\n[22:35:59] 46\n[22:36:00] 47\n[22:36:01] 48\n[22:36:02] 49\n[22:36:03] 50\n[22:36:04] 51\n[22:36:05] 52\n[22:36:06] 53\n[22:36:07] 54\n[22:36:08] 55\n[22:36:09] 56\n[22:36:10] 57\n[22:36:11] 58\n[22:36:12] 59\n[22:36:13] 60\n[22:36:14] 61\n[22:36:15] 62\n[22:36:16] 63\n[22:36:17] 64\n[22:36:18] 65\n[22:36:19] 66\n[22:36:20] 67\n[22:36:21] 68\n[22:36:22] 69\n[22:36:23] 70\n[22:36:24] 71\n[22:36:25] 72\n[22:36:26] 73\n[22:36:27] 74\n[22:36:28] 75\n[22:36:29] 76\n[22:36:30] 77\n[22:36:31] 78\n[22:36:32] 79\n[22:36:33] 80\n[22:36:34] 81\n[22:36:35] 82\n[22:36:36] 83\n[22:36:37] 84\n[22:36:38] 85\n[22:36:39] 86\n[22:36:40] 87\n[22:36:41] 88\n[22:36:42] 89\n[22:36:43] 90\n[22:36:44] 91\n[22:36:45] 92\n[22:36:46] 93\n[22:36:47] 94\n[22:36:48] 95\n[22:36:49] 96\n[22:36:50] 97\n[22:36:51] 98\n[22:36:52] 99\n[22:36:53] 100\n完成：所有数字 1-100 已打印完毕。\n[2025-08-14-22:36:54] 任务完成\n', 'logs/task_36/task_36_template_2.log', '2025-08-14 22:35:12.452', '2025-08-14 22:36:57.265', 104, '2025-08-14 22:34:52.446', 0, NULL, NULL, NULL);
+INSERT INTO `task_work` (`id`, `task_id`, `template_id`, `host_id`, `status`, `log`, `log_path`, `start_time`, `end_time`, `duration`, `created_at`, `type`, `scheduled_time`, `cron_expr`, `is_recurring`) VALUES (56, 36, 3, 1, 3, '[2025-08-14-22:37:00] 任务开始\n----------------------------------------\n[0;32m[INFO] 系统信息[0m\n----------------------------------------\n主机名: go-ops\n操作系统: Ubuntu 24.04.2 LTS\n内核: 6.8.0-57-generic\n----------------------------------------\n[0;32m[INFO] 系统负载 (1/5/15分钟)[0m\n----------------------------------------\n负载:  0.03, 0.03, 0.00\n----------------------------------------\n[0;32m[INFO] CPU 使用率[0m\n----------------------------------------\nCPU 使用: 4.2%\n----------------------------------------\n[0;32m[INFO] 内存使用[0m\n----------------------------------------\n总内存: 1.6Gi	已用: 1.3Gi	空闲: 90Mi\n----------------------------------------\n[0;32m[INFO] 磁盘使用 (/)[0m\n----------------------------------------\n设备: /dev/vda3	总大小: 40G	已用: 8.4G (23%)\n----------------------------------------\n[0;32m[INFO] 进程统计[0m\n----------------------------------------\n当前运行进程数: 156\n----------------------------------------\n[0;32m[INFO] 监听端口 (常见服务)[0m\n----------------------------------------\ntcp   LISTEN 0      4096             127.0.0.1:8088       0.0.0.0:*          \ntcp   LISTEN 0      70                 0.0.0.0:33060      0.0.0.0:*          \ntcp   LISTEN 0      128                0.0.0.0:44323      0.0.0.0:*          \ntcp   LISTEN 0      128                0.0.0.0:44322      0.0.0.0:*          \ntcp   LISTEN 0      5                  0.0.0.0:44321      0.0.0.0:*          \ntcp   LISTEN 0      151                0.0.0.0:3306       0.0.0.0:*          \ntcp   LISTEN 0      4096               0.0.0.0:80         0.0.0.0:*          \ntcp   LISTEN 0      4096                     *:8086             *:*          \ntcp   LISTEN 0      128                   [::]:44323         [::]:*          \ntcp   LISTEN 0      128                   [::]:44322         [::]:*          \ntcp   LISTEN 0      5                     [::]:44321         [::]:*          \ntcp   LISTEN 0      4096                  [::]:80            [::]:*          \ntcp   LISTEN 0      4096                     *:22               *:*          \n----------------------------------------\n[0;32m[INFO] 最近登录与安全[0m\n----------------------------------------\n最近3次登录:\nroot 58.251.35.38 Thu Aug\nroot 58.251.35.38 Thu Aug\nroot 58.61.148.66 Wed Aug\n[1;33m[WARN] 发现 136 次 SSH 登录失败，请检查安全！[0m\n----------------------------------------\n[0;32m[INFO] 系统状态检查完成。[0m\n[2025-08-14-22:37:00] 任务完成\n', 'logs/task_36/task_36_template_3.log', '2025-08-14 22:36:58.851', '2025-08-14 22:37:04.288', 5, '2025-08-14 22:34:52.446', 0, NULL, NULL, NULL);
+INSERT INTO `task_work` (`id`, `task_id`, `template_id`, `host_id`, `status`, `log`, `log_path`, `start_time`, `end_time`, `duration`, `created_at`, `type`, `scheduled_time`, `cron_expr`, `is_recurring`) VALUES (57, 36, 4, 1, 3, '[2025-08-14-22:37:10] 任务开始\n/tmp/task_36_4.sh: line 29: warning: here-document at line 8 delimited by end-of-file (wanted `EOF\')\n', 'logs/task_36/task_36_template_4.log', '2025-08-14 22:37:05.870', '2025-08-14 22:37:14.363', 8, '2025-08-14 22:34:52.446', 0, NULL, NULL, NULL);
+INSERT INTO `task_work` (`id`, `task_id`, `template_id`, `host_id`, `status`, `log`, `log_path`, `start_time`, `end_time`, `duration`, `created_at`, `type`, `scheduled_time`, `cron_expr`, `is_recurring`) VALUES (58, 37, 12, 1, 1, '', '', NULL, NULL, 0, '2025-08-14 23:48:15.126', 0, NULL, NULL, NULL);
+INSERT INTO `task_work` (`id`, `task_id`, `template_id`, `host_id`, `status`, `log`, `log_path`, `start_time`, `end_time`, `duration`, `created_at`, `type`, `scheduled_time`, `cron_expr`, `is_recurring`) VALUES (59, 37, 0, 0, 1, '', '', NULL, NULL, 0, '2025-08-14 23:48:15.404', 2, '2025-08-14 23:50:00.000', NULL, NULL);
+INSERT INTO `task_work` (`id`, `task_id`, `template_id`, `host_id`, `status`, `log`, `log_path`, `start_time`, `end_time`, `duration`, `created_at`, `type`, `scheduled_time`, `cron_expr`, `is_recurring`) VALUES (60, 38, 3, 1, 4, '任务被手动停止于 2025-08-14T23:56:22+08:00', 'logs/task_38/task_38_template_3.log', NULL, '2025-08-14 23:56:22.976', 0, '2025-08-14 23:49:16.076', 0, '2025-08-14 23:58:00.000', NULL, NULL);
+INSERT INTO `task_work` (`id`, `task_id`, `template_id`, `host_id`, `status`, `log`, `log_path`, `start_time`, `end_time`, `duration`, `created_at`, `type`, `scheduled_time`, `cron_expr`, `is_recurring`) VALUES (61, 38, 0, 0, 4, '', '', NULL, NULL, 0, '2025-08-14 23:49:16.350', 2, '2025-08-14 23:50:00.000', NULL, NULL);
+INSERT INTO `task_work` (`id`, `task_id`, `template_id`, `host_id`, `status`, `log`, `log_path`, `start_time`, `end_time`, `duration`, `created_at`, `type`, `scheduled_time`, `cron_expr`, `is_recurring`) VALUES (62, 39, 2, 1, 1, '', '', NULL, NULL, 0, '2025-08-15 17:31:47.095', 0, NULL, NULL, NULL);
+INSERT INTO `task_work` (`id`, `task_id`, `template_id`, `host_id`, `status`, `log`, `log_path`, `start_time`, `end_time`, `duration`, `created_at`, `type`, `scheduled_time`, `cron_expr`, `is_recurring`) VALUES (63, 39, 4, 1, 1, '', '', NULL, NULL, 0, '2025-08-15 17:31:47.096', 0, NULL, NULL, NULL);
+INSERT INTO `task_work` (`id`, `task_id`, `template_id`, `host_id`, `status`, `log`, `log_path`, `start_time`, `end_time`, `duration`, `created_at`, `type`, `scheduled_time`, `cron_expr`, `is_recurring`) VALUES (64, 39, 3, 1, 1, '', '', NULL, NULL, 0, '2025-08-15 17:31:47.096', 0, NULL, NULL, NULL);
+INSERT INTO `task_work` (`id`, `task_id`, `template_id`, `host_id`, `status`, `log`, `log_path`, `start_time`, `end_time`, `duration`, `created_at`, `type`, `scheduled_time`, `cron_expr`, `is_recurring`) VALUES (65, 39, 6, 1, 1, '', '', NULL, NULL, 0, '2025-08-15 17:31:47.096', 0, NULL, NULL, NULL);
+INSERT INTO `task_work` (`id`, `task_id`, `template_id`, `host_id`, `status`, `log`, `log_path`, `start_time`, `end_time`, `duration`, `created_at`, `type`, `scheduled_time`, `cron_expr`, `is_recurring`) VALUES (66, 39, 9, 1, 1, '', '', NULL, NULL, 0, '2025-08-15 17:31:47.096', 0, NULL, NULL, NULL);
+INSERT INTO `task_work` (`id`, `task_id`, `template_id`, `host_id`, `status`, `log`, `log_path`, `start_time`, `end_time`, `duration`, `created_at`, `type`, `scheduled_time`, `cron_expr`, `is_recurring`) VALUES (67, 39, 10, 1, 1, '', '', NULL, NULL, 0, '2025-08-15 17:31:47.096', 0, NULL, NULL, NULL);
+INSERT INTO `task_work` (`id`, `task_id`, `template_id`, `host_id`, `status`, `log`, `log_path`, `start_time`, `end_time`, `duration`, `created_at`, `type`, `scheduled_time`, `cron_expr`, `is_recurring`) VALUES (68, 39, 11, 1, 1, '', '', NULL, NULL, 0, '2025-08-15 17:31:47.096', 0, NULL, NULL, NULL);
+INSERT INTO `task_work` (`id`, `task_id`, `template_id`, `host_id`, `status`, `log`, `log_path`, `start_time`, `end_time`, `duration`, `created_at`, `type`, `scheduled_time`, `cron_expr`, `is_recurring`) VALUES (69, 39, 12, 1, 1, '', '', NULL, NULL, 0, '2025-08-15 17:31:47.096', 0, NULL, NULL, NULL);
+INSERT INTO `task_work` (`id`, `task_id`, `template_id`, `host_id`, `status`, `log`, `log_path`, `start_time`, `end_time`, `duration`, `created_at`, `type`, `scheduled_time`, `cron_expr`, `is_recurring`) VALUES (70, 39, 13, 1, 1, '', '', NULL, NULL, 0, '2025-08-15 17:31:47.096', 0, NULL, NULL, NULL);
+INSERT INTO `task_work` (`id`, `task_id`, `template_id`, `host_id`, `status`, `log`, `log_path`, `start_time`, `end_time`, `duration`, `created_at`, `type`, `scheduled_time`, `cron_expr`, `is_recurring`) VALUES (71, 40, 2, 1, 3, '[2025-08-24-15:33:18] 任务开始\n[15:33:18] 1\n[15:33:19] 2\n[15:33:20] 3\n[15:33:21] 4\n[15:33:22] 5\n[15:33:23] 6\n[15:33:24] 7\n[15:33:25] 8\n[15:33:26] 9\n[15:33:27] 10\n[15:33:28] 11\n[15:33:29] 12\n[15:33:30] 13\n[15:33:31] 14\n[15:33:32] 15\n[15:33:33] 16\n[15:33:34] 17\n[15:33:35] 18\n[15:33:36] 19\n[15:33:37] 20\n[15:33:38] 21\n[15:33:39] 22\n[15:33:40] 23\n[15:33:41] 24\n[15:33:42] 25\n[15:33:43] 26\n[15:33:44] 27\n[15:33:45] 28\n[15:33:46] 29\n[15:33:47] 30\n[15:33:48] 31\n[15:33:49] 32\n[15:33:50] 33\n[15:33:51] 34\n[15:33:52] 35\n[15:33:53] 36\n[15:33:54] 37\n[15:33:55] 38\n[15:33:56] 39\n[15:33:57] 40\n[15:33:58] 41\n[15:33:59] 42\n[15:34:00] 43\n[15:34:01] 44\n[15:34:02] 45\n[15:34:03] 46\n[15:34:04] 47\n[15:34:05] 48\n[15:34:06] 49\n[15:34:07] 50\n[15:34:08] 51\n[15:34:09] 52\n[15:34:10] 53\n[15:34:11] 54\n[15:34:12] 55\n[15:34:13] 56\n[15:34:14] 57\n[15:34:15] 58\n[15:34:16] 59\n[15:34:17] 60\n[15:34:18] 61\n[15:34:19] 62\n[15:34:20] 63\n[15:34:21] 64\n[15:34:22] 65\n[15:34:23] 66\n[15:34:24] 67\n[15:34:25] 68\n[15:34:26] 69\n[15:34:27] 70\n[15:34:28] 71\n[15:34:29] 72\n[15:34:30] 73\n[15:34:31] 74\n[15:34:32] 75\n[15:34:33] 76\n[15:34:34] 77\n[15:34:35] 78\n[15:34:36] 79\n[15:34:37] 80\n[15:34:38] 81\n[15:34:39] 82\n[15:34:40] 83\n[15:34:41] 84\n[15:34:42] 85\n[15:34:43] 86\n[15:34:44] 87\n[15:34:45] 88\n[15:34:46] 89\n[15:34:47] 90\n[15:34:48] 91\n[15:34:49] 92\n[15:34:50] 93\n[15:34:51] 94\n[15:34:52] 95\n[15:34:53] 96\n[15:34:54] 97\n[15:34:56] 98\n[15:34:57] 99\n[15:34:58] 100\n完成：所有数字 1-100 已打印完毕。\n[2025-08-24-15:34:59] 任务完成\n', 'logs/task_40/task_40_template_2.log', '2025-08-24 15:33:15.851', '2025-08-24 15:35:01.546', 105, '2025-08-24 15:33:05.681', 0, NULL, NULL, NULL);
+INSERT INTO `task_work` (`id`, `task_id`, `template_id`, `host_id`, `status`, `log`, `log_path`, `start_time`, `end_time`, `duration`, `created_at`, `type`, `scheduled_time`, `cron_expr`, `is_recurring`) VALUES (72, 41, 2, 1, 3, '[2025-09-10-23:22:03] 任务开始\n[23:22:03] 1\n[23:22:04] 2\n[23:22:05] 3\n[23:22:06] 4\n[23:22:07] 5\n[23:22:08] 6\n[23:22:09] 7\n[23:22:10] 8\n[23:22:11] 9\n[23:22:12] 10\n[23:22:13] 11\n[23:22:14] 12\n[23:22:15] 13\n[23:22:16] 14\n[23:22:17] 15\n[23:22:18] 16\n[23:22:19] 17\n[23:22:20] 18\n[23:22:21] 19\n[23:22:22] 20\n[23:22:23] 21\n[23:22:24] 22\n[23:22:25] 23\n[23:22:26] 24\n[23:22:27] 25\n[23:22:28] 26\n[23:22:29] 27\n[23:22:30] 28\n[23:22:31] 29\n[23:22:32] 30\n[23:22:33] 31\n[23:22:34] 32\n[23:22:35] 33\n[23:22:36] 34\n[23:22:37] 35\n[23:22:38] 36\n[23:22:39] 37\n[23:22:40] 38\n[23:22:41] 39\n[23:22:42] 40\n[23:22:43] 41\n[23:22:44] 42\n[23:22:45] 43\n[23:22:46] 44\n[23:22:47] 45\n[23:22:48] 46\n[23:22:49] 47\n[23:22:50] 48\n[23:22:51] 49\n[23:22:52] 50\n[23:22:53] 51\n[23:22:54] 52\n[23:22:55] 53\n[23:22:56] 54\n[23:22:57] 55\n[23:22:58] 56\n[23:22:59] 57\n[23:23:00] 58\n[23:23:01] 59\n[23:23:02] 60\n[23:23:03] 61\n[23:23:04] 62\n[23:23:05] 63\n[23:23:06] 64\n[23:23:07] 65\n[23:23:08] 66\n[23:23:09] 67\n[23:23:10] 68\n[23:23:11] 69\n[23:23:12] 70\n[23:23:13] 71\n[23:23:14] 72\n[23:23:15] 73\n[23:23:16] 74\n[23:23:17] 75\n[23:23:18] 76\n[23:23:19] 77\n[23:23:20] 78\n[23:23:21] 79\n[23:23:22] 80\n[23:23:23] 81\n[23:23:24] 82\n[23:23:25] 83\n[23:23:26] 84\n[23:23:27] 85\n[23:23:28] 86\n[23:23:29] 87\n[23:23:30] 88\n[23:23:31] 89\n[23:23:32] 90\n[23:23:33] 91\n[23:23:34] 92\n[23:23:35] 93\n[23:23:36] 94\n[23:23:37] 95\n[23:23:38] 96\n[23:23:39] 97\n[23:23:40] 98\n[23:23:41] 99\n[23:23:42] 100\n完成：所有数字 1-100 已打印完毕。\n[2025-09-10-23:23:43] 任务完成\n', 'logs\\task_41\\task_41_template_2.log', '2025-09-10 23:22:01.494', '2025-09-10 23:23:45.648', 104, '2025-09-10 23:21:21.760', 0, NULL, NULL, NULL);
+INSERT INTO `task_work` (`id`, `task_id`, `template_id`, `host_id`, `status`, `log`, `log_path`, `start_time`, `end_time`, `duration`, `created_at`, `type`, `scheduled_time`, `cron_expr`, `is_recurring`) VALUES (73, 41, 2, 449, 3, '[2025-09-10-23:23:48] 任务开始\n[23:23:48] 1\n[23:23:49] 2\n[23:23:50] 3\n[23:23:51] 4\n[23:23:52] 5\n[23:23:53] 6\n[23:23:54] 7\n[23:23:55] 8\n[23:23:56] 9\n[23:23:57] 10\n[23:23:58] 11\n[23:23:59] 12\n[23:24:00] 13\n[23:24:01] 14\n[23:24:02] 15\n[23:24:03] 16\n[23:24:04] 17\n[23:24:05] 18\n[23:24:06] 19\n[23:24:07] 20\n[23:24:08] 21\n[23:24:09] 22\n[23:24:10] 23\n[23:24:11] 24\n[23:24:12] 25\n[23:24:13] 26\n[23:24:14] 27\n[23:24:15] 28\n[23:24:16] 29\n[23:24:17] 30\n[23:24:18] 31\n[23:24:19] 32\n[23:24:20] 33\n[23:24:21] 34\n[23:24:22] 35\n[23:24:23] 36\n[23:24:24] 37\n[23:24:25] 38\n[23:24:26] 39\n[23:24:27] 40\n[23:24:28] 41\n[23:24:29] 42\n[23:24:30] 43\n[23:24:31] 44\n[23:24:32] 45\n[23:24:33] 46\n[23:24:34] 47\n[23:24:35] 48\n[23:24:36] 49\n[23:24:37] 50\n[23:24:38] 51\n[23:24:39] 52\n[23:24:40] 53\n[23:24:41] 54\n[23:24:42] 55\n[23:24:43] 56\n[23:24:44] 57\n[23:24:45] 58\n[23:24:46] 59\n[23:24:47] 60\n[23:24:48] 61\n[23:24:49] 62\n[23:24:50] 63\n[23:24:51] 64\n[23:24:52] 65\n[23:24:53] 66\n[23:24:54] 67\n[23:24:55] 68\n[23:24:56] 69\n[23:24:57] 70\n[23:24:58] 71\n[23:24:59] 72\n[23:25:00] 73\n[23:25:01] 74\n[23:25:02] 75\n[23:25:03] 76\n[23:25:04] 77\n[23:25:05] 78\n[23:25:06] 79\n[23:25:07] 80\n[23:25:08] 81\n[23:25:09] 82\n[23:25:10] 83\n[23:25:11] 84\n[23:25:12] 85\n[23:25:13] 86\n[23:25:14] 87\n[23:25:15] 88\n[23:25:16] 89\n[23:25:17] 90\n[23:25:18] 91\n[23:25:19] 92\n[23:25:20] 93\n[23:25:21] 94\n[23:25:22] 95\n[23:25:23] 96\n[23:25:24] 97\n[23:25:25] 98\n[23:25:26] 99\n[23:25:27] 100\n完成：所有数字 1-100 已打印完毕。\n[2025-09-10-23:25:28] 任务完成\n', 'logs\\task_41\\task_41_template_2.log', '2025-09-10 23:23:47.248', '2025-09-10 23:25:29.917', 102, '2025-09-10 23:21:21.760', 0, NULL, NULL, NULL);
+INSERT INTO `task_work` (`id`, `task_id`, `template_id`, `host_id`, `status`, `log`, `log_path`, `start_time`, `end_time`, `duration`, `created_at`, `type`, `scheduled_time`, `cron_expr`, `is_recurring`) VALUES (74, 42, 2, 1, 1, '', '', NULL, NULL, 0, '2025-09-12 17:43:11.425', 0, NULL, NULL, NULL);
+INSERT INTO `task_work` (`id`, `task_id`, `template_id`, `host_id`, `status`, `log`, `log_path`, `start_time`, `end_time`, `duration`, `created_at`, `type`, `scheduled_time`, `cron_expr`, `is_recurring`) VALUES (75, 42, 3, 1, 1, '', '', NULL, NULL, 0, '2025-09-12 17:43:11.425', 0, NULL, NULL, NULL);
+INSERT INTO `task_work` (`id`, `task_id`, `template_id`, `host_id`, `status`, `log`, `log_path`, `start_time`, `end_time`, `duration`, `created_at`, `type`, `scheduled_time`, `cron_expr`, `is_recurring`) VALUES (76, 42, 4, 1, 1, '', '', NULL, NULL, 0, '2025-09-12 17:43:11.425', 0, NULL, NULL, NULL);
+INSERT INTO `task_work` (`id`, `task_id`, `template_id`, `host_id`, `status`, `log`, `log_path`, `start_time`, `end_time`, `duration`, `created_at`, `type`, `scheduled_time`, `cron_expr`, `is_recurring`) VALUES (77, 42, 6, 1, 1, '', '', NULL, NULL, 0, '2025-09-12 17:43:11.425', 0, NULL, NULL, NULL);
+INSERT INTO `task_work` (`id`, `task_id`, `template_id`, `host_id`, `status`, `log`, `log_path`, `start_time`, `end_time`, `duration`, `created_at`, `type`, `scheduled_time`, `cron_expr`, `is_recurring`) VALUES (78, 42, 9, 1, 1, '', '', NULL, NULL, 0, '2025-09-12 17:43:11.425', 0, NULL, NULL, NULL);
+INSERT INTO `task_work` (`id`, `task_id`, `template_id`, `host_id`, `status`, `log`, `log_path`, `start_time`, `end_time`, `duration`, `created_at`, `type`, `scheduled_time`, `cron_expr`, `is_recurring`) VALUES (79, 42, 10, 1, 1, '', '', NULL, NULL, 0, '2025-09-12 17:43:11.425', 0, NULL, NULL, NULL);
+INSERT INTO `task_work` (`id`, `task_id`, `template_id`, `host_id`, `status`, `log`, `log_path`, `start_time`, `end_time`, `duration`, `created_at`, `type`, `scheduled_time`, `cron_expr`, `is_recurring`) VALUES (80, 42, 11, 1, 1, '', '', NULL, NULL, 0, '2025-09-12 17:43:11.425', 0, NULL, NULL, NULL);
+COMMIT;
+
+SET FOREIGN_KEY_CHECKS = 1;

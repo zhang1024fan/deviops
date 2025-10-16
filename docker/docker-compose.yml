@@ -14,7 +14,7 @@ services:
       # Persistent data directory
       - ./mysql/data:/var/lib/mysql
       # Initialization SQL scripts (executed in alphabetical order)
-      - ./mysql/devops.sql:/docker-entrypoint-initdb.d/01-devops.sql
+      - ./mysql/devops001.sql:/docker-entrypoint-initdb.d/01-devops.sql
       - ./mysql/init.sql:/docker-entrypoint-initdb.d/02-init.sql
       # MySQL configuration
       - ./mysql/conf.d:/etc/mysql/conf.d
