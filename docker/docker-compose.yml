@@ -132,6 +132,8 @@ services:
       - ./api/logs:/app/log
       # Upload files directory
       - ./api/upload:/app/upload
+      # Excel template file
+      - ./api/upload/host.xlsx:/app/upload/xlsl/host.xlsx
     networks:
       - devops-network
     depends_on:
