@@ -89,8 +89,8 @@ REDIS_PASSWORD=zhangfan@123
 - **IMAGE_HOST**: 必须修改为实际的外网访问地址,否则图片无法正常显示
 
 ## 快速启动
-*  chown -R 65534:65534 prometheus/data
-*  chown -R 65534:65534 pushgateway/data
+chown -R 65534:65534 prometheus/data
+chown -R 65534:65534 pushgateway/data
 
 ### 1. 启动所有服务
 

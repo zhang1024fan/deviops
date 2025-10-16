@@ -58,6 +58,7 @@ services:
     image: crpi-aj3vgoxp9kzh2jx4.cn-hangzhou.personal.cr.aliyuncs.com/zhangfan_k8s/pushgateway:v1.9.0
     container_name: devops-pushgateway
     restart: always
+    user: "65534:65534"
     ports:
       - "${PUSHGATEWAY_PORT:-9091}:9091"
     environment:
@@ -78,6 +79,7 @@ services:
     image: crpi-aj3vgoxp9kzh2jx4.cn-hangzhou.personal.cr.aliyuncs.com/zhangfan_k8s/prometheus:v2.47.0
     container_name: devops-prometheus
     restart: always
+    user: "65534:65534"
     ports:
       - "${PROMETHEUS_PORT:-9090}:9090"
     environment:

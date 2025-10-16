@@ -23,14 +23,14 @@ db:
 # redis配置
 redis:
   address: redis:6379
-  password: "zhangfan@123"
+  password: "devops@2025"
 
 # 图片地址和ip
 imageSettings:
   # 本地磁盘地址
   uploadDir: ./upload/
   # 本地ip地址(替换为实际的外网IP或域名)
-  imageHost: http://localhost:8080
+  imageHost: ""
 
 # log日志配置
 log:
