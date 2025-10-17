@@ -58,7 +58,7 @@ services:
     image: crpi-aj3vgoxp9kzh2jx4.cn-hangzhou.personal.cr.aliyuncs.com/zhangfan_k8s/pushgateway:v1.9.0
     container_name: devops-pushgateway
     restart: always
-    user: "65534:65534"
+    user: "0:0"
     ports:
       - "${PUSHGATEWAY_PORT:-9091}:9091"
     environment:
@@ -66,6 +66,11 @@ services:
     volumes:
       # Persistent data
       - ./pushgateway/data:/pushgateway
+    entrypoint: ["/bin/sh", "-c"]
+    command:
+      - |
+        chown -R 65534:65534 /pushgateway
+        exec su-exec 65534:65534 /bin/pushgateway
     networks:
       - devops-network
     healthcheck:
@@ -79,7 +84,7 @@ services:
     image: crpi-aj3vgoxp9kzh2jx4.cn-hangzhou.personal.cr.aliyuncs.com/zhangfan_k8s/prometheus:v2.47.0
     container_name: devops-prometheus
     restart: always
-    user: "65534:65534"
+    user: "0:0"
     ports:
       - "${PROMETHEUS_PORT:-9090}:9090"
     environment:
@@ -89,13 +94,17 @@ services:
       - ./prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
       # Persistent data directory
       - ./prometheus/data:/prometheus
+    entrypoint: ["/bin/sh", "-c"]
     command:
-      - '--config.file=/etc/prometheus/prometheus.yml'
-      - '--storage.tsdb.path=/prometheus'
-      - '--web.console.libraries=/usr/share/prometheus/console_libraries'
-      - '--web.console.templates=/usr/share/prometheus/consoles'
-      - '--storage.tsdb.retention.time=15d'
-      - '--web.enable-lifecycle'
+      - |
+        chown -R 65534:65534 /prometheus
+        exec su-exec 65534:65534 /bin/prometheus \
+          --config.file=/etc/prometheus/prometheus.yml \
+          --storage.tsdb.path=/prometheus \
+          --web.console.libraries=/usr/share/prometheus/console_libraries \
+          --web.console.templates=/usr/share/prometheus/consoles \
+          --storage.tsdb.retention.time=15d \
+          --web.enable-lifecycle
     networks:
       - devops-network
     depends_on:
