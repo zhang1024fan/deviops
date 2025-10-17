@@ -155,7 +155,7 @@ docker-compose down -v
 ```bash
 docker-compose up -d --build
 ```
-
+### 访问地址  admin/123456
 ### 单独重启某个服务
 
 ```bash
