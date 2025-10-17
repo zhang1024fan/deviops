@@ -70,7 +70,7 @@ services:
     command:
       - |
         chown -R 65534:65534 /pushgateway
-        exec su-exec 65534:65534 /bin/pushgateway
+        exec setpriv --reuid=65534 --regid=65534 --clear-groups /bin/pushgateway
     networks:
       - devops-network
     healthcheck:
@@ -98,7 +98,7 @@ services:
     command:
       - |
         chown -R 65534:65534 /prometheus
-        exec su-exec 65534:65534 /bin/prometheus \
+        exec setpriv --reuid=65534 --regid=65534 --clear-groups /bin/prometheus \
           --config.file=/etc/prometheus/prometheus.yml \
           --storage.tsdb.path=/prometheus \
           --web.console.libraries=/usr/share/prometheus/console_libraries \
