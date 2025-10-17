@@ -177,7 +177,28 @@ http://180.76.231.65/login
 
 ## 安装步骤
 docker一键安装
-[text](docker/README.md)
+[docker部署文档](docker/README.md)
+#### 拉取镜像(可选,首次部署会自动拉取)
+```bash
+docker pull crpi-aj3vgoxp9kzh2jx4.cn-hangzhou.personal.cr.aliyuncs.com/zhangfan_k8s/deviops-api:v1.0
+docker pull crpi-aj3vgoxp9kzh2jx4.cn-hangzhou.personal.cr.aliyuncs.com/zhangfan_k8s/deviops-web:v1.0
+docker pull crpi-aj3vgoxp9kzh2jx4.cn-hangzhou.personal.cr.aliyuncs.com/zhangfan_k8s/pushgateway:v1.9.0
+docker pull crpi-aj3vgoxp9kzh2jx4.cn-hangzhou.personal.cr.aliyuncs.com/zhangfan_k8s/redis:7.0-alpine
+docker pull crpi-aj3vgoxp9kzh2jx4.cn-hangzhou.personal.cr.aliyuncs.com/zhangfan_k8s/prometheus:v2.47.0
+docker pull crpi-aj3vgoxp9kzh2jx4.cn-hangzhou.personal.cr.aliyuncs.com/zhangfan_k8s/mysql:8.0.33
+```
+```bash
+git clone https://github.com/zhang1024fan/deviops.git
+cd  deviops/docker
+docker-compose up -d
+### 2. 查看服务状态
+docker-compose ps
+### 3. 查看服务日志
+docker-compose logs -f
+### 4.访问服务
+Web 前端: http://localhost:8088
+默认账号: admin / 123456
+```
 
 ## 更新修复计划
 1. 修复 模版下载失败问题，优化xlsl模版参数变量，模版导入支持公钥认证

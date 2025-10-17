@@ -119,8 +119,9 @@ docker-compose logs -f mysql
 
 ### 4. 访问系统
 
-- **Web 前端**: http://localhost:8080
-- **默认账号**: admin / admin@2025
+- **Web 前端**: http://localhost:8088
+- **API 后端**: http://localhost:8000
+- **默认账号**: admin/123456
 - **Prometheus**: http://localhost:9090
 - **Pushgateway**: http://localhost:9091
 
