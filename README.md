@@ -109,8 +109,9 @@ http://180.76.231.65/login
 - **client-go** - K8s客户端
 
 ### 云平台SDK
+- **AlIyun Cloud SDK** -  阿里云云资源管理
 - **Tencent Cloud SDK** - 腾讯云资源管理
-- **Baidu Cloud SDK** - 百度云资源管理
+- **Baidu Cloud SDK** -   百度云资源管理
 
 ## 核心功能模块
 
@@ -120,7 +121,7 @@ http://180.76.231.65/login
 - SSH连接管理
 - SQL数据库管理
 - 云资源管理（腾讯云、百度云）
-- SQL操作日志审计
+- SQL操作日志审计(未开发)
 
 ### 2. 配置中心
 - 密钥管理（SSH密钥、API密钥）
@@ -175,71 +176,20 @@ http://180.76.231.65/login
 ## 快速开始
 
 ## 安装步骤
-### 环境要求
-1. go version go1.24.6 linux/amd64
-2. mysql Ver 8.0.33 以上
-3. redis 5.0.0 以上
-4. nginx 1.18.0 以上
-5. 监控配置 安装prometheus+pushgateway 
-注意事项，mysql连接密码认证方式需要修改
--- 修改 root@127.0.0.1 使用 caching_sha2_password
-ALTER USER 'root'@'127.0.0.1' IDENTIFIED WITH caching_sha2_password BY 'devops@2025';
--- 刷新权限
-FLUSH PRIVILEGES;
--- 验证
-SELECT user, host, plugin FROM mysql.user WHERE user = 'root';
+docker一键安装
+[text](docker/README.md)
 
-
-## 1. 配置前端
-* 拷贝dist/               项目到 /var/www/html/
-* 拷贝devops.conf配置文件到  /etc/nginx/conf.d/ 
-* 修改nginx配置文件  
-![alt text](image.png)
-* 启动nginx服务
-nginx -s reload
-## 2. 配置后端
-git clone https://github.com/zhang1024fan/deviops.git
-mkdir -p /home/devops/{logs,upload}
-cp -r deviops/devops          /home/devops/   #后端项目
-cp -r deviops/config.yaml     /home/devops/   #配置文件
-cp -r deviops/devops.sql      /home/devops/   #sql文件
-cp -r deviops/devops.service  /etc/systemd/system/  #服务启动脚本
-### 导入sql 
-mysql -u root -p'xxxxxx'   < /home/devops/devops.sql
-### 安装监控工具
-prometheus+pushgateway 
-![alt text](image-4.png)
-mkdir -p /opt/prometheus/
-cd /opt/prometheus/
-wget https://github.com/prometheus/prometheus/releases/download/v2.47.0/prometheus-2.47.0.linux-amd64.tar.gz
-tar -zxvf prometheus-2.47.0.linux-amd64.tar.gz
-wget https://github.com/prometheus/pushgateway/releases/download/v1.6.1/pushgateway-1.6.1.linux-amd64.tar.gz
-修改 prometheus.yml 配置
-![alt text](image-5.png)
-tar -xvf prometheus-2.47.0.linux-amd64.tar.gz
-cp prometheus.service  /etc/systemd/system/
-cp pushgateway.service  /etc/systemd/system/
-systemctl daemon-reload
-systemctl start prometheus.service
-systemctl start pushgateway.service
-### 修改配置文件  /home/devops/config.yaml
-![alt text](image-1.png)
-![alt text](image-2.png)
-
-### 启动服务
-systemctl daemon-reload
-systemctl start devops.service
-
-###  访问地址
-http://192.168.1.1
-admin/admin@2025
-
+## 更新修复计划
+1. 修复 模版下载失败问题，优化xlsl模版参数变量，模版导入支持公钥认证
+2. 修复配置中心 按钮权限无法点击选择问题
+3. 优化初始化sql参数   测试数据删除不需要参数
+4. 修复前端访问webSocket失败问题（cmdb资产管理/k8s容器管理终端）
+......
+## 联系作者
 ## 技术交流+社区
 - wx：zf5391621
 - QQ：545118130
 - 邮箱：zfwh1024@163.com
 - 项目地址：https://github.com/zhang1024fan/deviops.git
-![alt text](image-3.png)
----
-
-**注意：** 生产环境部署前请务必修改默认密码和密钥配置！
+#### 加群
+![alt text](assets/微信.png)
