@@ -1,0 +1,10 @@
+apiVersion: v1
+data:
+  prometheus.yml: "# my global config\nglobal:\n  scrape_interval: 15s # Set the scrape interval to every 15 seconds. Default is every 1 minute.\n  evaluation_interval: 15s # Evaluate rules every 15 seconds. The default is every 1 minute.\n  # scrape_timeout is set to the global default (10s).\n\n# Alertmanager configuration\nalerting:\n  alertmanagers:\n    - static_configs:\n        - targets:\n          # - alertmanager:9093\n\n# Load rules once and periodically evaluate them according to the global 'evaluation_interval'.\nrule_files:\n  # - \"first_rules.yml\"\n  # - \"second_rules.yml\"\n\n# A scrape configuration containing exactly one endpoint to scrape:\n# Here it's Prometheus itself.\nscrape_configs:\n  # The job name is added as a label `job=<job_name>` to any timeseries scraped from this config.\n  - job_name: \"prometheus\"\n\n    static_configs:\n      - targets: [\"localhost:9090\"]\n       # The label name is added as a label `label_name=<label_value>` to any timeseries scraped from this config.\n        labels:\n          app: \"prometheus\"\n  - job_name: 'pushgateway'\n    honor_labels: true  # 保留Pushgateway推送的job和instance标签\n    static_configs:\n      - targets: ['pushgateway:9091']  # Pushgateway地址\n   \n"
+kind: ConfigMap
+metadata:
+  annotations:
+    use-subpath: "true"
+  labels:
+    io.kompose.service: prometheus
+  name: prometheus-cm0

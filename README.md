@@ -174,7 +174,7 @@ http://180.76.231.65/login
 - 可视化展示
 
 ## 快速开始
-
+[视频教程](https://www.bilibili.com/video/BV1pyWxzQEVj/?spm_id_from=333.1387.homepage.video_card.click&vd_source=37f81c1b36b3818cbad621bcbe5c3e49)
 ## 安装步骤
 docker一键安装
 [docker部署文档](docker/README.md)
@@ -207,6 +207,7 @@ Web 前端: http://localhost:8088
 4. 修复前端访问webSocket失败问题（cmdb资产管理/k8s容器管理终端）
 ......
 ## 联系作者
+
 ## 技术交流+社区
 - wx：zf5391621
 - QQ：545118130

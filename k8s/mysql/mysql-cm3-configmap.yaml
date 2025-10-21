@@ -1,0 +1,34 @@
+apiVersion: v1
+data:
+  my.cnf: |
+    [mysqld]
+    # 字符集配置
+    character-set-server=utf8mb4
+    collation-server=utf8mb4_unicode_ci
+
+    # 默认认证插件
+    default-authentication-plugin=caching_sha2_password
+
+    # 连接配置
+    max_connections=500
+    max_connect_errors=1000
+
+    # 缓存配置
+    innodb_buffer_pool_size=256M
+
+    # 日志配置
+    log_error=/var/log/mysql/error.log
+    slow_query_log=1
+    slow_query_log_file=/var/log/mysql/slow.log
+    long_query_time=2
+
+    # 时区
+    default-time-zone='+8:00'
+
+    [client]
+    default-character-set=utf8mb4
+kind: ConfigMap
+metadata:
+  labels:
+    io.kompose.service: mysql
+  name: mysql-cm3

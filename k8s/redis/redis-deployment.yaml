@@ -1,0 +1,66 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  annotations:
+    kompose.cmd: kompose convert
+    kompose.version: 1.37.0 (fb0539e64)
+  labels:
+    io.kompose.service: redis
+  name: redis
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      io.kompose.service: redis
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      annotations:
+        kompose.cmd: kompose convert
+        kompose.version: 1.37.0 (fb0539e64)
+      labels:
+        io.kompose.service: redis
+    spec:
+      containers:
+        - args:
+            - redis-server
+            - --requirepass
+            - devops@2025
+            - --appendonly
+            - "yes"
+          env:
+            - name: TZ
+              value: Asia/Shanghai
+          image: crpi-aj3vgoxp9kzh2jx4.cn-hangzhou.personal.cr.aliyuncs.com/zhangfan_k8s/redis:7.0-alpine
+          livenessProbe:
+            exec:
+              command:
+                - redis-cli
+                - -a
+                - zhangfan@123
+                - ping
+            failureThreshold: 5
+            periodSeconds: 10
+            timeoutSeconds: 3
+          name: devops-redis
+          ports:
+            - containerPort: 6379
+              protocol: TCP
+          volumeMounts:
+            - mountPath: /data
+              name: redis-claim0
+            - mountPath: /usr/local/etc/redis/redis.conf
+              name: redis-cm1
+              subPath: redis.conf
+      restartPolicy: Always
+      volumes:
+        - name: redis-claim0
+          persistentVolumeClaim:
+            claimName: redis-claim0
+        - configMap:
+            items:
+              - key: redis.conf
+                path: redis.conf
+            name: redis-cm1
+          name: redis-cm1

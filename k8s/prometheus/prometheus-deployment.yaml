@@ -1,0 +1,55 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: prometheus
+  labels:
+    app: prometheus
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: prometheus
+  template:
+    metadata:
+      labels:
+        app: prometheus
+    spec:
+      containers:
+        - name: devops-prometheus
+          image: crpi-aj3vgoxp9kzh2jx4.cn-hangzhou.personal.cr.aliyuncs.com/zhangfan_k8s/prometheus:v2.47.0
+          env:
+            - name: TZ
+              value: Asia/Shanghai
+          args:
+            - --config.file=/etc/prometheus/prometheus.yml
+            - --storage.tsdb.path=/prometheus
+            - --web.console.libraries=/usr/share/prometheus/console_libraries
+            - --web.console.templates=/usr/share/prometheus/consoles
+            - --storage.tsdb.retention.time=15d
+            - --web.enable-lifecycle
+          ports:
+            - containerPort: 9090
+          volumeMounts:
+            - name: prometheus-cm0
+              mountPath: /etc/prometheus/prometheus.yml
+              subPath: prometheus.yml
+            - name: prometheus-data
+              mountPath: /prometheus
+          livenessProbe:
+            exec:
+              command:
+                - wget
+                - --quiet
+                - --tries=1
+                - --spider
+                - http://localhost:9090/-/healthy
+            failureThreshold: 5
+            periodSeconds: 10
+            timeoutSeconds: 3
+      volumes:
+        - name: prometheus-cm0
+          configMap:
+            name: prometheus-cm0
+      restartPolicy: Always
+      securityContext:
+        fsGroup: 2000

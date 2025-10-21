@@ -1,0 +1,84 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  annotations:
+    kompose.cmd: kompose convert
+    kompose.version: 1.37.0 (fb0539e64)
+  labels:
+    io.kompose.service: mysql
+  name: mysql
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      io.kompose.service: mysql
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      annotations:
+        kompose.cmd: kompose convert
+        kompose.version: 1.37.0 (fb0539e64)
+      labels:
+        io.kompose.service: mysql
+    spec:
+      containers:
+        - args:
+            - --default-authentication-plugin=caching_sha2_password
+            - --character-set-server=utf8mb4
+            - --collation-server=utf8mb4_unicode_ci
+          env:
+            - name: MYSQL_DATABASE
+              value: devops
+            - name: MYSQL_ROOT_PASSWORD
+              value: devops@2025
+            - name: TZ
+              value: Asia/Shanghai
+          image: crpi-aj3vgoxp9kzh2jx4.cn-hangzhou.personal.cr.aliyuncs.com/zhangfan_k8s/mysql:8.0.33
+          livenessProbe:
+            exec:
+              command:
+                - mysqladmin
+                - ping
+                - -h
+                - localhost
+                - -uroot
+                - -pdevops@2025
+            failureThreshold: 5
+            periodSeconds: 10
+            timeoutSeconds: 5
+          name: devops-mysql
+          ports:
+            - containerPort: 3306
+              protocol: TCP
+          volumeMounts:
+            - mountPath: /var/lib/mysql
+              name: mysql-claim0
+            - mountPath: /docker-entrypoint-initdb.d/01-devops.sql
+              name: mysql-cm1
+              subPath: 01-devops.sql
+            - mountPath: /docker-entrypoint-initdb.d/02-init.sql
+              name: mysql-cm2
+              subPath: 02-init.sql
+            - mountPath: /etc/mysql/conf.d
+              name: mysql-cm3
+      restartPolicy: Always
+      volumes:
+        - name: mysql-claim0
+          persistentVolumeClaim:
+            claimName: mysql-claim0
+        - configMap:
+            items:
+              - key: devops001.sql
+                path: 01-devops.sql
+            name: mysql-cm1
+          name: mysql-cm1
+        - configMap:
+            items:
+              - key: init.sql
+                path: 02-init.sql
+            name: mysql-cm2
+          name: mysql-cm2
+        - configMap:
+            name: mysql-cm3
+          name: mysql-cm3

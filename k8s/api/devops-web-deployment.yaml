@@ -1,0 +1,61 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  annotations:
+    kompose.cmd: kompose convert
+    kompose.version: 1.37.0 (fb0539e64)
+  labels:
+    io.kompose.service: devops-web
+  name: devops-web
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      io.kompose.service: devops-web
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      annotations:
+        kompose.cmd: kompose convert
+        kompose.version: 1.37.0 (fb0539e64)
+      labels:
+        io.kompose.service: devops-web
+    spec:
+      containers:
+        - env:
+            - name: TZ
+              value: Asia/Shanghai
+          image: crpi-aj3vgoxp9kzh2jx4.cn-hangzhou.personal.cr.aliyuncs.com/zhangfan_k8s/deviops-web:v1.0
+          livenessProbe:
+            exec:
+              command:
+                - wget
+                - --quiet
+                - --tries=1
+                - --spider
+                - http://localhost:80
+            failureThreshold: 5
+            periodSeconds: 10
+            timeoutSeconds: 3
+          name: devops-web
+          ports:
+            - containerPort: 80
+              protocol: TCP
+          volumeMounts:
+            - mountPath: /etc/nginx/conf.d/default.conf
+              name: devops-web-cm0
+              subPath: default.conf
+            - mountPath: /home/devops/upload
+              name: devops-web-cm1
+      restartPolicy: Always
+      volumes:
+        - configMap:
+            items:
+              - key: devops.conf
+                path: default.conf
+            name: devops-web-cm0
+          name: devops-web-cm0
+        - configMap:
+            name: devops-web-cm1
+          name: devops-web-cm1

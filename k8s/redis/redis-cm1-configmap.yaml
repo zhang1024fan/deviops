@@ -1,0 +1,38 @@
+apiVersion: v1
+data:
+  redis.conf: |
+    # Redis配置文件
+    bind 0.0.0.0
+    protected-mode yes
+    port 6379
+    tcp-backlog 511
+    timeout 0
+    tcp-keepalive 300
+
+    # 持久化配置
+    appendonly yes
+    appendfilename "appendonly.aof"
+    appendfsync everysec
+
+    # RDB快照
+    save 900 1
+    save 300 10
+    save 60 10000
+
+    # 内存管理
+    maxmemory 512mb
+    maxmemory-policy allkeys-lru
+
+    # 日志
+    loglevel notice
+    logfile ""
+
+    # 数据库数量
+    databases 16
+kind: ConfigMap
+metadata:
+  annotations:
+    use-subpath: "true"
+  labels:
+    io.kompose.service: redis
+  name: redis-cm1

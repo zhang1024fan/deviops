@@ -1,0 +1,52 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  annotations:
+    kompose.cmd: kompose convert
+    kompose.version: 1.37.0 (fb0539e64)
+  labels:
+    io.kompose.service: pushgateway
+  name: pushgateway
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      io.kompose.service: pushgateway
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      annotations:
+        kompose.cmd: kompose convert
+        kompose.version: 1.37.0 (fb0539e64)
+      labels:
+        io.kompose.service: pushgateway
+    spec:
+      containers:
+        - env:
+            - name: TZ
+              value: Asia/Shanghai
+          image: crpi-aj3vgoxp9kzh2jx4.cn-hangzhou.personal.cr.aliyuncs.com/zhangfan_k8s/pushgateway:v1.9.0
+          livenessProbe:
+            exec:
+              command:
+                - wget
+                - --quiet
+                - --tries=1
+                - --spider
+                - http://localhost:9091/-/healthy
+            failureThreshold: 5
+            periodSeconds: 10
+            timeoutSeconds: 3
+          name: devops-pushgateway
+          ports:
+            - containerPort: 9091
+              protocol: TCP
+          volumeMounts:
+            - mountPath: /pushgateway
+              name: pushgateway-cm0
+      restartPolicy: Always
+      volumes:
+        - configMap:
+            name: pushgateway-cm0
+          name: pushgateway-cm0

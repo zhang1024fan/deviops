@@ -1,0 +1,83 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: devops-api
+  labels:
+    io.kompose.service: devops-api
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      io.kompose.service: devops-api
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        io.kompose.service: devops-api
+    spec:
+      restartPolicy: Always
+      # 新增 initContainer，用来创建上传目录
+      initContainers:
+        - name: init-upload-dir
+          image: swr.cn-north-4.myhuaweicloud.com/ddn-k8s/registry.k8s.io/e2e-test-images/busybox:1.29-4
+          command: ["sh", "-c", "mkdir -p /app/upload/xlsl"]
+          volumeMounts:
+            - name: devops-api-claim1
+              mountPath: /app/upload
+      containers:
+        - name: devops-api
+          image: crpi-aj3vgoxp9kzh2jx4.cn-hangzhou.personal.cr.aliyuncs.com/zhangfan_k8s/deviops-api:v1.0
+          ports:
+            - containerPort: 8000
+              protocol: TCP
+          env:
+            - name: TZ
+              value: Asia/Shanghai
+            - name: IMAGE_HOST
+              value: http://localhost:8080
+            - name: DB_HOST
+              value: mysql
+            - name: DB_PORT
+              value: "3306"
+            - name: DB_NAME
+              value: devops
+            - name: DB_USER
+              value: root
+            - name: DB_PASSWORD
+              value: devops@2025
+            - name: REDIS_ADDR
+              value: redis:6379
+            - name: REDIS_PASSWORD
+              value: zhangfan@123
+          volumeMounts:
+            - mountPath: /app/config.yaml
+              name: devops-api-cm0
+              subPath: config.yaml
+            - mountPath: /app/log
+              name: devops-api-claim1
+            - mountPath: /app/upload
+              name: devops-api-claim1
+            - mountPath: /app/upload/xlsl/host.xlsx
+              name: devops-api-cm3
+              subPath: host.xlsx
+      volumes:
+        - name: devops-api-cm0
+          configMap:
+            name: devops-api-cm0
+            items:
+              - key: config.yaml
+                path: config.yaml
+        - name: devops-api-claim1
+          persistentVolumeClaim:
+            claimName: devops-api-claim1
+        - name: devops-api-cm2
+          configMap:
+            name: devops-api-cm2
+        - name: devops-api-cm3
+          configMap:
+            name: devops-api-cm3
+            items:
+              - key: host.xlsx
+                path: host.xlsx
+
