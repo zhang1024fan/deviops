@@ -30,7 +30,7 @@ imageSettings:
   # 本地磁盘地址
   uploadDir: ./upload/
   # 本地ip地址(替换为实际的外网IP或域名)
-  imageHost: ""
+  imageHost: "http://192.168.2.123:8088"
 
 # log日志配置
 log:
