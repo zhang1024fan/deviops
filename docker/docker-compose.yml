@@ -134,6 +134,8 @@ services:
       - ./api/upload:/app/upload
       # Excel template file
       - ./api/upload/host.xlsx:/app/upload/xlsl/host.xlsx
+      # SSH keys (persistent across container restarts)
+      - ./api/ssh_keys:/root/.ssh:ro
     networks:
       - devops-network
     depends_on:
