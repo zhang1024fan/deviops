@@ -187,9 +187,25 @@ docker pull crpi-aj3vgoxp9kzh2jx4.cn-hangzhou.personal.cr.aliyuncs.com/zhangfan_
 docker pull crpi-aj3vgoxp9kzh2jx4.cn-hangzhou.personal.cr.aliyuncs.com/zhangfan_k8s/prometheus:v2.47.0
 docker pull crpi-aj3vgoxp9kzh2jx4.cn-hangzhou.personal.cr.aliyuncs.com/zhangfan_k8s/mysql:8.0.33
 ```
+* git clone https://github.com/zhang1024fan/deviops.git
+* cd  deviops/docker
+
+### 修改配置文件
 ```bash
-git clone https://github.com/zhang1024fan/deviops.git
-cd  deviops/docker
+vim  api/config.yaml
+  # 本地ip地址(替换为实际的外网IP或域名)
+  imageHost: "http://192.168.2.123:8088"
+# 监控配置
+monitor:
+  prometheus:
+    url: "http://192.168.2.123:9090"
+  pushgateway:
+    url: "http://192.168.2.123:9091"
+  agent:
+    heartbeat_server_url: "http://192.168.2.123:8000/api/v1/monitor/agent/heartbeat"
+```
+
+```bash
 docker-compose up -d
 ### 2. 查看服务状态
 docker-compose ps
@@ -214,4 +230,4 @@ Web 前端: http://localhost:8088
 - 邮箱：zfwh1024@163.com
 - 项目地址：https://github.com/zhang1024fan/deviops.git
 #### 加群
-![alt text](assets/微信.png)
+![alt text](assets/微信2.png)
