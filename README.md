@@ -84,10 +84,10 @@ DevOps运维管理系统是一个基于 Go + Gin 框架开发的企业级运维�
 http://180.76.231.65/login
 账号：test
 密码：123456
+### 视频安装使用介绍
+https://www.bilibili.com/video/BV179Wxz1Ez6/?vd_source=37f81c1b36b3818cbad621bcbe5c3e49
+assets/b站.png
 
-## 技术栈
-![alt text](k8s.png)
-![alt text](ecs.png)
 ### 后端框架
 - **Gin** - Web框架
 - **GORM** - ORM框架
