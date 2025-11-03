@@ -86,7 +86,7 @@ http://180.76.231.65/login
 密码：123456
 ### 视频安装使用介绍
 https://www.bilibili.com/video/BV179Wxz1Ez6/?vd_source=37f81c1b36b3818cbad621bcbe5c3e49
-assets/b站.png
+![alt text](assets/b站.png)
 
 ### 后端框架
 - **Gin** - Web框架
