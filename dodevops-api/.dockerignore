@@ -1,0 +1,69 @@
+# Git 相关
+.git
+.gitignore
+.gitattributes
+
+# IDE 相关
+.vscode
+.idea
+*.swp
+*.swo
+*~
+
+# 日志文件
+log/
+*.log
+
+# 临时文件
+tmp/
+temp/
+*.tmp
+
+# 上传文件（排除运行时上传的文件，但保留模板文件）
+upload/*
+!upload/xlsl/
+!upload/xlsl/**
+
+# 测试文件
+*_test.go
+test/
+tests/
+
+# 构建产物
+dodevops-api
+*.exe
+*.dll
+*.so
+*.dylib
+
+# 依赖缓存（会在构建时重新下载）
+vendor/
+
+# 文档（如果不需要）
+# docs/
+README.md
+*.md
+
+# CI/CD 相关
+.github/
+.gitlab-ci.yml
+Jenkinsfile
+
+# Docker 相关
+Dockerfile
+.dockerignore
+docker-compose.yml
+
+# 环境配置文件（敏感信息）
+.env
+.env.local
+.env.production
+
+# macOS
+.DS_Store
+
+# Linux
+*~
+
+# Windows
+Thumbs.db

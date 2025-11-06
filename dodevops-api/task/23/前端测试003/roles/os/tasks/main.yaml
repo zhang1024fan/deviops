@@ -1,0 +1,123 @@
+---
+# Linux 系统初始化与性能优化 Ansible 任务
+# 支持：CentOS 7/8/9, RHEL
+
+- name: "01 确保收集系统 facts"
+  setup:
+
+- name: "02 关闭 SELinux"
+  selinux:
+    state: disabled
+  when: ansible_os_family == "RedHat"
+
+- name: "03 停止并禁用 firewalld 防火墙"
+  systemd:
+    name: firewalld
+    state: stopped
+    enabled: no
+  when: ansible_os_family == "RedHat"
+
+- name: "04 安装 chrony 时间同步服务"
+  yum:
+    name: chrony
+    state: present
+  when: ansible_os_family == "RedHat"
+
+- name: "05 启用并启动 chrony 服务"
+  systemd:
+    name: chronyd
+    enabled: yes
+    state: started
+  when: ansible_os_family == "RedHat"
+
+- name: "06 配置时区为 Asia/Shanghai"
+  shell: |
+    timedatectl set-timezone Asia/Shanghai
+    timedatectl set-local-rtc yes  # 可选：设置硬件时钟为本地时间
+  args:
+    warn: false
+  when: ansible_os_family == "RedHat"
+
+- name: "07 配置内核参数优化"
+  sysctl:
+    name: "{{ item.name }}"
+    value: "{{ item.value }}"
+    state: present
+    reload: yes
+  loop:
+    - { name: 'net.core.somaxconn', value: '65535' }
+    - { name: 'net.core.netdev_max_backlog', value: '5000' }
+    - { name: 'net.ipv4.tcp_max_syn_backlog', value: '65535' }
+    - { name: 'net.ipv4.tcp_fin_timeout', value: '30' }
+    - { name: 'net.ipv4.tcp_tw_reuse', value: '1' }
+    - { name: 'vm.swappiness', value: '10' }
+    - { name: 'fs.file-max', value: '1000000' }
+    - { name: 'kernel.pid_max', value: '65535' }
+  when: ansible_os_family == "RedHat"
+
+- name: "08 配置文件句柄数优化"
+  pam_limits:
+    domain: '*'
+    limit_type: '-'
+    limit_item: nofile
+    value: '65535'
+
+- name: "09 禁用透明大页（Transparent Huge Pages）"
+  shell: |
+    echo never > /sys/kernel/mm/transparent_hugepage/enabled 2>/dev/null || true
+    echo never > /sys/kernel/mm/transparent_hugepage/defrag 2>/dev/null || true
+  args:
+    warn: false
+  register: disable_thp
+  changed_when: "'never' in (disable_thp.stdout|default('')) or disable_thp.rc == 0"
+
+- name: "10 禁用不必要的系统服务"
+  shell: |
+    systemctl is-active --quiet {{ item }} && systemctl stop {{ item }} || true
+    systemctl is-enabled --quiet {{ item }} && systemctl disable {{ item }} || true
+  args:
+    warn: false
+  loop:
+    - postfix
+    - avahi-daemon
+    - bluetooth
+    - cups
+- name: "11 设置历史命令记录格式和大小"
+  lineinfile:
+    path: /etc/profile
+    line: "{{ item }}"
+    regexp: "{{ item.split('=')[0] }}="
+  loop:
+    - "export HISTTIMEFORMAT='%F %T %u %w %D %t '"
+    - "export HISTSIZE=10000"
+    - "export HISTFILESIZE=20000"
+    - "export HISTCONTROL=ignoredups"
+
+- name: "11 安装 EPEL 仓库"
+  yum:
+    name: epel-release
+    state: present
+
+- name: "12 安装常用系统工具"
+  yum:
+    name:
+      - vim-enhanced
+      - wget
+      - curl
+      - net-tools
+      - lsof
+      - htop
+      - iotop
+      - tree
+      - bash-completion
+    state: present
+
+- name: "13 清理并重建 yum 缓存"
+  yum:
+    name: '*'
+    state: latest
+    update_cache: yes
+  when: ansible_os_family == "RedHat"
+
+# Handler：重新加载 limits 配置（实际需重新登录生效）
+# 可配合 ssh 会话管理或通知管理员

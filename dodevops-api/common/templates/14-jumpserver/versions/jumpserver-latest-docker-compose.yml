@@ -1,0 +1,64 @@
+version: '3.8'
+
+services:
+  jumpserver:
+    image: jumpserver/jms_all:latest
+    container_name: ${CONTAINER_NAME:-jumpserver}
+    restart: unless-stopped
+    privileged: true
+    environment:
+      SECRET_KEY: ${SECRET_KEY:-kWQdmdCQKjaWlHYpPhkNQDkfaRulM6YnHctsHLlSzUfPLlr}
+      BOOTSTRAP_TOKEN: ${BOOTSTRAP_TOKEN:-7Q11Vz6R2J91}
+      LOG_LEVEL: ${LOG_LEVEL:-ERROR}
+      DB_ENGINE: mysql
+      DB_HOST: ${DB_HOST:-mysql}
+      DB_PORT: ${DB_PORT:-3306}
+      DB_USER: ${DB_USER:-jumpserver}
+      DB_PASSWORD: ${DB_PASSWORD:-jumpserver123}
+      DB_NAME: ${DB_NAME:-jumpserver}
+      REDIS_HOST: ${REDIS_HOST:-redis}
+      REDIS_PORT: ${REDIS_PORT:-6379}
+      REDIS_PASSWORD: ${REDIS_PASSWORD:-}
+      TZ: Asia/Shanghai
+    ports:
+      - "${HTTP_PORT:-80}:80"
+      - "${SSH_PORT:-2222}:2222"
+    volumes:
+      - ${DATA_DIR:-/data/jumpserver}/data:/opt/jumpserver/data
+      - ${DATA_DIR:-/data/jumpserver}/logs:/opt/jumpserver/logs
+    networks:
+      - jumpserver_network
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost/api/health/"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+      start_period: 90s
+
+  mysql:
+    image: mysql:8.0
+    container_name: ${CONTAINER_NAME:-jumpserver-mysql}
+    restart: unless-stopped
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD:-rootPass123}
+      MYSQL_DATABASE: ${DB_NAME:-jumpserver}
+      MYSQL_USER: ${DB_USER:-jumpserver}
+      MYSQL_PASSWORD: ${DB_PASSWORD:-jumpserver123}
+    volumes:
+      - ${DATA_DIR:-/data/jumpserver}/mysql:/var/lib/mysql
+    networks:
+      - jumpserver_network
+    command: --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
+
+  redis:
+    image: redis:7-alpine
+    container_name: ${CONTAINER_NAME:-jumpserver-redis}
+    restart: unless-stopped
+    volumes:
+      - ${DATA_DIR:-/data/jumpserver}/redis:/data
+    networks:
+      - jumpserver_network
+
+networks:
+  jumpserver_network:
+    driver: bridge

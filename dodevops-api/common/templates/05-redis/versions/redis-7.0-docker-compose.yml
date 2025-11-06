@@ -1,0 +1,30 @@
+services:
+  redis:
+    image: ${DOCKER_IMAGE:-crpi-aj3vgoxp9kzh2jx4.cn-hangzhou.personal.cr.aliyuncs.com/zhangfan_k8s/redis:7.0-alpine}
+    container_name: ${CONTAINER_NAME:-redis70}
+    restart: unless-stopped
+    command: >
+      redis-server
+      --requirepass ${REDIS_PASSWORD:-redis123456}
+      --appendonly yes
+      --appendfsync everysec
+      --maxmemory ${REDIS_MAXMEMORY:-2gb}
+      --maxmemory-policy allkeys-lru
+    ports:
+      - "${REDIS_PORT:-6379}:6379"
+    volumes:
+      - ${DATA_DIR:-/data/redis70}/data:/data
+      - ${DATA_DIR:-/data/redis70}/conf/redis.conf:/usr/local/etc/redis/redis.conf:ro
+    environment:
+      TZ: Asia/Shanghai
+    networks:
+      - redis_network
+    healthcheck:
+      test: ["CMD", "redis-cli", "--raw", "incr", "ping"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+networks:
+  redis_network:
+    driver: bridge

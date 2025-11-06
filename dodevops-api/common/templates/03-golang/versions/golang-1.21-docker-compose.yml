@@ -1,0 +1,24 @@
+version: '3.8'
+
+services:
+  golang:
+    image: golang:1.21-alpine
+    container_name: ${CONTAINER_NAME:-golang121}
+    restart: unless-stopped
+    working_dir: /app
+    environment:
+      - GO111MODULE=on
+      - GOPROXY=https://goproxy.cn,direct
+      - TZ=Asia/Shanghai
+    ports:
+      - "${APP_PORT:-8080}:8080"
+    volumes:
+      - ${PROJECT_DIR:-./app}:/app
+      - ${DATA_DIR:-/data/golang}/go:/go
+    command: sh -c "go mod download && go run main.go"
+    networks:
+      - golang_network
+
+networks:
+  golang_network:
+    driver: bridge

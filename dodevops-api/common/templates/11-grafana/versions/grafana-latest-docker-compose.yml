@@ -1,0 +1,32 @@
+version: '3.8'
+
+services:
+  grafana:
+    image: grafana/grafana:latest
+    container_name: ${CONTAINER_NAME:-grafana}
+    restart: unless-stopped
+    environment:
+      - GF_SECURITY_ADMIN_USER=${GRAFANA_ADMIN_USER:-admin}
+      - GF_SECURITY_ADMIN_PASSWORD=${GRAFANA_ADMIN_PASSWORD:-admin123}
+      - GF_USERS_ALLOW_SIGN_UP=false
+      - GF_SERVER_ROOT_URL=${GRAFANA_ROOT_URL:-http://localhost:3000}
+      - GF_INSTALL_PLUGINS=${GRAFANA_PLUGINS:-}
+      - TZ=Asia/Shanghai
+    ports:
+      - "${GRAFANA_PORT:-3000}:3000"
+    volumes:
+      - ${DATA_DIR:-/data/grafana}/data:/var/lib/grafana
+      - ${DATA_DIR:-/data/grafana}/provisioning:/etc/grafana/provisioning
+      - ${DATA_DIR:-/data/grafana}/dashboards:/var/lib/grafana/dashboards
+    user: "472"
+    networks:
+      - grafana_network
+    healthcheck:
+      test: ["CMD-SHELL", "wget --no-verbose --tries=1 --spider http://localhost:3000/api/health || exit 1"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+networks:
+  grafana_network:
+    driver: bridge

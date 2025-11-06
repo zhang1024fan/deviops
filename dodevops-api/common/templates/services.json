@@ -1,0 +1,697 @@
+{
+  "services": [
+    {
+      "id": "mysql",
+      "name": "MySQL",
+      "category": "database",
+      "description": "关系型数据库",
+      "icon": "database",
+      "versions": [
+        {
+          "id": "mysql-5.7",
+          "name": "MySQL 5.7",
+          "file": "04-mysql/versions/mysql-5.7-docker-compose.yml",
+          "stable": true,
+          "recommended": false
+        },
+        {
+          "id": "mysql-8.0",
+          "name": "MySQL 8.0",
+          "file": "04-mysql/versions/mysql-8.0-docker-compose.yml",
+          "stable": true,
+          "recommended": true
+        },
+        {
+          "id": "mysql-8.4",
+          "name": "MySQL 8.4",
+          "file": "04-mysql/versions/mysql-8.4-docker-compose.yml",
+          "stable": true,
+          "recommended": false
+        }
+      ],
+      "default_port": 3306,
+      "env_vars": [
+        {
+          "name": "MYSQL_ROOT_PASSWORD",
+          "description": "Root密码",
+          "required": true,
+          "default": "root123456"
+        },
+        {
+          "name": "MYSQL_DATABASE",
+          "description": "初始数据库",
+          "required": false,
+          "default": ""
+        },
+        {
+          "name": "MYSQL_PORT",
+          "description": "映射端口",
+          "required": false,
+          "default": "3306"
+        }
+      ]
+    },
+    {
+      "id": "redis",
+      "name": "Redis",
+      "category": "database",
+      "description": "内存数据库/缓存",
+      "icon": "database",
+      "versions": [
+        {
+          "id": "redis-6.2",
+          "name": "Redis 6.2",
+          "file": "05-redis/versions/redis-6.2-docker-compose.yml",
+          "stable": true,
+          "recommended": false
+        },
+        {
+          "id": "redis-7.0",
+          "name": "Redis 7.0",
+          "file": "05-redis/versions/redis-7.0-docker-compose.yml",
+          "stable": true,
+          "recommended": false
+        },
+        {
+          "id": "redis-7.2",
+          "name": "Redis 7.2",
+          "file": "05-redis/versions/redis-7.2-docker-compose.yml",
+          "stable": true,
+          "recommended": true
+        }
+      ],
+      "default_port": 6379,
+      "env_vars": [
+        {
+          "name": "REDIS_PASSWORD",
+          "description": "Redis密码",
+          "required": true,
+          "default": "redis123456"
+        },
+        {
+          "name": "REDIS_PORT",
+          "description": "映射端口",
+          "required": false,
+          "default": "6379"
+        },
+        {
+          "name": "REDIS_MAXMEMORY",
+          "description": "最大内存",
+          "required": false,
+          "default": "2gb"
+        }
+      ]
+    },
+    {
+      "id": "postgresql",
+      "name": "PostgreSQL",
+      "category": "database",
+      "description": "关系型数据库",
+      "icon": "database",
+      "versions": [
+        {
+          "id": "postgresql-13",
+          "name": "PostgreSQL 13",
+          "file": "08-postgresql/versions/postgresql-13-docker-compose.yml",
+          "stable": true,
+          "recommended": false
+        },
+        {
+          "id": "postgresql-14",
+          "name": "PostgreSQL 14",
+          "file": "08-postgresql/versions/postgresql-14-docker-compose.yml",
+          "stable": true,
+          "recommended": false
+        },
+        {
+          "id": "postgresql-16",
+          "name": "PostgreSQL 16",
+          "file": "08-postgresql/versions/postgresql-16-docker-compose.yml",
+          "stable": true,
+          "recommended": true
+        }
+      ],
+      "default_port": 5432,
+      "env_vars": [
+        {
+          "name": "POSTGRES_PASSWORD",
+          "description": "超级用户密码",
+          "required": true,
+          "default": "postgres123456"
+        },
+        {
+          "name": "POSTGRES_USER",
+          "description": "超级用户名",
+          "required": false,
+          "default": "postgres"
+        },
+        {
+          "name": "POSTGRES_DB",
+          "description": "默认数据库",
+          "required": false,
+          "default": "postgres"
+        }
+      ]
+    },
+    {
+      "id": "jenkins",
+      "name": "Jenkins",
+      "category": "cicd",
+      "description": "持续集成/持续部署",
+      "icon": "tool",
+      "versions": [
+        {
+          "id": "jenkins-lts",
+          "name": "Jenkins LTS",
+          "file": "10-jenkins/versions/jenkins-lts-docker-compose.yml",
+          "stable": true,
+          "recommended": true
+        },
+        {
+          "id": "jenkins-latest",
+          "name": "Jenkins Latest",
+          "file": "10-jenkins/versions/jenkins-latest-docker-compose.yml",
+          "stable": false,
+          "recommended": false
+        }
+      ],
+      "default_port": 8080,
+      "env_vars": [
+        {
+          "name": "JENKINS_HTTP_PORT",
+          "description": "Web端口",
+          "required": false,
+          "default": "8080"
+        },
+        {
+          "name": "JENKINS_AGENT_PORT",
+          "description": "Agent端口",
+          "required": false,
+          "default": "50000"
+        }
+      ]
+    },
+    {
+      "id": "gitlab",
+      "name": "GitLab",
+      "category": "cicd",
+      "description": "代码托管平台",
+      "icon": "git",
+      "versions": [
+        {
+          "id": "gitlab-ce",
+          "name": "GitLab CE (社区版)",
+          "file": "12-gitlab/versions/gitlab-ce-docker-compose.yml",
+          "stable": true,
+          "recommended": true
+        },
+        {
+          "id": "gitlab-ee",
+          "name": "GitLab EE (企业版)",
+          "file": "12-gitlab/versions/gitlab-ee-docker-compose.yml",
+          "stable": true,
+          "recommended": false
+        }
+      ],
+      "default_port": 80,
+      "env_vars": [
+        {
+          "name": "GITLAB_HOSTNAME",
+          "description": "GitLab域名",
+          "required": true,
+          "default": "gitlab.example.com"
+        },
+        {
+          "name": "GITLAB_HTTP_PORT",
+          "description": "HTTP端口",
+          "required": false,
+          "default": "80"
+        },
+        {
+          "name": "GITLAB_SSH_PORT",
+          "description": "SSH端口",
+          "required": false,
+          "default": "2222"
+        }
+      ],
+      "min_memory": "4GB",
+      "min_cpu": "4"
+    },
+    {
+      "id": "grafana",
+      "name": "Grafana",
+      "category": "monitoring",
+      "description": "可视化面板",
+      "icon": "chart",
+      "versions": [
+        {
+          "id": "grafana-latest",
+          "name": "Grafana Latest",
+          "file": "11-grafana/versions/grafana-latest-docker-compose.yml",
+          "stable": true,
+          "recommended": true
+        }
+      ],
+      "default_port": 3000,
+      "env_vars": [
+        {
+          "name": "GRAFANA_ADMIN_PASSWORD",
+          "description": "管理员密码",
+          "required": true,
+          "default": "admin123"
+        },
+        {
+          "name": "GRAFANA_PORT",
+          "description": "Web端口",
+          "required": false,
+          "default": "3000"
+        }
+      ]
+    },
+    {
+      "id": "elasticsearch",
+      "name": "Elasticsearch",
+      "category": "monitoring",
+      "description": "搜索引擎",
+      "icon": "search",
+      "versions": [
+        {
+          "id": "elasticsearch-8.x",
+          "name": "Elasticsearch 8.x",
+          "file": "06-elasticsearch/versions/elasticsearch-8.x-docker-compose.yml",
+          "stable": true,
+          "recommended": true
+        }
+      ],
+      "default_port": 9200,
+      "env_vars": [
+        {
+          "name": "ES_HEAP_SIZE",
+          "description": "JVM堆内存",
+          "required": false,
+          "default": "1g"
+        },
+        {
+          "name": "ES_HTTP_PORT",
+          "description": "HTTP端口",
+          "required": false,
+          "default": "9200"
+        }
+      ]
+    },
+    {
+      "id": "loki",
+      "name": "Loki",
+      "category": "monitoring",
+      "description": "日志聚合系统",
+      "icon": "log",
+      "versions": [
+        {
+          "id": "loki-latest",
+          "name": "Loki Latest",
+          "file": "16-loki/versions/loki-latest-docker-compose.yml",
+          "stable": true,
+          "recommended": true
+        }
+      ],
+      "default_port": 3100,
+      "env_vars": []
+    },
+    {
+      "id": "fluentd",
+      "name": "Fluentd",
+      "category": "monitoring",
+      "description": "日志收集器",
+      "icon": "log",
+      "versions": [
+        {
+          "id": "fluentd-latest",
+          "name": "Fluentd Latest",
+          "file": "fluentd/versions/fluentd-latest-docker-compose.yml",
+          "stable": true,
+          "recommended": true
+        }
+      ],
+      "default_port": 24224,
+      "env_vars": []
+    },
+    {
+      "id": "jumpserver",
+      "name": "JumpServer",
+      "category": "security",
+      "description": "开源堡垒机",
+      "icon": "shield",
+      "versions": [
+        {
+          "id": "jumpserver-latest",
+          "name": "JumpServer Latest",
+          "file": "14-jumpserver/versions/jumpserver-latest-docker-compose.yml",
+          "stable": true,
+          "recommended": true
+        }
+      ],
+      "default_port": 80,
+      "env_vars": [
+        {
+          "name": "SECRET_KEY",
+          "description": "加密密钥",
+          "required": true,
+          "default": ""
+        },
+        {
+          "name": "BOOTSTRAP_TOKEN",
+          "description": "初始Token",
+          "required": true,
+          "default": ""
+        },
+        {
+          "name": "DB_PASSWORD",
+          "description": "数据库密码",
+          "required": true,
+          "default": "jumpserver123"
+        }
+      ]
+    },
+    {
+      "id": "nodejs",
+      "name": "Node.js",
+      "category": "runtime",
+      "description": "JavaScript运行时",
+      "icon": "code",
+      "versions": [
+        {
+          "id": "nodejs-18",
+          "name": "Node.js 18 LTS",
+          "file": "01-nodejs/versions/nodejs-18-install.sh",
+          "stable": true,
+          "recommended": true,
+          "deploy_type": "binary",
+          "extract_paths": {
+            "/usr/local": "/usr/local/node18"
+          }
+        },
+        {
+          "id": "nodejs-20",
+          "name": "Node.js 20 LTS",
+          "file": "01-nodejs/versions/nodejs-20-install.sh",
+          "stable": true,
+          "recommended": true,
+          "deploy_type": "binary",
+          "extract_paths": {
+            "/usr/local": "/usr/local/node20"
+          }
+        }
+      ],
+      "default_port": 3000,
+      "env_vars": [
+        {
+          "name": "NODE_ENV",
+          "description": "运行环境",
+          "required": false,
+          "default": "production"
+        },
+        {
+          "name": "APP_PORT",
+          "description": "应用端口",
+          "required": false,
+          "default": "3000"
+        }
+      ]
+    },
+    {
+      "id": "java",
+      "name": "Java",
+      "category": "runtime",
+      "description": "Java运行环境",
+      "icon": "code",
+      "versions": [
+        {
+          "id": "java-8",
+          "name": "Java 8",
+          "file": "02-java/versions/java-8-install.sh",
+          "stable": true,
+          "recommended": false,
+          "deploy_type": "binary",
+          "extract_paths": {
+            "/usr/local/openjdk-8": "/usr/local/java8"
+          }
+        },
+        {
+          "id": "java-11",
+          "name": "Java 11 LTS",
+          "file": "02-java/versions/java-11-install.sh",
+          "stable": true,
+          "recommended": true,
+          "deploy_type": "binary",
+          "extract_paths": {
+            "/usr/local/openjdk-11": "/usr/local/java11"
+          }
+        },
+        {
+          "id": "java-17",
+          "name": "Java 17 LTS",
+          "file": "02-java/versions/java-17-install.sh",
+          "stable": true,
+          "recommended": true,
+          "deploy_type": "binary",
+          "extract_paths": {
+            "/usr/local/openjdk-17": "/usr/local/java17"
+          }
+        }
+      ],
+      "default_port": 8080,
+      "env_vars": [
+        {
+          "name": "JAVA_OPTS",
+          "description": "JVM参数",
+          "required": false,
+          "default": "-Xmx512m -Xms256m"
+        },
+        {
+          "name": "APP_PORT",
+          "description": "应用端口",
+          "required": false,
+          "default": "8080"
+        }
+      ]
+    },
+    {
+      "id": "golang",
+      "name": "Golang",
+      "category": "runtime",
+      "description": "Go运行环境",
+      "icon": "code",
+      "versions": [
+        {
+          "id": "golang-1.20",
+          "name": "Go 1.20",
+          "file": "03-golang/versions/golang-1.20-install.sh",
+          "stable": true,
+          "recommended": false,
+          "deploy_type": "binary",
+          "extract_paths": {
+            "/usr/local/go": "/usr/local/go1.20"
+          }
+        },
+        {
+          "id": "golang-1.21",
+          "name": "Go 1.21",
+          "file": "03-golang/versions/golang-1.21-install.sh",
+          "stable": true,
+          "recommended": true,
+          "deploy_type": "binary",
+          "extract_paths": {
+            "/usr/local/go": "/usr/local/go1.21"
+          }
+        }
+      ],
+      "default_port": 8080,
+      "env_vars": [
+        {
+          "name": "APP_PORT",
+          "description": "应用端口",
+          "required": false,
+          "default": "8080"
+        }
+      ]
+    },
+    {
+      "id": "prometheus",
+      "name": "Prometheus 监控栈",
+      "category": "monitoring",
+      "description": "Prometheus + Grafana + Node Exporter 完整监控栈",
+      "icon": "chart",
+      "versions": [
+        {
+          "id": "prometheus-stack",
+          "name": "Prometheus Stack (完整版)",
+          "file": "07-prometheus/versions/prometheus-stack-docker-compose.yml",
+          "stable": true,
+          "recommended": true
+        }
+      ],
+      "default_port": 9090,
+      "env_vars": [
+        {
+          "name": "GRAFANA_ADMIN_PASSWORD",
+          "description": "Grafana管理员密码",
+          "required": true,
+          "default": "admin123"
+        },
+        {
+          "name": "PROMETHEUS_PORT",
+          "description": "Prometheus端口",
+          "required": false,
+          "default": "9090"
+        },
+        {
+          "name": "GRAFANA_PORT",
+          "description": "Grafana端口",
+          "required": false,
+          "default": "3000"
+        }
+      ]
+    },
+    {
+      "id": "elk",
+      "name": "ELK Stack",
+      "category": "monitoring",
+      "description": "Elasticsearch + Kibana + Filebeat 日志分析栈",
+      "icon": "log",
+      "versions": [
+        {
+          "id": "elk-stack",
+          "name": "ELK Stack 8.x",
+          "file": "15-elk/versions/elk-stack-docker-compose.yml",
+          "stable": true,
+          "recommended": true
+        }
+      ],
+      "default_port": 9200,
+      "env_vars": [
+        {
+          "name": "ES_JAVA_OPTS",
+          "description": "Elasticsearch JVM参数",
+          "required": false,
+          "default": "-Xms512m -Xmx512m"
+        },
+        {
+          "name": "ES_HTTP_PORT",
+          "description": "Elasticsearch HTTP端口",
+          "required": false,
+          "default": "9200"
+        },
+        {
+          "name": "KIBANA_PORT",
+          "description": "Kibana端口",
+          "required": false,
+          "default": "5601"
+        }
+      ],
+      "min_memory": "4GB"
+    },
+    {
+      "id": "filebeat",
+      "name": "Filebeat",
+      "category": "monitoring",
+      "description": "轻量级日志采集器",
+      "icon": "log",
+      "versions": [
+        {
+          "id": "filebeat-standalone",
+          "name": "Filebeat 8.x (独立版)",
+          "file": "13-filebeat/versions/filebeat-standalone-docker-compose.yml",
+          "stable": true,
+          "recommended": true
+        }
+      ],
+      "default_port": null,
+      "env_vars": [
+        {
+          "name": "ELASTICSEARCH_HOSTS",
+          "description": "Elasticsearch地址",
+          "required": true,
+          "default": "http://127.0.0.1:9200"
+        },
+        {
+          "name": "KIBANA_HOST",
+          "description": "Kibana地址",
+          "required": false,
+          "default": "http://127.0.0.1:5601"
+        },
+        {
+          "name": "PROJECT_NAME",
+          "description": "项目名称（多实例）",
+          "required": false,
+          "default": "default"
+        }
+      ]
+    },
+    {
+      "id": "n9e",
+      "name": "夜莺 (N9E)",
+      "category": "monitoring",
+      "description": "开源企业级监控系统",
+      "icon": "chart",
+      "versions": [
+        {
+          "id": "n9e-stack",
+          "name": "N9E 完整版",
+          "file": "09-n9e/versions/n9e-stack-docker-compose.yml",
+          "stable": true,
+          "recommended": true
+        }
+      ],
+      "default_port": 17000,
+      "env_vars": [
+        {
+          "name": "MYSQL_ROOT_PASSWORD",
+          "description": "MySQL root密码",
+          "required": true,
+          "default": "1234"
+        },
+        {
+          "name": "N9E_HTTP_PORT",
+          "description": "夜莺HTTP端口",
+          "required": false,
+          "default": "17000"
+        },
+        {
+          "name": "VM_RETENTION",
+          "description": "数据保留时间",
+          "required": false,
+          "default": "30d"
+        }
+      ],
+      "min_memory": "4GB",
+      "min_cpu": "2"
+    }
+  ],
+  "categories": [
+    {
+      "id": "database",
+      "name": "数据库",
+      "icon": "database"
+    },
+    {
+      "id": "cicd",
+      "name": "CI/CD",
+      "icon": "tool"
+    },
+    {
+      "id": "monitoring",
+      "name": "监控与日志",
+      "icon": "chart"
+    },
+    {
+      "id": "security",
+      "name": "安全运维",
+      "icon": "shield"
+    },
+    {
+      "id": "runtime",
+      "name": "开发环境",
+      "icon": "code"
+    }
+  ]
+}

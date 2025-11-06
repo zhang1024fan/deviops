@@ -1,0 +1,33 @@
+services:
+  mysql:
+    image: ${DOCKER_IMAGE:-crpi-aj3vgoxp9kzh2jx4.cn-hangzhou.personal.cr.aliyuncs.com/zhangfan_k8s/mysql:5.7}
+    container_name: ${CONTAINER_NAME:-mysql57}
+    restart: unless-stopped
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD:-root123456}
+      MYSQL_DATABASE: ${MYSQL_DATABASE:-}
+      MYSQL_USER: ${MYSQL_USER:-}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD:-}
+      TZ: Asia/Shanghai
+    ports:
+      - "${MYSQL_PORT:-3306}:3306"
+    volumes:
+      - ${DATA_DIR:-/data/mysql57}/data:/var/lib/mysql
+      - ${DATA_DIR:-/data/mysql57}/conf:/etc/mysql/conf.d
+      - ${DATA_DIR:-/data/mysql57}/logs:/var/log/mysql
+    command:
+      - --character-set-server=utf8mb4
+      - --collation-server=utf8mb4_unicode_ci
+      - --max_connections=1000
+      - --default-time-zone=+08:00
+    networks:
+      - mysql_network
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-uroot", "-p${MYSQL_ROOT_PASSWORD:-root123456}"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+networks:
+  mysql_network:
+    driver: bridge

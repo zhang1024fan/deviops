@@ -1,0 +1,121 @@
+---
+# Ansible 巡检任务：检查 Linux 系统健康状态
+# 作者：Qwen
+# 用途：系统巡检，输出关键指标
+
+- name: "01 获取系统基本信息"
+  command: uname -a
+  register: sys_uname
+- name: "显示系统内核信息"
+  debug:
+    msg: "系统内核: {{ sys_uname.stdout }}"
+
+- name: "02 获取操作系统版本"
+  shell: cat /etc/os-release | grep PRETTY_NAME
+  register: os_release
+- name: "显示操作系统版本"
+  debug:
+    msg: "操作系统: {{ os_release.stdout | regex_replace('PRETTY_NAME=\"?(.*)\"?', '\\1') }}"
+
+- name: "03 检查CPU使用情况"
+  shell: top -bn1 | grep "Cpu(s)" | awk '{print $2}' | cut -d'%' -f1
+  register: cpu_usage
+- name: "显示CPU使用率"
+  debug:
+    msg: "当前CPU使用率: {{ cpu_usage.stdout }}%"
+
+- name: "04 检查内存使用情况"
+  shell: |
+    free -h | awk '/^Mem:/ {print "总内存: "$2", 已用: "$3", 空闲: "$4", 使用率: "int($3/$2*100)"%"}'
+  register: mem_info
+- name: "显示内存使用情况"
+  debug:
+    msg: "{{ mem_info.stdout }}"
+
+- name: "05 检查磁盘使用率"
+  shell: |
+    df -hT / | tail -n +2 | awk '{print $7" 使用: "$5" (总: "$2", 可用: "$4")"}'
+  register: disk_root
+- name: "显示根分区磁盘使用"
+  debug:
+    msg: "根分区 {{ disk_root.stdout }}"
+
+- name: "06 检查所有磁盘挂载点使用超过80%的分区"
+  shell: |
+    df -h | awk '$5+0 > 80 {print $1" "$5" "$6}' 
+  register: disk_usage
+  ignore_errors: yes
+
+- name: "警告：高磁盘使用率分区"
+  debug:
+    msg: "以下分区使用率超过80%: {{ disk_usage.stdout_lines }}"
+  when: disk_usage.stdout != ''
+
+- name: "提示：所有分区使用正常"
+  debug:
+    msg: "所有磁盘分区使用率均低于80%"
+  when: disk_usage.stdout == ''
+
+- name: "07 检查SSH服务状态"
+  systemd:
+    name: sshd
+    state: started
+    enabled: yes
+  register: ssh_status
+  ignore_errors: yes
+- name: "SSH服务状态检查"
+  debug:
+    msg: "SSH服务: {{ '运行中且开机自启' if ssh_status is success else '未运行或未启用，请检查' }}"
+
+- name: "08 检查防火墙状态"
+  shell: systemctl is-active firewalld && systemctl is-enabled firewalld
+  register: firewall_status
+  ignore_errors: yes
+- name: "防火墙状态"
+  debug:
+    msg: "防火墙: {{ '启用并运行中' if firewall_status.stdout.find('active') != -1 and firewall_status.stdout.find('enabled') != -1 else '未启用或未运行' }}"
+
+- name: "09 检查系统时间与网络时间同步"
+  shell: timedatectl status | grep 'System clock synchronized' | awk '{print $4}'
+  register: time_sync
+- name: "时间同步状态"
+  debug:
+    msg: "系统时间已同步: {{ time_sync.stdout == 'yes' }}"
+
+- name: "10 检查最大文件句柄数"
+  shell: cat /etc/security/limits.conf | grep -v '^#' | grep 'soft nofile' || echo '未设置'
+  register: file_limit
+- name: "显示文件句柄软限制"
+  debug:
+    msg: "文件句柄 soft 限制: {{ file_limit.stdout }}"
+
+- name: "11 检查关键日志目录是否存在"
+  stat:
+    path: /var/log/messages
+  register: log_messages
+- name: "检查 /var/log/messages"
+  debug:
+    msg: "/var/log/messages 存在: {{ log_messages.stat.exists }}"
+
+- name: "12 检查当前登录用户"
+  shell: who
+  register: who_info
+- name: "当前登录用户"
+  debug:
+    msg: "当前登录用户: {{ who_info.stdout_lines }}"
+
+- name: "13 检查最近5条系统错误日志"
+  shell: journalctl -p err -n 5 --no-pager
+  register: error_logs
+  ignore_errors: yes
+- name: "最近系统错误日志"
+  debug:
+    msg: "{{ error_logs.stdout_lines }}"
+
+
+- name: "14 输出巡检完成时间"
+  command: date "+%Y-%m-%d %H:%M:%S"
+  register: end_time
+- name: "巡检完成"
+  debug:
+    msg: "系统巡检完成，结束时间: {{ end_time.stdout }}"

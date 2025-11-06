@@ -1,0 +1,122 @@
+version: '3.8'
+
+services:
+  # MySQL 数据库
+  mysql:
+    image: mysql:${MYSQL_VERSION:-8}
+    container_name: ${MYSQL_CONTAINER_NAME:-n9e-mysql}
+    hostname: mysql
+    restart: unless-stopped
+    environment:
+      TZ: Asia/Shanghai
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD:-1234}
+      MYSQL_DATABASE: ${MYSQL_DATABASE:-n9e}
+    volumes:
+      - ${DATA_DIR:-/data/n9e}/mysql:/var/lib/mysql/
+      - ${CONFIG_DIR:-./config}/init.sql:/docker-entrypoint-initdb.d/init.sql:ro
+      - ${CONFIG_DIR:-./config}/my.cnf:/etc/my.cnf:ro
+    networks:
+      - n9e
+    ports:
+      - "${MYSQL_PORT:-3306}:3306"
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-uroot", "-p${MYSQL_ROOT_PASSWORD:-1234}"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  # Redis 缓存
+  redis:
+    image: redis:${REDIS_VERSION:-6.2}
+    container_name: ${REDIS_CONTAINER_NAME:-n9e-redis}
+    hostname: redis
+    restart: unless-stopped
+    environment:
+      TZ: Asia/Shanghai
+    volumes:
+      - ${DATA_DIR:-/data/n9e}/redis:/data
+    networks:
+      - n9e
+    ports:
+      - "${REDIS_PORT:-6379}:6379"
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  # VictoriaMetrics 时序数据库
+  victoriametrics:
+    image: victoriametrics/victoria-metrics:${VM_VERSION:-v1.79.12}
+    container_name: ${VM_CONTAINER_NAME:-victoriametrics}
+    hostname: victoriametrics
+    restart: unless-stopped
+    environment:
+      TZ: Asia/Shanghai
+    volumes:
+      - ${DATA_DIR:-/data/n9e}/victoriametrics:/victoria-metrics-data
+    ports:
+      - "${VM_PORT:-8428}:8428"
+    networks:
+      - n9e
+    command:
+      - "--loggerTimezone=Asia/Shanghai"
+      - "--storageDataPath=/victoria-metrics-data"
+      - "--retentionPeriod=${VM_RETENTION:-30d}"
+    healthcheck:
+      test: ["CMD", "wget", "--spider", "-q", "http://localhost:8428/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  # 夜莺 Nightingale
+  nightingale:
+    image: flashcatcloud/nightingale:${N9E_VERSION:-latest}
+    container_name: ${N9E_CONTAINER_NAME:-nightingale}
+    hostname: nightingale
+    restart: unless-stopped
+    environment:
+      GIN_MODE: release
+      TZ: Asia/Shanghai
+      WAIT_HOSTS: mysql:3306, redis:6379, victoriametrics:8428
+      WAIT_HOSTS_TIMEOUT: 300
+    volumes:
+      - ${CONFIG_DIR:-./config}/etc-nightingale:/app/etc
+    networks:
+      - n9e
+    ports:
+      - "${N9E_HTTP_PORT:-17000}:17000"
+      - "${N9E_RPC_PORT:-20090}:20090"
+    depends_on:
+      mysql:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+      victoriametrics:
+        condition: service_healthy
+    command: >
+      sh -c "/app/n9e"
+
+  # Categraf 采集器
+  categraf:
+    image: flashcatcloud/categraf:${CATEGRAF_VERSION:-latest}
+    container_name: ${CATEGRAF_CONTAINER_NAME:-categraf}
+    hostname: categraf01
+    restart: unless-stopped
+    environment:
+      TZ: Asia/Shanghai
+      HOST_PROC: /hostfs/proc
+      HOST_SYS: /hostfs/sys
+      HOST_MOUNT_PREFIX: /hostfs
+      WAIT_HOSTS: nightingale:17000, nightingale:20090
+    volumes:
+      - ${CONFIG_DIR:-./config}/etc-categraf:/etc/categraf/conf
+      - /:/hostfs:ro
+    networks:
+      - n9e
+    depends_on:
+      - nightingale
+
+networks:
+  n9e:
+    driver: bridge

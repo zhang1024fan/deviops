@@ -1,0 +1,75 @@
+# Docker镜像配置管理
+# 优先使用私有镜像仓库，提高拉取速度和稳定性
+
+# 私有镜像仓库地址
+registry:
+  private: "crpi-aj3vgoxp9kzh2jx4.cn-hangzhou.personal.cr.aliyuncs.com/zhangfan_k8s"
+  public: "docker.io"
+
+# 镜像配置
+images:
+  # 数据库类
+  mysql:
+    "5.7": "{{.Registry}}/mysql:5.7"
+    "8.0": "{{.Registry}}/mysql:8.0"
+    "8.4": "{{.Registry}}/mysql:8.4"
+
+  redis:
+    "6.2": "{{.Registry}}/redis:6.2-alpine"
+    "7.0": "{{.Registry}}/redis:7.0-alpine"
+    "7.2": "{{.Registry}}/redis:7.2-alpine"
+
+  postgresql:
+    "13": "{{.Registry}}/postgres:13-alpine"
+    "14": "{{.Registry}}/postgres:14-alpine"
+    "16": "{{.Registry}}/postgres:16-alpine"
+
+  # 开发环境
+  nodejs:
+    "18": "{{.Registry}}/node:18-alpine"
+    "20": "{{.Registry}}/node:20-alpine"
+
+  java:
+    "8": "{{.Registry}}/openjdk:8-jdk"
+    "11": "{{.Registry}}/openjdk:11-jdk"
+    "17": "{{.Registry}}/openjdk:17-jdk"
+
+  golang:
+    "1.20": "{{.Registry}}/golang:1.20-alpine"
+    "1.21": "{{.Registry}}/golang:1.21-alpine"
+    "1.25": "{{.Registry}}/golang:1.25-alpine"
+  # 中间件/工具
+  elasticsearch:
+    "8.x": "{{.Registry}}/elasticsearch:8.11.0"
+
+  prometheus:
+    latest: "{{.Registry}}/prom/prometheus:latest"
+
+  grafana:
+    latest: "{{.Registry}}/grafana/grafana:latest"
+
+  jenkins:
+    latest: "{{.Registry}}/jenkins/jenkins:latest"
+    lts: "{{.Registry}}/jenkins/jenkins:lts"
+
+  gitlab:
+    ce: "{{.Registry}}/gitlab/gitlab-ce:latest"
+    ee: "{{.Registry}}/gitlab/gitlab-ee:latest"
+
+  jumpserver:
+    latest: "{{.Registry}}/jumpserver/jms_all:latest"
+
+  filebeat:
+    standalone: "{{.Registry}}/elastic/filebeat:8.11.0"
+
+  loki:
+    latest: "{{.Registry}}/grafana/loki:latest"
+
+  n9e:
+    latest: "{{.Registry}}/flashcatcloud/nightingale:latest"
+
+  # ELK Stack (组合服务)
+  elk:
+    elasticsearch: "{{.Registry}}/elasticsearch:8.11.0"
+    logstash: "{{.Registry}}/logstash:8.11.0"
+    kibana: "{{.Registry}}/kibana:8.11.0"

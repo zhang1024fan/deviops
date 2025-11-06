@@ -1,0 +1,39 @@
+version: '3.8'
+
+services:
+  elasticsearch:
+    image: docker.elastic.co/elasticsearch/elasticsearch:8.12.0
+    container_name: ${CONTAINER_NAME:-elasticsearch}
+    restart: unless-stopped
+    environment:
+      - node.name=${NODE_NAME:-es-node1}
+      - cluster.name=${CLUSTER_NAME:-es-cluster}
+      - discovery.type=single-node
+      - bootstrap.memory_lock=true
+      - "ES_JAVA_OPTS=-Xms${ES_HEAP_SIZE:-1g} -Xmx${ES_HEAP_SIZE:-1g}"
+      - xpack.security.enabled=${ES_SECURITY_ENABLED:-false}
+      - TZ=Asia/Shanghai
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+      nofile:
+        soft: 65536
+        hard: 65536
+    ports:
+      - "${ES_HTTP_PORT:-9200}:9200"
+      - "${ES_TCP_PORT:-9300}:9300"
+    volumes:
+      - ${DATA_DIR:-/data/elasticsearch}/data:/usr/share/elasticsearch/data
+      - ${DATA_DIR:-/data/elasticsearch}/logs:/usr/share/elasticsearch/logs
+    networks:
+      - es_network
+    healthcheck:
+      test: ["CMD-SHELL", "curl -f http://localhost:9200/_cluster/health || exit 1"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+networks:
+  es_network:
+    driver: bridge

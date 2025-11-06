@@ -1,0 +1,54 @@
+# 项目启动端口
+server:
+  address: 127.0.0.1:8000
+  # debug模式
+  model: debug
+  # release模式
+  #model:release /true/false
+  enableSwagger: true
+
+# 数据库配置
+db:
+  dialects: mysql
+  host: 8.130.14.34
+  port: 3306
+  db: gin-api
+  username: root
+  password: devops@2025
+  charset: utf8
+  # 最大空闲数
+  maxIdle: 50
+  # 最大连接数
+  maxOpen: 150
+
+# redis配置
+redis:
+#  address: 127.0.0.1:6379
+  address: 8.130.14.34:6379
+  password: "zhangfan@123"
+
+# 图片地址和ip
+imageSettings:
+  # 本地磁盘地址
+  uploadDir: ./upload/
+  # 生产环境域名地址（为空时自动使用当前请求的Host）
+  imageHost: "http://10.7.16.22:8080"
+
+# log日志配置
+log:
+  path: ./log
+  name: sys
+  # 输出到控制台
+  model: console
+  # 输出到文件
+  # model: file
+
+# 监控配置
+monitor:
+  prometheus:
+    url: "http://8.130.14.34:9090"
+  pushgateway:
+    url: "http://8.130.14.34:9091"
+  agent:
+    heartbeat_server_url: "http://127.0.0.1:8000/api/v1/monitor/agent/heartbeat"
+    heartbeat_token: "agent-heartbeat-token-2024"

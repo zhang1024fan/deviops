@@ -1,0 +1,73 @@
+# Filebeat 配置文件
+
+# 输入配置
+filebeat.inputs:
+  # 应用日志
+  - type: log
+    enabled: true
+    paths:
+      - /var/log/app/*.log
+      - /var/log/app/**/*.log
+    fields:
+      log_type: application
+    fields_under_root: true
+    multiline.pattern: '^\d{4}-\d{2}-\d{2}'
+    multiline.negate: true
+    multiline.match: after
+
+  # 系统日志
+  - type: log
+    enabled: true
+    paths:
+      - /var/log/host/syslog
+      - /var/log/host/messages
+    fields:
+      log_type: system
+    fields_under_root: true
+
+  # Docker 容器日志
+  - type: container
+    enabled: true
+    paths:
+      - '/var/lib/docker/containers/*/*.log'
+    processors:
+      - add_docker_metadata:
+          host: "unix:///var/run/docker.sock"
+
+# 输出到 Elasticsearch
+output.elasticsearch:
+  hosts: ["${ELASTICSEARCH_HOSTS:http://localhost:9200}"]
+  username: "${ELASTICSEARCH_USERNAME:}"
+  password: "${ELASTICSEARCH_PASSWORD:}"
+  index: "filebeat-%{[agent.version]}-%{+yyyy.MM.dd}"
+
+# Kibana 配置（用于加载仪表板）
+setup.kibana:
+  host: "${KIBANA_HOST:http://localhost:5601}"
+
+# 自动加载 Kibana 仪表板
+setup.dashboards.enabled: true
+
+# 索引模板配置
+setup.template.enabled: true
+setup.template.name: "filebeat"
+setup.template.pattern: "filebeat-*"
+setup.template.settings:
+  index.number_of_shards: 1
+  index.number_of_replicas: 0
+
+# 日志级别
+logging.level: info
+logging.to_files: true
+logging.files:
+  path: /usr/share/filebeat/data/logs
+  name: filebeat
+  keepfiles: 7
+  permissions: 0644
+
+# 处理器
+processors:
+  - add_host_metadata:
+      when.not.contains.tags: forwarded
+  - add_cloud_metadata: ~
+  - add_docker_metadata: ~

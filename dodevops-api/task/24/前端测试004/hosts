@@ -1,0 +1,2 @@
+[web]
+172.16.226.16 ansible_ssh_port=22 ansible_ssh_user=root 

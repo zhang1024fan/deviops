@@ -1,0 +1,23 @@
+version: '3.8'
+
+services:
+  nodejs:
+    image: node:20-alpine
+    container_name: ${CONTAINER_NAME:-nodejs20}
+    restart: unless-stopped
+    working_dir: /app
+    environment:
+      - NODE_ENV=${NODE_ENV:-production}
+      - TZ=Asia/Shanghai
+    ports:
+      - "${APP_PORT:-3000}:3000"
+    volumes:
+      - ${PROJECT_DIR:-./app}:/app
+      - ${DATA_DIR:-/data/nodejs}/node_modules:/app/node_modules
+    command: sh -c "npm install && npm start"
+    networks:
+      - nodejs_network
+
+networks:
+  nodejs_network:
+    driver: bridge

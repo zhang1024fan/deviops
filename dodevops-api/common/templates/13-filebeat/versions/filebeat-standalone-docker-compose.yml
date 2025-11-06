@@ -1,0 +1,37 @@
+version: '3.8'
+
+services:
+  filebeat:
+    image: docker.elastic.co/beats/filebeat:${FILEBEAT_VERSION:-8.12.0}
+    container_name: filebeat-${PROJECT_NAME:-default}
+    restart: unless-stopped
+    user: root
+    command: ["--strict.perms=false"]
+    volumes:
+      # Filebeat 配置文件
+      - ${CONFIG_DIR:-./config}/filebeat.yml:/usr/share/filebeat/filebeat.yml:ro
+      # 应用日志目录
+      - ${LOG_DIR:-./logs}:/var/log/app:ro
+      # Docker 容器日志
+      - /var/lib/docker/containers:/var/lib/docker/containers:ro
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      # 系统日志
+      - /var/log:/var/log/host:ro
+      # Filebeat 数据存储
+      - ${DATA_DIR:-/data/filebeat-${PROJECT_NAME:-default}}:/usr/share/filebeat/data
+    environment:
+      # Elasticsearch 地址
+      - ELASTICSEARCH_HOSTS=${ELASTICSEARCH_HOSTS:-http://127.0.0.1:9200}
+      # Kibana 地址
+      - KIBANA_HOST=${KIBANA_HOST:-http://127.0.0.1:5601}
+      # Elasticsearch 用户名密码（如果启用了安全认证）
+      - ELASTICSEARCH_USERNAME=${ELASTICSEARCH_USERNAME:-}
+      - ELASTICSEARCH_PASSWORD=${ELASTICSEARCH_PASSWORD:-}
+      - TZ=Asia/Shanghai
+    network_mode: ${NETWORK_MODE:-host}
+    healthcheck:
+      test: ["CMD-SHELL", "filebeat test config -c /usr/share/filebeat/filebeat.yml"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 60s
