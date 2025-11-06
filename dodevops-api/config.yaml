@@ -10,11 +10,11 @@ server:
 # 数据库配置
 db:
   dialects: mysql
-  host: 8.130.14.34
+  host: 192.168.1.1
   port: 3306
   db: gin-api
   username: root
-  password: devops@2025
+  password: 1111111
   charset: utf8
   # 最大空闲数
   maxIdle: 50
@@ -24,8 +24,8 @@ db:
 # redis配置
 redis:
 #  address: 127.0.0.1:6379
-  address: 8.130.14.34:6379
-  password: "zhangfan@123"
+  address: 192.168.1.1:6379
+  password: "123456"
 
 # 图片地址和ip
 imageSettings:
@@ -46,9 +46,9 @@ log:
 # 监控配置
 monitor:
   prometheus:
-    url: "http://8.130.14.34:9090"
+    url: "http://192.168.1.1:9090"
   pushgateway:
-    url: "http://8.130.14.34:9091"
+    url: "http://192.168.1.1:9091"
   agent:
-    heartbeat_server_url: "http://127.0.0.1:8000/api/v1/monitor/agent/heartbeat"
+    heartbeat_server_url: "http://192.168.1.1:8000/api/v1/monitor/agent/heartbeat"
     heartbeat_token: "agent-heartbeat-token-2024"
