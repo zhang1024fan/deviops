@@ -232,4 +232,4 @@ Web 前端: http://localhost:8088
 - 邮箱：zfwh1024@163.com
 - 项目地址：https://github.com/zhang1024fan/deviops.git
 #### 加群
-![alt text](assets/微信2.png)
+![alt text](assets/微信123.png)
