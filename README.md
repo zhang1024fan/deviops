@@ -79,9 +79,8 @@ DevOps运维管理系统是一个基于 Go + Gin 框架开发的企业级运维�
 | 国内企业，注重云原生完整性 | KubeSphere |
 | 快速上线，资源有限 | **DevOps运维管理系统** |
 | 需要传统运维+容器化双轨并行 | **DevOps运维管理系统** |
-
 ### 测试环境
-http://180.76.231.65/login
+http://139.9.205.38/login
 账号：test
 密码：123456
 ### 视频安装使用介绍
@@ -235,5 +234,4 @@ Web 前端: http://localhost:8088
 - QQ：545118130
 - 邮箱：zfwh1024@163.com
 - 项目地址：https://github.com/zhang1024fan/deviops.git
-#### 加群
-![alt text](assets/微信123.png)
+#### 欢迎大家加群技术交流
