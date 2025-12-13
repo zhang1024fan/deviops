@@ -206,7 +206,8 @@ Web 前端: http://localhost:8088
   <img src="assets/image-4.png" width="120" />
   <img src="assets/image-5.png" width="120" />
   <img src="assets/image-6.png" width="120" />
-  <img src="assets/image7.png" width="120" />
+  <img src="assets/image-7.png" width="120" />
+  <img src="assets/image-8.png" width="120" />
 </p>
 
 ## 联系作者
