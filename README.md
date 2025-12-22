@@ -195,6 +195,11 @@ docker-compose logs -f
 Web 前端: http://localhost:8088
 默认账号: admin / 123456
 ```
+### 升级说明
+1. 目前更新会替换原来的镜像。
+2. 删除本地的镜像。docker stop  deviops-api  deviops-web  && docker rm  deviops-api  deviops-web
+3. docker-compose up -d  #会重新拉取最新镜像
+
 
 ## 感谢以下同学对本项目提供的打赏
 
