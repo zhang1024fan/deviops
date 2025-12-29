@@ -16,6 +16,7 @@
 | | 主机终端管理 | ✅ |
 | | 五类数据库管理(MySQL/PgSQL/Redis/ES/MongoDB) | ✅ |
 | | windos 主机管理 | 🚧规划中 |
+| | windos 远程桌面-guacamole | 🚧规划中 |
 | | 交换机配置管理  | 🚧规划中 |
 | **Kubernetes集群管理** | 多集群管理 | ✅ |
 | | 节点管理 | ✅ |
