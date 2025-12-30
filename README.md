@@ -166,7 +166,20 @@ docker pull crpi-aj3vgoxp9kzh2jx4.cn-hangzhou.personal.cr.aliyuncs.com/zhangfan_
 docker pull crpi-aj3vgoxp9kzh2jx4.cn-hangzhou.personal.cr.aliyuncs.com/zhangfan_k8s/prometheus:v2.47.0
 docker pull crpi-aj3vgoxp9kzh2jx4.cn-hangzhou.personal.cr.aliyuncs.com/zhangfan_k8s/mysql:8.0.33
 ```
-
+AutoOps v2 版本更新方法
+```bash
+#拉取v2.0版本镜像
+docker pull crpi-aj3vgoxp9kzh2jx4.cn-hangzhou.personal.cr.aliyuncs.com/zhangfan_k8s/deviops-api:v2.0
+docker pull crpi-aj3vgoxp9kzh2jx4.cn-hangzhou.personal.cr.aliyuncs.com/zhangfan_k8s/deviops-web:v2.0
+#停止v1.0版本,删除本地镜像
+docker stop  devops-web devops-api  && docker rm  devops-web devops-api
+docker rmi     IMAGE ID
+#修改镜像tag标签
+docker tag  xxx/deviops-api:v2.0  xxxxx/deviops-api:v1.0
+docker tag  xxx/deviops-web:v2.0  xxxxx/deviops-web:v1.0
+#启动服务
+docker up -d #启动服务
+```
 
 ### 修改配置文件
 ```bash
