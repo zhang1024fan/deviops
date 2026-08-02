@@ -17,6 +17,15 @@ WEB_REPOSITORY="${AUTOOPS_WEB_REPOSITORY:-${REGISTRY}/deviops-web}"
 KAFKA_TOPIC="aiops-logs"
 KAFKA_PARTITIONS=6
 WAIT_TIMEOUT="${AUTOOPS_WAIT_TIMEOUT:-300}"
+PODMAN_DOCKER_NOTICE="Emulate Docker CLI using podman. Create /etc/containers/nodocker to quiet msg."
+
+docker_cli() {
+    docker "$@" 2> >(
+        while IFS= read -r line || [ -n "$line" ]; do
+            [ "$line" = "$PODMAN_DOCKER_NOTICE" ] || printf '%s\n' "$line" >&2
+        done
+    )
+}
 
 usage() {
     echo "用法: $0 <version> <server_host> <web_port> [api_port] [mysql_port] [redis_port] [victoriametrics_port] [victorialogs_port] [kafka_port]"
@@ -94,12 +103,14 @@ VECTOR_CONFIG="$SCRIPT_DIR/vector/vector.yaml"
 touch "$ENV_FILE"
 
 command -v docker >/dev/null 2>&1 || fail "未安装 Docker"
-docker info >/dev/null 2>&1 || fail "Docker daemon 未运行或当前用户无访问权限"
+docker_cli info >/dev/null 2>&1 || fail "Docker/Podman 未运行或当前用户无访问权限"
 
-if docker compose version >/dev/null 2>&1; then
-    COMPOSE=(docker compose)
+if docker_cli compose version >/dev/null 2>&1; then
+    COMPOSE=(docker_cli compose)
+    COMPOSE_DISPLAY="docker compose"
 elif command -v docker-compose >/dev/null 2>&1; then
     COMPOSE=(docker-compose)
+    COMPOSE_DISPLAY="docker-compose"
 else
     fail "找不到 docker compose 或 docker-compose"
 fi
@@ -254,13 +265,13 @@ wait_for_container() {
     local status health
 
     while ((SECONDS < deadline)); do
-        if ! docker inspect "$container" >/dev/null 2>&1; then
+        if ! docker_cli inspect "$container" >/dev/null 2>&1; then
             sleep 2
             continue
         fi
 
-        status="$(docker inspect --format '{{.State.Status}}' "$container")"
-        health="$(docker inspect --format '{{if .State.Health}}{{.State.Health.Status}}{{else}}none{{end}}' "$container")"
+        status="$(docker_cli inspect --format '{{.State.Status}}' "$container")"
+        health="$(docker_cli inspect --format '{{if .State.Health}}{{.State.Health.Status}}{{else}}none{{end}}' "$container")"
 
         if [ "$status" = "running" ] && { [ "$health" = "none" ] || [ "$health" = "healthy" ]; }; then
             echo -e "${GREEN}✓ $container 已就绪${NC}"
@@ -268,54 +279,54 @@ wait_for_container() {
         fi
         if [ "$status" = "exited" ] || [ "$status" = "dead" ] || [ "$health" = "unhealthy" ]; then
             echo -e "${RED}✗ $container 启动失败 (status=$status, health=$health)${NC}"
-            docker logs --tail 80 "$container" 2>&1 || true
+            docker_cli logs --tail 80 "$container" 2>&1 || true
             return 1
         fi
         sleep 2
     done
 
     echo -e "${RED}✗ 等待 $container 超时${NC}"
-    docker logs --tail 80 "$container" 2>&1 || true
+    docker_cli logs --tail 80 "$container" 2>&1 || true
     return 1
 }
 
 wait_for_kafka() {
     local deadline=$((SECONDS + WAIT_TIMEOUT))
     while ((SECONDS < deadline)); do
-        if docker exec autoops-kafka /opt/kafka/bin/kafka-topics.sh \
+        if docker_cli exec autoops-kafka /opt/kafka/bin/kafka-topics.sh \
             --bootstrap-server autoops-kafka:29092 --list >/dev/null 2>&1; then
             echo -e "${GREEN}✓ autoops-kafka 已就绪${NC}"
             return 0
         fi
-        if ! docker inspect --format '{{.State.Running}}' autoops-kafka 2>/dev/null | grep -q true; then
-            docker logs --tail 80 autoops-kafka 2>&1 || true
+        if ! docker_cli inspect --format '{{.State.Running}}' autoops-kafka 2>/dev/null | grep -q true; then
+            docker_cli logs --tail 80 autoops-kafka 2>&1 || true
             return 1
         fi
         sleep 3
     done
 
     echo -e "${RED}✗ 等待 autoops-kafka 超时${NC}"
-    docker logs --tail 80 autoops-kafka 2>&1 || true
+    docker_cli logs --tail 80 autoops-kafka 2>&1 || true
     return 1
 }
 
 ensure_kafka_topic() {
     local description partition_count
 
-    docker exec autoops-kafka /opt/kafka/bin/kafka-topics.sh \
+    docker_cli exec autoops-kafka /opt/kafka/bin/kafka-topics.sh \
         --bootstrap-server autoops-kafka:29092 \
         --create --if-not-exists \
         --topic "$KAFKA_TOPIC" \
         --partitions "$KAFKA_PARTITIONS" \
         --replication-factor 1
 
-    description="$(docker exec autoops-kafka /opt/kafka/bin/kafka-topics.sh \
+    description="$(docker_cli exec autoops-kafka /opt/kafka/bin/kafka-topics.sh \
         --bootstrap-server autoops-kafka:29092 \
         --describe --topic "$KAFKA_TOPIC")"
     partition_count="$(printf '%s\n' "$description" | awk -F'PartitionCount: ' 'NF > 1 {split($2, fields, " "); print fields[1]; exit}')"
 
     if [[ "$partition_count" =~ ^[0-9]+$ ]] && ((partition_count < KAFKA_PARTITIONS)); then
-        docker exec autoops-kafka /opt/kafka/bin/kafka-topics.sh \
+        docker_cli exec autoops-kafka /opt/kafka/bin/kafka-topics.sh \
             --bootstrap-server autoops-kafka:29092 \
             --alter --topic "$KAFKA_TOPIC" \
             --partitions "$KAFKA_PARTITIONS"
@@ -402,5 +413,5 @@ echo "Kafka:           $SERVER_HOST:$KAFKA_PORT"
 echo "MySQL:           $SERVER_HOST:$MYSQL_PORT"
 echo "Redis:           $SERVER_HOST:$REDIS_PORT"
 echo ""
-echo "查看状态: ${COMPOSE[*]} ps"
-echo "查看日志: ${COMPOSE[*]} logs -f <service>"
+echo "查看状态: $COMPOSE_DISPLAY ps"
+echo "查看日志: $COMPOSE_DISPLAY logs -f <service>"
