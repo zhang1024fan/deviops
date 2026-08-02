@@ -2,15 +2,15 @@ server:
   address: 0.0.0.0:8000
   model: release
   enableSwagger: true
-  publicUrl: "http://127.0.0.1:8000"
+  publicUrl: "http://__SERVER_HOST__:__API_PORT__"
 
 db:
   dialects: mysql
   host: autoops-mysql
   port: 3306
-  db: autoops
+  db: __MYSQL_DATABASE__
   username: root
-  password: "devops@2025"
+  password: "__MYSQL_ROOT_PASSWORD__"
   charset: utf8
   maxIdle: 50
   maxOpen: 150
@@ -18,11 +18,11 @@ db:
 
 redis:
   address: autoops-redis:6379
-  password: "devops@2025"
+  password: "__REDIS_PASSWORD__"
 
 imageSettings:
   uploadDir: ./upload/
-  imageHost: "http://127.0.0.1:8088"
+  imageHost: "http://__SERVER_HOST__:__WEB_PORT__"
 
 log:
   path: ./log
@@ -37,7 +37,7 @@ logtail:
   kafka:
     enabled: true
     brokers:
-      - "127.0.0.1:9092"
+      - "__SERVER_HOST__:__KAFKA_PORT__"
     topic: "aiops-logs"
   vector:
     image: "crpi-aj3vgoxp9kzh2jx4.cn-hangzhou.personal.cr.aliyuncs.com/zhangfan_k8s/vector:latest-debian"
@@ -50,11 +50,11 @@ monitor:
   victoriametrics:
     url: "http://autoops-victoriametrics:8428"
   metrics_push:
-    url: "http://127.0.0.1:8428/api/v1/import/prometheus"
+    url: "http://__SERVER_HOST__:__VICTORIAMETRICS_PORT__/api/v1/import/prometheus"
   agent:
     version: "2.1.0"
     version_tag: "v2"
-    heartbeat_server_url: "http://127.0.0.1:8000/api/v1/monitor/agent/heartbeat"
+    heartbeat_server_url: "http://__SERVER_HOST__:__API_PORT__/api/v1/monitor/agent/heartbeat"
     heartbeat_token: "agent-heartbeat-token-2024"
     heartbeat_timeout_seconds: 300
   webhook:
@@ -68,11 +68,11 @@ mcp:
   token: "replace-with-aiops-mcp-token"
 
 windows_exporter:
-  installer_base_url: "http://127.0.0.1:8000/api/v1/upload/windows_exporter/"
+  installer_base_url: "http://__SERVER_HOST__:__API_PORT__/api/v1/upload/windows_exporter/"
   default_version: "0.31.3"
   default_port: 9182
   enabled_collectors: "cpu,logical_disk,net,os,system,service,memory,process"
   push_mode:
     enabled: true
     interval: 60
-    metrics_push_url: "http://127.0.0.1:8428/api/v1/import/prometheus"
+    metrics_push_url: "http://__SERVER_HOST__:__VICTORIAMETRICS_PORT__/api/v1/import/prometheus"

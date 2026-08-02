@@ -1,190 +1,375 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
-# DevOps 服务启动脚本 v3.0
-# 用法: ./devops-start.sh <version> <ip> <web_port> [api_port] [mysql_port] [redis_port]
-# 示例: ./devops-start.sh v1.0 192.168.1.100 8080
+# AutoOps 8 服务一键部署脚本
+# 用法: ./devops-start.sh <version> <server_host> <web_port> [api_port] [mysql_port] [redis_port] [victoriametrics_port] [victorialogs_port] [kafka_port]
+# 示例: ./devops-start.sh v5.0 192.168.1.100 8088
 
-set -e
+set -Eeuo pipefail
 
-# 颜色定义
 RED='\033[0;31m'
 GREEN='\033[0;32m'
 YELLOW='\033[1;33m'
-NC='\033[0m' # No Color
+NC='\033[0m'
 
-# 默认值
-API_PORT=${4:-8000}
-MYSQL_PORT=${5:-3307}
-REDIS_PORT=${6:-6379}
-PROMETHEUS_PORT=9090
-PUSHGATEWAY_PORT=9091
+REGISTRY="crpi-aj3vgoxp9kzh2jx4.cn-hangzhou.personal.cr.aliyuncs.com/zhangfan_k8s"
+API_REPOSITORY="${AUTOOPS_API_REPOSITORY:-${REGISTRY}/deviops-api}"
+WEB_REPOSITORY="${AUTOOPS_WEB_REPOSITORY:-${REGISTRY}/deviops-web}"
+KAFKA_TOPIC="aiops-logs"
+KAFKA_PARTITIONS=6
+WAIT_TIMEOUT="${AUTOOPS_WAIT_TIMEOUT:-300}"
 
-# 参数验证
-if [ $# -lt 3 ]; then
-    echo -e "${RED}错误: 参数不足${NC}"
-    echo "用法: $0 <version> <ip> <web_port> [api_port] [mysql_port] [redis_port]"
+usage() {
+    echo "用法: $0 <version> <server_host> <web_port> [api_port] [mysql_port] [redis_port] [victoriametrics_port] [victorialogs_port] [kafka_port]"
     echo ""
     echo "参数说明:"
-    echo "  version      - 镜像版本 (例如: v1.0, v2.0)"
-    echo "  ip           - 服务器IP地址或域名 (例如: 192.168.1.100, devops.example.com)"
-    echo "  web_port     - 前端访问端口 (例如: 8080, 8088)"
-    echo "  api_port     - API后端端口 (可选, 默认: 8000)"
-    echo "  mysql_port   - MySQL端口 (可选, 默认: 3307)"
-    echo "  redis_port   - Redis端口 (可选, 默认: 6379)"
+    echo "  version               API/Web 镜像版本，例如 v5.0"
+    echo "  server_host           Agent 可访问的服务器 IP 或域名"
+    echo "  web_port              Web 访问端口"
+    echo "  api_port              API 访问端口，默认 8000"
+    echo "  mysql_port            MySQL 映射端口，默认 3307"
+    echo "  redis_port            Redis 映射端口，默认 6379"
+    echo "  victoriametrics_port  VictoriaMetrics 端口，默认 8428"
+    echo "  victorialogs_port     VictoriaLogs 端口，默认 9428"
+    echo "  kafka_port            Kafka 外部端口，默认 9092"
     echo ""
     echo "示例:"
-    echo "  $0 v1.0 192.168.1.100 8080"
-    echo "  $0 v1.0 192.168.1.100 8080 8000 3307 6379"
+    echo "  $0 v5.0 192.168.1.100 8088"
+    echo "  $0 v5.0 autoops.example.com 80 8000 3307 6379 8428 9428 9092"
+}
+
+fail() {
+    echo -e "${RED}错误: $*${NC}" >&2
+    exit 1
+}
+
+on_error() {
+    local exit_code=$?
+    echo -e "${RED}部署失败，出错行: ${BASH_LINENO[0]}，退出码: ${exit_code}${NC}" >&2
+    exit "$exit_code"
+}
+trap on_error ERR
+
+if [ "$#" -lt 3 ] || [ "$#" -gt 9 ]; then
+    usage
     exit 1
 fi
 
-VERSION=$1
-SERVER_IP=$2
-WEB_PORT=$3
+VERSION="$1"
+SERVER_HOST="$2"
+WEB_PORT="$3"
+API_PORT="${4:-8000}"
+MYSQL_PORT="${5:-3307}"
+REDIS_PORT="${6:-6379}"
+VICTORIAMETRICS_PORT="${7:-8428}"
+VICTORIALOGS_PORT="${8:-9428}"
+KAFKA_PORT="${9:-9092}"
 
-# 验证IP地址格式
-if ! [[ "$SERVER_IP" =~ ^[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}$ ]] && ! [[ "$SERVER_IP" =~ ^[a-zA-Z0-9]([a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(\.[a-zA-Z0-9]([a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$ ]]; then
-    if [ "$SERVER_IP" != "localhost" ]; then
-        echo -e "${RED}错误: IP地址或域名格式不正确${NC}"
-        exit 1
-    fi
-fi
+[[ "$VERSION" =~ ^[A-Za-z0-9][A-Za-z0-9._-]*$ ]] || fail "镜像版本格式无效: $VERSION"
+[[ "$SERVER_HOST" =~ ^[A-Za-z0-9][A-Za-z0-9.-]*$ ]] || fail "服务器 IP 或域名格式无效: $SERVER_HOST"
+[[ "$WAIT_TIMEOUT" =~ ^[0-9]+$ ]] || fail "AUTOOPS_WAIT_TIMEOUT 必须是正整数"
 
-# 验证端口号
-for port in $WEB_PORT $API_PORT $MYSQL_PORT $REDIS_PORT; do
-    if ! [[ "$port" =~ ^[0-9]+$ ]] || [ "$port" -lt 1 ] || [ "$port" -gt 65535 ]; then
-        echo -e "${RED}错误: 端口号无效: $port${NC}"
-        exit 1
-    fi
+PORTS=("$WEB_PORT" "$API_PORT" "$MYSQL_PORT" "$REDIS_PORT" "$VICTORIAMETRICS_PORT" "$VICTORIALOGS_PORT" "$KAFKA_PORT")
+for port in "${PORTS[@]}"; do
+    [[ "$port" =~ ^[0-9]+$ ]] || fail "端口号无效: $port"
+    (( port >= 1 && port <= 65535 )) || fail "端口号超出范围: $port"
+done
+for ((i = 0; i < ${#PORTS[@]}; i++)); do
+    for ((j = i + 1; j < ${#PORTS[@]}; j++)); do
+        [ "${PORTS[$i]}" != "${PORTS[$j]}" ] || fail "端口不能重复: ${PORTS[$i]}"
+    done
 done
 
-echo -e "${GREEN}========================================${NC}"
-echo -e "${GREEN}DevOps 服务启动脚本 v3.0${NC}"
-echo -e "${GREEN}========================================${NC}"
-echo ""
-echo "配置信息:"
-echo "  镜像版本:     $VERSION"
-echo "  服务器IP:     $SERVER_IP"
-echo "  前端端口:     $WEB_PORT"
-echo "  API端口:      $API_PORT"
-echo "  MySQL端口:    $MYSQL_PORT"
-echo "  Redis端口:    $REDIS_PORT"
-echo ""
-
-# 获取脚本所在目录
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 cd "$SCRIPT_DIR"
 
-# 检测 docker-compose 命令
-detect_docker_compose() {
-    if command -v docker-compose &> /dev/null; then
-        echo "docker-compose"
-    elif docker compose version &> /dev/null 2>&1; then
-        echo "docker compose"
-    else
-        echo ""
-    fi
+COMPOSE_FILE="$SCRIPT_DIR/docker-compose.yml"
+ENV_FILE="$SCRIPT_DIR/.env"
+CONFIG_TEMPLATE="$SCRIPT_DIR/api/config.template.yaml"
+RUNTIME_CONFIG="$SCRIPT_DIR/api/config.runtime.yaml"
+VECTOR_CONFIG="$SCRIPT_DIR/vector/vector.yaml"
+
+[ -f "$COMPOSE_FILE" ] || fail "找不到 $COMPOSE_FILE"
+[ -f "$CONFIG_TEMPLATE" ] || fail "找不到 $CONFIG_TEMPLATE"
+[ -f "$VECTOR_CONFIG" ] || fail "找不到 $VECTOR_CONFIG"
+touch "$ENV_FILE"
+
+command -v docker >/dev/null 2>&1 || fail "未安装 Docker"
+docker info >/dev/null 2>&1 || fail "Docker daemon 未运行或当前用户无访问权限"
+
+if docker compose version >/dev/null 2>&1; then
+    COMPOSE=(docker compose)
+elif command -v docker-compose >/dev/null 2>&1; then
+    COMPOSE=(docker-compose)
+else
+    fail "找不到 docker compose 或 docker-compose"
+fi
+
+get_env_value() {
+    local key="$1"
+    awk -v key="$key" '
+        index($0, key "=") == 1 {
+            print substr($0, length(key) + 2)
+            exit
+        }
+    ' "$ENV_FILE"
 }
 
-DOCKER_COMPOSE_CMD=$(detect_docker_compose)
-if [ -z "$DOCKER_COMPOSE_CMD" ]; then
-    echo -e "${RED}错误: 找不到 docker-compose 或 docker compose 命令${NC}"
-    exit 1
-fi
+set_env_value() {
+    local key="$1"
+    local value="$2"
+    local temp_file
+    temp_file="$(mktemp "${SCRIPT_DIR}/.env.XXXXXX")"
+    ENV_KEY="$key" ENV_VALUE="$value" awk '
+        BEGIN {
+            key = ENVIRON["ENV_KEY"]
+            value = ENVIRON["ENV_VALUE"]
+            found = 0
+        }
+        index($0, key "=") == 1 {
+            if (!found) {
+                print key "=" value
+                found = 1
+            }
+            next
+        }
+        { print }
+        END {
+            if (!found) {
+                print key "=" value
+            }
+        }
+    ' "$ENV_FILE" > "$temp_file"
+    mv "$temp_file" "$ENV_FILE"
+}
 
-# 检查必要的文件
-if [ ! -f "docker-compose.yml" ]; then
-    echo -e "${RED}错误: 找不到 docker-compose.yml${NC}"
-    exit 1
-fi
+yaml_escape() {
+    local value="$1"
+    value="${value//\\/\\\\}"
+    value="${value//\"/\\\"}"
+    printf '%s' "$value"
+}
 
-if [ ! -f ".env" ]; then
-    echo -e "${RED}错误: 找不到 .env 文件${NC}"
-    exit 1
-fi
+MYSQL_ROOT_PASSWORD_VALUE="${MYSQL_ROOT_PASSWORD:-$(get_env_value MYSQL_ROOT_PASSWORD)}"
+MYSQL_ROOT_PASSWORD_VALUE="${MYSQL_ROOT_PASSWORD_VALUE:-devops@2025}"
+MYSQL_DATABASE_VALUE="${MYSQL_DATABASE:-$(get_env_value MYSQL_DATABASE)}"
+MYSQL_DATABASE_VALUE="${MYSQL_DATABASE_VALUE:-autoops}"
+REDIS_PASSWORD_VALUE="${REDIS_PASSWORD:-$(get_env_value REDIS_PASSWORD)}"
+REDIS_PASSWORD_VALUE="${REDIS_PASSWORD_VALUE:-devops@2025}"
 
-if [ ! -f "api/config.yaml" ]; then
-    echo -e "${RED}错误: 找不到 api/config.yaml${NC}"
-    exit 1
-fi
+[[ "$MYSQL_DATABASE_VALUE" =~ ^[A-Za-z0-9_]+$ ]] || fail "MYSQL_DATABASE 只能包含字母、数字和下划线"
+[[ "$MYSQL_ROOT_PASSWORD_VALUE" != *$'\n'* ]] || fail "MYSQL_ROOT_PASSWORD 不能包含换行"
+[[ "$REDIS_PASSWORD_VALUE" != *$'\n'* ]] || fail "REDIS_PASSWORD 不能包含换行"
 
-echo -e "${YELLOW}步骤 1: 更新 .env 文件...${NC}"
-# 更新 .env 文件中的端口和IP配置
-sed -i.bak "s|^WEB_PORT=.*|WEB_PORT=$WEB_PORT|" .env
-sed -i.bak "s|^API_PORT=.*|API_PORT=$API_PORT|" .env
-sed -i.bak "s|^MYSQL_PORT=.*|MYSQL_PORT=$MYSQL_PORT|" .env
-sed -i.bak "s|^REDIS_PORT=.*|REDIS_PORT=$REDIS_PORT|" .env
-sed -i.bak "s|^IMAGE_HOST=.*|IMAGE_HOST=http://$SERVER_IP:$WEB_PORT|" .env
+AUTOOPS_API_IMAGE="${API_REPOSITORY}:${VERSION}"
+AUTOOPS_WEB_IMAGE="${WEB_REPOSITORY}:${VERSION}"
 
-echo -e "${GREEN}✓ .env 文件已更新${NC}"
+set_env_value AUTOOPS_API_IMAGE "$AUTOOPS_API_IMAGE"
+set_env_value AUTOOPS_WEB_IMAGE "$AUTOOPS_WEB_IMAGE"
+set_env_value API_CONFIG_FILE "./api/config.runtime.yaml"
+set_env_value SERVER_HOST "$SERVER_HOST"
+set_env_value WEB_PORT "$WEB_PORT"
+set_env_value API_PORT "$API_PORT"
+set_env_value MYSQL_PORT "$MYSQL_PORT"
+set_env_value REDIS_PORT "$REDIS_PORT"
+set_env_value VICTORIAMETRICS_PORT "$VICTORIAMETRICS_PORT"
+set_env_value VICTORIALOGS_PORT "$VICTORIALOGS_PORT"
+set_env_value KAFKA_PORT "$KAFKA_PORT"
+set_env_value KAFKA_ADVERTISED_HOST "$SERVER_HOST"
+set_env_value MYSQL_ROOT_PASSWORD "$MYSQL_ROOT_PASSWORD_VALUE"
+set_env_value MYSQL_DATABASE "$MYSQL_DATABASE_VALUE"
+set_env_value REDIS_PASSWORD "$REDIS_PASSWORD_VALUE"
 
-echo -e "${YELLOW}步骤 2: 更新 api/config.yaml 文件...${NC}"
-# 更新 config.yaml 中的IP地址配置
-# 更新 prometheus URL
-sed -i.bak "s|url: \"http://prometheus:9090\"|url: \"http://$SERVER_IP:$PROMETHEUS_PORT\"|" api/config.yaml
-# 更新 pushgateway URL
-sed -i.bak "s|url: \"http://pushgateway:9091\"|url: \"http://$SERVER_IP:$PUSHGATEWAY_PORT\"|" api/config.yaml
-# 更新 heartbeat_server_url
-sed -i.bak "s|heartbeat_server_url: \"http://devops-api:8000|heartbeat_server_url: \"http://$SERVER_IP:$API_PORT|" api/config.yaml
-# 更新 installer_base_url
-sed -i.bak "s|installer_base_url: \"http://devops-api:8000|installer_base_url: \"http://$SERVER_IP:$API_PORT|" api/config.yaml
-# 更新 pushgateway_url
-sed -i.bak "s|pushgateway_url: \"http://pushgateway:9091\"|pushgateway_url: \"http://$SERVER_IP:$PUSHGATEWAY_PORT\"|" api/config.yaml
+render_api_config() {
+    local temp_file
+    temp_file="$(mktemp "${SCRIPT_DIR}/api/.config.runtime.XXXXXX")"
 
-echo -e "${GREEN}✓ api/config.yaml 文件已更新${NC}"
+    CFG_SERVER_HOST="$SERVER_HOST" \
+    CFG_WEB_PORT="$WEB_PORT" \
+    CFG_API_PORT="$API_PORT" \
+    CFG_KAFKA_PORT="$KAFKA_PORT" \
+    CFG_VICTORIAMETRICS_PORT="$VICTORIAMETRICS_PORT" \
+    CFG_MYSQL_DATABASE="$MYSQL_DATABASE_VALUE" \
+    CFG_MYSQL_ROOT_PASSWORD="$(yaml_escape "$MYSQL_ROOT_PASSWORD_VALUE")" \
+    CFG_REDIS_PASSWORD="$(yaml_escape "$REDIS_PASSWORD_VALUE")" \
+    awk '
+        function replace_all(text, needle, replacement, position, output) {
+            output = ""
+            while ((position = index(text, needle)) > 0) {
+                output = output substr(text, 1, position - 1) replacement
+                text = substr(text, position + length(needle))
+            }
+            return output text
+        }
+        {
+            line = $0
+            line = replace_all(line, "__SERVER_HOST__", ENVIRON["CFG_SERVER_HOST"])
+            line = replace_all(line, "__WEB_PORT__", ENVIRON["CFG_WEB_PORT"])
+            line = replace_all(line, "__API_PORT__", ENVIRON["CFG_API_PORT"])
+            line = replace_all(line, "__KAFKA_PORT__", ENVIRON["CFG_KAFKA_PORT"])
+            line = replace_all(line, "__VICTORIAMETRICS_PORT__", ENVIRON["CFG_VICTORIAMETRICS_PORT"])
+            line = replace_all(line, "__MYSQL_DATABASE__", ENVIRON["CFG_MYSQL_DATABASE"])
+            line = replace_all(line, "__MYSQL_ROOT_PASSWORD__", ENVIRON["CFG_MYSQL_ROOT_PASSWORD"])
+            line = replace_all(line, "__REDIS_PASSWORD__", ENVIRON["CFG_REDIS_PASSWORD"])
+            print line
+        }
+    ' "$CONFIG_TEMPLATE" > "$temp_file"
 
-echo -e "${YELLOW}步骤 3: 更新 docker-compose.yml 中的镜像版本...${NC}"
-# 更新镜像版本
-sed -i.bak "s|deviops-api:v[0-9.]*|deviops-api:$VERSION|g" docker-compose.yml
-sed -i.bak "s|deviops-web:v[0-9.]*|deviops-web:$VERSION|g" docker-compose.yml
+    chmod 600 "$temp_file"
+    mv "$temp_file" "$RUNTIME_CONFIG"
+}
 
-echo -e "${GREEN}✓ docker-compose.yml 镜像版本已更新${NC}"
+wait_for_container() {
+    local container="$1"
+    local deadline=$((SECONDS + WAIT_TIMEOUT))
+    local status health
 
-echo -e "${YELLOW}步骤 4: 停止现有服务...${NC}"
-$DOCKER_COMPOSE_CMD down 2>/dev/null || true
-echo -e "${GREEN}✓ 现有服务已停止${NC}"
+    while ((SECONDS < deadline)); do
+        if ! docker inspect "$container" >/dev/null 2>&1; then
+            sleep 2
+            continue
+        fi
 
-echo -e "${YELLOW}步骤 5: 启动新服务...${NC}"
-$DOCKER_COMPOSE_CMD up -d
+        status="$(docker inspect --format '{{.State.Status}}' "$container")"
+        health="$(docker inspect --format '{{if .State.Health}}{{.State.Health.Status}}{{else}}none{{end}}' "$container")"
 
-# 等待服务启动
-echo -e "${YELLOW}等待服务启动...${NC}"
-sleep 10
+        if [ "$status" = "running" ] && { [ "$health" = "none" ] || [ "$health" = "healthy" ]; }; then
+            echo -e "${GREEN}✓ $container 已就绪${NC}"
+            return 0
+        fi
+        if [ "$status" = "exited" ] || [ "$status" = "dead" ] || [ "$health" = "unhealthy" ]; then
+            echo -e "${RED}✗ $container 启动失败 (status=$status, health=$health)${NC}"
+            docker logs --tail 80 "$container" 2>&1 || true
+            return 1
+        fi
+        sleep 2
+    done
 
-# 检查服务状态
-echo -e "${YELLOW}步骤 6: 检查服务状态...${NC}"
-SERVICES=("devops-mysql" "devops-redis" "devops-pushgateway" "devops-prometheus" "devops-api" "devops-web")
-ALL_HEALTHY=true
+    echo -e "${RED}✗ 等待 $container 超时${NC}"
+    docker logs --tail 80 "$container" 2>&1 || true
+    return 1
+}
 
-for service in "${SERVICES[@]}"; do
-    if docker ps --filter "name=$service" --filter "status=running" | grep -q "$service"; then
-        echo -e "${GREEN}✓ $service 运行中${NC}"
-    else
-        echo -e "${RED}✗ $service 未运行${NC}"
-        ALL_HEALTHY=false
+wait_for_kafka() {
+    local deadline=$((SECONDS + WAIT_TIMEOUT))
+    while ((SECONDS < deadline)); do
+        if docker exec autoops-kafka /opt/kafka/bin/kafka-topics.sh \
+            --bootstrap-server autoops-kafka:29092 --list >/dev/null 2>&1; then
+            echo -e "${GREEN}✓ autoops-kafka 已就绪${NC}"
+            return 0
+        fi
+        if ! docker inspect --format '{{.State.Running}}' autoops-kafka 2>/dev/null | grep -q true; then
+            docker logs --tail 80 autoops-kafka 2>&1 || true
+            return 1
+        fi
+        sleep 3
+    done
+
+    echo -e "${RED}✗ 等待 autoops-kafka 超时${NC}"
+    docker logs --tail 80 autoops-kafka 2>&1 || true
+    return 1
+}
+
+ensure_kafka_topic() {
+    local description partition_count
+
+    docker exec autoops-kafka /opt/kafka/bin/kafka-topics.sh \
+        --bootstrap-server autoops-kafka:29092 \
+        --create --if-not-exists \
+        --topic "$KAFKA_TOPIC" \
+        --partitions "$KAFKA_PARTITIONS" \
+        --replication-factor 1
+
+    description="$(docker exec autoops-kafka /opt/kafka/bin/kafka-topics.sh \
+        --bootstrap-server autoops-kafka:29092 \
+        --describe --topic "$KAFKA_TOPIC")"
+    partition_count="$(printf '%s\n' "$description" | awk -F'PartitionCount: ' 'NF > 1 {split($2, fields, " "); print fields[1]; exit}')"
+
+    if [[ "$partition_count" =~ ^[0-9]+$ ]] && ((partition_count < KAFKA_PARTITIONS)); then
+        docker exec autoops-kafka /opt/kafka/bin/kafka-topics.sh \
+            --bootstrap-server autoops-kafka:29092 \
+            --alter --topic "$KAFKA_TOPIC" \
+            --partitions "$KAFKA_PARTITIONS"
+        partition_count="$KAFKA_PARTITIONS"
     fi
+
+    [ "$partition_count" = "$KAFKA_PARTITIONS" ] || fail "Kafka Topic $KAFKA_TOPIC 分区数异常: ${partition_count:-unknown}"
+    echo -e "${GREEN}✓ Kafka Topic $KAFKA_TOPIC 已就绪 (${KAFKA_PARTITIONS} partitions)${NC}"
+}
+
+render_api_config
+mkdir -p api/logs api/upload api/data mysql/data redis/data
+
+echo -e "${GREEN}========================================${NC}"
+echo -e "${GREEN}AutoOps 8 服务一键部署${NC}"
+echo -e "${GREEN}========================================${NC}"
+echo "API 镜像:       $AUTOOPS_API_IMAGE"
+echo "Web 镜像:       $AUTOOPS_WEB_IMAGE"
+echo "服务器地址:     $SERVER_HOST"
+echo "Web/API:        $WEB_PORT / $API_PORT"
+echo "MySQL/Redis:    $MYSQL_PORT / $REDIS_PORT"
+echo "VM/VL/Kafka:    $VICTORIAMETRICS_PORT / $VICTORIALOGS_PORT / $KAFKA_PORT"
+echo ""
+
+echo -e "${YELLOW}[1/6] 校验 Compose 和运行时配置...${NC}"
+"${COMPOSE[@]}" config >/dev/null
+echo -e "${GREEN}✓ 配置校验通过${NC}"
+
+echo -e "${YELLOW}[2/6] 拉取 8 个服务镜像...${NC}"
+if ! "${COMPOSE[@]}" pull; then
+    fail "镜像拉取失败，请确认已执行 docker login $REGISTRY 且版本 $VERSION 已推送"
+fi
+
+echo -e "${YELLOW}[3/6] 停止旧栈并启动基础组件...${NC}"
+"${COMPOSE[@]}" down --remove-orphans >/dev/null 2>&1 || true
+"${COMPOSE[@]}" up -d --remove-orphans \
+    autoops-mysql \
+    autoops-redis \
+    autoops-victoriametrics \
+    autoops-victorialogs \
+    autoops-kafka
+
+wait_for_container autoops-mysql
+wait_for_container autoops-redis
+wait_for_container autoops-victoriametrics
+wait_for_container autoops-victorialogs
+wait_for_kafka
+
+echo -e "${YELLOW}[4/6] 初始化 Kafka Topic...${NC}"
+ensure_kafka_topic
+
+echo -e "${YELLOW}[5/6] 启动 Vector、API 和 Web...${NC}"
+"${COMPOSE[@]}" up -d --remove-orphans \
+    autoops-vector-aggregator \
+    autoops-api \
+    autoops-web
+
+echo -e "${YELLOW}[6/6] 检查全部服务...${NC}"
+SERVICES=(
+    autoops-mysql
+    autoops-redis
+    autoops-victoriametrics
+    autoops-victorialogs
+    autoops-kafka
+    autoops-vector-aggregator
+    autoops-api
+    autoops-web
+)
+for service in "${SERVICES[@]}"; do
+    wait_for_container "$service"
 done
 
 echo ""
 echo -e "${GREEN}========================================${NC}"
-if [ "$ALL_HEALTHY" = true ]; then
-    echo -e "${GREEN}✓ 所有服务启动成功!${NC}"
-    echo -e "${GREEN}========================================${NC}"
-    echo ""
-    echo "访问地址:"
-    echo -e "  前端:       ${GREEN}http://$SERVER_IP:$WEB_PORT${NC}"
-    echo -e "  API:        ${GREEN}http://$SERVER_IP:$API_PORT${NC}"
-    echo -e "  Prometheus: ${GREEN}http://$SERVER_IP:$PROMETHEUS_PORT${NC}"
-    echo -e "  Pushgateway:${GREEN}http://$SERVER_IP:$PUSHGATEWAY_PORT${NC}"
-    echo ""
-    echo "数据库连接:"
-    echo -e "  MySQL:      ${GREEN}$SERVER_IP:$MYSQL_PORT${NC}"
-    echo -e "  Redis:      ${GREEN}$SERVER_IP:$REDIS_PORT${NC}"
-else
-    echo -e "${RED}✗ 部分服务启动失败,请检查日志${NC}"
-    echo -e "${RED}========================================${NC}"
-    echo ""
-    echo "查看日志:"
-    echo "  $DOCKER_COMPOSE_CMD logs -f"
-    exit 1
-fi
+echo -e "${GREEN}✓ AutoOps 8 个服务部署完成${NC}"
+echo -e "${GREEN}========================================${NC}"
+echo "Web:             http://$SERVER_HOST:$WEB_PORT"
+echo "API:             http://$SERVER_HOST:$API_PORT"
+echo "Swagger:         http://$SERVER_HOST:$API_PORT/swagger/index.html"
+echo "VictoriaMetrics: http://$SERVER_HOST:$VICTORIAMETRICS_PORT"
+echo "VictoriaLogs:    http://$SERVER_HOST:$VICTORIALOGS_PORT/select/vmui/"
+echo "Kafka:           $SERVER_HOST:$KAFKA_PORT"
+echo "MySQL:           $SERVER_HOST:$MYSQL_PORT"
+echo "Redis:           $SERVER_HOST:$REDIS_PORT"
+echo ""
+echo "查看状态: ${COMPOSE[*]} ps"
+echo "查看日志: ${COMPOSE[*]} logs -f <service>"

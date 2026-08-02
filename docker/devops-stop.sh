@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# DevOps 服务停止脚本
+# AutoOps 服务停止脚本
 # 用法: ./devops-stop.sh
 
 set -e
@@ -12,7 +12,7 @@ YELLOW='\033[1;33m'
 NC='\033[0m' # No Color
 
 echo -e "${GREEN}========================================${NC}"
-echo -e "${GREEN}DevOps 服务停止脚本${NC}"
+echo -e "${GREEN}AutoOps 服务停止脚本${NC}"
 echo -e "${GREEN}========================================${NC}"
 echo ""
 
@@ -52,5 +52,5 @@ echo -e "${GREEN}========================================${NC}"
 echo ""
 echo "提示:"
 echo "  - 数据已保存到本地卷中"
-echo "  - 重新启动服务: ./devops-start.sh <version> <ip> <web_port>"
+echo "  - 重新启动服务: ./devops-start.sh <version> <server_host> <web_port>"
 echo ""

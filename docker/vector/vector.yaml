@@ -1,0 +1,35 @@
+data_dir: /var/lib/aiops-vector-aggregator
+
+sources:
+  kafka_logs:
+    type: kafka
+    bootstrap_servers: "autoops-kafka:29092"
+    group_id: "aiops-victorialogs-writer"
+    topics:
+      - "aiops-logs"
+    auto_offset_reset: earliest
+    decoding:
+      codec: json
+
+sinks:
+  victorialogs:
+    type: http
+    inputs:
+      - kafka_logs
+    uri: "http://autoops-victorialogs:9428/insert/jsonline?_stream_fields=project_code,store_code,env,host_name,collect_task_code&_msg_field=_msg&_time_field=_time"
+    method: post
+    encoding:
+      codec: json
+    framing:
+      method: newline_delimited
+    compression: gzip
+    batch:
+      max_events: 1000
+      max_bytes: 1048576
+      timeout_secs: 1
+    request:
+      timeout_secs: 60
+    buffer:
+      type: disk
+      max_size: 2147483648
+      when_full: block

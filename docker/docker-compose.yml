@@ -1,191 +1,208 @@
 services:
-  # MySQL database service
-  mysql:
+  autoops-mysql:
     image: crpi-aj3vgoxp9kzh2jx4.cn-hangzhou.personal.cr.aliyuncs.com/zhangfan_k8s/mysql:8.0.33
-    container_name: devops-mysql
-    restart: always
+    container_name: autoops-mysql
+    restart: unless-stopped
     ports:
-      - "${MYSQL_PORT:-3306}:3306"
+      - "${MYSQL_PORT:-3307}:3306"
     environment:
       MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD:-devops@2025}
-      MYSQL_DATABASE: ${MYSQL_DATABASE:-devops}
+      MYSQL_DATABASE: ${MYSQL_DATABASE:-autoops}
       TZ: ${TZ:-Asia/Shanghai}
     volumes:
-      # Persistent data directory
       - ./mysql/data:/var/lib/mysql
-      # Initialization SQL scripts (executed in alphabetical order)
-      - ./mysql/devops001.sql:/docker-entrypoint-initdb.d/01-devops.sql
-      - ./mysql/init.sql:/docker-entrypoint-initdb.d/02-init.sql
-      # MySQL configuration
-      - ./mysql/conf.d:/etc/mysql/conf.d
+      - ./mysql/devops001.sql:/docker-entrypoint-initdb.d/01-devops.sql:ro
+      - ./mysql/conf.d:/etc/mysql/conf.d:ro
     command:
       - --default-authentication-plugin=caching_sha2_password
       - --character-set-server=utf8mb4
       - --collation-server=utf8mb4_unicode_ci
     networks:
-      - devops-network
+      - autoops-network
     healthcheck:
-      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-uroot", "-pdevops@2025"]
+      test: ["CMD-SHELL", "mysqladmin ping -h 127.0.0.1 -uroot -p\"$${MYSQL_ROOT_PASSWORD}\" --silent"]
       interval: 10s
       timeout: 5s
-      retries: 5
+      retries: 20
+      start_period: 30s
 
-  # Redis cache service
-  redis:
-    image: crpi-aj3vgoxp9kzh2jx4.cn-hangzhou.personal.cr.aliyuncs.com/zhangfan_k8s/redis:7.0-alpine
-    container_name: devops-redis
-    restart: always
+  autoops-redis:
+    image: crpi-aj3vgoxp9kzh2jx4.cn-hangzhou.personal.cr.aliyuncs.com/zhangfan_k8s/redis:6.2
+    container_name: autoops-redis
+    restart: unless-stopped
     ports:
       - "${REDIS_PORT:-6379}:6379"
-    command: redis-server --requirepass ${REDIS_PASSWORD:-zhangfan@123} --appendonly yes
     environment:
+      REDIS_PASSWORD: ${REDIS_PASSWORD:-devops@2025}
       TZ: ${TZ:-Asia/Shanghai}
-    volumes:
-      # Persistent data directory
-      - ./redis/data:/data
-      # Redis configuration
-      - ./redis/redis.conf:/usr/local/etc/redis/redis.conf
-    networks:
-      - devops-network
-    healthcheck:
-      test: ["CMD", "redis-cli", "-a", "zhangfan@123", "ping"]
-      interval: 10s
-      timeout: 3s
-      retries: 5
-
-  # Pushgateway metrics push service
-  pushgateway:
-    image: crpi-aj3vgoxp9kzh2jx4.cn-hangzhou.personal.cr.aliyuncs.com/zhangfan_k8s/pushgateway:v1.9.0
-    container_name: devops-pushgateway
-    restart: always
-    user: root
-    ports:
-      - "${PUSHGATEWAY_PORT:-9091}:9091"
-    environment:
-      TZ: ${TZ:-Asia/Shanghai}
-    volumes:
-      # Persistent data
-      - ./pushgateway/data:/pushgateway
-    networks:
-      - devops-network
-    healthcheck:
-      test: ["CMD", "wget", "--quiet", "--tries=1", "--spider", "http://localhost:9091/-/healthy"]
-      interval: 10s
-      timeout: 3s
-      retries: 5
-
-  # Prometheus monitoring service
-  prometheus:
-    image: crpi-aj3vgoxp9kzh2jx4.cn-hangzhou.personal.cr.aliyuncs.com/zhangfan_k8s/prometheus:v2.47.0
-    container_name: devops-prometheus
-    restart: always
-    user: root
-    ports:
-      - "${PROMETHEUS_PORT:-9090}:9090"
-    environment:
-      TZ: ${TZ:-Asia/Shanghai}
-    volumes:
-      # Prometheus configuration
-      - ./prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
-      # Persistent data directory
-      - ./prometheus/data:/prometheus
     command:
-      - '--config.file=/etc/prometheus/prometheus.yml'
-      - '--storage.tsdb.path=/prometheus'
-      - '--web.console.libraries=/usr/share/prometheus/console_libraries'
-      - '--web.console.templates=/usr/share/prometheus/consoles'
-      - '--storage.tsdb.retention.time=15d'
-      - '--web.enable-lifecycle'
+      - /bin/sh
+      - -ec
+      - exec redis-server --appendonly yes --requirepass "$${REDIS_PASSWORD}"
+    volumes:
+      - ./redis/data:/data
     networks:
-      - devops-network
-    depends_on:
-      pushgateway:
-        condition: service_healthy
+      - autoops-network
     healthcheck:
-      test: ["CMD", "wget", "--quiet", "--tries=1", "--spider", "http://localhost:9090/-/healthy"]
+      test: ["CMD-SHELL", "redis-cli -a \"$${REDIS_PASSWORD}\" ping | grep -q PONG"]
       interval: 10s
-      timeout: 3s
-      retries: 5
+      timeout: 5s
+      retries: 20
+      start_period: 10s
 
-  # DevOps API backend service
-  devops-api:
-    image: crpi-aj3vgoxp9kzh2jx4.cn-hangzhou.personal.cr.aliyuncs.com/zhangfan_k8s/deviops-api:v1.0
-    container_name: devops-api
-    restart: always
+  autoops-victoriametrics:
+    image: crpi-aj3vgoxp9kzh2jx4.cn-hangzhou.personal.cr.aliyuncs.com/zhangfan_k8s/victoria-metrics:latest
+    container_name: autoops-victoriametrics
+    restart: unless-stopped
+    ports:
+      - "${VICTORIAMETRICS_PORT:-8428}:8428"
+    command:
+      - -storageDataPath=/victoria-metrics-data
+      - -retentionPeriod=${VICTORIAMETRICS_RETENTION:-90d}
+      - -httpListenAddr=:8428
+    volumes:
+      - victoria-metrics-data:/victoria-metrics-data
+    networks:
+      - autoops-network
+    healthcheck:
+      test: ["CMD", "wget", "--quiet", "--tries=1", "--spider", "http://127.0.0.1:8428/health"]
+      interval: 10s
+      timeout: 5s
+      retries: 20
+      start_period: 10s
+
+  autoops-victorialogs:
+    image: crpi-aj3vgoxp9kzh2jx4.cn-hangzhou.personal.cr.aliyuncs.com/zhangfan_k8s/victoria-logs:latest
+    container_name: autoops-victorialogs
+    restart: unless-stopped
+    ports:
+      - "${VICTORIALOGS_PORT:-9428}:9428"
+    command:
+      - -storageDataPath=/victoria-logs-data
+      - -retentionPeriod=${VICTORIALOGS_RETENTION:-30d}
+      - -httpListenAddr=:9428
+    volumes:
+      - victoria-logs-data:/victoria-logs-data
+    networks:
+      - autoops-network
+    healthcheck:
+      test: ["CMD", "wget", "--quiet", "--tries=1", "--spider", "http://127.0.0.1:9428/health"]
+      interval: 10s
+      timeout: 5s
+      retries: 20
+      start_period: 10s
+
+  autoops-kafka:
+    image: crpi-aj3vgoxp9kzh2jx4.cn-hangzhou.personal.cr.aliyuncs.com/zhangfan_k8s/kafka:4.0.0
+    container_name: autoops-kafka
+    restart: unless-stopped
+    ports:
+      - "${KAFKA_PORT:-9092}:9092"
+    environment:
+      KAFKA_NODE_ID: 1
+      KAFKA_PROCESS_ROLES: broker,controller
+      KAFKA_LISTENERS: INTERNAL://:29092,EXTERNAL://:9092,CONTROLLER://:9093
+      KAFKA_ADVERTISED_LISTENERS: INTERNAL://autoops-kafka:29092,EXTERNAL://${KAFKA_ADVERTISED_HOST:-127.0.0.1}:${KAFKA_PORT:-9092}
+      KAFKA_CONTROLLER_LISTENER_NAMES: CONTROLLER
+      KAFKA_INTER_BROKER_LISTENER_NAME: INTERNAL
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: CONTROLLER:PLAINTEXT,INTERNAL:PLAINTEXT,EXTERNAL:PLAINTEXT
+      KAFKA_CONTROLLER_QUORUM_VOTERS: 1@autoops-kafka:9093
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+      KAFKA_TRANSACTION_STATE_LOG_REPLICATION_FACTOR: 1
+      KAFKA_TRANSACTION_STATE_LOG_MIN_ISR: 1
+      KAFKA_GROUP_INITIAL_REBALANCE_DELAY_MS: 0
+      KAFKA_NUM_PARTITIONS: 6
+      KAFKA_LOG_DIRS: /var/lib/kafka/data
+    volumes:
+      - kafka-data:/var/lib/kafka/data
+    networks:
+      - autoops-network
+
+  autoops-vector-aggregator:
+    image: crpi-aj3vgoxp9kzh2jx4.cn-hangzhou.personal.cr.aliyuncs.com/zhangfan_k8s/vector:latest-debian
+    container_name: autoops-vector-aggregator
+    restart: unless-stopped
+    security_opt:
+      - seccomp=unconfined
+    pids_limit: -1
+    ulimits:
+      nproc:
+        soft: 65535
+        hard: 65535
+    volumes:
+      - ./vector/vector.yaml:/etc/vector/vector.yaml:ro
+      - vector-aggregator-data:/var/lib/aiops-vector-aggregator
+    command:
+      - --config
+      - /etc/vector/vector.yaml
+    networks:
+      - autoops-network
+    depends_on:
+      - autoops-kafka
+      - autoops-victorialogs
+
+  autoops-api:
+    image: ${AUTOOPS_API_IMAGE:-crpi-aj3vgoxp9kzh2jx4.cn-hangzhou.personal.cr.aliyuncs.com/zhangfan_k8s/deviops-api:v1.0}
+    container_name: autoops-api
+    restart: unless-stopped
     ports:
       - "${API_PORT:-8000}:8000"
     environment:
       TZ: ${TZ:-Asia/Shanghai}
-      # 传递环境变量到容器(供应用读取)
-      IMAGE_HOST: ${IMAGE_HOST:-http://localhost:8080}
-      DB_HOST: ${DB_HOST:-mysql}
-      DB_PORT: ${DB_PORT:-3306}
-      DB_NAME: ${MYSQL_DATABASE:-devops}
-      DB_USER: ${DB_USER:-root}
-      DB_PASSWORD: ${MYSQL_ROOT_PASSWORD:-devops@2025}
-      REDIS_ADDR: ${REDIS_ADDR:-redis:6379}
-      REDIS_PASSWORD: ${REDIS_PASSWORD:-zhangfan@123}
+      AUTOOPS_DATA_DIR: /app/data
     volumes:
-      # Configuration file
-      - ./api/config.yaml:/app/config.yaml
-      # Logs directory
+      - ${API_CONFIG_FILE:-./api/config.yaml}:/app/config.yaml:ro
       - ./api/logs:/app/log
-      # Upload files directory
       - ./api/upload:/app/upload
-      # Excel template file
-      - ./api/upload/host.xlsx:/app/upload/xlsl/host.xlsx
-      # SSH keys (persistent across container restarts)
+      - ./api/data:/app/data
       - ./api/ssh_keys:/root/.ssh:ro
     networks:
-      - devops-network
+      - autoops-network
     depends_on:
-      mysql:
+      autoops-mysql:
         condition: service_healthy
-      redis:
+      autoops-redis:
         condition: service_healthy
-      prometheus:
-        condition: service_healthy
-    # 禁用健康检查,API 已正常启动
-    # healthcheck:
-    #   test: ["CMD", "wget", "--quiet", "--tries=1", "--spider", "http://localhost:8000/"]
-    #   interval: 15s
-    #   timeout: 5s
-    #   retries: 10
-    #   start_period: 30s
+      autoops-victoriametrics:
+        condition: service_started
+      autoops-victorialogs:
+        condition: service_started
+      autoops-kafka:
+        condition: service_started
+    healthcheck:
+      test: ["CMD", "curl", "--fail", "--silent", "http://127.0.0.1:8000/api/v1/captcha"]
+      interval: 10s
+      timeout: 5s
+      retries: 30
+      start_period: 60s
 
-  # DevOps Web frontend service
-  devops-web:
-    image: crpi-aj3vgoxp9kzh2jx4.cn-hangzhou.personal.cr.aliyuncs.com/zhangfan_k8s/deviops-web:v1.0
-    container_name: devops-web
-    restart: always
+  autoops-web:
+    image: ${AUTOOPS_WEB_IMAGE:-crpi-aj3vgoxp9kzh2jx4.cn-hangzhou.personal.cr.aliyuncs.com/zhangfan_k8s/deviops-web:v1.0}
+    container_name: autoops-web
+    restart: unless-stopped
     ports:
-      - "${WEB_PORT:-8080}:80"
+      - "${WEB_PORT:-8088}:80"
     environment:
       TZ: ${TZ:-Asia/Shanghai}
     volumes:
-      # Nginx configuration
-      - ./web/devops.conf:/etc/nginx/conf.d/default.conf
-      # Upload files static service (shared with API)
-      - ./api/upload:/home/devops/upload
+      - ./web/devops.conf:/etc/nginx/conf.d/default.conf:ro
     networks:
-      - devops-network
+      - autoops-network
     depends_on:
-      - devops-api
+      - autoops-api
     healthcheck:
-      test: ["CMD", "wget", "--quiet", "--tries=1", "--spider", "http://localhost:80"]
+      test: ["CMD", "wget", "--quiet", "--tries=1", "--spider", "http://127.0.0.1/"]
       interval: 10s
-      timeout: 3s
-      retries: 5
+      timeout: 5s
+      retries: 20
+      start_period: 10s
 
 networks:
-  devops-network:
+  autoops-network:
     driver: bridge
-    ipam:
-      config:
-        - subnet: 172.20.0.0/16
 
 volumes:
-  mysql-data:
-  redis-data:
-  prometheus-data:
-  pushgateway-data:
+  kafka-data:
+  vector-aggregator-data:
+  victoria-logs-data:
+  victoria-metrics-data:
