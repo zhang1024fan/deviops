@@ -203,6 +203,7 @@ networks:
 
 volumes:
   autoops-data:
+    name: autoops-data
   kafka-data:
   vector-aggregator-data:
   victoria-logs-data:
