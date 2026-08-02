@@ -149,12 +149,12 @@ services:
       - "${API_PORT:-8000}:8000"
     environment:
       TZ: ${TZ:-Asia/Shanghai}
-      AUTOOPS_DATA_DIR: /app/data
+      AUTOOPS_DATA_DIR: /var/lib/autoops
     volumes:
       - ${API_CONFIG_FILE:-./api/config.yaml}:/app/config.yaml:ro
       - ./api/logs:/app/log
       - ./api/upload:/app/upload
-      - ./api/data:/app/data
+      - autoops-data:/var/lib/autoops
       - ./api/ssh_keys:/root/.ssh:ro
     networks:
       - autoops-network
@@ -202,6 +202,7 @@ networks:
     driver: bridge
 
 volumes:
+  autoops-data:
   kafka-data:
   vector-aggregator-data:
   victoria-logs-data:

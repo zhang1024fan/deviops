@@ -336,7 +336,7 @@ export function deleteCategory(id) {
   return request({
     url: `/api/v1/knowledge/category/${id}`,
     method: 'delete'
-  })
+  })knowledge
 }
 
 /**

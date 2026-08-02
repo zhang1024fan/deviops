@@ -218,6 +218,36 @@ render_api_config() {
     mv "$temp_file" "$RUNTIME_CONFIG"
 }
 
+prepare_persistent_paths() {
+    mkdir -p api/logs api/upload api/ssh_keys mysql/data redis/data
+    chmod 700 api/ssh_keys
+    find api/ssh_keys -type f -name '*.pub' -exec chmod 644 {} +
+    find api/ssh_keys -type f ! -name '*.pub' -exec chmod 600 {} +
+}
+
+migrate_legacy_autoops_data() {
+    local legacy_data_dir="$SCRIPT_DIR/api/data"
+
+    if [ ! -f "$legacy_data_dir/instance.id" ] && [ ! -f "$legacy_data_dir/license.key" ]; then
+        return 0
+    fi
+
+    echo -e "${YELLOW}检测到旧 AutoOps 数据，迁移到 autoops-data 数据卷...${NC}"
+    "${COMPOSE[@]}" run --rm --no-deps \
+        --entrypoint /bin/sh \
+        -v "$legacy_data_dir:/legacy-autoops-data:ro" \
+        autoops-api -ec '
+            mkdir -p /var/lib/autoops
+            for name in instance.id license.key; do
+                if [ -f "/legacy-autoops-data/$name" ] && [ ! -e "/var/lib/autoops/$name" ]; then
+                    cp "/legacy-autoops-data/$name" "/var/lib/autoops/$name"
+                    chmod 600 "/var/lib/autoops/$name"
+                fi
+            done
+        '
+    echo -e "${GREEN}✓ 旧机器码和许可证迁移完成${NC}"
+}
+
 wait_for_container() {
     local container="$1"
     local deadline=$((SECONDS + WAIT_TIMEOUT))
@@ -297,7 +327,7 @@ ensure_kafka_topic() {
 }
 
 render_api_config
-mkdir -p api/logs api/upload api/data mysql/data redis/data
+prepare_persistent_paths
 
 echo -e "${GREEN}========================================${NC}"
 echo -e "${GREEN}AutoOps 8 服务一键部署${NC}"
@@ -321,6 +351,7 @@ fi
 
 echo -e "${YELLOW}[3/6] 停止旧栈并启动基础组件...${NC}"
 "${COMPOSE[@]}" down --remove-orphans >/dev/null 2>&1 || true
+migrate_legacy_autoops_data
 "${COMPOSE[@]}" up -d --remove-orphans \
     autoops-mysql \
     autoops-redis \
