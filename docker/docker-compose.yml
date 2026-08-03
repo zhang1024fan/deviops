@@ -185,7 +185,7 @@ services:
     environment:
       TZ: ${TZ:-Asia/Shanghai}
     volumes:
-      - ./web/devops.conf:/etc/nginx/conf.d/default.conf:ro
+      - ./web/devops.conf:/etc/nginx/conf.d/default.conf
     networks:
       - autoops-network
     depends_on:
