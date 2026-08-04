@@ -166,10 +166,25 @@ MYSQL_DATABASE_VALUE="${MYSQL_DATABASE:-$(get_env_value MYSQL_DATABASE)}"
 MYSQL_DATABASE_VALUE="${MYSQL_DATABASE_VALUE:-autoops}"
 REDIS_PASSWORD_VALUE="${REDIS_PASSWORD:-$(get_env_value REDIS_PASSWORD)}"
 REDIS_PASSWORD_VALUE="${REDIS_PASSWORD_VALUE:-devops@2025}"
+MYSQL_BOOTSTRAP_CHECK_STORED="$(get_env_value AUTOOPS_MYSQL_BOOTSTRAP_CHECK)"
+
+if [ -n "${AUTOOPS_MYSQL_BOOTSTRAP_CHECK:-}" ]; then
+    MYSQL_BOOTSTRAP_CHECK_VALUE="$AUTOOPS_MYSQL_BOOTSTRAP_CHECK"
+elif [ ! -d "$SCRIPT_DIR/mysql/data/mysql" ]; then
+    MYSQL_BOOTSTRAP_CHECK_VALUE="required"
+elif [ "$MYSQL_BOOTSTRAP_CHECK_STORED" = "required" ]; then
+    # Keep strict verification after an interrupted first initialization.
+    MYSQL_BOOTSTRAP_CHECK_VALUE="required"
+else
+    # Existing installations predate the completion marker and must remain usable.
+    MYSQL_BOOTSTRAP_CHECK_VALUE="legacy"
+fi
 
 [[ "$MYSQL_DATABASE_VALUE" =~ ^[A-Za-z0-9_]+$ ]] || fail "MYSQL_DATABASE 只能包含字母、数字和下划线"
 [[ "$MYSQL_ROOT_PASSWORD_VALUE" != *$'\n'* ]] || fail "MYSQL_ROOT_PASSWORD 不能包含换行"
 [[ "$REDIS_PASSWORD_VALUE" != *$'\n'* ]] || fail "REDIS_PASSWORD 不能包含换行"
+[[ "$MYSQL_BOOTSTRAP_CHECK_VALUE" = "required" || "$MYSQL_BOOTSTRAP_CHECK_VALUE" = "legacy" ]] || \
+    fail "AUTOOPS_MYSQL_BOOTSTRAP_CHECK 只能是 required 或 legacy"
 
 AUTOOPS_API_IMAGE="${API_REPOSITORY}:${VERSION}"
 AUTOOPS_WEB_IMAGE="${WEB_REPOSITORY}:${VERSION}"
@@ -189,6 +204,7 @@ set_env_value KAFKA_ADVERTISED_HOST "$SERVER_HOST"
 set_env_value MYSQL_ROOT_PASSWORD "$MYSQL_ROOT_PASSWORD_VALUE"
 set_env_value MYSQL_DATABASE "$MYSQL_DATABASE_VALUE"
 set_env_value REDIS_PASSWORD "$REDIS_PASSWORD_VALUE"
+set_env_value AUTOOPS_MYSQL_BOOTSTRAP_CHECK "$MYSQL_BOOTSTRAP_CHECK_VALUE"
 
 render_api_config() {
     local temp_file
@@ -279,6 +295,12 @@ wait_for_container() {
         fi
         if [ "$status" = "exited" ] || [ "$status" = "dead" ] || [ "$health" = "unhealthy" ]; then
             echo -e "${RED}✗ $container 启动失败 (status=$status, health=$health)${NC}"
+            if [ "$health" != "none" ]; then
+                echo -e "${YELLOW}最近的健康检查结果:${NC}"
+                docker_cli inspect --format \
+                    '{{range .State.Health.Log}}{{.End}} exit={{.ExitCode}}: {{.Output}}{{println}}{{end}}' \
+                    "$container" 2>&1 || true
+            fi
             docker_cli logs --tail 80 "$container" 2>&1 || true
             return 1
         fi
@@ -286,6 +308,13 @@ wait_for_container() {
     done
 
     echo -e "${RED}✗ 等待 $container 超时${NC}"
+    health="$(docker_cli inspect --format '{{if .State.Health}}{{.State.Health.Status}}{{else}}none{{end}}' "$container" 2>/dev/null || echo none)"
+    if [ "$health" != "none" ]; then
+        echo -e "${YELLOW}最近的健康检查结果:${NC}"
+        docker_cli inspect --format \
+            '{{range .State.Health.Log}}{{.End}} exit={{.ExitCode}}: {{.Output}}{{println}}{{end}}' \
+            "$container" 2>&1 || true
+    fi
     docker_cli logs --tail 80 "$container" 2>&1 || true
     return 1
 }
@@ -348,6 +377,7 @@ echo "Web 镜像:       $AUTOOPS_WEB_IMAGE"
 echo "服务器地址:     $SERVER_HOST"
 echo "Web/API:        $WEB_PORT / $API_PORT"
 echo "MySQL/Redis:    $MYSQL_PORT / $REDIS_PORT"
+echo "MySQL 初始化校验: $MYSQL_BOOTSTRAP_CHECK_VALUE"
 echo "VM/VL/Kafka:    $VICTORIAMETRICS_PORT / $VICTORIALOGS_PORT / $KAFKA_PORT"
 echo ""
 

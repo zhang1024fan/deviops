@@ -4436,3 +4436,11 @@ BEGIN;
 COMMIT;
 
 SET FOREIGN_KEY_CHECKS = 1;
+
+-- Must remain the final statement: the MySQL healthcheck uses this row to
+-- distinguish a completed bootstrap from a partially imported database.
+INSERT INTO `system_migration_meta` (`meta_key`, `meta_value`, `updated_at`)
+VALUES ('autoops_docker_bootstrap_v1', 'complete', CURRENT_TIMESTAMP)
+ON DUPLICATE KEY UPDATE
+  `meta_value` = VALUES(`meta_value`),
+  `updated_at` = VALUES(`updated_at`);

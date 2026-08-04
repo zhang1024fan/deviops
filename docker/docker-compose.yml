@@ -8,6 +8,7 @@ services:
     environment:
       MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD:-devops@2025}
       MYSQL_DATABASE: ${MYSQL_DATABASE:-autoops}
+      AUTOOPS_MYSQL_BOOTSTRAP_CHECK: ${AUTOOPS_MYSQL_BOOTSTRAP_CHECK:-required}
       TZ: ${TZ:-Asia/Shanghai}
     volumes:
       - ./mysql/data:/var/lib/mysql
@@ -20,7 +21,7 @@ services:
     networks:
       - autoops-network
     healthcheck:
-      test: ["CMD-SHELL", "mysqladmin ping -h 127.0.0.1 -uroot -p\"$${MYSQL_ROOT_PASSWORD}\" --silent"]
+      test: ["CMD-SHELL", "mysqladmin ping -h 127.0.0.1 -uroot -p\"$${MYSQL_ROOT_PASSWORD}\" --silent && { [ \"$${AUTOOPS_MYSQL_BOOTSTRAP_CHECK}\" = legacy ] || mysql -h 127.0.0.1 -uroot -p\"$${MYSQL_ROOT_PASSWORD}\" -D \"$${MYSQL_DATABASE}\" -Nse \"SELECT meta_value FROM system_migration_meta WHERE meta_key='autoops_docker_bootstrap_v1'\" 2>/dev/null | grep -qx complete; }"]
       interval: 10s
       timeout: 5s
       retries: 20
@@ -191,7 +192,7 @@ services:
     depends_on:
       - autoops-api
     healthcheck:
-      test: ["CMD", "wget", "--quiet", "--tries=1", "--spider", "http://127.0.0.1/"]
+      test: ["CMD-SHELL", "nginx -t -q && test -s /usr/share/nginx/html/index.html"]
       interval: 10s
       timeout: 5s
       retries: 20
