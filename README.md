@@ -187,6 +187,20 @@ Web 前端: http://localhost:8080
 默认账号: admin / 123456
 ```
 
+```bash
+# arm64 安装镜像，-arm64 标识的镜像下载到本地后把镜像-arm64  去掉重新运行一键部署脚本即可。
+# docker tag   xxxx:镜像版本-arm64    xxxx:镜像版本
+docker  push    crpi-aj3vgoxp9kzh2jx4.cn-hangzhou.personal.cr.aliyuncs.com/zhangfan_k8s/vector:latest-debian-arm64
+docker  push    crpi-aj3vgoxp9kzh2jx4.cn-hangzhou.personal.cr.aliyuncs.com/zhangfan_k8s/redis:6.2-arm64 
+docker  push    crpi-aj3vgoxp9kzh2jx4.cn-hangzhou.personal.cr.aliyuncs.com/zhangfan_k8s/victoria-metrics:latest-arm64
+docker  push    crpi-aj3vgoxp9kzh2jx4.cn-hangzhou.personal.cr.aliyuncs.com/zhangfan_k8s/victoria-logs:latest-arm64  
+docker  push    crpi-aj3vgoxp9kzh2jx4.cn-hangzhou.personal.cr.aliyuncs.com/zhangfan_k8s/mysql:8.0.33-arm64 
+docker  push    crpi-aj3vgoxp9kzh2jx4.cn-hangzhou.personal.cr.aliyuncs.com/zhangfan_k8s/kafka:4.0.0-arm64     
+docker  push    crpi-aj3vgoxp9kzh2jx4.cn-hangzhou.personal.cr.aliyuncs.com/zhangfan_k8s/deviops-api:v5.0-arm64
+docker  push    crpi-aj3vgoxp9kzh2jx4.cn-hangzhou.personal.cr.aliyuncs.com/zhangfan_k8s/devops-web:v5.0-arm64
+```
+
+
 
 ## 感谢以下同学对本项目提供的打赏
 
