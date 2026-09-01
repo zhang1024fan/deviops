@@ -105,6 +105,20 @@ export default {
         // 确保数据是数组格式
         if (Array.isArray(menuData)) {
           this.leftMenuList = menuData;
+
+          // 容器管理
+          const k8sMenu = this.leftMenuList.find(item => item.menuName === '容器管理')
+          if (k8sMenu && k8sMenu.menuSvoList) {
+            const crdExists = k8sMenu.menuSvoList.some(sub => sub.url === 'k8s/crd')
+            if (!crdExists) {
+              k8sMenu.menuSvoList.push({
+                id: 99999,
+                menuName: 'CRD管理',
+                url: 'k8s/crd',
+                icon: 'Setting'
+              })
+            }
+          }
           
           // 手动添加配置管理菜单到任务中心
           const taskMenu = this.leftMenuList.find(item => item.menuName === '任务中心')

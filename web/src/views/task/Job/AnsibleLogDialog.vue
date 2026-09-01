@@ -87,10 +87,11 @@
 </template>
 
 <script setup>
-import { ref, reactive, computed, watch, nextTick, onUnmounted } from 'vue'
+import { ref, watch, nextTick, onUnmounted } from 'vue'
 import { ElMessage } from 'element-plus'
 import { Loading, WarningFilled, Document } from '@element-plus/icons-vue'
 import { GetAnsibleTaskLog, GetAnsibleTaskLogByHistory } from '@/api/task'
+import { GetAnsibleTaskLogStream } from '@/api/task'
 
 // Props
 const props = defineProps({
@@ -129,10 +130,7 @@ const historyLogs = ref([])
 const realtimeLogs = ref([])
 const lastWebSocketLineNum = ref(0)
 
-let websocket = null
-let reconnectTimer = null
-let reconnectAttempts = 0
-const maxReconnectAttempts = 5
+let sseStream = null
 
 // HTTP轮询相关变量
 let pollingTimer = null
@@ -174,92 +172,109 @@ const show = (info) => {
   if (props.historyMode && props.historyId) {
     refreshLog()
   } else {
-    // 默认模式：先尝试获取历史日志，然后连接WebSocket
+    // 默认模式：先获取历史日志，然后连接实时流
     refreshLog()
-    connectWebSocket()
+    connectSSE()
   }
 }
 
-// WebSocket连接
-const connectWebSocket = () => {
+// 实时日志连接（直接调用GetAnsibleTaskLogStream）
+const connectSSE = () => {
   if (!logInfo.value) return
-  
+
   const { taskId, workId } = logInfo.value
-  const wsUrl = `ws://localhost:8080/api/v1/ws/task/ansible/${taskId}/log/${workId}`
-  
-  console.log('🔌 连接WebSocket:', wsUrl)
-  console.log('📊 WebSocket连接参数:', { taskId, workId, wsUrl })
-  
-  try {
-    websocket = new WebSocket(wsUrl)
-    
-    websocket.onopen = () => {
-      console.log('✅ WebSocket连接成功')
+  console.log('🔌 连接实时流:', { taskId, workId })
+
+  wsConnected.value = true
+  loading.value = false
+
+  // 直接调用 task.js 中的 GetAnsibleTaskLogStream，它已集成 SSE 流处理
+  sseStream = GetAnsibleTaskLogStream(taskId, workId, {
+    onOpen: () => {
+      console.log('✅ 实时流连接成功')
       wsConnected.value = true
-      reconnectAttempts = 0
-      loading.value = false
-    }
-    
-    websocket.onmessage = (event) => {
-      try {
-        const message = JSON.parse(event.data)
-        handleWebSocketMessage(message)
-      } catch (error) {
-        console.error('解析WebSocket消息失败:', error)
-      }
-    }
-    
-    websocket.onclose = (event) => {
-      console.log('🔌 WebSocket连接关闭:', event.code, event.reason)
+    },
+    onMessage: (line) => {
+      if (!line) return
+      handleSSELine(line)
+    },
+    onError: (error) => {
+      console.error('❌ 实时流错误:', error)
       wsConnected.value = false
-      
-      // 如果不是手动关闭且对话框仍然打开，尝试重连
-      if (event.code !== 1000 && dialogVisible.value && reconnectAttempts < maxReconnectAttempts) {
-        reconnectWebSocket()
-      }
-    }
-    
-    websocket.onerror = (error) => {
-      console.error('❌ WebSocket连接错误:', error)
+      ElMessage.error('实时日志连接失败')
+    },
+    onClose: () => {
+      console.log('🔌 实时流连接关闭')
       wsConnected.value = false
-      
-      // WebSocket连接失败时，自动切换到HTTP轮询模式
-      console.log('🔄 WebSocket连接失败，切换到HTTP轮询模式')
-      startHttpPolling()
     }
-    
-  } catch (error) {
-    console.error('❌ 创建WebSocket连接失败:', error)
-    isError.value = true
-    errorMessage.value = '无法创建WebSocket连接'
-  }
+  })
 }
 
-// 处理WebSocket消息
-const handleWebSocketMessage = (message) => {
-  console.log('📨 收到WebSocket消息:', message)
+// 处理SSE单行数据
+const handleSSELine = (line) => {
+  let parsed = line
+  if (typeof line === 'string') {
+    try {
+      parsed = JSON.parse(line)
+    } catch {
+      const splitLines = line.split(/\r?\n/).filter(item => item.trim())
+      splitLines.forEach((item) => {
+        appendRealtimeLine(item, Date.now())
+      })
+      return
+    }
+  }
 
-  switch (message.type) {
+  handleWebSocketMessage(parsed)
+}
+
+const appendRealtimeLine = (content, timestamp = Date.now(), lineNum = null) => {
+  realtimeLogs.value.push({
+    line_num: lineNum || (historyLogs.value.length + realtimeLogs.value.length + 1),
+    content,
+    timestamp,
+    source: 'sse'
+  })
+
+  mergeLogs()
+
+  nextTick(() => {
+    scrollToBottom()
+  })
+}
+
+// 处理SSE消息
+const handleWebSocketMessage = (message) => {
+  let parsed = message
+  if (typeof message === 'string') {
+    try {
+      parsed = JSON.parse(message)
+    } catch {
+      parsed = {
+        type: 'log',
+        content: message,
+        line_num: lastWebSocketLineNum.value + 1,
+        timestamp: Date.now()
+      }
+    }
+  }
+
+  console.log('📨 收到实时消息:', parsed)
+
+  switch (parsed.type) {
     case 'log':
       // 检查是否是新的日志行（避免重复）
-      if (message.line_num > lastWebSocketLineNum.value) {
-        lastWebSocketLineNum.value = message.line_num
+      if ((parsed.line_num || 0) >= lastWebSocketLineNum.value) {
+        lastWebSocketLineNum.value = parsed.line_num || (lastWebSocketLineNum.value + 1)
 
-        // 添加到实时日志
-        realtimeLogs.value.push({
-          line_num: message.line_num,
-          content: message.content,
-          timestamp: message.timestamp,
-          source: 'websocket'
-        })
+        const content = parsed.content || ''
+        const lines = content.split(/\r?\n/).filter(item => item.trim())
 
-        // 合并日志并更新显示
-        mergeLogs()
-
-        // 自动滚动到底部
-        nextTick(() => {
-          scrollToBottom()
-        })
+        if (lines.length > 1) {
+          lines.forEach((item) => appendRealtimeLine(item, parsed.timestamp, parsed.line_num))
+        } else {
+          appendRealtimeLine(content, parsed.timestamp, parsed.line_num)
+        }
       }
       break
 
@@ -267,60 +282,47 @@ const handleWebSocketMessage = (message) => {
       // 任务完成
       isCompleted.value = true
       wsConnected.value = false
-      console.log(`✅ 任务完成，共${message.line_num}行日志`)
+      console.log(`✅ 任务完成，共${parsed.line_num || logs.value.length}行日志`)
       ElMessage.success(`任务完成，共${logs.value.length}行日志`)
 
-      // 关闭WebSocket连接
-      if (websocket) {
-        websocket.close(1000, 'Task completed')
+      // 关闭SSE连接
+      if (sseStream) {
+        sseStream.close()
+        sseStream = null
       }
       break
 
     case 'error':
       // 处理错误
       isError.value = true
-      errorMessage.value = message.content || '任务执行错误'
+      errorMessage.value = parsed.content || '任务执行错误'
       ElMessage.error(errorMessage.value)
       break
 
     default:
-      console.warn('未知的WebSocket消息类型:', message.type)
+      // 默认按日志行处理，兼容服务端未带type字段的场景
+      {
+        const content = parsed.content || String(message)
+        const lines = content.split(/\r?\n/).filter(item => item.trim())
+        if (lines.length > 1) {
+          lines.forEach((item) => appendRealtimeLine(item, Date.now()))
+        } else {
+          appendRealtimeLine(content, Date.now())
+        }
+      }
   }
 }
 
-// WebSocket重连
-const reconnectWebSocket = () => {
-  if (reconnectAttempts >= maxReconnectAttempts) {
-    console.log('❌ WebSocket重连次数超限，停止重连')
-    return
-  }
-  
-  reconnectAttempts++
-  const delay = Math.min(1000 * Math.pow(2, reconnectAttempts), 10000) // 指数退避，最大10秒
-  
-  console.log(`🔄 WebSocket重连 (${reconnectAttempts}/${maxReconnectAttempts})，${delay/1000}秒后重试`)
-  
-  reconnectTimer = setTimeout(() => {
-    if (dialogVisible.value) {
-      connectWebSocket()
-    }
-  }, delay)
-}
 
-// 断开WebSocket连接
+
+// 断开实时流连接
 const disconnectWebSocket = () => {
-  if (reconnectTimer) {
-    clearTimeout(reconnectTimer)
-    reconnectTimer = null
-  }
-  
-  if (websocket) {
-    websocket.close(1000, 'Dialog closed')
-    websocket = null
+  if (sseStream) {
+    sseStream.close()
+    sseStream = null
   }
   
   wsConnected.value = false
-  reconnectAttempts = 0
   
   // 同时停止HTTP轮询
   stopHttpPolling()
@@ -331,22 +333,22 @@ const startHttpPolling = () => {
   console.log('🔄 启动HTTP轮询模式')
   
   // 先停止已有的轮询
-  stopHttpPolling()
+  // stopHttpPolling()
   
-  // 立即获取一次日志
-  refreshLog()
+  // // 立即获取一次日志
+  // refreshLog()
   
-  // 开始定时轮询
-  pollingTimer = setInterval(async () => {
-    try {
-      await refreshLog()
-      console.log('📥 HTTP轮询获取日志成功')
-    } catch (error) {
-      console.error('❌ HTTP轮询获取日志失败:', error)
-    }
-  }, pollingInterval)
+  // // 开始定时轮询
+  // pollingTimer = setInterval(async () => {
+  //   try {
+  //     await refreshLog()
+  //     console.log('📥 HTTP轮询获取日志成功')
+  //   } catch (error) {
+  //     console.error('❌ HTTP轮询获取日志失败:', error)
+  //   }
+  // }, pollingInterval)
   
-  console.log(`✅ HTTP轮询已启动，间隔${pollingInterval/1000}秒`)
+  // console.log(`✅ HTTP轮询已启动，间隔${pollingInterval/1000}秒`)
 }
 
 // 停止HTTP轮询
@@ -418,12 +420,15 @@ const refreshLog = async () => {
         return
       }
     } else {
-      response = await GetAnsibleTaskLog(logInfo.value.taskId, logInfo.value.workId)
+      // 实时模式由connectSSE负责，不在refresh里await流接口
+      return
     }
 
-    if (response && response.data) {
+    const responsePayload = typeof response === 'string' ? response : response?.data
+
+    if (responsePayload) {
       // 解析历史日志
-      const parsedHistoryLogs = parseHistoryLogs(response.data)
+      const parsedHistoryLogs = parseHistoryLogs(responsePayload)
       historyLogs.value = parsedHistoryLogs
 
       // 合并历史日志和实时日志
@@ -491,43 +496,16 @@ const parseHistoryLogs = (logData) => {
 
 // 合并历史日志和实时日志
 const mergeLogs = () => {
-  // 创建一个映射，用于存储每一行的内容（以内容为key避免重复）
-  const logMap = new Map()
+  // 保留重复日志，按历史 + 实时的自然顺序拼接
+  const mergedLogs = [...historyLogs.value, ...realtimeLogs.value]
 
-  // 首先添加历史日志
-  historyLogs.value.forEach(log => {
-    const key = log.content.trim()
-    if (key && !logMap.has(key)) {
-      logMap.set(key, {
-        ...log,
-        finalLineNum: log.line_num
-      })
-    }
-  })
-
-  // 然后添加实时日志（跳过已存在的内容）
-  realtimeLogs.value.forEach(log => {
-    const key = log.content.trim()
-    if (key && !logMap.has(key)) {
-      // 实时日志的行号应该继续历史日志的行号
-      const maxHistoryLineNum = historyLogs.value.length
-      logMap.set(key, {
-        ...log,
-        finalLineNum: maxHistoryLineNum + realtimeLogs.value.indexOf(log) + 1
-      })
-    }
-  })
-
-  // 转换为数组并按行号排序
-  const mergedLogs = Array.from(logMap.values()).sort((a, b) => a.finalLineNum - b.finalLineNum)
-
-  // 重新分配连续的行号
+  // 统一重建连续行号，保证界面稳定展示
   logs.value = mergedLogs.map((log, index) => ({
     ...log,
     line_num: index + 1
   }))
 
-  console.log(`🔄 日志合并完成: 历史${historyLogs.value.length}行 + 实时${realtimeLogs.value.length}行 = 最终${logs.value.length}行`)
+  // console.log(`🔄 日志合并完成: 历史${historyLogs.value.length}行 + 实时${realtimeLogs.value.length}行 = 最终${logs.value.length}行`)
 }
 
 // 格式化日志内容

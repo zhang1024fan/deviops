@@ -1094,5 +1094,79 @@ export default {
             method: 'put',
             data: { yaml: yamlContent }
         })
+    },
+
+    // ==========================================
+    // K8s CRD (自定义资源) 管理
+    // ==========================================
+
+    // 获取 CRD API Group 列表
+    getCRDGroups(clusterId) {
+        return request({
+            url: `/api/v1/k8s/cluster/${clusterId}/crds/groups`,
+            method: 'get'
+        })
+    },
+
+    // 获取系统中全部的CRD列表
+    getCRDList(clusterId, params) {
+        return request({
+            url: `/api/v1/k8s/cluster/${clusterId}/crds`,
+            method: 'get',
+            params: params
+        })
+    },
+
+    // 获取某个CRD下的自定义资源(CR)列表
+    getCustomResourceList(clusterId, namespaceName, crdName, params) {
+        return request({
+            // 假设crdName格式为 "prometheusrules.monitoring.coreos.com"
+            url: `/api/v1/k8s/cluster/${clusterId}/namespaces/${namespaceName}/crds/${crdName}/resources`,
+            method: 'get',
+            params: params
+        })
+    },
+
+    // 获取指定的自定义资源详情
+    getCustomResourceDetail(clusterId, namespaceName, crdName, crName) {
+        return request({
+            url: `/api/v1/k8s/cluster/${clusterId}/namespaces/${namespaceName}/crds/${crdName}/resources/${crName}`,
+            method: 'get'
+        })
+    },
+
+    // 创建自定义资源
+    createCustomResource(clusterId, namespaceName, crdName, data) {
+        return request({
+            url: `/api/v1/k8s/cluster/${clusterId}/namespaces/${namespaceName}/crds/${crdName}/resources`,
+            method: 'post',
+            data: data
+        })
+    },
+
+    // 删除自定义资源
+    deleteCustomResource(clusterId, namespaceName, crdName, crName) {
+        return request({
+            url: `/api/v1/k8s/cluster/${clusterId}/namespaces/${namespaceName}/crds/${crdName}/resources/${crName}`,
+            method: 'delete'
+        })
+    },
+
+    // 获取自定义资源的 YAML
+    getCustomResourceYaml(clusterId, namespaceName, crdName, crName) {
+        return request({
+            url: `/api/v1/k8s/cluster/${clusterId}/namespaces/${namespaceName}/crds/${crdName}/resources/${crName}/yaml`,
+            method: 'get'
+        })
+    },
+
+    // 更新自定义资源的 YAML
+    updateCustomResourceYaml(clusterId, namespaceName, crdName, crName, yamlContent) {
+        return request({
+            url: `/api/v1/k8s/cluster/${clusterId}/namespaces/${namespaceName}/crds/${crdName}/resources/${crName}/yaml`,
+            method: 'put',
+            data: { yaml: yamlContent }
+        })
     }
+
 }

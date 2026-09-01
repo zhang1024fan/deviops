@@ -27,69 +27,98 @@ import (
 	"gorm.io/gorm"
 )
 
-// RealTimeLogWriter 实时日志写入器，支持立即刷新到磁盘
-type RealTimeLogWriter struct {
-	file *os.File
-}
-
-// Write 实现io.Writer接口，每次写入后立即刷新到磁盘
-func (w *RealTimeLogWriter) Write(p []byte) (n int, err error) {
-	n, err = w.file.Write(p)
-	if err != nil {
-		return n, err
-	}
-	// 立即刷新到磁盘，确保SSE能实时读取
-	w.file.Sync()
-	return n, nil
-}
-
-// WriteWithTime 带时间戳的写入
-func (w *RealTimeLogWriter) WriteWithTime(content string) error {
-	_, err := w.Write([]byte(content))
-	return err
-}
-
 // ITaskAnsibleService 定义Ansible任务服务接口
 type ITaskAnsibleService interface {
-	CreateTask(c *gin.Context, req *CreateTaskRequest)     // 创建任务
-	CreateK8sTask(c *gin.Context, req *CreateK8sTaskRequest) // 创建K8s任务
-	List(c *gin.Context, page, size int)                   // 获取任务列表
-	StartJob(c *gin.Context, taskID uint)                  // 启动任务
-	StopJob(c *gin.Context, taskID, workID uint)           // 停止任务
-	GetJobLog(c *gin.Context, taskID, workID uint)         // 实时获取任务日志(SSE)
-	GetJobStatus(c *gin.Context, taskID, workID uint)      // 获取任务状态
-	GetTaskDetail(c *gin.Context, taskID uint)             // 获取任务详情
-	GetWorkByID(taskID, workID uint) (*model.TaskAnsibleWork, error) // 获取子任务详情
-	DeleteTask(c *gin.Context, taskID uint)                // 删除任务
-	GetTasksByName(c *gin.Context, name string)            // 根据名称模糊查询任务
-	GetTasksByType(c *gin.Context, taskType int)           // 根据类型查询任务
+	CreateTask(c *gin.Context, req *CreateTaskRequest)                                   // 创建任务
+	CreateK8sTask(c *gin.Context, req *CreateK8sTaskRequest)                             // 创建K8s任务
+	List(c *gin.Context, page, size int)                                                 // 获取任务列表
+	StartJob(c *gin.Context, taskID uint)                                                // 启动任务
+	StopJob(c *gin.Context, taskID, workID uint)                                         // 停止任务
+	GetJobLog(c *gin.Context, taskID, workID uint)                                       // 实时获取任务日志(SSE)
+	GetJobStatus(c *gin.Context, taskID, workID uint)                                    // 获取任务状态
+	GetTaskDetail(c *gin.Context, taskID uint)                                           // 获取任务详情
+	GetWorkByID(taskID, workID uint) (*model.TaskAnsibleWork, error)                     // 获取子任务详情
+	DeleteTask(c *gin.Context, taskID uint)                                              // 删除任务
+	GetTasksByName(c *gin.Context, name string)                                          // 根据名称模糊查询任务
+	GetTasksByType(c *gin.Context, taskType int)                                         // 根据类型查询任务
+	GetTasks(c *gin.Context, name string, taskType int, viewName string, page, size int) // 综合查询任务列表
+	UpdateTask(c *gin.Context, taskID uint, req *UpdateTaskRequest)                      // 修改任务
+	GetTaskHistoryList(c *gin.Context, taskID uint, page, limit int)                     // 获取任务历史记录列表
+	GetTaskHistoryDetail(c *gin.Context, historyID uint)                                 // 获取任务历史记录详情
+	GetTaskHistoryLog(c *gin.Context, historyWorkID uint)                                // 获取历史任务日志
+	GetTaskHistoryLogByDetails(c *gin.Context, taskID, workID, historyID uint)           // 获取历史任务日志(通过详细信息)
+	DeleteTaskHistory(c *gin.Context, historyID uint)                                    // 删除任务历史记录
+	ExecuteTask(taskID uint) error 														 // 执行任务
+}
+
+func NewTaskAnsibleService(db *gorm.DB) ITaskAnsibleService {
+	return &TaskAnsibleServiceImpl{
+		dao: dao.NewTaskAnsibleDao(db),
+	}
+}
+
+// TaskAnsibleServiceImpl 实现Ansible任务服务
+type TaskAnsibleServiceImpl struct {
+	dao *dao.TaskAnsibleDao
 }
 
 // CreateTaskRequest 创建任务请求参数
 type CreateTaskRequest struct {
-	TaskType         int               `json:"taskType"`
-	Name             string            `json:"name"`
-	HostGroups       map[string][]uint `json:"hostGroups"`
-	GitRepo          string            `json:"gitRepo"`
-	RolesContent     []byte            `json:"rolesContent"`
-	PlaybookContents [][]byte          `json:"playbookContents"`
-	Variables        map[string]string `json:"variables"`
+	TaskType           int               `json:"taskType"`
+	Name               string            `json:"name"`
+	HostGroups         map[string][]uint `json:"hostGroups"`
+	GitRepo            string            `json:"gitRepo"`
+	RolesContent       []byte            `json:"rolesContent"`
+	PlaybookContents   [][]byte          `json:"playbookContents"`
+	PlaybookPaths      []string          `json:"playbookPaths"` // type=2: 指定多个playbook路径
+	Variables          map[string]string `json:"variables"`
+	ExtraVars          string            `json:"extraVars"`
+	CliArgs            string            `json:"cliArgs"`
+	UseConfig          int               `json:"useConfig"`
+	InventoryConfigID  *uint             `json:"inventoryConfigId"`
+	GlobalVarsConfigID *uint             `json:"globalVarsConfigId"`
+	ExtraVarsConfigID  *uint             `json:"extraVarsConfigId"`
+	CliArgsConfigID    *uint             `json:"cliArgsConfigId"`
+	MaxHistoryKeep     int               `gorm:"default:3;comment:'最大保留历史记录数'"`
+	CronExpr           string            `json:"cronExpr"`
+	IsRecurring        int               `json:"isRecurring"`
+	ViewID             *uint             `json:"viewId"`
+}
+
+// UpdateTaskRequest 修改任务请求参数
+type UpdateTaskRequest struct {
+	Name               string            `json:"name"`
+	HostGroups         map[string][]uint `json:"hostGroups"`
+	GitRepo            string            `json:"gitRepo"`
+	PlaybookPaths      []string          `json:"playbookPaths"`
+	Variables          map[string]string `json:"variables"`
+	ExtraVars          string            `json:"extraVars"`
+	CliArgs            string            `json:"cliArgs"`
+	UseConfig          int               `json:"useConfig"`
+	InventoryConfigID  *uint             `json:"inventoryConfigId"`
+	GlobalVarsConfigID *uint             `json:"globalVarsConfigId"`
+	ExtraVarsConfigID  *uint             `json:"extraVarsConfigId"`
+	CliArgsConfigID    *uint             `json:"cliArgsConfigId"`
+	MaxHistoryKeep     int               `gorm:"default:3;comment:'最大保留历史记录数'"`
+	CronExpr           string            `json:"cronExpr"`
+	IsRecurring        *int              `json:"isRecurring"`
+	ViewID             *uint             `json:"viewId"`
 }
 
 // CreateK8sTaskRequest 创建K8s任务请求参数
 type CreateK8sTaskRequest struct {
-	Name              string   `json:"name"`
-	Description       string   `json:"description"`
-	ClusterName       string   `json:"cluster_name"`
-	ClusterVersion    string   `json:"cluster_version"`
-	DeploymentMode    int      `json:"deployment_mode"`
-	MasterHostIDs     []uint   `json:"master_host_ids"`
-	WorkerHostIDs     []uint   `json:"worker_host_ids"`
-	EtcdHostIDs       []uint   `json:"etcd_host_ids"`
-	EnabledComponents []string `json:"enabled_components"`
-	PrivateRegistry   string         `json:"private_registry"`
-	RegistryUsername  string         `json:"registry_username"`
-	RegistryPassword  string         `json:"registry_password"`
+	Name              string          `json:"name"`
+	Description       string          `json:"description"`
+	ClusterName       string          `json:"cluster_name"`
+	ClusterVersion    string          `json:"cluster_version"`
+	DeploymentMode    int             `json:"deployment_mode"`
+	MasterHostIDs     []uint          `json:"master_host_ids"`
+	WorkerHostIDs     []uint          `json:"worker_host_ids"`
+	EtcdHostIDs       []uint          `json:"etcd_host_ids"`
+	EnabledComponents []string        `json:"enabled_components"`
+	PrivateRegistry   string          `json:"private_registry"`
+	RegistryUsername  string          `json:"registry_username"`
+	RegistryPassword  string          `json:"registry_password"`
 	RegistryConfig    *RegistryConfig `json:"registry_config"` // 新的嵌套配置格式
 }
 
@@ -131,17 +160,6 @@ type K8sConfigJSON struct {
 	} `json:"registry,omitempty"`
 }
 
-// TaskAnsibleServiceImpl 实现Ansible任务服务
-type TaskAnsibleServiceImpl struct {
-	dao *dao.TaskAnsibleDao
-}
-
-func NewTaskAnsibleService(db *gorm.DB) ITaskAnsibleService {
-	return &TaskAnsibleServiceImpl{
-		dao: dao.NewTaskAnsibleDao(db),
-	}
-}
-
 // HostSSHInfo 主机SSH连接信息
 type HostSSHInfo struct {
 	ID       uint
@@ -150,13 +168,38 @@ type HostSSHInfo struct {
 	User     string
 	Password string
 	Key      string
-	AuthType int    // 认证类型：1-密码，2-私钥，3-公钥免认证
+	AuthType int // 认证类型：1-密码，2-私钥，3-公钥免认证
 }
 
 // HostSSHInfoCollection 主机信息集合
 type HostSSHInfoCollection struct {
 	Groups    map[string][]HostSSHInfo
 	HostInfos map[uint]HostSSHInfo
+}
+
+// RealTimeLogWriter 实时日志写入器，支持立即刷新到磁盘
+type RealTimeLogWriter struct {
+	file *os.File
+}
+
+// OnTaskConfigChange 任务配置变更钩子
+var OnTaskConfigChange func(task *model.TaskAnsible)
+
+// Write 实现io.Writer接口，每次写入后立即刷新到磁盘
+func (w *RealTimeLogWriter) Write(p []byte) (n int, err error) {
+	n, err = w.file.Write(p)
+	if err != nil {
+		return n, err
+	}
+	// 立即刷新到磁盘，确保SSE能实时读取
+	w.file.Sync()
+	return n, nil
+}
+
+// WriteWithTime 带时间戳的写入
+func (w *RealTimeLogWriter) WriteWithTime(content string) error {
+	_, err := w.Write([]byte(content))
+	return err
 }
 
 // GetHostSSHInfo 获取主机SSH信息
@@ -257,7 +300,7 @@ func (c *HostSSHInfoCollection) GenerateInventory() string {
 				}
 			case 2: // 私钥认证
 				if host.Key != "" {
-					builder.WriteString(fmt.Sprintf(" ansible_ssh_private_key_file=%s", host.Key))
+					// builder.WriteString(fmt.Sprintf(" ansible_ssh_private_key_file=%s", host.Key))
 				}
 			case 3: // 公钥免认证
 				// 不添加额外的认证参数，使用系统默认SSH配置
@@ -304,6 +347,11 @@ func (s *TaskAnsibleServiceImpl) DeleteTask(c *gin.Context, taskID uint) {
 		return
 	}
 
+	// 触发任务配置变更钩子 (通知调度器移除任务)
+	if OnTaskConfigChange != nil {
+		OnTaskConfigChange(&model.TaskAnsible{ID: taskID, IsRecurring: 0})
+	}
+
 	// 4. 删除任务相关的文件目录（异步处理，避免影响响应速度）
 	go func() {
 		defer func() {
@@ -312,7 +360,7 @@ func (s *TaskAnsibleServiceImpl) DeleteTask(c *gin.Context, taskID uint) {
 		}()
 
 		// 删除任务目录: task/{taskID}/{taskName}
-		taskDir := fmt.Sprintf("task/%d/%s", taskID, task.Name)
+		taskDir := fmt.Sprintf("task/%d", taskID)
 		if _, err := os.Stat(taskDir); err == nil {
 			os.RemoveAll(taskDir)
 		}
@@ -340,25 +388,48 @@ func (s *TaskAnsibleServiceImpl) GetJobLog(c *gin.Context, taskID, workID uint) 
 	c.Header("Cache-Control", "no-cache")
 	c.Header("Connection", "keep-alive")
 	c.Header("Access-Control-Allow-Origin", "*")
-	
+
 	// 检查认证状态（调试信息）
 	token := c.Query("token")
 	if token == "" || token == "null" {
 		// 对于已完成的任务，即使token为空也允许读取日志
-		// sendSSEError(c, "认证失败：token为空")
-		// return
 	}
 
-	// 获取任务记录（仅查询一次）
-	work, err := s.dao.GetWorkByID(taskID, workID)
-	if err != nil {
-		sendSSEError(c, fmt.Sprintf("获取任务记录失败: %v", err))
-		return
+	// 循环尝试获取任务记录，等待 LogPath 生成（最多等待5秒）
+	var work *taskmodel.TaskAnsibleWork
+	var err error
+	maxRetries := 5
+
+	for i := 0; i < maxRetries; i++ {
+		work, err = s.dao.GetWorkByID(taskID, workID)
+		if err != nil {
+			sendSSEError(c, fmt.Sprintf("获取任务记录失败: %v", err))
+			return
+		}
+
+		// 如果 LogPath 存在，或者任务已经是完成/失败状态，停止等待
+		if work.LogPath != "" || work.Status == 3 || work.Status == 4 {
+			break
+		}
+		time.Sleep(1 * time.Second)
 	}
 
 	// 检查日志路径
 	if work.LogPath == "" {
-		sendSSEError(c, "日志文件路径不存在")
+		// 如果 LogPath 为空，检查是否因为任务启动失败
+		if work.Status == 4 {
+			// 如果子任务有错误信息，发送给前端
+			if work.ErrorMsg != "" {
+				sendSSEError(c, fmt.Sprintf("任务执行失败: %s", work.ErrorMsg))
+			} else {
+				// 获取父任务查看是否有全局错误
+				task, _ := s.dao.GetTaskDetail(taskID)
+				// 假设父任务也没有详细信息
+				sendSSEError(c, fmt.Sprintf("任务启动失败，详情请查看任务状态 (TaskStatus=%d)", task.Status))
+			}
+		} else {
+			sendSSEError(c, "日志文件路径尚未生成，请稍后重试")
+		}
 		return
 	}
 
@@ -370,13 +441,11 @@ func (s *TaskAnsibleServiceImpl) GetJobLog(c *gin.Context, taskID, workID uint) 
 		// 如果是相对路径，转换为绝对路径
 		// 获取当前工作目录
 		cwd, _ := os.Getwd()
-		// 检查是否在任务子目录中，如果是则返回到项目根目录
+		// 检查是否在任务子目录中，如果是则返回到项目根目录（防御性编程）
 		if strings.Contains(cwd, "/task/") {
-			// 切换到项目根目录计算绝对路径
 			projectRoot := strings.Split(cwd, "/task/")[0]
 			logPath = filepath.Join(projectRoot, work.LogPath)
 		} else {
-			// 已经在项目根目录
 			logPath = filepath.Join(cwd, work.LogPath)
 		}
 	}
@@ -421,7 +490,7 @@ func (s *TaskAnsibleServiceImpl) GetJobLog(c *gin.Context, taskID, workID uint) 
 	// 读取完整的日志文件内容
 	lineCount := 0
 	batchSize := 10 // 每10行flush一次，平衡性能和实时性
-	
+
 	for {
 		line, err := reader.ReadString('\n')
 		if err == io.EOF {
@@ -432,7 +501,7 @@ func (s *TaskAnsibleServiceImpl) GetJobLog(c *gin.Context, taskID, workID uint) 
 			return
 		}
 		lineCount++
-		
+
 		// 发送日志内容 (确保非空行才发送)
 		trimmed := strings.TrimSpace(line)
 		if trimmed != "" {
@@ -441,7 +510,7 @@ func (s *TaskAnsibleServiceImpl) GetJobLog(c *gin.Context, taskID, workID uint) 
 			// 发送空行
 			fmt.Fprintf(c.Writer, "data: \n\n")
 		}
-		
+
 		// 批量flush，减少网络开销
 		if lineCount%batchSize == 0 {
 			if flusher, ok := c.Writer.(http.Flusher); ok {
@@ -453,10 +522,10 @@ func (s *TaskAnsibleServiceImpl) GetJobLog(c *gin.Context, taskID, workID uint) 
 				return
 			}
 		}
-		
+
 		lastPos, _ = file.Seek(0, io.SeekCurrent)
 	}
-	
+
 	// 最后flush剩余数据
 	if flusher, ok := c.Writer.(http.Flusher); ok {
 		flusher.Flush()
@@ -608,12 +677,39 @@ func (s *TaskAnsibleServiceImpl) GetTaskDetail(c *gin.Context, taskID uint) {
 		}
 	}
 
-	// 构建精简的任务信息
+	// 解析HostGroups
+	var hostGroups map[string][]uint
+	json.Unmarshal([]byte(task.HostGroups), &hostGroups)
+
+	// 解析GlobalVars
+	var variables map[string]string
+	json.Unmarshal([]byte(task.GlobalVars), &variables)
+
+	// 构建完整的任务信息
 	taskInfo := gin.H{
-		"ID":        task.ID,        // 父任务ID
-		"Name":      task.Name,      // 父任务名称
-		"TaskCount": task.TaskCount, // 子任务数量
-		"Works":     works,          // 子任务列表
+		"ID":                 task.ID,
+		"Name":               task.Name,
+		"Type":               task.Type,
+		"Description":        task.Description,
+		"GitRepo":            task.GitRepo,
+		"HostGroups":         hostGroups,
+		"GlobalVars":         variables,
+		"ExtraVars":          task.ExtraVars,
+		"CliArgs":            task.CliArgs,
+		"Status":             task.Status,
+		"TaskCount":          task.TaskCount,
+		"TotalDuration":      task.TotalDuration,
+		"UseConfig":          task.UseConfig,
+		"InventoryConfigID":  task.InventoryConfigID,
+		"GlobalVarsConfigID": task.GlobalVarsConfigID,
+		"ExtraVarsConfigID":  task.ExtraVarsConfigID,
+		"CliArgsConfigID":    task.CliArgsConfigID,
+		"IsRecurring":		  task.IsRecurring,
+		"CronExpr":			  task.CronExpr,
+		"MaxHistoryKeep":	  task.MaxHistoryKeep,
+		"CreatedAt":          task.CreatedAt,
+		"UpdatedAt":          task.UpdatedAt,
+		"Works":              works,
 	}
 
 	result.Success(c, gin.H{
@@ -626,53 +722,142 @@ func (s *TaskAnsibleServiceImpl) GetWorkByID(taskID, workID uint) (*model.TaskAn
 	return s.dao.GetWorkByID(taskID, workID)
 }
 
+// GetTasks 查询任务列表
+func (s *TaskAnsibleServiceImpl) GetTasks(c *gin.Context, name string, taskType int, viewName string, page, size int) {
+	tasks, total, err := s.dao.GetTasks(name, taskType, viewName, page, size)
+	if err != nil {
+		result.Failed(c, 500, "查询任务列表失败: "+err.Error())
+		return
+	}
+	result.Success(c, gin.H{"data": tasks, "total": total})
+}
+
 // StartJob 启动任务
 func (s *TaskAnsibleServiceImpl) StartJob(c *gin.Context, taskID uint) {
+	if err := s.ExecuteTask(taskID); err != nil {
+		c.JSON(500, gin.H{"error": err.Error()})
+		return
+	}
+	c.JSON(200, gin.H{"message": "任务已开始执行"})
+}
+
+// ExecuteTask 执行任务
+func (s *TaskAnsibleServiceImpl) ExecuteTask(taskID uint) error {
 	// 1. 获取任务详情（包含子任务）
 	task, err := s.dao.GetTaskDetail(taskID)
 	if err != nil {
-		c.JSON(500, gin.H{"error": fmt.Sprintf("获取任务失败: %v", err)})
-		return
+		return fmt.Errorf("获取任务失败: %v", err)
 	}
 
 	// 检查任务是否存在子任务
 	if len(task.Works) == 0 {
-		c.JSON(400, gin.H{"error": "任务没有子任务，无法执行"})
-		return
+		return fmt.Errorf("任务没有子任务，无法执行")
 	}
 
 	// 2. 更新任务状态为运行中（状态=2）
 	if err := s.dao.DB.Model(&model.TaskAnsible{}).Where("id = ?", taskID).Update("status", 2).Error; err != nil {
-		c.JSON(500, gin.H{"error": fmt.Sprintf("更新任务状态失败: %v", err)})
-		return
+		return fmt.Errorf("更新任务状态失败: %v", err)
 	}
 
-	// 3. 异步执行Ansible任务（优化版本 - 直接执行，无需重复查询）
+	// 3. 异步执行Ansible任务
 	go func() {
 		defer func() {
 			if r := recover(); r != nil {
-				s.updateTaskErrorStatus(taskID, fmt.Errorf("任务执行异常: %v", r))
+				errMsg := fmt.Sprintf("任务执行异常: %v", r)
+				s.updateTaskErrorStatus(taskID, fmt.Errorf("%s", errMsg))
+				// 同时更新所有子任务状态为失败
+				s.dao.DB.Model(&model.TaskAnsibleWork{}).Where("task_id = ?", taskID).
+					Updates(map[string]interface{}{"status": 4, "error_msg": errMsg})
 			}
 		}()
 
-		// 构建任务目录路径：task/{taskID}/{taskName}
-		taskDir := fmt.Sprintf("task/%d/%s", taskID, task.Name)
+		// 获取当前工作目录
+		workDir, _ := os.Getwd()
+		// 防御性处理：防止WD在task子目录中
+		if strings.Contains(workDir, "/task/") {
+			workDir = strings.Split(workDir, "/task/")[0]
+		}
+
+		// 构建任务目录相对路径
+		taskRelDir := fmt.Sprintf("task/%d/%s", taskID, task.Name)
+		// 构建任务目录绝对路径
+		absTaskDir := filepath.Join(workDir, taskRelDir)
 
 		// 检查任务目录是否存在
-		if _, err := os.Stat(taskDir); os.IsNotExist(err) {
-			s.updateTaskErrorStatus(taskID, fmt.Errorf("任务目录不存在: %s", taskDir))
+		if _, err := os.Stat(absTaskDir); os.IsNotExist(err) {
+			errMsg := fmt.Sprintf("任务目录不存在: %s (请尝试删除并重新创建任务)", absTaskDir)
+			s.updateTaskErrorStatus(taskID, fmt.Errorf("%s", errMsg))
+			s.dao.DB.Model(&model.TaskAnsibleWork{}).Where("task_id = ?", taskID).
+				Updates(map[string]interface{}{"status": 4, "error_msg": errMsg})
 			return
 		}
 
-		// 获取当前工作目录
-		originalDir, _ := os.Getwd()
+		// Inventory文件绝对路径
+		inventoryPath := filepath.Join(absTaskDir, "hosts")
+
+		// 如果启用配置中心且指定了inventory配置，则覆盖hosts文件
+		if task.UseConfig == 1 && task.InventoryConfigID != nil {
+			var cfg taskmodel.ConfigAnsible
+			if err := s.dao.DB.First(&cfg, *task.InventoryConfigID).Error; err == nil {
+				// 写入配置中心的Inventory内容
+				if err := os.WriteFile(inventoryPath, []byte(cfg.Content), 0644); err != nil {
+					errMsg := fmt.Sprintf("写入Inventory配置失败: %v", err)
+					s.updateTaskErrorStatus(taskID, fmt.Errorf("%s", errMsg))
+					s.dao.DB.Model(&model.TaskAnsibleWork{}).Where("task_id = ?", taskID).
+						Updates(map[string]interface{}{"status": 4, "error_msg": errMsg})
+					return
+				}
+			}
+		}
+
+		// 如果启用配置中心且指定了GlobalVars配置，则覆盖vars/all.yml文件
+		if task.UseConfig == 1 && task.GlobalVarsConfigID != nil {
+			var cfg taskmodel.ConfigAnsible
+			if err := s.dao.DB.First(&cfg, *task.GlobalVarsConfigID).Error; err == nil {
+				varsFile := filepath.Join(absTaskDir, "vars/all.yml")
+				if err := os.MkdirAll(filepath.Dir(varsFile), 0755); err != nil {
+					errMsg := fmt.Sprintf("创建变量目录失败: %v", err)
+					s.updateTaskErrorStatus(taskID, fmt.Errorf("%s", errMsg))
+					s.dao.DB.Model(&model.TaskAnsibleWork{}).Where("task_id = ?", taskID).
+						Updates(map[string]interface{}{"status": 4, "error_msg": errMsg})
+					return
+				}
+				if err := os.WriteFile(varsFile, []byte(cfg.Content), 0644); err != nil {
+					errMsg := fmt.Sprintf("写入GlobalVars配置失败: %v", err)
+					s.updateTaskErrorStatus(taskID, fmt.Errorf("%s", errMsg))
+					s.dao.DB.Model(&model.TaskAnsibleWork{}).Where("task_id = ?", taskID).
+						Updates(map[string]interface{}{"status": 4, "error_msg": errMsg})
+					return
+				}
+			}
+		}
+
+		// 获取ExtraVars
+		extraVars := task.ExtraVars
+		if task.UseConfig == 1 && task.ExtraVarsConfigID != nil {
+			var cfg taskmodel.ConfigAnsible
+			if err := s.dao.DB.First(&cfg, *task.ExtraVarsConfigID).Error; err == nil {
+				extraVars = cfg.Content
+			}
+		}
+
+		// 获取CliArgs
+		cliArgsStr := task.CliArgs
+		if task.UseConfig == 1 && task.CliArgsConfigID != nil {
+			var cfg taskmodel.ConfigAnsible
+			if err := s.dao.DB.First(&cfg, *task.CliArgsConfigID).Error; err == nil {
+				cliArgsStr = cfg.Content
+			}
+		}
 
 		// 执行每个子任务
 		allSuccess := true
 		for _, work := range task.Works {
 
 			// 创建日志目录（使用绝对路径）
-			absLogDir := filepath.Join(originalDir, fmt.Sprintf("logs/ansible/%d/%d", taskID, work.ID))
+			// 使用时间戳作为唯一ID，隔离每次执行的日志
+			runID := time.Now().Format("20060102150405")
+			absLogDir := filepath.Join(workDir, fmt.Sprintf("logs/ansible/%d/%d/%s", taskID, work.ID, runID))
 			if err := os.MkdirAll(absLogDir, 0755); err != nil {
 				s.updateTaskErrorStatus(taskID, fmt.Errorf("创建日志目录失败: %v", err))
 				return
@@ -684,11 +869,12 @@ func (s *TaskAnsibleServiceImpl) StartJob(c *gin.Context, taskID uint) {
 			if task.Type == 3 {
 				logFileName = "deploy-simple.sh"
 			} else {
-				logFileName = work.EntryFileName
+				// 使用Base获取文件名，防止EntryFileName包含路径导致日志创建目录失败
+				logFileName = filepath.Base(work.EntryFileName)
 			}
 			absLogPath := filepath.Join(absLogDir, fmt.Sprintf("%s.log", logFileName))
 			// 用于数据库存储的相对路径
-			relativeLogPath := fmt.Sprintf("logs/ansible/%d/%d/%s.log", taskID, work.ID, logFileName)
+			relativeLogPath := fmt.Sprintf("logs/ansible/%d/%d/%s/%s.log", taskID, work.ID, runID, logFileName)
 
 			// 更新子任务状态为运行中，记录开始时间和日志路径
 			workStartTime := time.Now()
@@ -700,20 +886,14 @@ func (s *TaskAnsibleServiceImpl) StartJob(c *gin.Context, taskID uint) {
 					"log_path":   relativeLogPath, // 使用相对路径存储到数据库
 				})
 
-			// 切换到任务目录
-			if err := os.Chdir(taskDir); err != nil {
-				s.updateWorkErrorStatus(work.ID, fmt.Errorf("切换到任务目录失败: %v", err))
-				allSuccess = false
-				continue
-			}
-
 			// 检查playbook文件是否存在（K8s任务跳过此检查）
 			var playbookPath string
 			if task.Type != 3 {
 				playbookPath = work.EntryFileName
-				if _, err := os.Stat(playbookPath); os.IsNotExist(err) {
-					os.Chdir(originalDir)
-					s.updateWorkErrorStatus(work.ID, fmt.Errorf("Playbook文件不存在: %s", playbookPath))
+				// 检查绝对路径
+				absPlaybookPath := filepath.Join(absTaskDir, playbookPath)
+				if _, err := os.Stat(absPlaybookPath); os.IsNotExist(err) {
+					s.updateWorkErrorStatus(work.ID, fmt.Errorf("Playbook文件不存在: %s", absPlaybookPath))
 					allSuccess = false
 					continue
 				}
@@ -725,8 +905,7 @@ func (s *TaskAnsibleServiceImpl) StartJob(c *gin.Context, taskID uint) {
 			var cmdArgs []string
 			if task.Type == 3 { // K8s任务
 				// 检查config.json文件是否存在
-				if _, err := os.Stat("config.json"); os.IsNotExist(err) {
-					os.Chdir(originalDir)
+				if _, err := os.Stat(filepath.Join(absTaskDir, "config.json")); os.IsNotExist(err) {
 					s.updateWorkErrorStatus(work.ID, fmt.Errorf("config.json文件不存在，任务创建可能有问题"))
 					allSuccess = false
 					continue
@@ -734,8 +913,7 @@ func (s *TaskAnsibleServiceImpl) StartJob(c *gin.Context, taskID uint) {
 
 				// 检查部署脚本是否存在
 				scriptPath := filepath.Join("scripts", "deploy-simple.sh")
-				if _, err := os.Stat(scriptPath); os.IsNotExist(err) {
-					os.Chdir(originalDir)
+				if _, err := os.Stat(filepath.Join(absTaskDir, scriptPath)); os.IsNotExist(err) {
 					s.updateWorkErrorStatus(work.ID, fmt.Errorf("K8s部署脚本不存在: %s", scriptPath))
 					allSuccess = false
 					continue
@@ -746,24 +924,43 @@ func (s *TaskAnsibleServiceImpl) StartJob(c *gin.Context, taskID uint) {
 			} else {
 				// Ansible任务
 				// 检查hosts文件是否存在（创建任务时已生成）
-				if _, err := os.Stat("hosts"); os.IsNotExist(err) {
-					os.Chdir(originalDir)
+				if _, err := os.Stat(filepath.Join(absTaskDir, "hosts")); os.IsNotExist(err) {
 					s.updateWorkErrorStatus(work.ID, fmt.Errorf("hosts文件不存在，任务创建可能有问题"))
 					allSuccess = false
 					continue
 				}
 
 				// 构建Ansible命令
-				cmdArgs = []string{"ansible-playbook", "-i", "hosts", playbookPath, "-v"}
+				cmdArgs = []string{"ansible-playbook", "-i", "hosts"}
+
+				// 检查 vars/all.yml 是否存在，如果存在则显式加载
+				// 用户反馈 vars/all.yml 未生效，通过 --extra-vars 强制加载
+				varsFile := "vars/all.yml"
+				if _, err := os.Stat(filepath.Join(absTaskDir, varsFile)); err == nil {
+					cmdArgs = append(cmdArgs, "--extra-vars", "@"+varsFile)
+				}
+
+				// 添加ExtraVars参数
+				if extraVars != "" {
+					cmdArgs = append(cmdArgs, "--extra-vars", extraVars)
+				}
+
+				// 添加CliArgs参数
+				if cliArgsStr != "" {
+					cmdArgs = append(cmdArgs, strings.Fields(cliArgsStr)...)
+				}
+
+				// 添加Playbook路径
+				cmdArgs = append(cmdArgs, playbookPath, "-v")
 			}
 
 			// 执行命令
 			cmd := exec.Command(cmdArgs[0], cmdArgs[1:]...)
+			cmd.Dir = absTaskDir // 设置命令执行目录，替代 os.Chdir
 
 			// 创建日志文件用于实时写入（使用绝对路径）
 			logFile, err := os.OpenFile(absLogPath, os.O_CREATE|os.O_WRONLY|os.O_TRUNC, 0644)
 			if err != nil {
-				os.Chdir(originalDir)
 				s.updateWorkErrorStatus(work.ID, fmt.Errorf("创建日志文件失败: %v", err))
 				allSuccess = false
 				continue
@@ -772,7 +969,11 @@ func (s *TaskAnsibleServiceImpl) StartJob(c *gin.Context, taskID uint) {
 			// 写入命令信息到日志文件
 			logFile.WriteString(fmt.Sprintf("[%s] 开始执行任务\n", time.Now().Format("2006-01-02 15:04:05")))
 			logFile.WriteString(fmt.Sprintf("命令: %s\n", strings.Join(cmdArgs, " ")))
-			logFile.WriteString(fmt.Sprintf("工作目录: %s\n", taskDir))
+			logFile.WriteString(fmt.Sprintf("工作目录: %s\n", absTaskDir))
+			logFile.WriteString(fmt.Sprintf("Inventory: %s\n", inventoryPath))
+			if extraVars != "" {
+				logFile.WriteString(fmt.Sprintf("Extra Variables: %s\n", extraVars))
+			}
 			logFile.WriteString("==========================================\n")
 			logFile.Sync() // 立即刷新到磁盘
 
@@ -796,9 +997,6 @@ func (s *TaskAnsibleServiceImpl) StartJob(c *gin.Context, taskID uint) {
 				logWriter.WriteWithTime("执行成功\n")
 			}
 			logFile.Close()
-
-			// 切换回原目录
-			os.Chdir(originalDir)
 
 			// 计算执行耗时
 			workEndTime := time.Now()
@@ -856,10 +1054,62 @@ func (s *TaskAnsibleServiceImpl) StartJob(c *gin.Context, taskID uint) {
 					"total_duration": totalDuration,
 					"updated_at":     time.Now(),
 				})
+
+			// --- 保存历史记录 ---
+			uniqId := fmt.Sprintf("%d-%d", taskID, time.Now().Unix())
+
+			// 创建主历史记录
+			history := &model.TaskAnsibleHistory{
+				TaskID:        taskID,
+				UniqId:        uniqId,
+				Status:        finalStatus,
+				TotalDuration: int(totalDuration),
+				CreatedAt:     time.Now(),
+				Trigger:       1, // 默认为手动
+			}
+			s.dao.CreateTaskAnsibleHistory(history)
+
+			// 创建子任务历史记录
+			var workHistories []model.TaskAnsibleworkHistory
+			for _, w := range works {
+				// LogPath is relative, join with workDir to get absolute path check if needed,
+				// but here we just store the relative or whatever path we used for the active job.
+				// However, if we want to read it later, we need to know where it is.
+				// The previous logic used 'relativeLogPath' to store in DB.
+				// Let's verify what `w.LogPath` contains. It contains `logs/ansible/...`.
+				// To be safe and since we want to avoid DB size bloat, we store the path.
+
+				workHistories = append(workHistories, model.TaskAnsibleworkHistory{
+					HistoryID: history.ID,
+					TaskID:    taskID,
+					WorkID:    w.ID,
+					HostName:  w.EntryFileName, // Playbook name
+					Status:    w.Status,
+					LogPath:   w.LogPath, // Save relative path: logs/ansible/taskID/workID/xxx.log
+					Duration:  w.Duration,
+					CreatedAt: time.Now(),
+				})
+			}
+
+			if len(workHistories) > 0 {
+				s.dao.CreateTaskAnsibleworkHistories(workHistories)
+			}
+
+			// 清理旧历史记录
+			// 获取MaxHistoryKeep
+			var currentTask model.TaskAnsible
+			if err := s.dao.DB.First(&currentTask, taskID).Error; err == nil {
+				maxKeep := currentTask.MaxHistoryKeep
+				if maxKeep <= 0 {
+					maxKeep = 3 // 默认3条
+				}
+				s.dao.DeleteOldHistory(taskID, maxKeep)
+			}
+			// --- 历史记录保存结束 ---
 		}
 	}()
 
-	c.JSON(200, gin.H{"message": "任务已开始执行"})
+	return nil
 }
 
 // updateTaskErrorStatus 更新任务为错误状态
@@ -916,30 +1166,46 @@ func (s *TaskAnsibleServiceImpl) CreateTask(c *gin.Context, req *CreateTaskReque
 		return
 	}
 
-	// 获取主机信息
-	hostInfos, err := s.GetHostSSHInfo(hostGroups)
-	if err != nil {
-		result.Failed(c, 500, err.Error())
-		return
-	}
-
+	hostInfos := &HostSSHInfoCollection{}
 	// 获取所有主机ID
 	allHostIDs := make([]uint, 0)
-	for _, ids := range hostGroups {
-		for _, id := range ids {
-			if id > 0 { // 确保ID有效
-				allHostIDs = append(allHostIDs, id)
-			}
-		}
-	}
 
+	if req.UseConfig == 1 {
+        // 如果启用配置中心，检查相关配置是否存在
+    } else {
+        // 获取主机信息
+        var err error
+        hostInfos, err = s.GetHostSSHInfo(hostGroups)
+        if err != nil {
+            result.Failed(c, 500, err.Error())
+            return
+        }
+        for _, ids := range hostGroups {
+            for _, id := range ids {
+                if id > 0 { // 确保ID有效
+                    allHostIDs = append(allHostIDs, id)
+                }
+            }
+        }
+    }
 	// 创建任务记录
 	task := &taskmodel.TaskAnsible{
-		Name:       name,
-		Type:       taskType, // 1=手动，2=Git导入
-		HostGroups: toJSON(hostGroups),
-		AllHostIDs: toJSON(allHostIDs),
-		Status:     1, // 1表示等待中
+		Name:               name,
+		Type:               taskType, // 1=手动，2=Git导入
+		HostGroups:         toJSON(hostGroups),
+		AllHostIDs:         toJSON(allHostIDs),
+		Status:             1, // 1表示等待中
+		ExtraVars:          req.ExtraVars,
+		CliArgs:            req.CliArgs,
+		UseConfig:          req.UseConfig,
+		InventoryConfigID:  req.InventoryConfigID,
+		GlobalVarsConfigID: req.GlobalVarsConfigID,
+		ExtraVarsConfigID:  req.ExtraVarsConfigID,
+		CliArgsConfigID:    req.CliArgsConfigID,
+		MaxHistoryKeep: 	req.MaxHistoryKeep,
+		CronExpr:           req.CronExpr,
+		IsRecurring:        req.IsRecurring,
+		ViewID:             req.ViewID,
 	}
 
 	// 如果是Git任务，设置仓库地址
@@ -969,7 +1235,7 @@ func (s *TaskAnsibleServiceImpl) CreateTask(c *gin.Context, req *CreateTaskReque
 		}
 	} else if taskType == 2 {
 		// Type=2: Git导入任务
-		if err := s.handleGitTask(c, task, projectDir, hostInfos, gitRepo, variables); err != nil {
+		if err := s.handleGitTask(c, task, projectDir, hostInfos, gitRepo, variables, req.PlaybookPaths); err != nil {
 			result.Failed(c, 500, err.Error())
 			return
 		}
@@ -983,6 +1249,11 @@ func (s *TaskAnsibleServiceImpl) CreateTask(c *gin.Context, req *CreateTaskReque
 	if err != nil {
 		result.Failed(c, 500, fmt.Sprintf("获取任务详情失败: %v", err))
 		return
+	}
+
+	// 触发任务配置变更钩子
+	if OnTaskConfigChange != nil {
+		OnTaskConfigChange(updatedTask)
 	}
 
 	result.Success(c, updatedTask)
@@ -1154,17 +1425,33 @@ func (s *TaskAnsibleServiceImpl) handleManualTask(c *gin.Context, task *taskmode
 }
 
 // handleGitTask 处理Git导入的任务(Type=2)
-func (s *TaskAnsibleServiceImpl) handleGitTask(c *gin.Context, task *taskmodel.TaskAnsible, projectDir string, hostInfos *HostSSHInfoCollection, gitRepo string, variables map[string]string) error {
+func (s *TaskAnsibleServiceImpl) handleGitTask(c *gin.Context, task *taskmodel.TaskAnsible, projectDir string, hostInfos *HostSSHInfoCollection, gitRepo string, variables map[string]string, manualPlaybookPaths []string) error {
 
 	// 1. 下载Git仓库
 	if err := s.cloneGitRepository(gitRepo, projectDir); err != nil {
 		return fmt.Errorf("下载Git仓库失败: %v", err)
 	}
 
-	// 2. 解析仓库目录结构，识别playbook文件
-	playbookFiles, err := s.parseGitRepository(projectDir)
-	if err != nil {
-		return fmt.Errorf("解析Git仓库失败: %v", err)
+	// 2. 确定playbook文件列表
+	var playbookFiles []string
+	if len(manualPlaybookPaths) > 0 {
+		// 如果前端指定了playbook列表，验证并使用它们
+		var err error
+		playbookFiles, err = s.resolvePlaybookPaths(projectDir, manualPlaybookPaths)
+		if err != nil {
+			return err
+		}
+	} else {
+		// 否则自动扫描仓库目录结构
+		var err error
+		playbookFiles, err = s.parseGitRepository(projectDir)
+		if err != nil {
+			return fmt.Errorf("解析Git仓库失败: %v", err)
+		}
+	}
+
+	if len(playbookFiles) == 0 {
+		return fmt.Errorf("未找到有效的playbook文件")
 	}
 
 	// 3. 创建子任务记录
@@ -1186,6 +1473,42 @@ func (s *TaskAnsibleServiceImpl) handleGitTask(c *gin.Context, task *taskmodel.T
 	}
 
 	return nil
+}
+
+// resolvePlaybookPaths 校验并解析仓库内playbook路径
+func (s *TaskAnsibleServiceImpl) resolvePlaybookPaths(projectDir string, paths []string) ([]string, error) {
+	var result []string
+	for _, p := range paths {
+		p = strings.TrimSpace(p)
+		if p == "" {
+			continue
+		}
+
+		// 防止路径遍历攻击
+		clean := filepath.Clean(p)
+		if strings.HasPrefix(clean, "..") || filepath.IsAbs(clean) {
+			return nil, fmt.Errorf("非法playbook路径: %s (禁止包含..或使用绝对路径)", p)
+		}
+
+		// 拼接完整路径
+		full := filepath.Join(projectDir, clean)
+
+		// 验证文件扩展名
+		ext := strings.ToLower(filepath.Ext(full))
+		if ext != ".yml" && ext != ".yaml" {
+			return nil, fmt.Errorf("playbook必须是yml/yaml文件: %s", p)
+		}
+
+		// 验证文件是否存在
+		if _, err := os.Stat(full); err != nil {
+			return nil, fmt.Errorf("playbook不存在: %s", p)
+		}
+
+		// 注意：这里应该只返回相对路径，而不是包含项目目录的完整路径
+		// 因为后续 createSubTasksFromPlaybooks 会再次拼接项目目录
+		result = append(result, clean)
+	}
+	return result, nil
 }
 
 // cloneGitRepository 克隆Git仓库
@@ -1355,7 +1678,7 @@ func (s *TaskAnsibleServiceImpl) CreateK8sTask(c *gin.Context, req *CreateK8sTas
 	task := &model.TaskAnsible{
 		Name:        req.Name,
 		Description: req.Description,
-		Type:        3, // K8s任务类型
+		Type:        3,                                        // K8s任务类型
 		GitRepo:     "git@gitee.com:zhang_fan1024/zf-k8s.git", // 固定的K8s Git仓库
 		HostGroups:  s.buildK8sHostGroups(req),
 		AllHostIDs:  s.buildK8sAllHostIDs(req),
@@ -1597,4 +1920,242 @@ func (s *TaskAnsibleServiceImpl) createK8sSubTask(taskID uint, projectDir string
 	}
 
 	return nil
+}
+
+// UpdateTask 修改任务
+func (s *TaskAnsibleServiceImpl) UpdateTask(c *gin.Context, taskID uint, req *UpdateTaskRequest) {
+	// 1. 获取任务
+	task, err := s.dao.GetTaskDetail(taskID)
+	if err != nil {
+		result.Failed(c, 500, fmt.Sprintf("获取任务失败: %v", err))
+		return
+	}
+
+	// 2. 检查任务状态，运行中不可修改
+	if task.Status == 2 {
+		result.Failed(c, 400, "任务正在运行中，无法修改")
+		return
+	}
+
+	// 3. 更新基本信息
+	if req.Name != "" {
+		task.Name = req.Name
+	}
+
+	// 更新配置选项
+	task.UseConfig = req.UseConfig
+	if req.InventoryConfigID != nil {
+		task.InventoryConfigID = req.InventoryConfigID
+	}
+	if req.GlobalVarsConfigID != nil {
+		task.GlobalVarsConfigID = req.GlobalVarsConfigID
+	}
+	if req.ExtraVarsConfigID != nil {
+		task.ExtraVarsConfigID = req.ExtraVarsConfigID
+	}
+	if req.CliArgsConfigID != nil {
+		task.CliArgsConfigID = req.CliArgsConfigID
+	}
+	
+
+	// 更新变量信息
+	if req.ExtraVars != "" {
+		task.ExtraVars = req.ExtraVars
+	}
+	if req.CliArgs != "" {
+		task.CliArgs = req.CliArgs
+	}
+
+	// 4. 更新Git信息 (仅Type=2)
+	if task.Type == 2 && req.GitRepo != "" {
+		task.GitRepo = req.GitRepo
+	}
+
+	// 5. 更新HostGroups
+	if len(req.HostGroups) > 0 {
+		task.HostGroups = toJSON(req.HostGroups)
+		// 重新计算AllHostIDs
+		allHostIDs := make([]uint, 0)
+		idMap := make(map[uint]bool)
+		for _, ids := range req.HostGroups {
+			for _, id := range ids {
+				if id > 0 && !idMap[id] {
+					idMap[id] = true
+					allHostIDs = append(allHostIDs, id)
+				}
+			}
+		}
+		task.AllHostIDs = toJSON(allHostIDs)
+	}
+
+	// 6. 更新GlobalVars
+	if len(req.Variables) > 0 {
+		task.GlobalVars = toJSON(req.Variables)
+	}
+
+	// Update New fields (支持增量更新)
+	// 只有当 CronExpr 不为空字符串时才更新
+	if req.CronExpr != "" {
+		task.CronExpr = req.CronExpr
+	}
+
+	// 只有当 IsRecurring 传了值（不为nil）时才更新
+	if req.IsRecurring != nil {
+		task.IsRecurring = *req.IsRecurring
+	}
+
+	if req.MaxHistoryKeep > 0 {
+		task.MaxHistoryKeep = req.MaxHistoryKeep
+	}
+
+	// 只有当 ViewID 传了值（不为nil）时才更新
+	if req.ViewID != nil {
+		task.ViewID = req.ViewID
+	}
+
+	task.UpdatedAt = time.Now()
+
+	// 7. 保存
+	if err := s.dao.Update(task); err != nil {
+		result.Failed(c, 500, fmt.Sprintf("更新任务失败: %v", err))
+		return
+	}
+
+	// 触发任务配置变更钩子
+	if OnTaskConfigChange != nil {
+		// 重新获取完整任务信息以确保调度器获取最新配置
+		if fullTask, err := s.dao.GetTaskDetail(taskID); err == nil {
+			OnTaskConfigChange(fullTask)
+		}
+	}
+
+	result.Success(c, task)
+}
+
+// GetTaskHistoryList 获取任务历史记录列表 Service
+func (s *TaskAnsibleServiceImpl) GetTaskHistoryList(c *gin.Context, taskID uint, page, limit int) {
+	histories, total, err := s.dao.GetTaskAnsibleHistoryList(taskID, page, limit)
+	if err != nil {
+		result.Failed(c, 500, fmt.Sprintf("获取历史记录列表失败: %v", err))
+		return
+	}
+	result.Success(c, gin.H{
+		"data":  histories,
+		"total": total,
+	})
+}
+
+// GetTaskHistoryDetail 获取任务历史记录详情 Service
+func (s *TaskAnsibleServiceImpl) GetTaskHistoryDetail(c *gin.Context, historyID uint) {
+	history, err := s.dao.GetTaskAnsibleHistoryDetail(historyID)
+	if err != nil {
+		result.Failed(c, 500, fmt.Sprintf("获取历史记录详情失败: %v", err))
+		return
+	}
+	result.Success(c, history)
+}
+
+// GetTaskHistoryLog 获取历史记录的日志内容
+func (s *TaskAnsibleServiceImpl) GetTaskHistoryLog(c *gin.Context, historyWorkID uint) {
+	// 1. 获取SubHistory记录
+	var workHistory model.TaskAnsibleworkHistory
+	if err := s.dao.DB.First(&workHistory, historyWorkID).Error; err != nil {
+		result.Failed(c, 404, "未找到历史任务日志记录")
+		return
+	}
+
+	// 2. 获取LogPath
+	logPath := workHistory.LogPath
+	if logPath == "" {
+		result.Failed(c, 404, "日志路径为空")
+		return
+	}
+
+	// 3. 构建绝对路径 (假设运行目录在项目根目录)
+	// LogPath is usually "logs/ansible/..."
+	workDir, _ := os.Getwd()
+	// 防御性处理，如果已经在 task 目录下
+	if strings.Contains(workDir, "/task/") {
+		workDir = strings.Split(workDir, "/task/")[0]
+	}
+	absLogPath := filepath.Join(workDir, logPath)
+
+	// 4. 读取文件
+	content, err := os.ReadFile(absLogPath)
+	if err != nil {
+		result.Failed(c, 500, fmt.Sprintf("读取日志文件失败: %v", err))
+		return
+	}
+
+	result.Success(c, string(content))
+}
+
+// GetTaskHistoryLogByDetails 根据 TaskID, WorkID, HistoryID 获取日志
+func (s *TaskAnsibleServiceImpl) GetTaskHistoryLogByDetails(c *gin.Context, taskID, workID, historyID uint) {
+	// 1. 查询 TaskAnsibleworkHistory
+	var workHistory model.TaskAnsibleworkHistory
+	err := s.dao.DB.Where("task_id = ? AND work_id = ? AND history_id = ?", taskID, workID, historyID).
+		First(&workHistory).Error
+
+	if err != nil {
+		result.Failed(c, 404, "未找到历史日志记录")
+		return
+	}
+
+	// 2. 获取LogPath
+	logPath := workHistory.LogPath
+	if logPath == "" {
+		result.Failed(c, 404, "日志路径为空")
+		return
+	}
+
+	// 3. 读取文件
+	workDir, _ := os.Getwd()
+	if strings.Contains(workDir, "/task/") {
+		workDir = strings.Split(workDir, "/task/")[0]
+	}
+	absLogPath := filepath.Join(workDir, logPath)
+
+	content, err := os.ReadFile(absLogPath)
+	if err != nil {
+		result.Failed(c, 500, fmt.Sprintf("读取日志文件失败: %v", err))
+		return
+	}
+
+	result.Success(c, string(content))
+}
+
+// DeleteTaskHistory 删除任务历史记录
+func (s *TaskAnsibleServiceImpl) DeleteTaskHistory(c *gin.Context, historyID uint) {
+	// 1. 获取History记录
+	history, err := s.dao.GetTaskAnsibleHistoryDetail(historyID)
+	if err != nil {
+		result.Failed(c, 404, "未找到历史记录")
+		return
+	}
+
+	// 2. 删除文件 (RunID目录)
+	for _, work := range history.WorkHistories {
+		if work.LogPath != "" {
+			workDir, _ := os.Getwd()
+			if strings.Contains(workDir, "/task/") {
+				workDir = strings.Split(workDir, "/task/")[0]
+			}
+			absLogPath := filepath.Join(workDir, work.LogPath)
+			dirToDelete := filepath.Dir(absLogPath)
+
+			// 安全检查：确保要删除的目录在 logs/ansible 之下
+			if strings.Contains(dirToDelete, "logs/ansible") && len(dirToDelete) > 12 {
+				os.RemoveAll(dirToDelete)
+			}
+		}
+	}
+
+	// 3. 删除数据库记录
+	if err := s.dao.DeleteHistory(historyID); err != nil {
+		result.Failed(c, 500, fmt.Sprintf("删除历史记录失败: %v", err))
+		return
+	}
+
+	result.Success(c, gin.H{"message": "删除成功", "id": historyID})
 }

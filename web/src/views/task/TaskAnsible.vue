@@ -450,6 +450,14 @@
           </template>
 
         </template>
+
+        <el-form-item label="最大历史记录">
+                <el-input
+                type="number"
+                v-model="currentTask.max_history_keep"
+                placeholder='保存的最大历史记录数，默认为3'
+                />
+            </el-form-item>
         
         <!-- 周期任务配置 -->
         <el-form-item label="周期性任务">
@@ -628,6 +636,7 @@ const currentTask = ref({
   global_vars_config_id: null,
   extra_vars_config_id: null,
   cli_args_config_id: null,
+  max_history_keep: 3,
   is_recurring: 0,
   cron_expr: '',
   playbook_paths: [],
@@ -905,6 +914,7 @@ const handleEdit = async (row) => {
             global_vars_config_id: data.GlobalVarsConfigID || null,
             extra_vars_config_id: data.ExtraVarsConfigID || null,
             cli_args_config_id: data.CliArgsConfigID || null,
+            max_history_keep: data.MaxHistoryKeep || 3,
             is_recurring: data.IsRecurring || 0,
             cron_expr: data.CronExpr || '',
             // Handle playbook_paths parsing if it's a string
@@ -1031,6 +1041,7 @@ const handleSubmit = async () => {
         type: currentTask.value.type,
         useConfig: currentTask.value.use_config,
         isRecurring: currentTask.value.is_recurring,
+        maxHistoryKeep: parseInt(currentTask.value.max_history_keep) || 3,
         cronExpr: currentTask.value.cron_expr || '',
         viewId: currentTask.value.view_id || 0,
         // Config Center fields

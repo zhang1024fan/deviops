@@ -77,6 +77,12 @@ const routes = [
         component: k8smonitoring,
         meta: {sTitle: '容器管理', tTitle: '监控仪表板'}
     },
+    {
+    path: '/k8s/crd',
+    name: 'K8sCrd',
+    component: () => import('@/views/K8s/k8s-crd.vue'),
+    meta: { title: '自定义资源', icon: 'coin' }
+    }
 ]
 
 export default routes

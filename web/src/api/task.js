@@ -1,4 +1,5 @@
 import request from '@/utils/request'
+import storage from "@/utils/storage"
 
 export function CreateTemplate(data) {
   return request({
@@ -452,7 +453,7 @@ function getValidToken() {
 
   // 优先从localStorage获取
   for (const key of storageKeys) {
-    token = localStorage.getItem(key)
+    token = storage.getItem(key)
     if (token && token !== 'null' && token !== 'undefined') {
       break
     }
@@ -492,30 +493,68 @@ function getValidToken() {
   return token
 }
 
-// SSE实时日志流接口
-export function GetAnsibleTaskLogStream(id, workId) {
-  const token = getValidToken()
-  // 使用当前页面的协议和主机，支持Docker部署
-  const protocol = window.location.protocol
-  const host = window.location.host
-  const baseURL = `${protocol}//${host}`
-  const url = `${baseURL}/api/v1/task/ansible/${id}/log/${workId}`
+// SSE实时日志流接口（回调式）
+export function GetAnsibleTaskLogStream(id, workId, handlers = {}) {
+  const { onOpen, onMessage, onError, onClose } = handlers
+  const token = storage.getItem("token") || {}
+  const baseURL = (process.env.VUE_APP_API_BASE_URL || '').replace(/\/$/, '')
+  const url = `${baseURL}/api/v1/task/ansible/${id}/log/${workId}?t=${Date.now()}&realtime=true&includeBuffer=true`
 
-  if (!token) {
-    console.error('警告: 未找到有效的认证token')
-  }
+  const controller = new AbortController()
+  const decoder = new TextDecoder()
 
-  console.log('构造SSE URL:', {
-    hasValidToken: !!token,
-    tokenPreview: token ? `${token.substring(0, 10)}...` : 'null',
-    baseURL,
-    id,
-    workId,
-    finalUrl: `${url}?token=${encodeURIComponent(token || '')}`
+  fetch(url, {
+    method: 'GET',
+    headers: {
+      'Authorization': token ? `Bearer ${token}` : '',
+      'Accept': 'text/event-stream'
+    },
+    signal: controller.signal
   })
+    .then(async response => {
+      if (!response.ok) {
+        throw new Error(`HTTP ${response.status}: ${response.statusText}`)
+      }
+
+      onOpen && onOpen()
+
+      const reader = response.body.getReader()
+      let buffer = ''
+
+      while (true) {
+        const { done, value } = await reader.read()
+        if (done) break
+
+        buffer += decoder.decode(value, { stream: true })
+        const events = buffer.split('\n\n')
+        buffer = events.pop() || ''
+
+        events.forEach(eventBlock => {
+          eventBlock.split('\n').forEach(line => {
+            if (line.startsWith('data:')) {
+              const payload = line.slice(5).trim()
+              if (payload) {
+                onMessage && onMessage(payload)
+              }
+            }
+          })
+        })
+      }
+
+      onClose && onClose()
+    })
+    .catch(error => {
+      if (error.name !== 'AbortError') {
+        console.error('❌ 日志请求失败:', error)
+        onError && onError(error)
+      }
+      onClose && onClose()
+    })
 
   return {
-    url: `${url}?token=${encodeURIComponent(token || '')}`
+    close() {
+      controller.abort()
+    }
   }
 }
 

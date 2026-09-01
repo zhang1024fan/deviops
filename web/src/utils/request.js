@@ -11,7 +11,7 @@ import storage from "./storage"
 
 // 创建axios对象，添加全局配置
 const service = axios.create({
-    baseURL: process.env.NODE_ENV === 'development' ? '' : '', // 开发和生产环境都使用相对路径
+    baseURL: (process.env.VUE_APP_API_BASE_URL || '').replace(/\/$/, ''), // 通过环境变量指定后端地址
     timeout: 15000, // 增加到15秒
     headers: {
         'Content-Type': 'application/json'
@@ -50,6 +50,8 @@ service.interceptors.request.use((req) => {
     if (isRedirectingToLogin) {
         return Promise.reject(new Error('正在跳转登录页'))
     }
+
+    console.log('API Base URL:', process.env.VUE_APP_API_BASE_URL)
 
     const headers = req.headers
     const token = storage.getItem("token") || {}
